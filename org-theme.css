@@ -1,0 +1,113 @@
+:root {
+  --color-bg: #F8FCF8;
+  --color-surface: #FFFFFF;
+  --color-surface-soft: #F1F8F2;
+
+  --color-primary: #7BCFA6;
+  --color-primary-dark: #3D8B68;
+  --color-primary-soft: #DFF5E9;
+
+  --color-accent: #FFE8A3;
+  --color-accent-dark: #B9891B;
+  --color-accent-soft: #FFF7DA;
+
+  --color-text: #243B35;
+  --color-muted: #6F827C;
+  --color-border: #DDEBE2;
+
+  --color-danger: #E57373;
+  --color-warning: #F6C85F;
+  --color-success: #70C99B;
+  --color-info: #7DB7D9;
+
+  --radius-sm: 10px;
+  --radius-md: 14px;
+  --radius-lg: 20px;
+  --shadow-soft: 0 10px 30px rgba(61, 139, 104, 0.10);
+
+  --font: 'Sarabun', 'Noto Sans Thai', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+html,
+body {
+  background: var(--color-bg) !important;
+  color: var(--color-text) !important;
+  font-family: var(--font) !important;
+}
+
+button,
+input,
+select,
+textarea {
+  font-family: var(--font) !important;
+}
+
+.card,
+.panel,
+.form-section,
+.swal2-popup,
+.bg-white {
+  border-radius: var(--radius-md) !important;
+}
+
+button,
+.btn,
+.swal2-confirm {
+  border-radius: var(--radius-sm) !important;
+  font-weight: 600 !important;
+}
+
+.swal2-confirm {
+  background: var(--color-primary-dark) !important;
+}
+
+.swal2-cancel {
+  border-radius: var(--radius-sm) !important;
+}
+
+input,
+select,
+textarea {
+  border-color: var(--color-border) !important;
+  border-radius: var(--radius-sm) !important;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+  border-color: var(--color-primary) !important;
+  box-shadow: 0 0 0 3px rgba(123, 207, 166, 0.18) !important;
+  outline: none !important;
+}
+
+table thead,
+.data-table thead {
+  background: var(--color-surface-soft) !important;
+}
+
+.sidebar,
+aside {
+  background: var(--color-surface) !important;
+  border-color: var(--color-border) !important;
+}
+
+.text-muted,
+.helper-text,
+small {
+  color: var(--color-muted) !important;
+}
+
+.badge,
+.status-badge {
+  border-radius: 999px !important;
+  font-weight: 700 !important;
+}
+
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  outline: 3px solid rgba(61, 139, 104, 0.35) !important;
+  outline-offset: 2px !important;
+}
