@@ -132,6 +132,108 @@ body.admin-page .table-wrap * {
   color: inherit;
 }
 
+/* Hotfix v8: admin readable text on light UI */
+body.admin-page,
+body.admin-page .admin-shell,
+body.admin-page .admin-page,
+body.admin-page .admin-layout,
+body.admin-page .admin-sidebar,
+body.admin-page .sidebar,
+body.admin-page .app-sidebar,
+body.admin-page .sidebar-gradient,
+body.admin-page .dashboard-shell,
+body.admin-page .dashboard-panel,
+body.admin-page .dashboard-card,
+body.admin-page .stat-card,
+body.admin-page .content-card {
+  color: var(--color-text, #243B35) !important;
+}
+
+/* Sidebar menu text */
+body.admin-page .admin-sidebar a,
+body.admin-page .admin-sidebar button,
+body.admin-page .sidebar a,
+body.admin-page .sidebar button,
+body.admin-page .app-sidebar a,
+body.admin-page .app-sidebar button,
+body.admin-page .sidebar-gradient a,
+body.admin-page .sidebar-gradient button,
+body.admin-page .sidebar a *,
+body.admin-page .sidebar button *,
+body.admin-page .app-sidebar a *,
+body.admin-page .app-sidebar button *,
+body.admin-page .sidebar-gradient a *,
+body.admin-page .sidebar-gradient button * {
+  color: var(--color-text, #243B35) !important;
+}
+
+/* Active sidebar on light green background */
+body.admin-page .sidebar .active,
+body.admin-page .sidebar .active *,
+body.admin-page .app-sidebar .active,
+body.admin-page .app-sidebar .active *,
+body.admin-page .sidebar-gradient .active,
+body.admin-page .sidebar-gradient .active *,
+body.admin-page .admin-sidebar .active,
+body.admin-page .admin-sidebar .active * {
+  color: var(--color-primary-dark, #3D8B68) !important;
+}
+
+/* Dashboard / chart text */
+body.admin-page .dashboard-card,
+body.admin-page .dashboard-card *,
+body.admin-page .dashboard-panel,
+body.admin-page .dashboard-panel *,
+body.admin-page .chart-card,
+body.admin-page .chart-card *,
+body.admin-page .chart-panel,
+body.admin-page .chart-panel *,
+body.admin-page [class*="chart"],
+body.admin-page [class*="chart"] *,
+body.admin-page [class*="graph"],
+body.admin-page [class*="graph"] * {
+  color: var(--color-text, #243B35) !important;
+}
+
+/* SVG chart labels */
+body.admin-page .dashboard-panel svg text,
+body.admin-page .dashboard-card svg text,
+body.admin-page .chart-panel svg text,
+body.admin-page .chart-card svg text,
+body.admin-page [class*="chart"] svg text,
+body.admin-page [class*="graph"] svg text {
+  fill: var(--color-text, #243B35) !important;
+  color: var(--color-text, #243B35) !important;
+}
+
+/* Muted/helper text */
+body.admin-page .dashboard-panel small,
+body.admin-page .dashboard-card small,
+body.admin-page .sidebar small,
+body.admin-page .text-muted,
+body.admin-page .helper-text,
+body.admin-page .form-hint {
+  color: var(--color-muted, #6F827C) !important;
+}
+
+/* Keep real button contrast */
+body.admin-page .btn-primary,
+body.admin-page .btn-primary *,
+body.admin-page button.btn-primary,
+body.admin-page button.btn-primary *,
+body.admin-page .swal2-confirm,
+body.admin-page .swal2-confirm *,
+body.admin-page .bg-primary,
+body.admin-page .bg-primary *,
+body.admin-page .btn-danger,
+body.admin-page .btn-danger *,
+body.admin-page button.btn-danger,
+body.admin-page button.btn-danger *,
+body.admin-page .bg-danger,
+body.admin-page .bg-danger * {
+  color: #ffffff !important;
+}
+
 body, button, input, select, textarea {
   font-family: inherit;
 }
