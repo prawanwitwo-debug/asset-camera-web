@@ -377,6 +377,27 @@ th, td {
   color: var(--org-text);
 }
 
+.supply-modal,
+#supplyModal .bg-white {
+  background: var(--org-surface) !important;
+  color: var(--org-text);
+}
+
+#supplyModal .bg-white {
+  border: 1px solid var(--org-border);
+  box-shadow: var(--org-shadow);
+}
+
+#supplyModal .max-w-2xl {
+  width: min(100%, 42rem);
+}
+
+#supplyModal h3,
+#modalTitle {
+  color: var(--org-text);
+  letter-spacing: -0.02em;
+}
+
 .modal input,
 .modal select,
 .modal textarea,
@@ -397,6 +418,56 @@ label {
   font-weight: 600;
 }
 
+#supplyModal label,
+#supplyModal .text-sm.font-medium {
+  color: var(--org-text);
+  font-weight: 600;
+}
+
+#supplyModal .text-xs,
+#supplyModal .text-sm.text-slate-500,
+#supplyModal .text-sm.text-slate-600,
+#assetNumberValidationMsg,
+#assetImagePreviewMeta,
+#assetImageCompressInfo,
+#assetImagePreviewEmpty {
+  color: var(--org-text-muted) !important;
+}
+
+#supplyModal .mb-5,
+#supplyModal .mb-4,
+#supplyModal .mb-6 {
+  margin-bottom: 1rem;
+}
+
+#supplyModal .rounded-2xl,
+#supplyModal .rounded-lg {
+  border-color: var(--org-border);
+}
+
+#supplyModal .border-slate-200,
+#supplyModal .border-slate-300,
+#supplyModal .border-emerald-100,
+#supplyModal .border-sky-100 {
+  border-color: var(--org-border) !important;
+}
+
+#supplyModal .bg-slate-50,
+#supplyModal .bg-emerald-50,
+#supplyModal .bg-sky-50,
+#supplyModal .bg-emerald-50\/50 {
+  background: var(--org-surface-2) !important;
+}
+
+#supplyModal .shadow-lg,
+#supplyModal .shadow-sm {
+  box-shadow: none !important;
+}
+
+#supplyModal .grid {
+  gap: 0.85rem;
+}
+
 .form-section,
 .form-card,
 .settings-card,
@@ -411,6 +482,68 @@ label {
 .field-group > * + *,
 .form-row > * + * {
   margin-top: 0.75rem;
+}
+
+#supplyModal input,
+#supplyModal select,
+#supplyModal textarea {
+  width: 100%;
+  min-height: 44px;
+  border-radius: 14px;
+  border: 1px solid var(--org-border);
+  background: #ffffff;
+  color: var(--org-text);
+  box-shadow: none;
+}
+
+#supplyModal input:focus,
+#supplyModal select:focus,
+#supplyModal textarea:focus {
+  border-color: var(--org-accent);
+  box-shadow: var(--org-focus);
+}
+
+#supplyModal textarea {
+  min-height: 112px;
+}
+
+#supplyModal .asset-autocomplete-wrap {
+  position: relative;
+}
+
+#supplyModal .asset-autocomplete-toggle {
+  border: 1px solid var(--org-border);
+  background: #ffffff;
+  color: var(--org-text);
+  border-radius: 999px;
+}
+
+#supplyModal .asset-autocomplete-toggle:hover {
+  background: #f7fbff;
+  border-color: var(--org-border-strong);
+}
+
+#supplyModal .asset-autocomplete-menu {
+  border: 1px solid var(--org-border);
+  border-radius: 14px;
+  box-shadow: var(--org-shadow-soft);
+}
+
+#supplyModal .asset-autocomplete-option,
+#supplyModal .asset-autocomplete-create,
+#supplyModal .asset-autocomplete-empty {
+  border-radius: 12px;
+}
+
+#supplyModal .asset-autocomplete-option:hover,
+#supplyModal .asset-autocomplete-option.is-active,
+#supplyModal .asset-autocomplete-create:hover,
+#supplyModal .asset-autocomplete-create.is-active {
+  background: var(--org-primary-soft);
+}
+
+#supplyModal .asset-autocomplete-section-label {
+  color: var(--org-text-muted);
 }
 
 .muted,
@@ -1069,6 +1202,111 @@ tbody tr:hover {
   box-shadow: var(--org-shadow-soft);
 }
 
+#assetStatusGroup {
+  gap: 0.5rem;
+}
+
+#assetStatusGroup button,
+.manage-status-btn {
+  min-height: 42px;
+  border-radius: 999px;
+  border: 1px solid var(--org-border);
+  background: #ffffff;
+  color: var(--org-text);
+}
+
+#assetStatusGroup button:hover,
+.manage-status-btn:hover {
+  background: #f7fbff;
+  border-color: var(--org-border-strong);
+}
+
+#assetStatusGroup button.tab-active,
+#assetStatusGroup button.active,
+.manage-status-btn.active {
+  background: var(--org-primary-soft);
+  border-color: rgba(15, 118, 110, 0.22);
+  color: var(--org-primary);
+}
+
+#assetImageDropZone {
+  border: 1px dashed var(--org-border-strong);
+  border-radius: 16px;
+  background: #fbfdff;
+  color: var(--org-text-muted);
+  min-height: 160px;
+}
+
+#assetImageDropZone:hover {
+  background: #f7fbff;
+  border-color: var(--org-primary);
+}
+
+#assetImageCompressInfo {
+  border-radius: 14px;
+}
+
+#assetImagePreviewMeta {
+  line-height: 1.5;
+}
+
+#assetImagePreview,
+#assetImagePreviewEmpty {
+  max-width: 100%;
+}
+
+#assetImagePreviewEmpty {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 120px;
+}
+
+#assetImageProcessBadge {
+  border-radius: 999px;
+  background: var(--org-primary-soft);
+  color: var(--org-primary);
+}
+
+#assetImageFileId {
+  background: #f8fbff !important;
+}
+
+#supplyModal .btn-theme,
+#supplyModal button[type="submit"],
+#supplyModal button[type="button"] {
+  min-height: 44px;
+}
+
+#supplyModal button[type="submit"] {
+  background: var(--org-primary) !important;
+  color: #ffffff !important;
+  border: 1px solid transparent !important;
+}
+
+#supplyModal button[type="button"] {
+  border: 1px solid var(--org-border);
+  background: #ffffff;
+  color: var(--org-text);
+}
+
+#supplyModal button[type="button"]:hover {
+  background: #f7fbff;
+}
+
+#supplyModal .text-emerald-800,
+#supplyModal .text-emerald-700 {
+  color: var(--org-success) !important;
+}
+
+#assetNumberValidationMsg.text-emerald-600 {
+  color: var(--org-success) !important;
+}
+
+#assetNumberValidationMsg.text-rose-600 {
+  color: var(--org-danger) !important;
+}
+
 @media (max-width: 768px) {
   body {
     font-size: 15px;
@@ -1179,5 +1417,26 @@ tbody tr:hover {
   .asset-table-wrap,
   .asset-table-container {
     border-radius: 14px;
+  }
+
+  #supplyModal .max-w-2xl {
+    width: min(100% - 1rem, 42rem);
+  }
+
+  #supplyModal .grid {
+    gap: 0.75rem;
+  }
+
+  #supplyModal .bg-white {
+    border-radius: 16px;
+  }
+
+  #assetImageDropZone {
+    min-height: 140px;
+  }
+
+  #assetStatusGroup button,
+  .manage-status-btn {
+    min-height: 44px;
   }
 }
