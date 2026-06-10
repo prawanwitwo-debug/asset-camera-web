@@ -1704,3 +1704,99 @@ tbody tr:hover {
     min-height: 44px;
   }
 }
+
+/* Hotfix v9: final admin contrast override */
+
+/* Sidebar text must be dark even when old classes use text-white/bg-primary */
+.sidebar,
+.sidebar *,
+.admin-sidebar,
+.admin-sidebar *,
+.app-sidebar,
+.app-sidebar *,
+.sidebar-gradient,
+.sidebar-gradient * {
+  color: #243B35 !important;
+}
+
+.sidebar .active,
+.sidebar .active *,
+.admin-sidebar .active,
+.admin-sidebar .active *,
+.app-sidebar .active,
+.app-sidebar .active *,
+.sidebar-gradient .active,
+.sidebar-gradient .active *,
+.sidebar [class*="bg-primary"],
+.sidebar [class*="bg-primary"] *,
+.sidebar [class*="text-white"],
+.sidebar [class*="text-white"] * {
+  color: #243B35 !important;
+}
+
+/* Dashboard chart/card text must be dark */
+.dashboard-shell,
+.dashboard-shell *,
+.dashboard-panel,
+.dashboard-panel *,
+.dashboard-card,
+.dashboard-card *,
+.chart-card,
+.chart-card *,
+.chart-panel,
+.chart-panel *,
+[class*="chart"],
+[class*="chart"] *,
+[class*="graph"],
+[class*="graph"] * {
+  color: #243B35 !important;
+}
+
+/* SVG chart labels */
+.dashboard-shell svg text,
+.dashboard-panel svg text,
+.dashboard-card svg text,
+.chart-card svg text,
+.chart-panel svg text,
+[class*="chart"] svg text,
+[class*="graph"] svg text {
+  fill: #243B35 !important;
+  color: #243B35 !important;
+}
+
+/* Override text-white only inside dashboard/chart areas */
+.dashboard-shell [class*="text-white"],
+.dashboard-shell [class*="text-white"] *,
+.dashboard-panel [class*="text-white"],
+.dashboard-panel [class*="text-white"] *,
+.dashboard-card [class*="text-white"],
+.dashboard-card [class*="text-white"] *,
+[class*="chart"] [class*="text-white"],
+[class*="chart"] [class*="text-white"] *,
+[class*="graph"] [class*="text-white"],
+[class*="graph"] [class*="text-white"] * {
+  color: #243B35 !important;
+}
+
+/* Muted chart/helper text */
+.dashboard-shell small,
+.dashboard-panel small,
+.dashboard-card small,
+.chart-card small,
+.chart-panel small {
+  color: #6F827C !important;
+}
+
+/* Keep real primary/danger button text white, but not sidebar menu buttons */
+main .btn-primary,
+main .btn-primary *,
+main button.btn-primary,
+main button.btn-primary *,
+main .btn-danger,
+main .btn-danger *,
+main button.btn-danger,
+main button.btn-danger *,
+.swal2-confirm,
+.swal2-confirm * {
+  color: #ffffff !important;
+}
