@@ -38,6 +38,100 @@ body {
     linear-gradient(180deg, #f8fbff 0%, var(--org-bg) 100%);
 }
 
+body.admin-page {
+  color: #243B35;
+}
+
+body.admin-page .bg-white,
+body.admin-page .bg-slate-50,
+body.admin-page .bg-slate-100,
+body.admin-page .bg-gray-50,
+body.admin-page .bg-gray-100,
+body.admin-page .card,
+body.admin-page .panel,
+body.admin-page .modal,
+body.admin-page .modal-content,
+body.admin-page .dialog,
+body.admin-page .table-container,
+body.admin-page .table-wrap,
+body.admin-page .table-responsive,
+body.admin-page .asset-table-container,
+body.admin-page .asset-table-wrap,
+body.admin-page .sidebar,
+body.admin-page .sidebar-gradient,
+body.admin-page .app-sidebar,
+body.admin-page .dashboard-card,
+body.admin-page .dashboard-panel,
+body.admin-page .dashboard-section,
+body.admin-page .form-section,
+body.admin-page .form-card,
+body.admin-page .content-card,
+body.admin-page .settings-card,
+body.admin-page .task-card {
+  color: #243B35;
+}
+
+body.admin-page h1,
+body.admin-page h2,
+body.admin-page h3,
+body.admin-page h4,
+body.admin-page h5,
+body.admin-page h6,
+body.admin-page label,
+body.admin-page th,
+body.admin-page td,
+body.admin-page .modal label,
+body.admin-page .modal-content label,
+body.admin-page .dialog label,
+body.admin-page .sidebar .sidebar-brand,
+body.admin-page .sidebar .sidebar-title,
+body.admin-page .sidebar .sidebar-subtitle,
+body.admin-page .sidebar .tab-btn,
+body.admin-page .desktop-header,
+body.admin-page .gradient-header {
+  color: #243B35;
+}
+
+body.admin-page .helper-text,
+body.admin-page .form-hint,
+body.admin-page .text-muted,
+body.admin-page .stat-helper,
+body.admin-page .asset-meta,
+body.admin-page #assetNumberValidationMsg,
+body.admin-page #assetImagePreviewMeta,
+body.admin-page #assetImageCompressInfo,
+body.admin-page #assetImagePreviewEmpty {
+  color: #6F827C !important;
+}
+
+body.admin-page .btn-primary,
+body.admin-page .primary-action,
+body.admin-page .main-action,
+body.admin-page .cta-primary,
+body.admin-page button[type="submit"],
+body.admin-page .btn-danger,
+body.admin-page .btn-success,
+body.admin-page .table-action-btn.primary,
+body.admin-page .table-action-btn.danger {
+  color: #ffffff !important;
+}
+
+body.admin-page .text-white:not(.btn):not(button):not(.badge),
+body.admin-page [class*="text-white"]:not(.btn):not(button):not(.badge) {
+  color: #243B35 !important;
+}
+
+body.admin-page .card *,
+body.admin-page .panel *,
+body.admin-page .form-section *,
+body.admin-page .modal-content *,
+body.admin-page .dashboard-card *,
+body.admin-page .dashboard-panel *,
+body.admin-page .table-container *,
+body.admin-page .table-wrap * {
+  color: inherit;
+}
+
 body, button, input, select, textarea {
   font-family: inherit;
 }
