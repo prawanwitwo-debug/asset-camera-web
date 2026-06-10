@@ -1,0 +1,1513 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ระบบครุภัณฑ์ Royal Park Rajapruek</title>
+  <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.12.2/lottie.min.js"></script>
+  <script src="https://unpkg.com/html5-qrcode"></script>
+  <style>
+    * { font-family: 'Kanit', sans-serif; }
+    html, body { height: 100%; }
+    body { overflow-x: hidden; }
+    .bg-hero {
+      position: relative;
+      isolation: isolate;
+      background-color: #070a23;
+      background-image:
+        radial-gradient(1400px 620px at 50% 112%, rgba(0, 245, 255, 0.24) 0%, rgba(0, 245, 255, 0) 66%),
+        radial-gradient(900px 420px at 50% -10%, rgba(199, 112, 255, 0.26) 0%, rgba(199, 112, 255, 0) 68%),
+        radial-gradient(1000px 500px at 0% 35%, rgba(42, 130, 255, 0.24) 0%, rgba(42, 130, 255, 0) 65%),
+        radial-gradient(1000px 500px at 100% 32%, rgba(168, 85, 247, 0.22) 0%, rgba(168, 85, 247, 0) 65%),
+        linear-gradient(180deg, #0a0f35 0%, #070c2b 45%, #05081f 100%);
+      animation: cyberGlow 8s ease-in-out infinite alternate;
+    }
+    .bg-hero::before,
+    .bg-hero::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: -1;
+    }
+    .bg-hero::before {
+      background:
+        repeating-linear-gradient(to right, rgba(58, 208, 255, 0.16) 0, rgba(58, 208, 255, 0.16) 2px, transparent 2px, transparent 92px),
+        repeating-linear-gradient(to bottom, rgba(194, 98, 255, 0.14) 0, rgba(194, 98, 255, 0.14) 2px, transparent 2px, transparent 92px);
+      transform: perspective(900px) rotateX(62deg) scale(1.9) translateY(17%);
+      transform-origin: center bottom;
+      opacity: 0.42;
+      animation: tunnelDrift 12s linear infinite;
+    }
+    .bg-hero::after {
+      background:
+        linear-gradient(115deg, transparent 22%, rgba(80, 220, 255, 0.8) 24%, rgba(80, 220, 255, 0.05) 32%, transparent 40%),
+        linear-gradient(245deg, transparent 18%, rgba(219, 116, 255, 0.75) 20%, rgba(219, 116, 255, 0.05) 30%, transparent 38%),
+        linear-gradient(0deg, rgba(0, 214, 255, 0.22), transparent 32%);
+      mix-blend-mode: screen;
+      opacity: 0.4;
+      animation: neonSweep 7s ease-in-out infinite alternate;
+    }
+    @keyframes cyberGlow {
+      0% { filter: saturate(1.02) brightness(0.92); }
+      100% { filter: saturate(1.22) brightness(1.08); }
+    }
+    @keyframes tunnelDrift {
+      0% { transform: perspective(900px) rotateX(62deg) scale(1.9) translateY(17%) translateX(0); }
+      100% { transform: perspective(900px) rotateX(62deg) scale(1.9) translateY(17%) translateX(-46px); }
+    }
+    @keyframes neonSweep {
+      0% { opacity: 0.28; filter: blur(0.5px); }
+      100% { opacity: 0.52; filter: blur(1.4px); }
+    }
+    .main-wrap {
+      min-height: calc(100vh - 70px);
+    }
+    .floaty { animation: float 18s ease-in-out infinite; }
+    .action-card {
+      position: relative;
+      overflow: hidden;
+      border-radius: 24px;
+      background: linear-gradient(165deg, rgba(233, 245, 255, 0.9), rgba(219, 237, 255, 0.84));
+      box-shadow: inset -8px -8px 16px rgba(255, 255, 255, 0.9),
+                  inset 8px 8px 16px rgba(0, 0, 0, 0.06),
+                  -12px -12px 22px rgba(255, 255, 255, 0.9),
+                  12px 12px 22px rgba(0, 0, 0, 0.08);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      border: 1px solid rgba(110, 175, 255, 0.45);
+    }
+    .action-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      padding: 1.5px;
+      background: linear-gradient(120deg, rgba(0, 229, 255, 0.95), rgba(94, 114, 255, 0.85), rgba(0, 229, 255, 0.95));
+      -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      opacity: 0.55;
+      pointer-events: none;
+      animation: cyberEdgeGlow 2.8s ease-in-out infinite;
+    }
+    .action-card:hover {
+      transform: translateY(-4px);
+      box-shadow: inset -8px -8px 16px rgba(255, 255, 255, 0.95),
+                  inset 8px 8px 16px rgba(0, 0, 0, 0.08),
+                  -14px -14px 26px rgba(255, 255, 255, 0.95),
+                  14px 14px 26px rgba(0, 0, 0, 0.12),
+                  0 0 24px rgba(56, 189, 248, 0.42);
+    }
+    .action-card:hover::before {
+      opacity: 0.9;
+      animation-duration: 1.8s;
+    }
+    @keyframes cyberEdgeGlow {
+      0% {
+        filter: drop-shadow(0 0 2px rgba(56, 189, 248, 0.25)) drop-shadow(0 0 6px rgba(79, 70, 229, 0.2));
+      }
+      50% {
+        filter: drop-shadow(0 0 8px rgba(56, 189, 248, 0.55)) drop-shadow(0 0 16px rgba(79, 70, 229, 0.5));
+      }
+      100% {
+        filter: drop-shadow(0 0 2px rgba(56, 189, 248, 0.25)) drop-shadow(0 0 6px rgba(79, 70, 229, 0.2));
+      }
+    }
+    .magnifier {
+      width: 54px;
+      height: 54px;
+      border: 6px solid #6fd7b7;
+      border-radius: 50%;
+      position: relative;
+      animation: float 0.9s ease-in-out infinite;
+      background: #fff;
+    }
+    .magnifier::after {
+      content: '';
+      position: absolute;
+      width: 22px;
+      height: 6px;
+      background: #6fd7b7;
+      border-radius: 4px;
+      right: -16px;
+      bottom: -6px;
+      transform: rotate(45deg);
+    }
+    @keyframes float {
+      0% { transform: translateY(0); }
+      50% { transform: translateY(-8px); }
+      100% { transform: translateY(0); }
+    }
+    .swal-512x300 {
+      width: 512px !important;
+      height: 300px !important;
+    }
+    .swal2-popup.swal-change {
+      overflow: visible !important;
+      background: #e8f8ef;
+      box-shadow: inset -4px -4px 8px rgba(255, 255, 255, 0.7),
+                  inset 4px 4px 8px rgba(0, 0, 0, 0.08);
+      border: 2px solid rgba(0, 0, 0, 0.35);
+      border-radius: 24px;
+    }
+    .swal2-popup.swal-change .swal2-html-container {
+      overflow: visible !important;
+    }
+    .swal2-popup.swal-result {
+      width: 720px !important;
+      max-width: 90vw !important;
+    }
+    .swal2-popup.swal-result .swal2-html-container {
+      max-height: 70vh;
+      overflow: auto;
+      scrollbar-width: none;
+    }
+    .swal2-popup.swal-login {
+      width: 560px !important;
+      max-width: 94vw !important;
+      border-radius: 26px !important;
+      padding: 1.2rem 1.2rem 1rem !important;
+    }
+    .swal-login-wrap {
+      text-align: left;
+      padding: 0.4rem 0.4rem 0.2rem;
+    }
+    .swal-login-icon {
+      width: 62px;
+      height: 62px;
+      border-radius: 9999px;
+      margin: 0 auto 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #fff4e8;
+      color: #f97316;
+      font-size: 28px;
+    }
+    .swal-login-subtitle {
+      text-align: center;
+      color: #64748b;
+      font-size: 13px;
+      margin-top: 4px;
+      margin-bottom: 14px;
+    }
+    .swal-login-label {
+      display: block;
+      font-size: 11px;
+      font-weight: 700;
+      color: #f97316;
+      margin: 10px 0 6px;
+      letter-spacing: 0.02em;
+      text-transform: uppercase;
+    }
+    .swal-login-input {
+      width: 100%;
+      height: 44px;
+      border-radius: 12px;
+      border: 1px solid #d1d5db;
+      background: #f8fafc;
+      padding: 0 12px;
+      outline: none;
+      transition: border-color .2s ease, box-shadow .2s ease;
+    }
+    .swal-login-input:focus {
+      border-color: #10b981;
+      box-shadow: 0 0 0 3px rgba(16,185,129,.18);
+      background: #ffffff;
+    }
+    .swal-login-pass-wrap {
+      position: relative;
+    }
+    .swal-login-toggle {
+      position: absolute;
+      top: 50%;
+      right: 10px;
+      transform: translateY(-50%);
+      border: 0;
+      background: transparent;
+      color: #64748b;
+      cursor: pointer;
+      font-size: 14px;
+      padding: 4px 6px;
+    }
+    .swal-login-remember {
+      margin-top: 12px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 14px;
+      color: #475569;
+      user-select: none;
+    }
+    .swal2-popup.swal-login .swal2-actions {
+      margin-top: 14px;
+      gap: 12px;
+    }
+    .swal2-popup.swal-login .swal2-confirm {
+      border-radius: 12px !important;
+      background: linear-gradient(135deg, #f97316, #fb923c) !important;
+      box-shadow: 0 8px 20px rgba(249,115,22,.25);
+      padding: 0.65rem 1.35rem !important;
+    }
+    .swal2-popup.swal-login .swal2-cancel {
+      border-radius: 12px !important;
+      background: #e2e8f0 !important;
+      color: #334155 !important;
+      padding: 0.65rem 1.35rem !important;
+    }
+    .swal2-popup.swal-result .swal2-html-container::-webkit-scrollbar {
+      width: 0;
+      height: 0;
+    }
+    .result-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 1.35rem;
+    }
+    .result-table td {
+      padding: 6px 8px;
+      border-bottom: 1px solid #e5e7eb;
+      vertical-align: top;
+    }
+    .result-table td.label {
+      width: 38%;
+      font-weight: 600;
+      color: #334155;
+      white-space: nowrap;
+    }
+    .result-image {
+      width: 100%;
+      max-height: 70vh;
+      object-fit: contain;
+      border-radius: 10px;
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      margin-top: 10px;
+    }
+    .swal2-popup.swal-result .swal2-html-container {
+      font-size: 1.35rem;
+    }
+    .swal2-popup.swal-result .swal2-title {
+      font-size: 2.4rem;
+    }
+    .asset-detail-popup {
+      width: 980px !important;
+      max-width: 96vw !important;
+      border-radius: 28px !important;
+      padding: 0 !important;
+      overflow: hidden !important;
+      background: #f6f7f9 !important;
+      box-shadow: 0 30px 80px rgba(15, 23, 42, 0.35) !important;
+    }
+    .asset-detail-popup .swal2-html-container {
+      margin: 0 !important;
+      padding: 0 !important;
+      overflow-x: hidden !important;
+    }
+    .asset-detail-wrap {
+      background: #f6f7f9;
+      padding: 28px 30px;
+      overflow-x: hidden;
+      text-align: left;
+    }
+    .asset-detail-grid {
+      display: grid;
+      grid-template-columns: 560px 300px;
+      gap: 20px;
+      align-items: start;
+      justify-content: space-between;
+    }
+    .asset-detail-card {
+      background: linear-gradient(180deg, #ffffff 0%, #fbfbfc 100%);
+      border: 1px solid #e5e7eb;
+      border-radius: 18px;
+      padding: 18px;
+      box-shadow: 0 8px 22px rgba(15, 23, 42, 0.06);
+    }
+    .asset-meta-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px 18px;
+    }
+    .asset-meta-label {
+      font-size: 12px;
+      color: #64748b;
+      margin-bottom: 4px;
+      letter-spacing: .01em;
+    }
+    .asset-meta-value {
+      font-size: 17px;
+      font-weight: 600;
+      color: #0f172a;
+      word-break: break-word;
+      line-height: 1.25;
+    }
+    .asset-title-row {
+      margin-bottom: 10px;
+      gap: 10px;
+    }
+    .asset-code-line {
+      margin-bottom: 18px;
+      font-size: 20px;
+      color: #64748b;
+      letter-spacing: .01em;
+    }
+    .asset-section-title {
+      font-size: 17px;
+      font-weight: 700;
+      color: #64748b;
+      margin-bottom: 12px;
+    }
+    .status-pill {
+      display: inline-flex;
+      padding: 5px 12px;
+      border-radius: 9999px;
+      font-size: 13px;
+      font-weight: 700;
+      border: 1px solid transparent;
+    }
+    .status-normal {
+      background: #dcfce7;
+      color: #15803d;
+      border-color: #bbf7d0;
+    }
+    .status-warning {
+      background: #fef3c7;
+      color: #b45309;
+      border-color: #fde68a;
+    }
+    .status-danger {
+      background: #fee2e2;
+      color: #b91c1c;
+      border-color: #fecaca;
+    }
+    .asset-qr-img {
+      width: 232px;
+      height: 232px;
+      object-fit: contain;
+      margin: 0 auto;
+      display: block;
+      border-radius: 12px;
+      border: 1px solid #e5e7eb;
+      background: #fff;
+    }
+    .inspection-item {
+      border: 1px solid #e5e7eb;
+      border-radius: 14px;
+      padding: 12px;
+      background: linear-gradient(180deg, #ffffff 0%, #fbfbfc 100%);
+      margin-bottom: 10px;
+      box-shadow: 0 6px 16px rgba(15, 23, 42, 0.04);
+    }
+    .inspection-item .inspection-date {
+      font-size: 13px;
+      margin-bottom: 4px;
+    }
+    .inspection-item .inspection-topic {
+      font-size: 16px;
+      line-height: 1.3;
+    }
+    .inspection-item .inspection-meta {
+      font-size: 13px;
+      margin-top: 4px;
+    }
+    .inspection-item .inspection-note {
+      font-size: 13px;
+      margin-top: 4px;
+      line-height: 1.35;
+    }
+    @media (max-width: 640px) {
+      .swal2-popup.swal-result .swal2-html-container {
+        font-size: 0.9rem;
+      }
+      .result-table {
+        font-size: 0.9rem;
+      }
+      .swal2-popup.swal-result .swal2-title {
+        font-size: 1.2rem;
+      }
+      .swal2-popup.swal-result {
+        width: 92vw !important;
+      }
+      .swal2-popup.swal-result .swal2-html-container {
+        max-height: 78vh;
+      }
+      .result-table td.label {
+        width: 44%;
+      }
+      .result-image {
+        max-height: 78vh;
+      }
+      .asset-detail-popup {
+        width: 94vw !important;
+        max-width: 94vw !important;
+      }
+      .asset-detail-wrap {
+        padding: 18px 16px;
+      }
+      .asset-detail-grid {
+        grid-template-columns: 1fr;
+      }
+      .asset-meta-grid {
+        grid-template-columns: 1fr;
+      }
+      .asset-meta-value {
+        font-size: 15px;
+      }
+      .asset-code-line {
+        font-size: 16px;
+      }
+      .asset-qr-img {
+        width: 200px;
+        height: 200px;
+      }
+    }
+  </style>
+
+    <!-- GitHub Pages API bridge -->
+    <script src="config.js"></script>
+    <script src="api-shim.js"></script>
+</head>
+<body class="min-h-screen bg-hero text-slate-800">
+  <main class="main-wrap px-6 py-10 flex items-center">
+    <div class="max-w-4xl mx-auto w-full">
+      <div class="text-center mb-8">
+        <div class="flex items-center justify-center gap-4">
+          <img src="https://chiangmice.com/wp-content/uploads/2018/08/royal-park-rajapruek-logo.gif" alt="RPRP Logo" class="h-16 w-auto drop-shadow-lg floaty" />
+          <div class="text-left">
+            <h1 class="text-3xl md:text-4xl font-bold leading-tight text-cyan-100 drop-shadow-[0_0_10px_rgba(56,189,248,0.55)]">ระบบบริหารครุภัณฑ์คอมพิวเตอร์</h1>
+            <p class="text-lg md:text-xl text-blue-100 drop-shadow-[0_0_8px_rgba(125,211,252,0.45)]">อุทยานหลวงราชพฤกษ์</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <button onclick="openComputerAssetsPopup()" class="action-card p-8 md:p-10 text-center h-[190px] md:h-[220px] flex flex-col items-center justify-center">
+          <div class="text-2xl md:text-3xl font-bold text-slate-800 mb-2">รายการครุภัณฑ์คอมพิวเตอร์</div>
+          <div class="text-sm md:text-base text-slate-600">ดูรายการทั้งหมดแบบตาราง และค้นหาด้วยการสแกน QR</div>
+        </button>
+
+        <button onclick="openTrackPopup()" class="action-card p-8 md:p-10 text-center h-[190px] md:h-[220px] flex flex-col items-center justify-center">
+          <div class="text-2xl md:text-3xl font-bold text-slate-800 mb-2">ตรวจสอบครุภัณฑ์</div>
+          <div class="text-sm md:text-base text-slate-600">สแกน/ค้นหาเพื่อตรวจสอบข้อมูลครุภัณฑ์</div>
+        </button>
+
+        <button onclick="openChangeOwner()" class="action-card p-8 md:p-10 text-center h-[190px] md:h-[220px] flex flex-col items-center justify-center">
+          <div class="text-2xl md:text-3xl font-bold text-slate-800 mb-2">แจ้งเปลี่ยนผู้รับผิดชอบครุภัณฑ์</div>
+          <div class="text-sm md:text-base text-slate-600">แจ้งเปลี่ยนผู้รับผิดชอบให้ตรงกับข้อมูลจริงในระบบ</div>
+        </button>
+      </div>
+    </div>
+  </main>
+
+  <footer class="text-center text-xs text-slate-500 py-6">
+    © 2026 Kin Cho. สงวนลิขสิทธิ์ทั้งหมด พัฒนาด้วยความใส่ใจ
+    <button onclick="openLogin()" class="ml-2 text-[10px] text-slate-400 hover:text-emerald-700 underline">เข้าสู่ระบบ</button>
+  </footer>
+
+    
+  
+  
+  <script id="userSecurityLottieData" type="application/json">{"v":"5.7.3","fr":25,"ip":0,"op":151,"w":500,"h":500,"nm":"doc","ddd":0,"assets":[{"id":"comp_0","layers":[{"ddd":0,"ind":1,"ty":4,"nm":"OBJECTS 2","sr":1,"ks":{"o":{"a":0,"k":100,"ix":11},"r":{"a":0,"k":0,"ix":10},"p":{"a":1,"k":[{"i":{"x":0.27,"y":1},"o":{"x":0.333,"y":0},"t":0,"s":[417.635,485.668,0],"to":[0,0,0],"ti":[0,0,0]},{"i":{"x":0.27,"y":1},"o":{"x":0.333,"y":0},"t":75,"s":[379.635,485.668,0],"to":[0,0,0],"ti":[0,0,0]},{"t":150,"s":[417.635,485.668,0]}],"ix":2},"a":{"a":0,"k":[417.635,485.668,0],"ix":1},"s":{"a":0,"k":[100,100,100],"ix":6}},"ao":0,"shapes":[{"ty":"gr","it":[{"ty":"gr","it":[{"ty":"gr","it":[{"ind":0,"ty":"sh","ix":1,"ks":{"a":0,"k":{"i":[[0.256,0],[0.195,0.195],[0,0],[-0.391,0.391],[-0.391,-0.39],[0,0],[0.391,-0.391]],"o":[[-0.256,0],[0,0],[-0.391,-0.391],[0.391,-0.391],[0,0],[0.391,0.391],[-0.195,0.195]],"v":[[3.138,4.138],[2.431,3.845],[-3.845,-2.431],[-3.845,-3.845],[-2.43,-3.845],[3.845,2.431],[3.845,3.845]],"c":true},"ix":2},"nm":"Path 1","mn":"ADBE Vector Shape - Group","hd":false},{"ty":"fl","c":{"a":0,"k":[1,1,1,1],"ix":4},"o":{"a":0,"k":100,"ix":5},"r":1,"bm":0,"nm":"Fill 1","mn":"ADBE Vector Graphic - Fill","hd":false},{"ty":"tr","p":{"a":0,"k":[504.072,492.154],"ix":2},"a":{"a":0,"k":[0,0],"ix":1},"s":{"a":0,"k":[100,100],"ix":3},"r":{"a":0,"k":0,"ix":6},"o":{"a":0,"k":100,"ix":7},"sk":{"a":0,"k":0,"ix":4},"sa":{"a":0,"k":0,"ix":5},"nm":"Transform"}],"nm":"Group 1","np":2,"cix":2,"bm":0,"ix":1,"mn":"ADBE Vector Group","hd":false},{"ty":"gr","it":[{"ind":0,"ty":"sh","ix":1,"ks":{"a":0,"k":{"i":[[3.259,0],[0,-3.259],[-3.259,0],[-1.116,1.116],[0,1.579]],"o":[[-3.259,0],[0,3.259],[1.579,0],[1.116,-1.116],[0,-3.259]],"v":[[0,-5.911],[-5.911,0],[0,5.911],[4.179,4.18],[5.911,0]],"c":true},"ix":2},"nm":"Path 1","mn":"ADBE Vector Shape - Group","hd":false},{"ind":1,"ty":"sh","ix":2,"ks":{"a":0,"k":{"i":[[2.113,0],[0,4.362],[-4.362,0],[0,-4.362],[1.494,-1.494]],"o":[[-4.362,0],[0,-4.362],[4.362,0],[0,2.113],[-1.494,1.494]],"v":[[0,7.911],[-7.911,0],[0,-7.911],[7.911,0],[5.594,5.594]],"c":true},"ix":2},"nm":"Path 2","mn":"ADBE Vector Shape - Group","hd":false},{"ty":"fl","c":{"a":0,"k":[1,1,1,1],"ix":4},"o":{"a":0,"k":100,"ix":5},"r":1,"bm":0,"nm":"Fill 1","mn":"ADBE Vector Graphic - Fill","hd":false},{"ty":"tr","p":{"a":0,"k":[496.081,484.095],"ix":2},"a":{"a":0,"k":[0,0],"ix":1},"s":{"a":0,"k":[100,100],"ix":3},"r":{"a":0,"k":0,"ix":6},"o":{"a":0,"k":100,"ix":7},"sk":{"a":0,"k":0,"ix":4},"sa":{"a":0,"k":0,"ix":5},"nm":"Transform"}],"nm":"Group 2","np":3,"cix":2,"bm":0,"ix":2,"mn":"ADBE Vector Group","hd":false},{"ty":"tr","p":{"a":0,"k":[496.081,484.095],"ix":2},"a":{"a":0,"k":[496.081,484.095],"ix":1},"s":{"a":0,"k":[100,100],"ix":3},"r":{"a":0,"k":0,"ix":6},"o":{"a":0,"k":100,"ix":7},"sk":{"a":0,"k":0,"ix":4},"sa":{"a":0,"k":0,"ix":5},"nm":"Transform"}],"nm":"Group 1","np":2,"cix":2,"bm":0,"ix":1,"mn":"ADBE Vector Group","hd":false},{"ty":"gr","it":[{"ind":0,"ty":"sh","ix":1,"ks":{"a":0,"k":{"i":[[9.988,0],[0,0],[0,0],[0,0],[0,-9.988],[0,0]],"o":[[0,0],[0,0],[0,0],[9.988,0],[0,0],[0,9.988]],"v":[[4.928,18.085],[-22.879,18.085],[-23.014,-18.085],[4.928,-18.085],[23.014,0],[23.014,0]],"c":true},"ix":2},"nm":"Path 1","mn":"ADBE Vector Shape - Group","hd":false},{"ty":"fl","c":{"a":0,"k":[0.349019616842,0.603921592236,0.949019610882,1],"ix":4},"o":{"a":0,"k":100,"ix":5},"r":1,"bm":0,"nm":"Fill 1","mn":"ADBE Vector Graphic - Fill","hd":false},{"ty":"tr","p":{"a":0,"k":[498.19,485.668],"ix":2},"a":{"a":0,"k":[0,0],"ix":1},"s":{"a":0,"k":[100,100],"ix":3},"r":{"a":0,"k":0,"ix":6},"o":{"a":0,"k":100,"ix":7},"sk":{"a":0,"k":0,"ix":4},"sa":{"a":0,"k":0,"ix":5},"nm":"Transform"}],"nm":"Group 2","np":2,"cix":2,"bm":0,"ix":2,"mn":"ADBE Vector Group","hd":false},{"ty":"gr","it":[{"ind":0,"ty":"sh","ix":1,"ks":{"a":0,"k":{"i":[[9.988,0],[0,0],[0,9.988],[0,0],[-9.988,0],[0,0],[0,-9.988],[0,0]],"o":[[0,0],[-9.988,0],[0,0],[0,-9.988],[0,0],[9.988,0],[0,0],[0,9.988]],"v":[[85.483,18.085],[-85.483,18.085],[-103.568,0],[-103.568,0],[-85.483,-18.085],[85.483,-18.085],[103.568,0],[103.568,0]],"c":true},"ix":2},"nm":"Path 1","mn":"ADBE Vector Shape - Group","hd":false},{"ty":"fl","c":{"a":0,"k":[1,1,1,1],"ix":4},"o":{"a":0,"k":100,"ix":5},"r":1,"bm":0,"nm":"Fill 1","mn":"ADBE Vector Graphic - Fill","hd":false},{"ty":"tr","p":{"a":0,"k":[417.635,485.668],"ix":2},"a":{"a":0,"k":[0,0],"ix":1},"s":{"a":0,"k":[100,100],"ix":3},"r":{"a":0,"k":0,"ix":6},"o":{"a":0,"k":100,"ix":7},"sk":{"a":0,"k":0,"ix":4},"sa":{"a":0,"k":0,"ix":5},"nm":"Transform"}],"nm":"Group 3","np":2,"cix":2,"bm":0,"ix":3,"mn":"ADBE Vector Group","hd":false},{"ty":"tr","p":{"a":0,"k":[417.635,485.668],"ix":2},"a":{"a":0,"k":[417.635,485.668],"ix":1},"s":{"a":0,"k":[100,100],"ix":3},"r":{"a":0,"k":0,"ix":6},"o":{"a":0,"k":100,"ix":7},"sk":{"a":0,"k":0,"ix":4},"sa":{"a":0,"k":0,"ix":5},"nm":"Transform"}],"nm":"Group 1","np":3,"cix":2,"bm":0,"ix":1,"mn":"ADBE Vector Group","hd":false}],"ip":0,"op":176,"st":0,"bm":0},{"ddd":0,"ind":2,"ty":4,"nm":"OBJECTS 3","sr":1,"ks":{"o":{"a":0,"k":100,"ix":11},"r":{"a":1,"k":[{"i":{"x":[0.667],"y":[1]},"o":{"x":[0.333],"y":[0]},"t":1,"s":[0]},{"i":{"x":[0.667],"y":[1]},"o":{"x":[0.333],"y":[0]},"t":6,"s":[-21]},{"i":{"x":[0.667],"y":[1]},"o":{"x":[0.333],"y":[0]},"t":13,"s":[5.875]},{"i":{"x":[0.294],"y":[1]},"o":{"x":[0.333],"y":[0]},"t":21,"s":[-3.452]},{"i":{"x":[0.833],"y":[1]},"o":{"x":[0.167],"y":[0]},"t":34,"s":[0]},{"i":{"x":[0.667],"y":[1]},"o":{"x":[0.333],"y":[0]},"t":75,"s":[0]},{"i":{"x":[0.667],"y":[1]},"o":{"x":[0.333],"y":[0]},"t":80,"s":[-21]},{"i":{"x":[0.667],"y":[1]},"o":{"x":[0.333],"y":[0]},"t":87,"s":[5.875]},{"i":{"x":[0.294],"y":[1]},"o":{"x":[0.333],"y":[0]},"t":95,"s":[-3.452]},{"t":108,"s":[0]}],"ix":10},"p":{"a":0,"k":[432.18,579.061,0],"ix":2},"a":{"a":0,"k":[0,0,0],"ix":1},"s":{"a":1,"k":[{"i":{"x":[0.667,0.667,0.667],"y":[1,1,1]},"o":{"x":[0.333,0.333,0.333],"y":[0,0,0]},"t":1,"s":[100,100,100]},{"i":{"x":[0.667,0.667,0.667],"y":[1,1,1]},"o":{"x":[0.333,0.333,0.333],"y":[0,0,0]},"t":5,"s":[42,42,100]},{"i":{"x":[0.667,0.667,0.667],"y":[1,1,1]},"o":{"x":[0.333,0.333,0.333],"y":[0,0,0]},"t":12,"s":[107,107,100]},{"i":{"x":[0.273,0.273,0.667],"y":[1,1,1]},"o":{"x":[0.333,0.333,0.333],"y":[0,0,0]},"t":19,"s":[95.222,95.222,100]},{"i":{"x":[0.667,0.667,0.667],"y":[1,1,1]},"o":{"x":[0.333,0.333,0.333],"y":[0,0,0]},"t":34,"s":[100,100,100]},{"i":{"x":[0.667,0.667,0.667],"y":[1,1,1]},"o":{"x":[0.333,0.333,0.333],"y":[0,0,0]},"t":75,"s":[100,100,100]},{"i":{"x":[0.667,0.667,0.667],"y":[1,1,1]},"o":{"x":[0.333,0.333,0.333],"y":[0,0,0]},"t":79,"s":[42,42,100]},{"i":{"x":[0.667,0.667,0.667],"y":[1,1,1]},"o":{"x":[0.333,0.333,0.333],"y":[0,0,0]},"t":86,"s":[107,107,100]},{"i":{"x":[0.273,0.273,0.667],"y":[1,1,1]},"o":{"x":[0.333,0.333,0.333],"y":[0,0,0]},"t":93,"s":[95.222,95.222,100]},{"t":108,"s":[100,100,100]}],"ix":6}},"ao":0,"shapes":[{"ty":"gr","it":[{"ind":0,"ty":"sh","ix":1,"ks":{"a":0,"k":{"i":[[0,0],[0,0],[0,-0.553],[0.552,0],[0,0],[-0.011,1.065]],"o":[[0,0],[0.552,0],[0,0.553],[0,0],[0,0],[0.011,-1.066]],"v":[[-11.536,52.534],[17.428,52.534],[18.428,53.534],[17.428,54.534],[-11.536,54.534],[-12.669,53.624]],"c":true},"ix":2},"nm":"Path 1","mn":"ADBE Vector Shape - Group","hd":false},{"ind":1,"ty":"sh","ix":2,"ks":{"a":0,"k":{"i":[[0,0],[0,0],[0,-0.553],[0.552,0],[0,0],[-0.011,1.065]],"o":[[0,0],[0.552,0],[0,0.553],[0,0],[0,0],[0.011,-1.066]],"v":[[-11.544,60.347],[36.484,60.317],[37.484,61.317],[36.484,62.317],[-11.544,62.347],[-12.676,61.437]],"c":true},"ix":2},"nm":"Path 3","mn":"ADBE Vector Shape - Group","hd":false},{"ind":2,"ty":"sh","ix":3,"ks":{"a":0,"k":{"i":[[0,0],[0,0],[0,-0.553],[0.552,0],[0,0],[-0.011,1.065]],"o":[[0,0],[0.552,0],[0,0.553],[0,0],[0,0],[0.011,-1.066]],"v":[[-11.544,68.347],[36.484,68.317],[37.484,69.317],[36.484,70.317],[-11.544,70.347],[-12.676,69.437]],"c":true},"ix":2},"nm":"Path 4","mn":"ADBE Vector Shape - Group","hd":false},{"ind":3,"ty":"sh","ix":4,"ks":{"a":0,"k":{"i":[[0,0],[0,0],[0,-0.553],[0.552,0],[0,0],[-0.011,1.065]],"o":[[0,0],[0.552,0],[0,0.553],[0,0],[0,0],[0.011,-1.066]],"v":[[-11.544,76.597],[36.484,76.567],[37.484,77.567],[36.484,78.567],[-11.544,78.597],[-12.676,77.687]],"c":true},"ix":2},"nm":"Path 5","mn":"ADBE Vector Shape - Group","hd":false},{"ind":4,"ty":"sh","ix":5,"ks":{"a":0,"k":{"i":[[0.552,0],[0,0.553],[0,0],[-3.8,0],[0,0],[0,-0.553],[0.552,0],[0,0],[0,-2.698],[0,0]],"o":[[-0.552,0],[0,0],[0,-3.801],[0,0],[0.552,0],[0,0.553],[0,0],[-2.697,0],[0,0],[0,0.553]],"v":[[-17.428,16.216],[-18.428,15.216],[-18.428,-9.323],[-11.536,-16.216],[17.428,-16.216],[18.428,-15.216],[17.428,-14.216],[-11.536,-14.216],[-16.428,-9.323],[-16.428,15.216]],"c":true},"ix":2},"nm":"Path 2","mn":"ADBE Vector Shape - Group","hd":false},{"ty":"fl","c":{"a":0,"k":[1,1,1,1],"ix":4},"o":{"a":0,"k":100,"ix":5},"r":1,"bm":0,"nm":"Fill 1","mn":"ADBE Vector Graphic - Fill","hd":false},{"ty":"tr","p":{"a":0,"k":[-67.5,-42.5],"ix":2},"a":{"a":0,"k":[0,0],"ix":1},"s":{"a":0,"k":[100,100],"ix":3},"r":{"a":0,"k":0,"ix":6},"o":{"a":0,"k":100,"ix":7},"sk":{"a":0,"k":0,"ix":4},"sa":{"a":0,"k":0,"ix":5},"nm":"Transform"}],"nm":"Group 4","np":6,"cix":2,"bm":0,"ix":1,"mn":"ADBE Vector Group","hd":false},{"ty":"gr","it":[{"ind":0,"ty":"sh","ix":1,"ks":{"a":0,"k":{"i":[[4.801,0],[0,0],[0,5.956],[0,0],[5.155,0],[0,0],[0,-5.977],[0,0],[0,0],[0,0],[-4.801,0],[0,0],[0,5.567],[0,0]],"o":[[0,0],[-5.136,0],[0,0],[0,-5.977],[0,0],[-5.155,0],[0,0],[0,0],[0,0],[0,5.567],[0,0],[4.801,0],[0,0],[0,-5.567]],"v":[[63.279,-37.939],[-10.108,-37.939],[-19.408,-48.723],[-19.408,-55.795],[-28.742,-66.618],[-62.639,-66.618],[-71.972,-55.795],[-71.972,-27.859],[-71.972,4.259],[-71.972,56.537],[-63.279,66.618],[63.279,66.618],[71.972,56.537],[71.972,-27.859]],"c":true},"ix":2},"nm":"Path 1","mn":"ADBE Vector Shape - Group","hd":false},{"ty":"fl","c":{"a":0,"k":[0.960784375668,0.623529434204,0.674509823322,1],"ix":4},"o":{"a":0,"k":100,"ix":5},"r":1,"bm":0,"nm":"Fill 1","mn":"ADBE Vector Graphic - Fill","hd":false},{"ty":"tr","p":{"a":0,"k":[-20,0],"ix":2},"a":{"a":0,"k":[0,0],"ix":1},"s":{"a":0,"k":[100,100],"ix":3},"r":{"a":0,"k":0,"ix":6},"o":{"a":0,"k":100,"ix":7},"sk":{"a":0,"k":0,"ix":4},"sa":{"a":0,"k":0,"ix":5},"nm":"Transform"}],"nm":"Group 3","np":2,"cix":2,"bm":0,"ix":2,"mn":"ADBE Vector Group","hd":false},{"ty":"gr","it":[{"ind":0,"ty":"sh","ix":1,"ks":{"a":0,"k":{"i":[[5.567,0],[0,0],[0,5.956],[0,0],[5.977,0],[0,0],[0,-5.977],[0,0],[0,0],[0,0],[-5.567,0],[0,0],[0,5.567],[0,0]],"o":[[0,0],[-5.956,0],[0,0],[0,-5.977],[0,0],[-5.977,0],[0,0],[0,0],[0,0],[0,5.567],[0,0],[5.567,0],[0,0],[0,-5.567]],"v":[[73.378,-37.939],[-11.722,-37.939],[-22.506,-48.723],[-22.506,-55.795],[-33.329,-66.618],[-72.635,-66.618],[-83.458,-55.795],[-83.458,-27.858],[-83.458,4.259],[-83.458,56.537],[-73.377,66.618],[73.378,66.618],[83.458,56.537],[83.458,-27.858]],"c":true},"ix":2},"nm":"Path 1","mn":"ADBE Vector Shape - Group","hd":false},{"ty":"fl","c":{"a":0,"k":[0.956862807274,0.572549045086,0.627451002598,1],"ix":4},"o":{"a":0,"k":100,"ix":5},"r":1,"bm":0,"nm":"Fill 1","mn":"ADBE Vector Graphic - Fill","hd":false},{"ty":"tr","p":{"a":0,"k":[-9,0],"ix":2},"a":{"a":0,"k":[0,0],"ix":1},"s":{"a":0,"k":[100,100],"ix":3},"r":{"a":0,"k":0,"ix":6},"o":{"a":0,"k":100,"ix":7},"sk":{"a":0,"k":0,"ix":4},"sa":{"a":0,"k":0,"ix":5},"nm":"Transform"}],"nm":"Group 2","np":2,"cix":2,"bm":0,"ix":3,"mn":"ADBE Vector Group","hd":false},{"ty":"gr","it":[{"ind":0,"ty":"sh","ix":1,"ks":{"a":0,"k":{"i":[[5.567,0],[0,0],[0,5.956],[0,0],[5.977,0],[0,0],[0,-5.977],[0,0],[0,0],[0,0],[-5.567,0],[0,0],[0,5.567],[0,0]],"o":[[0,0],[-5.956,0],[0,0],[0,-5.977],[0,0],[-5.977,0],[0,0],[0,0],[0,0],[0,5.567],[0,0],[5.567,0],[0,0],[0,-5.567]],"v":[[73.378,-37.939],[-11.722,-37.939],[-22.506,-48.723],[-22.506,-55.795],[-33.329,-66.618],[-72.635,-66.618],[-83.458,-55.795],[-83.458,-27.859],[-83.458,4.259],[-83.458,56.537],[-73.378,66.618],[73.378,66.618],[83.458,56.537],[83.458,-27.859]],"c":true},"ix":2},"nm":"Path 1","mn":"ADBE Vector Shape - Group","hd":false},{"ty":"fl","c":{"a":0,"k":[0.949019610882,0.51372551918,0.57647061348,1],"ix":4},"o":{"a":0,"k":100,"ix":5},"r":1,"bm":0,"nm":"Fill 1","mn":"ADBE Vector Graphic - Fill","hd":false},{"ty":"tr","p":{"a":0,"k":[0,0],"ix":2},"a":{"a":0,"k":[0,0],"ix":1},"s":{"a":0,"k":[100,100],"ix":3},"r":{"a":0,"k":0,"ix":6},"o":{"a":0,"k":100,"ix":7},"sk":{"a":0,"k":0,"ix":4},"sa":{"a":0,"k":0,"ix":5},"nm":"Transform"}],"nm":"Group 1","np":2,"cix":2,"bm":0,"ix":4,"mn":"ADBE Vector Group","hd":false}],"ip":0,"op":176,"st":0,"bm":0},{"ddd":0,"ind":3,"ty":4,"nm":"OBJECTS 11","parent":4,"sr":1,"ks":{"o":{"a":0,"k":100,"ix":11},"r":{"a":0,"k":0,"ix":10},"p":{"a":0,"k":[29.68,88.318,0],"ix":2},"a":{"a":0,"k":[0,0,0],"ix":1},"s":{"a":0,"k":[100,100,100],"ix":6}},"ao":0,"shapes":[{"ty":"gr","it":[{"ind":0,"ty":"sh","ix":1,"ks":{"a":1,"k":[{"i":{"x":0,"y":1},"o":{"x":0.333,"y":0},"t":0,"s":[{"i":[[10.91,-0.656],[0,0],[0,0],[0,12.841],[0,0],[0,0],[0,0]],"o":[[0,0],[0,0],[11.432,0],[0,0],[0,0],[0,0],[0,12.418]],"v":[[-60.014,16.006],[-60.014,16.041],[39.314,16.041],[60.014,-7.21],[60.014,-16.041],[-40.437,-16.041],[-40.437,-7.21]],"c":true}]},{"i":{"x":0,"y":1},"o":{"x":0.333,"y":0},"t":75,"s":[{"i":[[10.91,-0.656],[0,0],[0,0],[0,12.841],[0,0],[0,0],[0,0]],"o":[[0,0],[0,0],[11.432,0],[0,0],[0,0],[0,0],[0,12.418]],"v":[[-60.014,16.006],[-60.014,16.041],[39.314,16.041],[59.764,-3.46],[59.804,-3.791],[-40.648,-3.791],[-40.687,-3.46]],"c":true}]},{"t":150,"s":[{"i":[[10.91,-0.656],[0,0],[0,0],[0,12.841],[0,0],[0,0],[0,0]],"o":[[0,0],[0,0],[11.432,0],[0,0],[0,0],[0,0],[0,12.418]],"v":[[-60.014,16.006],[-60.014,16.041],[39.314,16.041],[60.014,-7.21],[60.014,-16.041],[-40.437,-16.041],[-40.437,-7.21]],"c":true}]}],"ix":2},"nm":"Path 1","mn":"ADBE Vector Shape - Group","hd":false},{"ty":"fl","c":{"a":0,"k":[0.345098048449,0.35686275363,0.686274528503,1],"ix":4},"o":{"a":0,"k":100,"ix":5},"r":1,"bm":0,"nm":"Fill 1","mn":"ADBE Vector Graphic - Fill","hd":false},{"ind":2,"ty":"sh","ix":3,"ks":{"a":1,"k":[{"i":{"x":0,"y":1},"o":{"x":0.333,"y":0},"t":0,"s":[{"i":[[12.254,-0.656],[0,0],[0,0],[0,12.841],[0,0],[0,0],[0,0]],"o":[[0,0],[0,0],[12.841,0],[0,0],[0,0],[0,0],[0,12.418]],"v":[[-74.41,16.006],[-74.41,16.041],[37.159,16.041],[60.41,-7.21],[60.41,-16.041],[-52.421,-16.041],[-52.421,-7.21]],"c":true}]},{"i":{"x":0,"y":1},"o":{"x":0.333,"y":0},"t":75,"s":[{"i":[[12.254,-0.656],[0,0],[0,0],[0,12.841],[0,0],[0,0],[0,0]],"o":[[0,0],[0,0],[12.841,0],[0,0],[0,0],[0,0],[0,12.418]],"v":[[-74.41,16.006],[-74.41,16.041],[37.159,16.041],[60.16,-3.46],[60.199,-3.791],[-52.631,-3.791],[-52.671,-3.46]],"c":true}]},{"t":150,"s":[{"i":[[12.254,-0.656],[0,0],[0,0],[0,12.841],[0,0],[0,0],[0,0]],"o":[[0,0],[0,0],[12.841,0],[0,0],[0,0],[0,0],[0,12.418]],"v":[[-74.41,16.006],[-74.41,16.041],[37.159,16.041],[60.41,-7.21],[60.41,-16.041],[-52.421,-16.041],[-52.421,-7.21]],"c":true}]}],"ix":2},"nm":"Path 2","mn":"ADBE Vector Shape - Group","hd":false},{"ty":"fl","c":{"a":0,"k":[0.380392193794,0.380392193794,0.709803938866,1],"ix":4},"o":{"a":0,"k":100,"ix":5},"r":1,"bm":0,"nm":"Fill 2","mn":"ADBE Vector Graphic - Fill","hd":false},{"ty":"tr","p":{"a":0,"k":[7,0],"ix":2},"a":{"a":0,"k":[0,0],"ix":1},"s":{"a":0,"k":[100,100],"ix":3},"r":{"a":0,"k":0,"ix":6},"o":{"a":0,"k":100,"ix":7},"sk":{"a":0,"k":0,"ix":4},"sa":{"a":0,"k":0,"ix":5},"nm":"Transform"}],"nm":"Group 2","np":4,"cix":2,"bm":0,"ix":1,"mn":"ADBE Vector Group","hd":false}],"ip":0,"op":176,"st":0,"bm":0},{"ddd":0,"ind":4,"ty":4,"nm":"OBJECTS 8","sr":1,"ks":{"o":{"a":0,"k":100,"ix":11},"r":{"a":0,"k":0,"ix":10},"p":{"a":1,"k":[{"i":{"x":0,"y":1},"o":{"x":0.333,"y":0},"t":0,"s":[465.221,449.154,0],"to":[0,0,0],"ti":[0,0,0]},{"i":{"x":0,"y":1},"o":{"x":0.333,"y":0},"t":75,"s":[465.221,436.154,0],"to":[0,0,0],"ti":[0,0,0]},{"t":150,"s":[465.221,449.154,0]}],"ix":2},"a":{"a":0,"k":[0,0,0],"ix":1},"s":{"a":0,"k":[100,100,100],"ix":6}},"ao":0,"shapes":[{"ty":"gr","it":[{"ind":0,"ty":"sh","ix":1,"ks":{"a":0,"k":{"i":[[-0.552,0],[0,0]],"o":[[0,0],[0.553,0]],"v":[[-40.11,-1],[40.11,-1]],"c":false},"ix":2},"nm":"Path 1","mn":"ADBE Vector Shape - Group","hd":false},{"ind":1,"ty":"sh","ix":2,"ks":{"a":0,"k":{"i":[[-0.552,0],[0,0]],"o":[[0,0],[0,0]],"v":[[-40.094,16.875],[-11.731,16.875]],"c":false},"ix":2},"nm":"Path 2","mn":"ADBE Vector Shape - Group","hd":false},{"ind":2,"ty":"sh","ix":3,"ks":{"a":0,"k":{"i":[[0,0],[0,0]],"o":[[0,0],[0.553,0]],"v":[[4.019,16.875],[40.125,16.875]],"c":false},"ix":2},"nm":"Path 4","mn":"ADBE Vector Shape - Group","hd":false},{"ind":3,"ty":"sh","ix":4,"ks":{"a":0,"k":{"i":[[-0.552,0],[0,0]],"o":[[0,0],[0.553,0]],"v":[[-40.064,33.75],[40.156,33.75]],"c":false},"ix":2},"nm":"Path 3","mn":"ADBE Vector Shape - Group","hd":false},{"ind":4,"ty":"sh","ix":5,"ks":{"a":0,"k":{"i":[[-0.552,0],[0,0]],"o":[[0,0],[0,0]],"v":[[-40.002,48.125],[13.269,48.125]],"c":false},"ix":2},"nm":"Path 5","mn":"ADBE Vector Shape - Group","hd":false},{"ind":5,"ty":"sh","ix":6,"ks":{"a":0,"k":{"i":[[0,0],[0,0]],"o":[[0,0],[0.553,0]],"v":[[23.144,48.125],[40.217,48.125]],"c":false},"ix":2},"nm":"Path 6","mn":"ADBE Vector Shape - Group","hd":false},{"ind":6,"ty":"sh","ix":7,"ks":{"a":0,"k":{"i":[[-0.552,0],[0,0]],"o":[[0,0],[0,0]],"v":[[-40.064,65],[-24.856,65]],"c":false},"ix":2},"nm":"Path 7","mn":"ADBE Vector Shape - Group","hd":false},{"ind":7,"ty":"sh","ix":8,"ks":{"a":0,"k":{"i":[[0,0],[0,0]],"o":[[0,0],[0.553,0]],"v":[[-17.231,65],[40.156,65]],"c":false},"ix":2},"nm":"Path 8","mn":"ADBE Vector Shape - Group","hd":false},{"ind":8,"ty":"sh","ix":9,"ks":{"a":0,"k":{"i":[[-0.552,0],[0,0]],"o":[[0,0],[0.553,0]],"v":[[-40.127,84.25],[40.092,84.25]],"c":false},"ix":2},"nm":"Path 9","mn":"ADBE Vector Shape - Group","hd":false},{"ind":9,"ty":"sh","ix":10,"ks":{"a":0,"k":{"i":[[-0.552,0],[0,0]],"o":[[0,0],[0,0]],"v":[[-40.129,101],[-0.481,101]],"c":false},"ix":2},"nm":"Path 10","mn":"ADBE Vector Shape - Group","hd":false},{"ind":10,"ty":"sh","ix":11,"ks":{"a":0,"k":{"i":[[-0.552,0],[0,0]],"o":[[0,0],[0.553,0]],"v":[[-40.164,117.875],[40.055,117.875]],"c":false},"ix":2},"nm":"Path 11","mn":"ADBE Vector Shape - Group","hd":false},{"ty":"tm","s":{"a":0,"k":0,"ix":1},"e":{"a":0,"k":80,"ix":2},"o":{"a":1,"k":[{"i":{"x":[0.833],"y":[0.833]},"o":{"x":[0.167],"y":[0.167]},"t":0,"s":[117]},{"t":150,"s":[1197]}],"ix":3},"m":2,"ix":12,"nm":"Trim Paths 1","mn":"ADBE Vector Filter - Trim","hd":false},{"ty":"st","c":{"a":0,"k":[1,1,1,1],"ix":3},"o":{"a":0,"k":100,"ix":4},"w":{"a":0,"k":2.5,"ix":5},"lc":2,"lj":2,"bm":0,"nm":"Stroke 1","mn":"ADBE Vector Graphic - Stroke","hd":false},{"ty":"tr","p":{"a":1,"k":[{"i":{"x":0,"y":1},"o":{"x":0.333,"y":0},"t":0,"s":[7.481,-64.58],"to":[0,0],"ti":[0,0]},{"i":{"x":0,"y":1},"o":{"x":0.333,"y":0},"t":75,"s":[7.481,-77.58],"to":[0,0],"ti":[0,0]},{"t":150,"s":[7.481,-64.58]}],"ix":2},"a":{"a":0,"k":[0,0],"ix":1},"s":{"a":0,"k":[100,100],"ix":3},"r":{"a":0,"k":0,"ix":6},"o":{"a":0,"k":100,"ix":7},"sk":{"a":0,"k":0,"ix":4},"sa":{"a":0,"k":0,"ix":5},"nm":"Transform"}],"nm":"Group 13","np":13,"cix":2,"bm":0,"ix":1,"mn":"ADBE Vector Group","hd":false},{"ty":"gr","it":[{"ind":0,"ty":"sh","ix":1,"ks":{"a":0,"k":{"i":[[-0.609,0],[0,0],[0,-1.09],[0,0],[8.168,0],[0,0],[0,16.931],[0,0]],"o":[[0,0],[1.09,0],[0,0],[0,8.168],[0,0],[-16.93,0],[0,0],[0,-0.609]],"v":[[-62.181,-104.359],[61.31,-104.359],[63.283,-102.385],[63.283,89.57],[48.494,104.359],[-32.628,104.359],[-63.283,73.703],[-63.283,-103.256]],"c":true},"ix":2},"nm":"Path 1","mn":"ADBE Vector Shape - Group","hd":false},{"ty":"fl","c":{"a":0,"k":[0.57647061348,0.588235318661,0.811764776707,1],"ix":4},"o":{"a":0,"k":100,"ix":5},"r":1,"bm":0,"nm":"Fill 1","mn":"ADBE Vector Graphic - Fill","hd":false},{"ty":"tr","p":{"a":0,"k":[6,0],"ix":2},"a":{"a":0,"k":[0,0],"ix":1},"s":{"a":0,"k":[100,100],"ix":3},"r":{"a":0,"k":0,"ix":6},"o":{"a":0,"k":100,"ix":7},"sk":{"a":0,"k":0,"ix":4},"sa":{"a":0,"k":0,"ix":5},"nm":"Transform"}],"nm":"Group 2","np":2,"cix":2,"bm":0,"ix":2,"mn":"ADBE Vector Group","hd":false},{"ty":"gr","it":[{"ind":0,"ty":"sh","ix":1,"ks":{"a":0,"k":{"i":[[-3.649,0],[0,0],[0,-2.571],[0,0],[8.869,0],[0,0],[0,18.899],[0,0]],"o":[[0,0],[2.571,0],[0,0],[0,8.869],[0,0],[-18.899,0],[0,0],[0,-3.649]],"v":[[-62.845,-104.359],[64.797,-104.359],[69.452,-99.704],[69.452,88.3],[53.394,104.359],[-35.233,104.359],[-69.452,70.139],[-69.452,-97.751]],"c":true},"ix":2},"nm":"Path 1","mn":"ADBE Vector Shape - Group","hd":false},{"ty":"fl","c":{"a":0,"k":[0.780392229557,0.780392229557,0.937254965305,1],"ix":4},"o":{"a":0,"k":100,"ix":5},"r":1,"bm":0,"nm":"Fill 1","mn":"ADBE Vector Graphic - Fill","hd":false},{"ty":"tr","p":{"a":0,"k":[0,0],"ix":2},"a":{"a":0,"k":[0,0],"ix":1},"s":{"a":0,"k":[100,100],"ix":3},"r":{"a":0,"k":0,"ix":6},"o":{"a":0,"k":100,"ix":7},"sk":{"a":0,"k":0,"ix":4},"sa":{"a":0,"k":0,"ix":5},"nm":"Transform"}],"nm":"Group 1","np":2,"cix":2,"bm":0,"ix":3,"mn":"ADBE Vector Group","hd":false}],"ip":0,"op":176,"st":0,"bm":0},{"ddd":0,"ind":5,"ty":4,"nm":"OBJECTS 15","sr":1,"ks":{"o":{"a":0,"k":100,"ix":11},"r":{"a":1,"k":[{"i":{"x":[0.33],"y":[1]},"o":{"x":[0.333],"y":[0]},"t":0,"s":[0]},{"i":{"x":[0.33],"y":[1]},"o":{"x":[0.333],"y":[0]},"t":51,"s":[-11]},{"t":133,"s":[0]}],"ix":10},"p":{"a":0,"k":[594.07,517.85,0],"ix":2},"a":{"a":0,"k":[594.07,517.85,0],"ix":1},"s":{"a":0,"k":[100,100,100],"ix":6}},"ao":0,"shapes":[{"ty":"gr","it":[{"ty":"gr","it":[{"ind":0,"ty":"sh","ix":1,"ks":{"a":0,"k":{"i":[[0.236,0],[0.031,0.006],[0,0],[-0.05,0.272],[-0.275,-0.054],[0,0],[0.05,-0.272]],"o":[[-0.03,0],[0,0],[-0.271,-0.05],[0.051,-0.272],[0,0],[0.271,0.05],[-0.045,0.241]],"v":[[9.996,2.343],[9.904,2.335],[-10.085,-1.35],[-10.487,-1.932],[-9.904,-2.333],[10.085,1.351],[10.487,1.934]],"c":true},"ix":2},"nm":"Path 1","mn":"ADBE Vector Shape - Group","hd":false},{"ty":"fl","c":{"a":0,"k":[1,1,1,1],"ix":4},"o":{"a":0,"k":100,"ix":5},"r":1,"bm":0,"nm":"Fill 1","mn":"ADBE Vector Graphic - Fill","hd":false},{"ty":"tr","p":{"a":0,"k":[563.027,439.315],"ix":2},"a":{"a":0,"k":[0,0],"ix":1},"s":{"a":0,"k":[100,100],"ix":3},"r":{"a":0,"k":0,"ix":6},"o":{"a":0,"k":100,"ix":7},"sk":{"a":0,"k":0,"ix":4},"sa":{"a":0,"k":0,"ix":5},"nm":"Transform"}],"nm":"Group 1","np":2,"cix":2,"bm":0,"ix":1,"mn":"ADBE Vector Group","hd":false},{"ty":"gr","it":[{"ind":0,"ty":"sh","ix":1,"ks":{"a":0,"k":{"i":[[3.061,0],[0.395,0.073],[0,0],[-0.746,4.051],[0,0],[-0.809,-0.152],[0.149,-0.815],[0,0],[-2.424,-0.447],[0,0],[-0.347,1.885],[0,0],[1.944,0.358],[0,0],[0.382,-2.064],[0,0],[0.805,0.15],[-0.15,0.814],[0,0],[-3.689,-0.682],[0,0],[0.657,-3.571],[0,0]],"o":[[-0.388,0],[0,0],[-4.05,-0.747],[0,0],[0.15,-0.815],[0.815,0.15],[0,0],[-0.447,2.424],[0,0],[1.885,0.35],[0,0],[0.358,-1.944],[0,0],[-2.072,-0.381],[0,0],[-0.151,0.816],[-0.814,-0.15],[0,0],[0.683,-3.692],[0,0],[3.571,0.658],[0,0],[-0.575,3.116]],"v":[[-1.645,19.875],[-2.821,19.767],[-3.584,19.626],[-9.576,10.925],[-7.652,0.487],[-5.905,-0.716],[-4.701,1.031],[-6.625,11.469],[-3.04,16.676],[-2.277,16.816],[1.769,14.028],[6.64,-12.394],[3.764,-16.57],[2.459,-16.811],[-1.976,-13.756],[-2.096,-13.105],[-3.843,-11.901],[-5.047,-13.648],[-4.927,-14.3],[3.002,-19.761],[4.307,-19.52],[9.591,-11.85],[4.72,14.572]],"c":true},"ix":2},"nm":"Path 1","mn":"ADBE Vector Shape - Group","hd":false},{"ty":"fl","c":{"a":0,"k":[0.243137255311,0.278431385756,0.607843160629,1],"ix":4},"o":{"a":0,"k":100,"ix":5},"r":1,"bm":0,"nm":"Fill 1","mn":"ADBE Vector Graphic - Fill","hd":false},{"ty":"tr","p":{"a":0,"k":[569.461,443.971],"ix":2},"a":{"a":0,"k":[0,0],"ix":1},"s":{"a":0,"k":[100,100],"ix":3},"r":{"a":0,"k":0,"ix":6},"o":{"a":0,"k":100,"ix":7},"sk":{"a":0,"k":0,"ix":4},"sa":{"a":0,"k":0,"ix":5},"nm":"Transform"}],"nm":"Group 2","np":2,"cix":2,"bm":0,"ix":2,"mn":"ADBE Vector Group","hd":false},{"ty":"gr","it":[{"ind":0,"ty":"sh","ix":1,"ks":{"a":0,"k":{"i":[[0,0],[0,0],[0,0],[-1.057,-0.195],[0,0],[0.188,-1.018]],"o":[[0,0],[0,0],[0.195,-1.057],[0,0],[1.018,0.188],[0,0]],"v":[[27.043,8.481],[-28.048,-1.674],[-27.087,-6.887],[-24.821,-8.448],[26.512,1.014],[28.017,3.199]],"c":true},"ix":2},"nm":"Path 1","mn":"ADBE Vector Shape - Group","hd":false},{"ty":"fl","c":{"a":0,"k":[0.92549020052,0.945098042488,0.96862745285,1],"ix":4},"o":{"a":0,"k":100,"ix":5},"r":1,"bm":0,"nm":"Fill 1","mn":"ADBE Vector Graphic - Fill","hd":false},{"ty":"tr","p":{"a":0,"k":[580.45,438.35],"ix":2},"a":{"a":0,"k":[0,0],"ix":1},"s":{"a":0,"k":[100,100],"ix":3},"r":{"a":0,"k":0,"ix":6},"o":{"a":0,"k":7,"ix":7},"sk":{"a":0,"k":0,"ix":4},"sa":{"a":0,"k":0,"ix":5},"nm":"Transform"}],"nm":"Group 3","np":2,"cix":2,"bm":0,"ix":3,"mn":"ADBE Vector Group","hd":false},{"ty":"gr","it":[{"ind":0,"ty":"sh","ix":1,"ks":{"a":0,"k":{"i":[[1.089,0.201],[0,0],[-0.201,1.089],[0,0],[-1.089,-0.201],[0,0],[0.201,-1.089],[0,0]],"o":[[0,0],[-1.089,-0.201],[0,0],[0.201,-1.089],[0,0],[1.089,0.201],[0,0],[-0.201,1.089]],"v":[[20.176,33.999],[-30.972,24.571],[-32.58,22.237],[-22.511,-32.391],[-20.176,-33.999],[30.972,-24.571],[32.58,-22.237],[22.511,32.391]],"c":true},"ix":2},"nm":"Path 1","mn":"ADBE Vector Shape - Group","hd":false},{"ty":"fl","c":{"a":0,"k":[0.349019616842,0.603921592236,0.949019610882,1],"ix":4},"o":{"a":0,"k":100,"ix":5},"r":1,"bm":0,"nm":"Fill 1","mn":"ADBE Vector Graphic - Fill","hd":false},{"ty":"tr","p":{"a":0,"k":[575.863,463.912],"ix":2},"a":{"a":0,"k":[0,0],"ix":1},"s":{"a":0,"k":[100,100],"ix":3},"r":{"a":0,"k":0,"ix":6},"o":{"a":0,"k":100,"ix":7},"sk":{"a":0,"k":0,"ix":4},"sa":{"a":0,"k":0,"ix":5},"nm":"Transform"}],"nm":"Group 4","np":2,"cix":2,"bm":0,"ix":4,"mn":"ADBE Vector Group","hd":false},{"ty":"gr","it":[{"ind":0,"ty":"sh","ix":1,"ks":{"a":0,"k":{"i":[[1.089,0.201],[0,0],[-0.201,1.089],[0,0],[-1.089,-0.201],[0,0],[0.201,-1.089],[0,0]],"o":[[0,0],[-1.089,-0.201],[0,0],[0.201,-1.089],[0,0],[1.089,0.201],[0,0],[-0.201,1.089]],"v":[[21.145,35.766],[-32.507,25.876],[-34.115,23.542],[-23.479,-34.158],[-21.145,-35.766],[32.508,-25.876],[34.115,-23.542],[23.479,34.158]],"c":true},"ix":2},"nm":"Path 1","mn":"ADBE Vector Shape - Group","hd":false},{"ty":"fl","c":{"a":0,"k":[0.243137255311,0.278431385756,0.607843160629,1],"ix":4},"o":{"a":0,"k":100,"ix":5},"r":1,"bm":0,"nm":"Fill 1","mn":"ADBE Vector Graphic - Fill","hd":false},{"ty":"tr","p":{"a":0,"k":[576.866,465.495],"ix":2},"a":{"a":0,"k":[0,0],"ix":1},"s":{"a":0,"k":[100,100],"ix":3},"r":{"a":0,"k":0,"ix":6},"o":{"a":0,"k":14,"ix":7},"sk":{"a":0,"k":0,"ix":4},"sa":{"a":0,"k":0,"ix":5},"nm":"Transform"}],"nm":"Group 5","np":2,"cix":2,"bm":0,"ix":5,"mn":"ADBE Vector Group","hd":false},{"ty":"tr","p":{"a":0,"k":[565.616,432.495],"ix":2},"a":{"a":0,"k":[565.616,432.495],"ix":1},"s":{"a":0,"k":[100,100],"ix":3},"r":{"a":1,"k":[{"i":{"x":[0.833],"y":[0.833]},"o":{"x":[0.167],"y":[0.167]},"t":0,"s":[0]},{"t":5,"s":[0]}],"ix":6},"o":{"a":0,"k":100,"ix":7},"sk":{"a":0,"k":0,"ix":4},"sa":{"a":0,"k":0,"ix":5},"nm":"Transform"}],"nm":"Group 2","np":5,"cix":2,"bm":0,"ix":1,"mn":"ADBE Vector Group","hd":false},{"ty":"gr","it":[{"ind":0,"ty":"sh","ix":1,"ks":{"a":0,"k":{"i":[[-0.55,-0.099],[0,0]],"o":[[0,0],[0.543,0.1]],"v":[[-15.476,-3.869],[15.839,1.902]],"c":false},"ix":2},"nm":"Path 1","mn":"ADBE Vector Shape - Group","hd":false},{"ind":1,"ty":"sh","ix":2,"ks":{"a":0,"k":{"i":[[-0.55,-0.099],[0,0]],"o":[[0,0],[0.543,0.1]],"v":[[-17.476,7.068],[13.839,12.84]],"c":false},"ix":2},"nm":"Path 2","mn":"ADBE Vector Shape - Group","hd":false},{"ind":2,"ty":"sh","ix":3,"ks":{"a":0,"k":{"i":[[-0.55,-0.099],[0,0]],"o":[[0,0],[0.543,0.1]],"v":[[-19.476,18.006],[11.839,23.777]],"c":false},"ix":2},"nm":"Path 3","mn":"ADBE Vector Shape - Group","hd":false},{"ty":"tm","s":{"a":1,"k":[{"i":{"x":[0.43],"y":[1]},"o":{"x":[0.333],"y":[0]},"t":0,"s":[0]},{"i":{"x":[0.833],"y":[0.833]},"o":{"x":[1],"y":[0]},"t":75,"s":[0]},{"t":150,"s":[100]}],"ix":1},"e":{"a":1,"k":[{"i":{"x":[0.43],"y":[1]},"o":{"x":[0.333],"y":[0]},"t":0,"s":[0]},{"i":{"x":[0.833],"y":[1]},"o":{"x":[1],"y":[0]},"t":75,"s":[100]},{"t":150,"s":[100]}],"ix":2},"o":{"a":0,"k":0,"ix":3},"m":2,"ix":4,"nm":"Trim Paths 1","mn":"ADBE Vector Filter - Trim","hd":false},{"ty":"st","c":{"a":0,"k":[1,1,1,1],"ix":3},"o":{"a":0,"k":100,"ix":4},"w":{"a":0,"k":2.5,"ix":5},"lc":2,"lj":2,"bm":0,"nm":"Stroke 1","mn":"ADBE Vector Graphic - Stroke","hd":false},{"ty":"tr","p":{"a":0,"k":[634.648,467.253],"ix":2},"a":{"a":0,"k":[0,0],"ix":1},"s":{"a":0,"k":[100,100],"ix":3},"r":{"a":0,"k":0,"ix":6},"o":{"a":0,"k":100,"ix":7},"sk":{"a":0,"k":0,"ix":4},"sa":{"a":0,"k":0,"ix":5},"nm":"Transform"}],"nm":"Group 9","np":5,"cix":2,"bm":0,"ix":2,"mn":"ADBE Vector Group","hd":false},{"ty":"gr","it":[{"ind":0,"ty":"sh","ix":1,"ks":{"a":0,"k":{"i":[[-1.672,-0.302],[0,0]],"o":[[0,0],[0,0]],"v":[[-93.37,43.771],[-46.31,52.445]],"c":false},"ix":2},"nm":"Path 1","mn":"ADBE Vector Shape - Group","hd":false},{"ind":1,"ty":"sh","ix":2,"ks":{"a":0,"k":{"i":[[-1.672,-0.302],[0,0]],"o":[[0,0],[1.651,0.304]],"v":[[-96.245,59.146],[-1.049,76.692]],"c":false},"ix":2},"nm":"Path 4","mn":"ADBE Vector Shape - Group","hd":false},{"ind":2,"ty":"sh","ix":3,"ks":{"a":0,"k":{"i":[[-1.672,-0.302],[0,0]],"o":[[0,0],[0,0]],"v":[[-99.45,77.771],[-55.22,85.923]],"c":false},"ix":2},"nm":"Path 2","mn":"ADBE Vector Shape - Group","hd":false},{"ind":3,"ty":"sh","ix":4,"ks":{"a":0,"k":{"i":[[0,0],[0,0]],"o":[[0,0],[1.651,0.304]],"v":[[-46.479,87.534],[-4.254,95.317]],"c":false},"ix":2},"nm":"Path 5","mn":"ADBE Vector Shape - Group","hd":false},{"ind":4,"ty":"sh","ix":5,"ks":{"a":0,"k":{"i":[[-1.672,-0.302],[0,0]],"o":[[0,0],[1.651,0.304]],"v":[[-102.78,96.271],[-7.584,113.817]],"c":false},"ix":2},"nm":"Path 3","mn":"ADBE Vector Shape - Group","hd":false},{"ty":"st","c":{"a":0,"k":[1,1,1,1],"ix":3},"o":{"a":0,"k":100,"ix":4},"w":{"a":0,"k":2.5,"ix":5},"lc":2,"lj":2,"bm":0,"nm":"Stroke 1","mn":"ADBE Vector Graphic - Stroke","hd":false},{"ty":"tm","s":{"a":1,"k":[{"i":{"x":[0.43],"y":[1]},"o":{"x":[0.333],"y":[0]},"t":0,"s":[0]},{"i":{"x":[0.833],"y":[0.833]},"o":{"x":[1],"y":[0]},"t":75,"s":[0]},{"t":150,"s":[100]}],"ix":1},"e":{"a":1,"k":[{"i":{"x":[0.43],"y":[1]},"o":{"x":[0.333],"y":[0]},"t":0,"s":[0]},{"i":{"x":[0.833],"y":[1]},"o":{"x":[1],"y":[0]},"t":75,"s":[100]},{"t":150,"s":[100]}],"ix":2},"o":{"a":0,"k":0,"ix":3},"m":2,"ix":7,"nm":"Trim Paths 1","mn":"ADBE Vector Filter - Trim","hd":false},{"ty":"tr","p":{"a":0,"k":[634.648,467.253],"ix":2},"a":{"a":0,"k":[0,0],"ix":1},"s":{"a":0,"k":[100,100],"ix":3},"r":{"a":0,"k":0,"ix":6},"o":{"a":0,"k":100,"ix":7},"sk":{"a":0,"k":0,"ix":4},"sa":{"a":0,"k":0,"ix":5},"nm":"Transform"}],"nm":"Group 5","np":7,"cix":2,"bm":0,"ix":3,"mn":"ADBE Vector Group","hd":false},{"ty":"gr","it":[{"ind":0,"ty":"sh","ix":1,"ks":{"a":0,"k":{"i":[[1.005,0.185],[0,0],[-0.185,1.005],[0,0],[-1.005,-0.185],[0,0],[0.185,-1.005],[0,0]],"o":[[0,0],[-1.005,-0.185],[0,0],[0.185,-1.005],[0,0],[1.005,0.185],[0,0],[-0.185,1.005]],"v":[[46.514,98.515],[-78.583,75.456],[-80.068,73.3],[-48.671,-97.03],[-46.514,-98.515],[78.583,-75.456],[80.068,-73.3],[48.671,97.03]],"c":true},"ix":2},"nm":"Path 1","mn":"ADBE Vector Shape - Group","hd":false},{"ty":"fl","c":{"a":0,"k":[0.96862745285,0.662745118141,0.705882370472,1],"ix":4},"o":{"a":0,"k":100,"ix":5},"r":1,"bm":0,"nm":"Fill 1","mn":"ADBE Vector Graphic - Fill","hd":false},{"ty":"tr","p":{"a":0,"k":[589.386,525.766],"ix":2},"a":{"a":0,"k":[0,0],"ix":1},"s":{"a":0,"k":[100,100],"ix":3},"r":{"a":0,"k":0,"ix":6},"o":{"a":0,"k":39,"ix":7},"sk":{"a":0,"k":0,"ix":4},"sa":{"a":0,"k":0,"ix":5},"nm":"Transform"}],"nm":"Group 6","np":2,"cix":2,"bm":0,"ix":4,"mn":"ADBE Vector Group","hd":false},{"ty":"gr","it":[{"ind":0,"ty":"sh","ix":1,"ks":{"a":0,"k":{"i":[[0,0],[0,0],[0,0],[0,0]],"o":[[0,0],[0,0],[0,0],[0,0]],"v":[[48.335,98.851],[-80.403,75.12],[-48.335,-98.851],[80.403,-75.12]],"c":true},"ix":2},"nm":"Path 1","mn":"ADBE Vector Shape - Group","hd":false},{"ty":"fl","c":{"a":0,"k":[1,1,1,1],"ix":4},"o":{"a":0,"k":100,"ix":5},"r":1,"bm":0,"nm":"Fill 1","mn":"ADBE Vector Graphic - Fill","hd":false},{"ty":"tr","p":{"a":0,"k":[589.386,525.766],"ix":2},"a":{"a":0,"k":[0,0],"ix":1},"s":{"a":0,"k":[100,100],"ix":3},"r":{"a":0,"k":0,"ix":6},"o":{"a":0,"k":100,"ix":7},"sk":{"a":0,"k":0,"ix":4},"sa":{"a":0,"k":0,"ix":5},"nm":"Transform"}],"nm":"Group 7","np":2,"cix":2,"bm":0,"ix":5,"mn":"ADBE Vector Group","hd":false},{"ty":"gr","it":[{"ind":0,"ty":"sh","ix":1,"ks":{"a":0,"k":{"i":[[1.006,0.185],[0,0],[-0.185,1.006],[0,0],[-1.005,-0.185],[0,0],[0.185,-1.005],[0,0]],"o":[[0,0],[-1.005,-0.185],[0,0],[0.185,-1.005],[0,0],[1.005,0.185],[0,0],[-0.185,1.005]],"v":[[46.514,98.515],[-78.583,75.456],[-80.068,73.3],[-48.671,-97.03],[-46.514,-98.515],[78.583,-75.456],[80.068,-73.3],[48.671,97.03]],"c":true},"ix":2},"nm":"Path 1","mn":"ADBE Vector Shape - Group","hd":false},{"ty":"fl","c":{"a":0,"k":[0.243137255311,0.278431385756,0.607843160629,1],"ix":4},"o":{"a":0,"k":100,"ix":5},"r":1,"bm":0,"nm":"Fill 1","mn":"ADBE Vector Graphic - Fill","hd":false},{"ty":"tr","p":{"a":0,"k":[592.06,530.557],"ix":2},"a":{"a":0,"k":[0,0],"ix":1},"s":{"a":0,"k":[100,100],"ix":3},"r":{"a":0,"k":0,"ix":6},"o":{"a":0,"k":14,"ix":7},"sk":{"a":0,"k":0,"ix":4},"sa":{"a":0,"k":0,"ix":5},"nm":"Transform"}],"nm":"Group 8","np":2,"cix":2,"bm":0,"ix":6,"mn":"ADBE Vector Group","hd":false}],"ip":0,"op":176,"st":0,"bm":0},{"ddd":0,"ind":6,"ty":4,"nm":"OBJECTS 14","sr":1,"ks":{"o":{"a":0,"k":100,"ix":11},"r":{"a":1,"k":[{"i":{"x":[0.33],"y":[1]},"o":{"x":[0.333],"y":[0]},"t":11,"s":[-8]},{"i":{"x":[0.33],"y":[1]},"o":{"x":[0.333],"y":[0]},"t":83,"s":[1]},{"t":148,"s":[-8]}],"ix":10},"p":{"a":0,"k":[598.964,525.362,0],"ix":2},"a":{"a":0,"k":[598.964,525.362,0],"ix":1},"s":{"a":0,"k":[100,100,100],"ix":6}},"ao":0,"shapes":[{"ty":"gr","it":[{"ind":0,"ty":"sh","ix":1,"ks":{"a":0,"k":{"i":[[0.88,0.521],[0,0],[-0.521,0.88],[0,0],[-0.88,-0.521],[0,0],[0.521,-0.88],[0,0]],"o":[[0,0],[-0.879,-0.521],[0,0],[0.521,-0.88],[0,0],[0.88,0.521],[0,0],[-0.521,0.88]],"v":[[9.601,108.52],[-99.818,43.647],[-100.467,41.111],[-12.137,-107.872],[-9.601,-108.52],[99.818,-43.647],[100.467,-41.111],[12.137,107.872]],"c":true},"ix":2},"nm":"Path 1","mn":"ADBE Vector Shape - Group","hd":false},{"ty":"fl","c":{"a":0,"k":[0.96862745285,0.662745118141,0.705882370472,1],"ix":4},"o":{"a":0,"k":100,"ix":5},"r":1,"bm":0,"nm":"Fill 1","mn":"ADBE Vector Graphic - Fill","hd":false},{"ty":"tr","p":{"a":0,"k":[597.543,522.377],"ix":2},"a":{"a":0,"k":[0,0],"ix":1},"s":{"a":0,"k":[100,100],"ix":3},"r":{"a":0,"k":0,"ix":6},"o":{"a":0,"k":100,"ix":7},"sk":{"a":0,"k":0,"ix":4},"sa":{"a":0,"k":0,"ix":5},"nm":"Transform"}],"nm":"Group 1","np":2,"cix":2,"bm":0,"ix":1,"mn":"ADBE Vector Group","hd":false},{"ty":"gr","it":[{"ind":0,"ty":"sh","ix":1,"ks":{"a":0,"k":{"i":[[0.88,0.521],[0,0],[-0.521,0.88],[0,0],[-0.88,-0.521],[0,0],[0.521,-0.88],[0,0]],"o":[[0,0],[-0.879,-0.521],[0,0],[0.521,-0.88],[0,0],[0.88,0.521],[0,0],[-0.521,0.88]],"v":[[9.601,108.52],[-99.818,43.647],[-100.467,41.111],[-12.137,-107.872],[-9.601,-108.52],[99.818,-43.647],[100.467,-41.111],[12.137,107.872]],"c":true},"ix":2},"nm":"Path 1","mn":"ADBE Vector Shape - Group","hd":false},{"ty":"fl","c":{"a":0,"k":[0.243137255311,0.278431385756,0.607843160629,1],"ix":4},"o":{"a":0,"k":100,"ix":5},"r":1,"bm":0,"nm":"Fill 1","mn":"ADBE Vector Graphic - Fill","hd":false},{"ty":"tr","p":{"a":0,"k":[600.385,528.346],"ix":2},"a":{"a":0,"k":[0,0],"ix":1},"s":{"a":0,"k":[100,100],"ix":3},"r":{"a":0,"k":0,"ix":6},"o":{"a":0,"k":14,"ix":7},"sk":{"a":0,"k":0,"ix":4},"sa":{"a":0,"k":0,"ix":5},"nm":"Transform"}],"nm":"Group 2","np":2,"cix":2,"bm":0,"ix":2,"mn":"ADBE Vector Group","hd":false}],"ip":0,"op":176,"st":0,"bm":0},{"ddd":0,"ind":7,"ty":4,"nm":"OBJECTS 16","sr":1,"ks":{"o":{"a":0,"k":100,"ix":11},"r":{"a":0,"k":0,"ix":10},"p":{"a":0,"k":[626.887,381.595,0],"ix":2},"a":{"a":0,"k":[626.887,381.595,0],"ix":1},"s":{"a":0,"k":[100,100,100],"ix":6}},"ao":0,"shapes":[{"ty":"gr","it":[{"ty":"gr","it":[{"ind":0,"ty":"sh","ix":1,"ks":{"a":0,"k":{"i":[[1.639,0],[0,-1.639],[-1.639,0],[0,1.639]],"o":[[-1.639,0],[0,1.639],[1.639,0],[0,-1.639]],"v":[[0,-2.972],[-2.972,0],[0,2.972],[2.972,0]],"c":true},"ix":2},"nm":"Path 1","mn":"ADBE Vector Shape - Group","hd":false},{"ind":1,"ty":"sh","ix":2,"ks":{"a":0,"k":{"i":[[1.639,0],[0,-1.639],[-1.639,0],[0,1.639]],"o":[[-1.639,0],[0,1.639],[1.639,0],[0,-1.639]],"v":[[15.275,-2.972],[12.304,0],[15.275,2.972],[18.247,0]],"c":true},"ix":2},"nm":"Path 3","mn":"ADBE Vector Shape - Group","hd":false},{"ind":2,"ty":"sh","ix":3,"ks":{"a":0,"k":{"i":[[1.639,0],[0,-1.639],[-1.639,0],[0,1.639]],"o":[[-1.639,0],[0,1.639],[1.639,0],[0,-1.639]],"v":[[31.661,-2.972],[28.689,0],[31.661,2.972],[34.633,0]],"c":true},"ix":2},"nm":"Path 4","mn":"ADBE Vector Shape - Group","hd":false},{"ty":"fl","c":{"a":0,"k":[1,1,1,1],"ix":4},"o":{"a":1,"k":[{"i":{"x":[0.667],"y":[1]},"o":{"x":[0.333],"y":[0]},"t":0,"s":[100]},{"i":{"x":[0.667],"y":[1]},"o":{"x":[0.333],"y":[0]},"t":25,"s":[0]},{"i":{"x":[0.667],"y":[1]},"o":{"x":[0.333],"y":[0]},"t":50,"s":[100]},{"i":{"x":[0.667],"y":[1]},"o":{"x":[0.333],"y":[0]},"t":75,"s":[0]},{"i":{"x":[0.667],"y":[1]},"o":{"x":[0.333],"y":[0]},"t":100,"s":[100]},{"i":{"x":[0.667],"y":[1]},"o":{"x":[0.333],"y":[0]},"t":125,"s":[0]},{"t":150,"s":[100]}],"ix":5},"r":1,"bm":0,"nm":"Fill 1","mn":"ADBE Vector Graphic - Fill","hd":false},{"ty":"tr","p":{"a":0,"k":[628.985,403.692],"ix":2},"a":{"a":0,"k":[0,0],"ix":1},"s":{"a":0,"k":[100,100],"ix":3},"r":{"a":0,"k":0,"ix":6},"o":{"a":0,"k":100,"ix":7},"sk":{"a":0,"k":0,"ix":4},"sa":{"a":0,"k":0,"ix":5},"nm":"Transform"}],"nm":"Group 1","np":4,"cix":2,"bm":0,"ix":1,"mn":"ADBE Vector Group","hd":false},{"ty":"gr","it":[{"ind":0,"ty":"sh","ix":1,"ks":{"a":0,"k":{"i":[[2.19,0],[0,2.19],[-2.191,0],[0,-2.19]],"o":[[-2.191,0],[0,-2.19],[2.19,0],[0,2.19]],"v":[[-15.275,3.972],[-19.247,0],[-15.275,-3.972],[-11.304,0]],"c":true},"ix":2},"nm":"Path 3","mn":"ADBE Vector Shape - Group","hd":false},{"ind":1,"ty":"sh","ix":2,"ks":{"a":0,"k":{"i":[[2.191,0],[0,2.19],[-2.19,0],[0,-2.19]],"o":[[-2.19,0],[0,-2.19],[2.191,0],[0,2.19]],"v":[[0,3.972],[-3.972,0],[0,-3.972],[3.972,0]],"c":true},"ix":2},"nm":"Path 2","mn":"ADBE Vector Shape - Group","hd":false},{"ind":2,"ty":"sh","ix":3,"ks":{"a":0,"k":{"i":[[2.19,0],[0,2.19],[-2.19,0],[0,-2.19]],"o":[[-2.19,0],[0,-2.19],[2.19,0],[0,2.19]],"v":[[16.386,3.972],[12.414,0],[16.386,-3.972],[20.357,0]],"c":true},"ix":2},"nm":"Path 4","mn":"ADBE Vector Shape - Group","hd":false},{"ty":"st","c":{"a":0,"k":[1,1,1,1],"ix":3},"o":{"a":0,"k":100,"ix":4},"w":{"a":0,"k":2,"ix":5},"lc":1,"lj":1,"ml":4,"bm":0,"nm":"Stroke 1","mn":"ADBE Vector Graphic - Stroke","hd":false},{"ty":"tr","p":{"a":0,"k":[644.261,403.692],"ix":2},"a":{"a":0,"k":[0,0],"ix":1},"s":{"a":0,"k":[100,100],"ix":3},"r":{"a":0,"k":0,"ix":6},"o":{"a":0,"k":100,"ix":7},"sk":{"a":0,"k":0,"ix":4},"sa":{"a":0,"k":0,"ix":5},"nm":"Transform"}],"nm":"Group 4","np":4,"cix":2,"bm":0,"ix":2,"mn":"ADBE Vector Group","hd":false},{"ty":"gr","it":[{"ind":0,"ty":"sh","ix":1,"ks":{"a":0,"k":{"i":[[-2.489,0],[0,0],[0,-2.489],[0,0],[2.489,0],[0,0],[0,2.489],[0,0]],"o":[[0,0],[2.489,0],[0,0],[0,2.489],[0,0],[-2.489,0],[0,0],[0,-2.489]],"v":[[602.768,386.506],[685.144,386.506],[689.668,391.031],[689.668,416.265],[685.144,420.79],[602.768,420.79],[598.244,416.265],[598.244,391.031]],"c":true},"ix":2},"nm":"Path 1","mn":"ADBE Vector Shape - Group","hd":false},{"ty":"fl","c":{"a":0,"k":[0.57647061348,0.572549045086,0.874509871006,1],"ix":4},"o":{"a":0,"k":100,"ix":5},"r":1,"bm":0,"nm":"Fill 1","mn":"ADBE Vector Graphic - Fill","hd":false},{"ty":"tr","p":{"a":0,"k":[643.956,403.648],"ix":2},"a":{"a":0,"k":[643.956,403.648],"ix":1},"s":{"a":0,"k":[100,100],"ix":3},"r":{"a":0,"k":0,"ix":6},"o":{"a":0,"k":100,"ix":7},"sk":{"a":0,"k":0,"ix":4},"sa":{"a":0,"k":0,"ix":5},"nm":"Transform"}],"nm":"Group 3","np":2,"cix":2,"bm":0,"ix":3,"mn":"ADBE Vector Group","hd":false},{"ty":"tr","p":{"a":1,"k":[{"i":{"x":0.21,"y":1},"o":{"x":0.333,"y":0},"t":-27,"s":[588.956,403.648],"to":[9.167,0],"ti":[0,0]},{"i":{"x":0.21,"y":1},"o":{"x":0.333,"y":0},"t":11,"s":[643.956,403.648],"to":[0,0],"ti":[0,0]},{"i":{"x":0.21,"y":1},"o":{"x":0.333,"y":0},"t":48,"s":[588.956,403.648],"to":[0,0],"ti":[0,0]},{"i":{"x":0.21,"y":1},"o":{"x":0.333,"y":0},"t":86,"s":[643.956,403.648],"to":[0,0],"ti":[0,0]},{"i":{"x":0.21,"y":1},"o":{"x":0.333,"y":0},"t":123,"s":[588.956,403.648],"to":[0,0],"ti":[0,0]},{"i":{"x":0.21,"y":1},"o":{"x":0.333,"y":0},"t":161,"s":[643.956,403.648],"to":[0,0],"ti":[9.167,0]},{"t":198,"s":[588.956,403.648]}],"ix":2},"a":{"a":0,"k":[643.956,403.648],"ix":1},"s":{"a":0,"k":[100,100],"ix":3},"r":{"a":0,"k":0,"ix":6},"o":{"a":0,"k":100,"ix":7},"sk":{"a":0,"k":0,"ix":4},"sa":{"a":0,"k":0,"ix":5},"nm":"Transform"}],"nm":"Group 1","np":3,"cix":2,"bm":0,"ix":1,"mn":"ADBE Vector Group","hd":false},{"ty":"gr","it":[{"ind":0,"ty":"sh","ix":1,"ks":{"a":0,"k":{"i":[[1.841,0],[0,0],[0,1.841],[0,0],[-1.841,0],[0,0],[0,-1.841],[0,0]],"o":[[0,0],[-1.841,0],[0,0],[0,-1.841],[0,0],[1.841,0],[0,0],[0,1.841]],"v":[[37.194,16.559],[-37.195,16.559],[-40.527,13.226],[-40.527,-13.226],[-37.195,-16.559],[37.194,-16.559],[40.527,-13.226],[40.527,13.226]],"c":true},"ix":2},"nm":"Path 1","mn":"ADBE Vector Shape - Group","hd":false},{"ty":"fl","c":{"a":0,"k":[0.96862745285,0.662745118141,0.705882370472,1],"ix":4},"o":{"a":0,"k":100,"ix":5},"r":1,"bm":0,"nm":"Fill 1","mn":"ADBE Vector Graphic - Fill","hd":false},{"ty":"tr","p":{"a":1,"k":[{"i":{"x":0.21,"y":1},"o":{"x":0.333,"y":0},"t":-30,"s":[610.487,376.948],"to":[2.167,0],"ti":[0,0]},{"i":{"x":0.21,"y":1},"o":{"x":0.333,"y":0},"t":8,"s":[623.487,376.948],"to":[0,0],"ti":[0,0]},{"i":{"x":0.21,"y":1},"o":{"x":0.333,"y":0},"t":45,"s":[610.487,376.948],"to":[0,0],"ti":[0,0]},{"i":{"x":0.21,"y":1},"o":{"x":0.333,"y":0},"t":83,"s":[623.487,376.948],"to":[0,0],"ti":[0,0]},{"i":{"x":0.21,"y":1},"o":{"x":0.333,"y":0},"t":120,"s":[610.487,376.948],"to":[0,0],"ti":[0,0]},{"i":{"x":0.21,"y":1},"o":{"x":0.333,"y":0},"t":158,"s":[623.487,376.948],"to":[0,0],"ti":[2.167,0]},{"t":195,"s":[610.487,376.948]}],"ix":2},"a":{"a":0,"k":[0,0],"ix":1},"s":{"a":0,"k":[100,100],"ix":3},"r":{"a":0,"k":0,"ix":6},"o":{"a":0,"k":100,"ix":7},"sk":{"a":0,"k":0,"ix":4},"sa":{"a":0,"k":0,"ix":5},"nm":"Transform"}],"nm":"Group 2","np":2,"cix":2,"bm":0,"ix":2,"mn":"ADBE Vector Group","hd":false},{"ty":"gr","it":[{"ind":0,"ty":"sh","ix":1,"ks":{"a":0,"k":{"i":[[1.841,0],[0,0],[0,1.841],[0,0],[-1.841,0],[0,0],[0,-1.841],[0,0]],"o":[[0,0],[-1.841,0],[0,0],[0,-1.841],[0,0],[1.841,0],[0,0],[0,1.841]],"v":[[26.59,12.226],[-26.59,12.226],[-29.923,8.893],[-29.923,-8.893],[-26.59,-12.226],[26.59,-12.226],[29.923,-8.893],[29.923,8.893]],"c":true},"ix":2},"nm":"Path 1","mn":"ADBE Vector Shape - Group","hd":false},{"ty":"fl","c":{"a":0,"k":[0.349019616842,0.603921592236,0.949019610882,1],"ix":4},"o":{"a":0,"k":100,"ix":5},"r":1,"bm":0,"nm":"Fill 1","mn":"ADBE Vector Graphic - Fill","hd":false},{"ty":"tr","p":{"a":1,"k":[{"i":{"x":0.21,"y":1},"o":{"x":0.333,"y":0},"t":-33,"s":[625.029,354.627],"to":[-5.167,0],"ti":[0,0]},{"i":{"x":0.21,"y":1},"o":{"x":0.333,"y":0},"t":5,"s":[594.029,354.627],"to":[0,0],"ti":[0,0]},{"i":{"x":0.21,"y":1},"o":{"x":0.333,"y":0},"t":42,"s":[625.029,354.627],"to":[0,0],"ti":[0,0]},{"i":{"x":0.21,"y":1},"o":{"x":0.333,"y":0},"t":80,"s":[594.029,354.627],"to":[0,0],"ti":[0,0]},{"i":{"x":0.21,"y":1},"o":{"x":0.333,"y":0},"t":117,"s":[625.029,354.627],"to":[0,0],"ti":[0,0]},{"i":{"x":0.21,"y":1},"o":{"x":0.333,"y":0},"t":155,"s":[594.029,354.627],"to":[0,0],"ti":[-5.167,0]},{"t":192,"s":[625.029,354.627]}],"ix":2},"a":{"a":0,"k":[0,0],"ix":1},"s":{"a":0,"k":[100,100],"ix":3},"r":{"a":0,"k":0,"ix":6},"o":{"a":0,"k":100,"ix":7},"sk":{"a":0,"k":0,"ix":4},"sa":{"a":0,"k":0,"ix":5},"nm":"Transform"}],"nm":"Group 3","np":2,"cix":2,"bm":0,"ix":3,"mn":"ADBE Vector Group","hd":false}],"ip":0,"op":176,"st":0,"bm":0},{"ddd":0,"ind":8,"ty":4,"nm":"OBJECTS 17","sr":1,"ks":{"o":{"a":0,"k":66,"ix":11},"r":{"a":0,"k":0,"ix":10},"p":{"a":0,"k":[533.031,525.909,0],"ix":2},"a":{"a":0,"k":[533.031,525.909,0],"ix":1},"s":{"a":0,"k":[100,100,100],"ix":6}},"ao":0,"shapes":[{"ty":"gr","it":[{"ty":"gr","it":[{"ind":0,"ty":"sh","ix":1,"ks":{"a":0,"k":{"i":[[0,0],[0,0]],"o":[[0,0],[0,0]],"v":[[16.7,22.376],[16.71,22.376]],"c":true},"ix":2},"nm":"Path 1","mn":"ADBE Vector Shape - Group","hd":false},{"ind":1,"ty":"sh","ix":2,"ks":{"a":0,"k":{"i":[[1.303,0],[4.7,-3.508],[-8.878,-11.896],[-11.898,8.876],[0,0],[-1.033,7.116],[4.301,5.763],[7.116,1.033]],"o":[[-5.761,0],[-11.895,8.878],[8.879,11.896],[0,0],[5.762,-4.301],[1.034,-7.116],[-4.301,-5.763],[-1.312,-0.19]],"v":[[-0.057,-26.926],[-16.102,-21.575],[-21.575,16.102],[16.102,21.574],[16.102,21.574],[26.64,3.87],[21.574,-16.102],[3.87,-26.641]],"c":true},"ix":2},"nm":"Path 2","mn":"ADBE Vector Shape - Group","hd":false},{"ind":2,"ty":"sh","ix":3,"ks":{"a":0,"k":{"i":[[6.016,0],[5.672,7.598],[-12.78,9.538],[-7.641,-1.112],[-4.62,-6.191],[1.11,-7.645],[6.191,-4.62],[0,0]],"o":[[-8.824,0],[-9.537,-12.781],[6.191,-4.619],[7.645,1.11],[4.62,6.191],[-1.11,7.645],[0,0],[-5.181,3.866]],"v":[[0.036,28.909],[-23.178,17.298],[-17.297,-23.178],[4.157,-28.621],[23.177,-17.297],[28.62,4.157],[17.297,23.177],[17.297,23.177]],"c":true},"ix":2},"nm":"Path 3","mn":"ADBE Vector Shape - Group","hd":false},{"ind":3,"ty":"sh","ix":4,"ks":{"a":0,"k":{"i":[[0,0],[0,0],[-5.145,-1.718],[0,0],[0,0],[-3.193,-0.465],[-0.464,3.194],[0,0],[0,0],[-4.846,2.423],[0,0],[0,0],[-1.548,-0.225],[-1.254,0.936],[1.932,2.586],[0,0],[0,0],[-1.718,5.147],[0,0],[0,0],[-0.466,3.193],[3.193,0.465],[0,0],[0,0],[2.423,4.845],[0,0],[0,0],[1.931,2.587],[1.548,0.225],[1.254,-0.935],[0,0],[0,0],[0,0],[5.145,1.717],[0,0],[0,0],[0.935,1.253],[1.547,0.225],[0.465,-3.193],[0,0],[0,0],[4.847,-2.423],[0,0],[0,0],[1.547,0.225],[1.253,-0.936],[0.225,-1.547],[-0.936,-1.253],[0,0],[0,0],[1.717,-5.146],[0,0],[0,0],[1.253,-0.934],[0.225,-1.547],[-3.193,-0.464],[0,0],[0,0],[-2.424,-4.848],[0,0],[0,0],[0.225,-1.548],[-0.936,-1.254],[-1.547,-0.225],[-1.254,0.936]],"o":[[0,0],[3.956,3.702],[0,0],[0,0],[-0.464,3.193],[3.194,0.463],[0,0],[0,0],[5.422,-0.182],[0,0],[0,0],[0.935,1.253],[1.549,0.227],[2.586,-1.931],[0,0],[0,0],[3.701,-3.955],[0,0],[0,0],[3.198,0.461],[0.463,-3.193],[0,0],[0,0],[-0.182,-5.423],[0,0],[0,0],[2.587,-1.93],[-0.935,-1.253],[-1.547,-0.227],[0,0],[0,0],[0,0],[-3.956,-3.703],[0,0],[0,0],[0.225,-1.547],[-0.936,-1.253],[-3.203,-0.466],[0,0],[0,0],[-5.421,0.182],[0,0],[0,0],[-0.935,-1.254],[-1.546,-0.223],[-1.254,0.935],[-0.225,1.548],[0,0],[0,0],[-3.703,3.956],[0,0],[0,0],[-1.545,-0.222],[-1.253,0.935],[-0.464,3.194],[0,0],[0,0],[0.182,5.421],[0,0],[0,0],[-1.252,0.935],[-0.225,1.547],[0.935,1.252],[1.546,0.224],[0,0]],"v":[[-26.252,26.896],[-25.641,27.467],[-11.923,35.634],[-11.13,35.899],[-12.325,44.121],[-7.373,50.755],[-0.739,45.804],[0.456,37.581],[1.292,37.553],[16.766,33.627],[17.514,33.253],[22.484,39.913],[26.334,42.204],[30.676,41.102],[31.865,32.911],[26.896,26.252],[27.467,25.64],[35.634,11.922],[35.899,11.129],[44.121,12.324],[50.755,7.373],[45.804,0.738],[37.581,-0.456],[37.553,-1.292],[33.628,-16.766],[33.254,-17.514],[39.912,-22.485],[41.102,-30.676],[37.253,-32.967],[32.91,-31.866],[32.911,-31.866],[26.252,-26.896],[25.64,-27.467],[11.922,-35.634],[11.129,-35.899],[12.324,-44.122],[11.222,-48.463],[7.373,-50.755],[0.738,-45.804],[-0.456,-37.581],[-1.292,-37.554],[-16.766,-33.628],[-17.514,-33.254],[-22.485,-39.913],[-26.333,-42.205],[-30.675,-41.102],[-32.967,-37.253],[-31.866,-32.911],[-26.896,-26.252],[-27.467,-25.641],[-35.634,-11.923],[-35.899,-11.13],[-44.121,-12.325],[-48.463,-11.222],[-50.755,-7.373],[-45.804,-0.739],[-37.581,0.456],[-37.554,1.292],[-33.627,16.766],[-33.253,17.514],[-39.913,22.484],[-42.204,26.334],[-41.102,30.676],[-37.253,32.967],[-32.911,31.865]],"c":true},"ix":2},"nm":"Path 4","mn":"ADBE Vector Shape - Group","hd":false},{"ind":4,"ty":"sh","ix":5,"ks":{"a":0,"k":{"i":[[3.835,-0.001],[0.381,0.056],[-0.623,4.284],[0,0],[3.821,3.428],[0,0],[2.076,0.303],[1.255,1.682],[-3.471,2.59],[0,0],[0.278,5.131],[0,0],[-0.623,4.285],[-1.682,1.255],[-2.075,-0.301],[0,0],[-3.429,3.821],[0,0],[-0.302,2.075],[-1.682,1.255],[-2.076,-0.301],[-1.255,-1.682],[0,0],[-5.13,0.278],[0,0],[-4.273,-0.626],[-1.255,-1.682],[0.302,-2.075],[0,0],[-3.821,-3.429],[0,0],[-2.592,-3.473],[3.471,-2.59],[0,0],[-0.278,-5.132],[0,0],[0.622,-4.284],[4.275,0.627],[0,0],[3.428,-3.82],[0,0],[3.47,-2.592],[2.076,0.301],[1.255,1.682],[0,0],[5.132,-0.278],[0,0]],"o":[[-0.374,0],[-4.285,-0.623],[0,0],[-4.841,-1.727],[0,0],[-1.682,1.255],[-2.076,-0.301],[-2.59,-3.471],[0,0],[-2.2,-4.64],[0,0],[-4.285,-0.622],[0.301,-2.076],[1.682,-1.254],[0,0],[1.727,-4.841],[0,0],[-1.254,-1.682],[0.302,-2.076],[1.681,-1.255],[2.076,0.302],[0,0],[4.639,-2.199],[0,0],[0.623,-4.286],[2.076,0.301],[1.255,1.681],[0,0],[4.841,1.727],[0,0],[3.468,-2.589],[2.59,3.47],[0,0],[2.199,4.638],[0,0],[4.285,0.623],[-0.623,4.286],[0,0],[-1.728,4.842],[0,0],[2.59,3.469],[-1.682,1.254],[-2.076,-0.302],[0,0],[-4.639,2.199],[0,0],[-0.566,3.904]],"v":[[-6.527,52.817],[-7.661,52.734],[-14.303,43.834],[-13.348,37.257],[-26.39,29.495],[-31.715,33.468],[-37.54,34.946],[-42.705,31.872],[-41.109,20.88],[-35.784,16.907],[-39.516,2.196],[-46.091,1.24],[-52.734,-7.661],[-49.66,-12.826],[-43.834,-14.303],[-37.257,-13.348],[-29.495,-26.39],[-33.469,-31.714],[-34.947,-37.54],[-31.871,-42.706],[-26.046,-44.184],[-20.881,-41.109],[-16.907,-35.785],[-2.197,-39.516],[-1.241,-46.091],[7.66,-52.734],[12.825,-49.66],[14.302,-43.834],[13.347,-37.257],[26.389,-29.495],[31.714,-33.469],[42.706,-31.872],[41.108,-20.881],[35.784,-16.907],[39.515,-2.197],[46.091,-1.241],[52.734,7.66],[43.834,14.302],[37.257,13.347],[29.495,26.389],[33.468,31.714],[31.873,42.706],[26.046,44.183],[20.88,41.108],[16.907,35.784],[2.196,39.515],[1.24,46.091]],"c":true},"ix":2},"nm":"Path 5","mn":"ADBE Vector Shape - Group","hd":false},{"ty":"fl","c":{"a":0,"k":[1,1,1,1],"ix":4},"o":{"a":0,"k":100,"ix":5},"r":1,"bm":0,"nm":"Fill 1","mn":"ADBE Vector Graphic - Fill","hd":false},{"ty":"tr","p":{"a":0,"k":[0,0],"ix":2},"a":{"a":0,"k":[0,0],"ix":1},"s":{"a":0,"k":[100,100],"ix":3},"r":{"a":0,"k":0,"ix":6},"o":{"a":0,"k":100,"ix":7},"sk":{"a":0,"k":0,"ix":4},"sa":{"a":0,"k":0,"ix":5},"nm":"Transform"}],"nm":"Group 1","np":6,"cix":2,"bm":0,"ix":1,"mn":"ADBE Vector Group","hd":false},{"ty":"tr","p":{"a":0,"k":[673.486,574.02],"ix":2},"a":{"a":0,"k":[0,0],"ix":1},"s":{"a":0,"k":[100,100],"ix":3},"r":{"a":1,"k":[{"i":{"x":[0.833],"y":[0.833]},"o":{"x":[0.167],"y":[0.167]},"t":0,"s":[360]},{"t":150,"s":[0]}],"ix":6},"o":{"a":0,"k":100,"ix":7},"sk":{"a":0,"k":0,"ix":4},"sa":{"a":0,"k":0,"ix":5},"nm":"Transform"}],"nm":"Group 1","np":1,"cix":2,"bm":0,"ix":1,"mn":"ADBE Vector Group","hd":false},{"ty":"gr","it":[{"ty":"gr","it":[{"ind":0,"ty":"sh","ix":1,"ks":{"a":0,"k":{"i":[[3.127,0],[1.968,-0.623],[2.433,-4.689],[-1.595,-5.035],[-4.688,-2.433],[-5.032,1.594],[-2.433,4.689],[1.595,5.035],[4.689,2.433]],"o":[[-2.008,0],[-5.036,1.595],[-2.434,4.688],[1.595,5.036],[4.689,2.434],[5.036,-1.595],[2.434,-4.688],[-1.595,-5.036],[-2.855,-1.482]],"v":[[0.024,-19.784],[-5.968,-18.852],[-17.55,-9.109],[-18.851,5.969],[-9.108,17.551],[5.97,18.852],[17.552,9.109],[18.853,-5.969],[9.11,-17.551]],"c":true},"ix":2},"nm":"Path 1","mn":"ADBE Vector Shape - Group","hd":false},{"ind":1,"ty":"sh","ix":2,"ks":{"a":0,"k":{"i":[[2.21,0],[3.145,1.632],[1.756,5.545],[-2.679,5.163],[-5.545,1.756],[-5.164,-2.679],[-1.756,-5.544],[2.68,-5.162],[5.545,-1.756]],"o":[[-3.444,0],[-5.162,-2.68],[-1.756,-5.545],[2.68,-5.162],[5.546,-1.757],[5.162,2.68],[1.756,5.545],[-2.68,5.162],[-2.167,0.686]],"v":[[-0.024,21.785],[-10.03,19.327],[-20.757,6.574],[-19.326,-10.031],[-6.573,-20.758],[10.032,-19.327],[20.76,-6.574],[19.328,10.031],[6.575,20.758]],"c":true},"ix":2},"nm":"Path 2","mn":"ADBE Vector Shape - Group","hd":false},{"ind":2,"ty":"sh","ix":3,"ks":{"a":0,"k":{"i":[[0,0],[0,0],[-0.972,-0.504],[-1.045,0.33],[-0.505,0.972],[0.33,1.044],[0,0],[0,0],[-2.439,3.165],[0,0],[0,0],[-1.045,0.33],[-0.504,0.973],[2.006,1.042],[0,0],[0,0],[0.514,3.965],[0,0],[0,0],[0.682,2.154],[0.973,0.505],[1.044,-0.33],[0,0],[0,0],[3.166,2.438],[0,0],[0,0],[2.006,1.041],[1.04,-2.006],[0,0],[0,0],[3.966,-0.512],[0,0],[0,0],[0.972,0.504],[1.047,-0.33],[-0.682,-2.155],[0,0],[0,0],[2.438,-3.165],[0,0],[0,0],[1.044,-0.33],[0.504,-0.973],[-0.33,-1.044],[-0.973,-0.504],[0,0],[0,0],[-0.514,-3.965],[0,0],[0,0],[0.504,-0.972],[-0.33,-1.044],[-2.154,0.684],[0,0],[0,0],[-3.165,-2.438],[0,0],[0,0],[-0.33,-1.044],[-0.973,-0.504],[-1.041,2.005],[0,0],[0,0],[-3.962,0.512]],"o":[[0,0],[0.331,1.044],[0.972,0.505],[1.044,-0.331],[0.505,-0.972],[0,0],[0,0],[3.539,-1.862],[0,0],[0,0],[0.972,0.505],[1.044,-0.331],[1.041,-2.005],[0,0],[0,0],[1.186,-3.816],[0,0],[0,0],[2.154,-0.683],[-0.331,-1.044],[-0.97,-0.505],[0,0],[0,0],[-1.862,-3.539],[0,0],[0,0],[1.041,-2.006],[-2.009,-1.044],[0,0],[0,0],[-3.815,-1.186],[0,0],[0,0],[-0.33,-1.044],[-0.972,-0.505],[-2.154,0.683],[0,0],[0,0],[-3.539,1.863],[0,0],[0,0],[-0.971,-0.505],[-1.044,0.331],[-0.505,0.972],[0.331,1.044],[0,0],[0,0],[-1.186,3.816],[0,0],[0,0],[-1.044,0.33],[-0.505,0.972],[0.683,2.154],[0,0],[0,0],[1.862,3.539],[0,0],[0,0],[-0.505,0.972],[0.331,1.044],[2.006,1.042],[0,0],[0,0],[3.816,1.186],[0,0]],"v":[[4.368,27.368],[6.298,33.466],[8.318,35.867],[11.444,36.136],[13.845,34.117],[14.115,30.991],[12.183,24.893],[12.923,24.504],[21.931,16.927],[22.441,16.265],[28.119,19.211],[31.245,19.481],[33.645,17.461],[31.895,11.934],[26.217,8.988],[26.465,8.189],[27.477,-3.536],[27.369,-4.367],[33.467,-6.297],[36.138,-11.443],[34.118,-13.844],[30.993,-14.114],[24.895,-12.182],[24.505,-12.922],[16.928,-21.93],[16.265,-22.44],[19.212,-28.118],[17.462,-33.644],[11.936,-31.894],[8.989,-26.216],[8.19,-26.464],[-3.536,-27.476],[-4.366,-27.368],[-6.296,-33.466],[-8.316,-35.867],[-11.442,-36.137],[-14.113,-30.991],[-12.181,-24.894],[-12.921,-24.504],[-21.928,-16.927],[-22.438,-16.264],[-28.117,-19.211],[-31.242,-19.481],[-33.642,-17.46],[-33.913,-14.335],[-31.892,-11.935],[-26.215,-8.988],[-26.463,-8.189],[-27.475,3.537],[-27.367,4.367],[-33.465,6.298],[-35.866,8.317],[-36.135,11.443],[-30.99,14.114],[-24.892,12.182],[-24.502,12.923],[-16.926,21.929],[-16.264,22.439],[-19.209,28.118],[-19.48,31.243],[-17.459,33.643],[-11.933,31.893],[-8.986,26.216],[-8.187,26.465],[3.538,27.476]],"c":true},"ix":2},"nm":"Path 3","mn":"ADBE Vector Shape - Group","hd":false},{"ind":3,"ty":"sh","ix":4,"ks":{"a":0,"k":{"i":[[0.619,0],[0.881,0.457],[0.492,1.554],[0,0],[3.572,1.003],[0,0],[2.984,1.549],[0.492,1.554],[-0.751,1.446],[0,0],[1.819,3.237],[0,0],[1.015,3.206],[-0.75,1.446],[-1.553,0.491],[0,0],[-1.003,3.573],[0,0],[0.492,1.554],[-0.751,1.446],[-1.554,0.492],[-1.446,-0.75],[0,0],[-3.237,1.82],[0,0],[-3.206,1.016],[-1.446,-0.75],[-0.491,-1.553],[0,0],[-3.573,-1.003],[0,0],[-2.988,-1.55],[1.548,-2.985],[0,0],[-1.819,-3.237],[0,0],[-1.446,-0.75],[-0.492,-1.554],[3.206,-1.016],[0,0],[1.003,-3.573],[0,0],[1.549,-2.984],[1.554,-0.491],[1.448,0.75],[0,0],[3.237,-1.819],[0,0],[0.75,-1.445],[1.554,-0.491]],"o":[[-0.964,0],[-1.445,-0.75],[0,0],[-3.695,0.377],[0,0],[-1.55,2.984],[-1.446,-0.75],[-0.492,-1.553],[0,0],[-2.876,-2.344],[0,0],[-3.207,1.016],[-0.492,-1.553],[0.751,-1.446],[0,0],[-0.376,-3.694],[0,0],[-1.446,-0.75],[-0.492,-1.553],[0.75,-1.445],[1.552,-0.491],[0,0],[2.344,-2.875],[0,0],[-1.015,-3.206],[1.551,-0.492],[1.446,0.751],[0,0],[3.695,-0.378],[0,0],[1.549,-2.984],[2.983,1.55],[0,0],[2.876,2.345],[0,0],[1.554,-0.491],[1.446,0.751],[1.015,3.206],[0,0],[0.376,3.694],[0,0],[2.984,1.55],[-0.75,1.446],[-1.552,0.492],[0,0],[-2.346,2.876],[0,0],[0.492,1.553],[-0.751,1.446],[-0.607,0.192]],"v":[[10.199,38.331],[7.397,37.642],[4.392,34.07],[2.962,29.555],[-7.976,28.612],[-10.158,32.815],[-18.381,35.419],[-21.386,31.846],[-20.985,27.196],[-18.804,22.993],[-25.872,14.59],[-30.386,16.02],[-38.041,12.047],[-37.641,7.396],[-34.069,4.391],[-29.554,2.962],[-28.611,-7.978],[-32.814,-10.16],[-35.819,-13.732],[-35.417,-18.382],[-31.845,-21.387],[-27.195,-20.987],[-22.992,-18.805],[-14.589,-25.873],[-16.019,-30.387],[-12.045,-38.043],[-7.395,-37.642],[-4.39,-34.07],[-2.96,-29.555],[7.979,-28.612],[10.161,-32.816],[18.384,-35.419],[20.988,-27.196],[18.806,-22.994],[25.875,-14.59],[30.389,-16.02],[35.04,-15.619],[38.044,-12.046],[34.071,-4.391],[29.556,-2.961],[28.613,7.978],[32.817,10.159],[35.42,18.382],[31.848,21.387],[27.197,20.986],[22.995,18.805],[14.591,25.873],[16.021,30.387],[15.621,35.038],[12.047,38.043]],"c":true},"ix":2},"nm":"Path 4","mn":"ADBE Vector Shape - Group","hd":false},{"ty":"fl","c":{"a":0,"k":[1,1,1,1],"ix":4},"o":{"a":0,"k":100,"ix":5},"r":1,"bm":0,"nm":"Fill 1","mn":"ADBE Vector Graphic - Fill","hd":false},{"ty":"tr","p":{"a":0,"k":[0,0],"ix":2},"a":{"a":0,"k":[0,0],"ix":1},"s":{"a":0,"k":[100,100],"ix":3},"r":{"a":0,"k":0,"ix":6},"o":{"a":0,"k":100,"ix":7},"sk":{"a":0,"k":0,"ix":4},"sa":{"a":0,"k":0,"ix":5},"nm":"Transform"}],"nm":"Group 1","np":5,"cix":2,"bm":0,"ix":1,"mn":"ADBE Vector Group","hd":false},{"ty":"tr","p":{"a":0,"k":[604.247,625.836],"ix":2},"a":{"a":0,"k":[0,0],"ix":1},"s":{"a":0,"k":[100,100],"ix":3},"r":{"a":1,"k":[{"i":{"x":[0.833],"y":[0.833]},"o":{"x":[0.167],"y":[0.167]},"t":0,"s":[0]},{"t":150,"s":[360]}],"ix":6},"o":{"a":0,"k":100,"ix":7},"sk":{"a":0,"k":0,"ix":4},"sa":{"a":0,"k":0,"ix":5},"nm":"Transform"}],"nm":"Group 2","np":1,"cix":2,"bm":0,"ix":2,"mn":"ADBE Vector Group","hd":false},{"ty":"gr","it":[{"ty":"gr","it":[{"ind":0,"ty":"sh","ix":1,"ks":{"a":0,"k":{"i":[[16.422,1.254],[-1.254,16.422],[-16.422,-1.254],[1.254,-16.422]],"o":[[-16.422,-1.254],[1.254,-16.422],[16.422,1.254],[-1.254,16.422]],"v":[[-2.27,29.735],[-29.735,-2.27],[2.27,-29.735],[29.735,2.27]],"c":true},"ix":2},"nm":"Path 1","mn":"ADBE Vector Shape - Group","hd":false},{"ind":1,"ty":"sh","ix":2,"ks":{"a":0,"k":{"i":[[4.031,0.308],[0,0],[2.938,4.996],[0,0],[2.633,3.068],[3.068,-2.633],[0,0],[5.831,1.512],[0,0],[4.031,0.308],[0,0],[0.308,-4.031],[0,0],[4.997,-2.938],[0,0],[3.068,-2.633],[-2.633,-3.068],[0,0],[1.512,-5.831],[0,0],[0.308,-4.031],[0,0],[-4.031,-0.308],[0,0],[-2.937,-4.996],[0,0],[-2.633,-3.068],[-3.068,2.633],[0,0],[-5.831,-1.512],[0,0],[-4.031,-0.308],[0,0],[-0.308,4.031],[0,0],[-4.997,2.938],[0,0],[-3.068,2.633],[2.633,3.068],[0,0],[-1.512,5.831],[0,0],[-0.308,4.031],[0,0]],"o":[[0,0],[-0.609,-5.993],[0,0],[3.068,-2.633],[-2.633,-3.068],[0,0],[-4.493,-3.662],[0,0],[0.308,-4.031],[0,0],[-4.031,-0.308],[0,0],[-5.993,0.609],[0,0],[-2.633,-3.068],[-3.068,2.633],[0,0],[-3.662,4.493],[0,0],[-4.031,-0.308],[0,0],[-0.308,4.031],[0,0],[0.609,5.993],[0,0],[-3.068,2.633],[2.633,3.068],[0,0],[4.493,3.662],[0,0],[-0.308,4.031],[0,0],[4.031,0.308],[0,0],[5.993,-0.609],[0,0],[2.633,3.068],[3.068,-2.633],[0,0],[3.662,-4.492],[0,0],[4.031,0.308],[0,0],[0.308,-4.031]],"v":[[48.944,-3.604],[40.986,-4.212],[35.537,-20.85],[41.594,-26.048],[42.382,-36.369],[32.06,-37.157],[26.003,-31.96],[10.385,-39.872],[10.993,-47.83],[4.251,-55.686],[4.251,-55.686],[-3.604,-48.944],[-4.212,-40.986],[-20.85,-35.537],[-26.048,-41.594],[-36.37,-42.382],[-37.158,-32.06],[-31.96,-26.003],[-39.872,-10.385],[-47.83,-10.993],[-55.686,-4.251],[-55.686,-4.251],[-48.944,3.604],[-40.986,4.212],[-35.537,20.85],[-41.594,26.048],[-42.382,36.37],[-32.06,37.158],[-26.003,31.96],[-10.385,39.872],[-10.993,47.83],[-4.251,55.686],[-4.251,55.686],[3.604,48.944],[4.212,40.986],[20.85,35.537],[26.048,41.594],[36.369,42.382],[37.157,32.06],[31.96,26.003],[39.872,10.385],[47.83,10.993],[55.686,4.251],[55.686,4.251]],"c":true},"ix":2},"nm":"Path 2","mn":"ADBE Vector Shape - Group","hd":false},{"ty":"fl","c":{"a":0,"k":[1,1,1,1],"ix":4},"o":{"a":0,"k":100,"ix":5},"r":1,"bm":0,"nm":"Fill 1","mn":"ADBE Vector Graphic - Fill","hd":false},{"ty":"tr","p":{"a":0,"k":[0,0],"ix":2},"a":{"a":0,"k":[0,0],"ix":1},"s":{"a":0,"k":[100,100],"ix":3},"r":{"a":0,"k":0,"ix":6},"o":{"a":0,"k":100,"ix":7},"sk":{"a":0,"k":0,"ix":4},"sa":{"a":0,"k":0,"ix":5},"nm":"Transform"}],"nm":"Group 1","np":3,"cix":2,"bm":0,"ix":1,"mn":"ADBE Vector Group","hd":false},{"ty":"tr","p":{"a":0,"k":[395.468,443.357],"ix":2},"a":{"a":0,"k":[0,0],"ix":1},"s":{"a":0,"k":[100,100],"ix":3},"r":{"a":1,"k":[{"i":{"x":[0.833],"y":[0.833]},"o":{"x":[0.167],"y":[0.167]},"t":0,"s":[360]},{"t":150,"s":[0]}],"ix":6},"o":{"a":0,"k":100,"ix":7},"sk":{"a":0,"k":0,"ix":4},"sa":{"a":0,"k":0,"ix":5},"nm":"Transform"}],"nm":"Group 3","np":1,"cix":2,"bm":0,"ix":3,"mn":"ADBE Vector Group","hd":false}],"ip":0,"op":176,"st":0,"bm":0},{"ddd":0,"ind":9,"ty":4,"nm":"OBJECTS 18","sr":1,"ks":{"o":{"a":0,"k":100,"ix":11},"r":{"a":0,"k":0,"ix":10},"p":{"a":0,"k":[426.779,595.191,0],"ix":2},"a":{"a":0,"k":[426.779,595.191,0],"ix":1},"s":{"a":0,"k":[100,100,100],"ix":6}},"ao":0,"shapes":[{"ty":"gr","it":[{"ind":0,"ty":"sh","ix":1,"ks":{"a":0,"k":{"i":[[-1.392,0],[0,0]],"o":[[0,0],[1.392,0]],"v":[[-59.382,-25.279],[58.961,-25.229]],"c":false},"ix":2},"nm":"Path 3","mn":"ADBE Vector Shape - Group","hd":false},{"ind":1,"ty":"sh","ix":2,"ks":{"a":0,"k":{"i":[[-1.392,0],[0,0]],"o":[[0,0],[1.392,0]],"v":[[-59.385,-12.466],[58.957,-12.416]],"c":false},"ix":2},"nm":"Path 4","mn":"ADBE Vector Shape - Group","hd":false},{"ind":2,"ty":"sh","ix":3,"ks":{"a":0,"k":{"i":[[-1.392,0],[0,0]],"o":[[0,0],[1.392,0]],"v":[[-59.391,0.046],[58.951,0.096]],"c":false},"ix":2},"nm":"Path 5","mn":"ADBE Vector Shape - Group","hd":false},{"ind":3,"ty":"sh","ix":4,"ks":{"a":0,"k":{"i":[[-1.392,0],[0,0]],"o":[[0,0],[1.392,0]],"v":[[-59.404,13.01],[58.938,13.06]],"c":false},"ix":2},"nm":"Path 6","mn":"ADBE Vector Shape - Group","hd":false},{"ind":4,"ty":"sh","ix":5,"ks":{"a":0,"k":{"i":[[-1.392,0],[0,0]],"o":[[0,0],[1.392,0]],"v":[[-59.43,25.221],[-16.154,25.22]],"c":false},"ix":2},"nm":"Path 7","mn":"ADBE Vector Shape - Group","hd":false},{"ty":"tm","s":{"a":0,"k":0,"ix":1},"e":{"a":0,"k":91,"ix":2},"o":{"a":1,"k":[{"i":{"x":[0.833],"y":[0.833]},"o":{"x":[0.167],"y":[0.167]},"t":0,"s":[220]},{"t":150,"s":[1300]}],"ix":3},"m":2,"ix":6,"nm":"Trim Paths 1","mn":"ADBE Vector Filter - Trim","hd":false},{"ind":6,"ty":"sh","ix":7,"ks":{"a":0,"k":{"i":[[1.495,0],[0,0],[0,1.495],[0,0],[-1.495,0],[0,0],[0,-1.495],[0,0]],"o":[[0,0],[-1.495,0],[0,0],[0,-1.495],[0,0],[1.495,0],[0,0],[0,1.495]],"v":[[71.509,39.929],[-71.509,39.929],[-74.221,37.217],[-74.221,-37.217],[-71.509,-39.929],[71.509,-39.929],[74.221,-37.217],[74.221,37.217]],"c":true},"ix":2},"nm":"Path 2","mn":"ADBE Vector Shape - Group","hd":false},{"ty":"st","c":{"a":0,"k":[1,1,1,1],"ix":3},"o":{"a":0,"k":100,"ix":4},"w":{"a":0,"k":2.5,"ix":5},"lc":1,"lj":1,"ml":4,"bm":0,"nm":"Stroke 1","mn":"ADBE Vector Graphic - Stroke","hd":false},{"ty":"tr","p":{"a":0,"k":[486.898,641.529],"ix":2},"a":{"a":0,"k":[0,0],"ix":1},"s":{"a":0,"k":[91,91],"ix":3},"r":{"a":0,"k":0,"ix":6},"o":{"a":0,"k":100,"ix":7},"sk":{"a":0,"k":0,"ix":4},"sa":{"a":0,"k":0,"ix":5},"nm":"Transform"}],"nm":"Group 3","np":8,"cix":2,"bm":0,"ix":1,"mn":"ADBE Vector Group","hd":false},{"ty":"gr","it":[{"ind":0,"ty":"sh","ix":1,"ks":{"a":0,"k":{"i":[[-1.392,0],[0,0]],"o":[[0,0],[1.392,0]],"v":[[-59.382,-25.279],[58.961,-25.229]],"c":false},"ix":2},"nm":"Path 3","mn":"ADBE Vector Shape - Group","hd":false},{"ind":1,"ty":"sh","ix":2,"ks":{"a":0,"k":{"i":[[-1.392,0],[0,0]],"o":[[0,0],[1.392,0]],"v":[[-59.385,-12.466],[58.957,-12.416]],"c":false},"ix":2},"nm":"Path 4","mn":"ADBE Vector Shape - Group","hd":false},{"ind":2,"ty":"sh","ix":3,"ks":{"a":0,"k":{"i":[[-1.392,0],[0,0]],"o":[[0,0],[1.392,0]],"v":[[-59.391,0.046],[58.951,0.096]],"c":false},"ix":2},"nm":"Path 5","mn":"ADBE Vector Shape - Group","hd":false},{"ind":3,"ty":"sh","ix":4,"ks":{"a":0,"k":{"i":[[-1.392,0],[0,0]],"o":[[0,0],[1.392,0]],"v":[[-59.404,13.01],[58.938,13.06]],"c":false},"ix":2},"nm":"Path 6","mn":"ADBE Vector Shape - Group","hd":false},{"ind":4,"ty":"sh","ix":5,"ks":{"a":0,"k":{"i":[[-1.392,0],[0,0]],"o":[[0,0],[1.392,0]],"v":[[-59.43,25.221],[-16.154,25.22]],"c":false},"ix":2},"nm":"Path 7","mn":"ADBE Vector Shape - Group","hd":false},{"ty":"tm","s":{"a":0,"k":0,"ix":1},"e":{"a":0,"k":91,"ix":2},"o":{"a":1,"k":[{"i":{"x":[0.833],"y":[0.833]},"o":{"x":[0.167],"y":[0.167]},"t":0,"s":[220]},{"t":150,"s":[1300]}],"ix":3},"m":2,"ix":6,"nm":"Trim Paths 1","mn":"ADBE Vector Filter - Trim","hd":false},{"ind":6,"ty":"sh","ix":7,"ks":{"a":0,"k":{"i":[[1.495,0],[0,0],[0,1.495],[0,0],[-1.495,0],[0,0],[0,-1.495],[0,0]],"o":[[0,0],[-1.495,0],[0,0],[0,-1.495],[0,0],[1.495,0],[0,0],[0,1.495]],"v":[[71.509,39.929],[-71.509,39.929],[-74.221,37.217],[-74.221,-37.217],[-71.509,-39.929],[71.509,-39.929],[74.221,-37.217],[74.221,37.217]],"c":true},"ix":2},"nm":"Path 2","mn":"ADBE Vector Shape - Group","hd":false},{"ty":"st","c":{"a":0,"k":[1,1,1,1],"ix":3},"o":{"a":0,"k":100,"ix":4},"w":{"a":0,"k":2.5,"ix":5},"lc":1,"lj":1,"ml":4,"bm":0,"nm":"Stroke 1","mn":"ADBE Vector Graphic - Stroke","hd":false},{"ty":"tr","p":{"a":0,"k":[371.898,556.529],"ix":2},"a":{"a":0,"k":[0,0],"ix":1},"s":{"a":0,"k":[100,100],"ix":3},"r":{"a":0,"k":0,"ix":6},"o":{"a":0,"k":100,"ix":7},"sk":{"a":0,"k":0,"ix":4},"sa":{"a":0,"k":0,"ix":5},"nm":"Transform"}],"nm":"Group 2","np":8,"cix":2,"bm":0,"ix":2,"mn":"ADBE Vector Group","hd":false}],"ip":0,"op":176,"st":0,"bm":0}]}],"layers":[{"ddd":0,"ind":1,"ty":3,"nm":"Null 1","sr":1,"ks":{"o":{"a":0,"k":0,"ix":11},"r":{"a":0,"k":0,"ix":10},"p":{"a":0,"k":[250,250,0],"ix":2},"a":{"a":0,"k":[0,0,0],"ix":1},"s":{"a":0,"k":[86.5,86.5,100],"ix":6}},"ao":0,"ip":0,"op":176,"st":0,"bm":0},{"ddd":0,"ind":2,"ty":4,"nm":"OBJECTS 2","parent":1,"sr":1,"ks":{"o":{"a":0,"k":100,"ix":11},"r":{"a":1,"k":[{"i":{"x":[0.16],"y":[1]},"o":{"x":[0.333],"y":[0]},"t":0,"s":[0]},{"i":{"x":[0.16],"y":[1]},"o":{"x":[0.333],"y":[0]},"t":18,"s":[-19]},{"i":{"x":[0.16],"y":[1]},"o":{"x":[0.333],"y":[0]},"t":36,"s":[13.224]},{"i":{"x":[0.768],"y":[0.989]},"o":{"x":[0.396],"y":[0]},"t":58,"s":[-28.71]},{"i":{"x":[0.738],"y":[1.109]},"o":{"x":[0.4],"y":[-0.031]},"t":70,"s":[22.487]},{"i":{"x":[0.581],"y":[1]},"o":{"x":[0.167],"y":[0.104]},"t":90,"s":[-28.937]},{"i":{"x":[0.16],"y":[1]},"o":{"x":[0.333],"y":[0]},"t":120,"s":[22.796]},{"t":150,"s":[0]}],"ix":10},"p":{"a":1,"k":[{"i":{"x":0.16,"y":1},"o":{"x":0.333,"y":0},"t":0,"s":[100.192,-7.033,0],"to":[0,0,0],"ti":[0,0,0]},{"i":{"x":0.16,"y":1},"o":{"x":0.333,"y":0},"t":14,"s":[-2.808,-79.033,0],"to":[0,0,0],"ti":[0,0,0]},{"i":{"x":0.16,"y":1},"o":{"x":0.333,"y":0},"t":39,"s":[-2.063,-19.443,0],"to":[0,0,0],"ti":[0,0,0]},{"i":{"x":0.833,"y":0.833},"o":{"x":0.333,"y":0},"t":56,"s":[-123.178,129.126,0],"to":[0,0,0],"ti":[0,0,0]},{"i":{"x":0.833,"y":0.833},"o":{"x":0.167,"y":0.167},"t":69,"s":[-50.998,74.437,0],"to":[0,0,0],"ti":[0,0,0]},{"i":{"x":0.16,"y":1},"o":{"x":0.167,"y":0.167},"t":91,"s":[5.702,117.936,0],"to":[0,0,0],"ti":[0,0,0]},{"i":{"x":0.16,"y":1},"o":{"x":0.333,"y":0},"t":115,"s":[87.199,-45.624,0],"to":[0,0,0],"ti":[0,0,0]},{"i":{"x":0.16,"y":1},"o":{"x":0.333,"y":0},"t":131,"s":[124.883,63.26,0],"to":[0,0,0],"ti":[0,0,0]},{"t":150,"s":[100.192,-7.033,0]}],"ix":2},"a":{"a":0,"k":[600.192,492.967,0],"ix":1},"s":{"a":1,"k":[{"i":{"x":[0.16,0.16,0.16],"y":[1,1,1]},"o":{"x":[0.333,0.333,0.333],"y":[0,0,0]},"t":0,"s":[100,100,100]},{"i":{"x":[0.16,0.16,0.16],"y":[1,1,1]},"o":{"x":[0.333,0.333,0.333],"y":[0,0,0]},"t":14,"s":[124.717,124.717,100]},{"i":{"x":[0.16,0.16,0.16],"y":[1,1,1]},"o":{"x":[0.333,0.333,0.333],"y":[0,0,0]},"t":39,"s":[113.284,113.284,100]},{"i":{"x":[0.16,0.16,0.16],"y":[1,1,1]},"o":{"x":[0.333,0.333,0.333],"y":[0,0,0]},"t":56,"s":[68.448,68.448,100]},{"i":{"x":[0.16,0.16,0.16],"y":[1,1,1]},"o":{"x":[0.333,0.333,0.333],"y":[0,0,0]},"t":115,"s":[118.576,118.576,100]},{"t":150,"s":[100,100,100]}],"ix":6}},"ao":0,"shapes":[{"ty":"gr","it":[{"ty":"gr","it":[{"ind":0,"ty":"sh","ix":1,"ks":{"a":0,"k":{"i":[[5.288,5.345],[0,0],[0.818,-0.555],[3.456,-3.495],[0,0],[3.799,-5.337],[-1.655,1.673]],"o":[[0,0],[-0.187,-0.189],[-2.046,1.387],[-1.498,1.515],[3.633,3.673],[2.097,-0.626],[5.288,-5.345]],"v":[[33.63,14.637],[-18.381,-37.941],[-19.956,-37.324],[-29.104,-29.104],[28.482,25.244],[27.903,37.442],[33.63,33.994]],"c":true},"ix":2},"nm":"Path 2","mn":"ADBE Vector Shape - Group","hd":false},{"ty":"fl","c":{"a":0,"k":[0.243137255311,0.278431385756,0.607843160629,1],"ix":4},"o":{"a":0,"k":35,"ix":5},"r":1,"bm":0,"nm":"Fill 2","mn":"ADBE Vector Graphic - Fill","hd":false},{"ind":2,"ty":"sh","ix":3,"ks":{"a":0,"k":{"i":[[5.288,5.345],[0,0],[0.818,-0.555],[3.456,-3.495],[1.147,-1.922],[-0.164,-0.165],[0,0],[-5.288,5.345]],"o":[[0,0],[-0.187,-0.189],[-2.046,1.387],[-3.571,3.611],[-0.373,0.625],[0,0],[5.288,5.345],[5.288,-5.345]],"v":[[33.63,14.637],[-18.381,-37.941],[-19.956,-37.324],[-29.104,-29.104],[-37.176,-19.808],[-37.529,-18.584],[14.482,33.994],[33.63,33.994]],"c":true},"ix":2},"nm":"Path 1","mn":"ADBE Vector Shape - Group","hd":false},{"ty":"fl","c":{"a":0,"k":[0.349019616842,0.603921592236,0.949019610882,1],"ix":4},"o":{"a":0,"k":100,"ix":5},"r":1,"bm":0,"nm":"Fill 1","mn":"ADBE Vector Graphic - Fill","hd":false},{"ty":"tr","p":{"a":0,"k":[661.549,554.396],"ix":2},"a":{"a":0,"k":[0,0],"ix":1},"s":{"a":0,"k":[100,100],"ix":3},"r":{"a":0,"k":0,"ix":6},"o":{"a":0,"k":100,"ix":7},"sk":{"a":0,"k":0,"ix":4},"sa":{"a":0,"k":0,"ix":5},"nm":"Transform"}],"nm":"Group 1","np":4,"cix":2,"bm":0,"ix":1,"mn":"ADBE Vector Group","hd":false},{"ty":"gr","it":[{"ind":0,"ty":"sh","ix":1,"ks":{"a":0,"k":{"i":[[0,0],[-1.103,-1.103],[0,0],[-2.046,1.387],[0,0],[1.107,-0.838],[0.093,-0.093]],"o":[[-1.103,1.103],[0,0],[3.456,-3.495],[0,0],[-1.009,-1.009],[-0.102,0.078],[0,0]],"v":[[3.323,-8.077],[3.323,-4.084],[6.188,-1.219],[15.336,-9.438],[12.007,-12.767],[8.314,-13.012],[8.014,-12.767]],"c":true},"ix":2},"nm":"Path 2","mn":"ADBE Vector Shape - Group","hd":false},{"ty":"fl","c":{"a":0,"k":[0.274509817362,0.345098048449,0.678431391716,1],"ix":4},"o":{"a":0,"k":100,"ix":5},"r":1,"bm":0,"nm":"Fill 2","mn":"ADBE Vector Graphic - Fill","hd":false},{"ind":2,"ty":"sh","ix":3,"ks":{"a":0,"k":{"i":[[-3.571,3.611],[0,0],[-1.103,1.103],[0,0],[0,0],[-1.103,-1.103],[0,0]],"o":[[0,0],[-1.103,-1.103],[0,0],[0,0],[-1.103,1.103],[0,0],[1.147,-1.922]],"v":[[6.188,-1.219],[3.323,-4.084],[3.323,-8.077],[-5.221,0.468],[-5.361,0.607],[-5.361,4.6],[-1.884,8.077]],"c":true},"ix":2},"nm":"Path 1","mn":"ADBE Vector Shape - Group","hd":false},{"ty":"fl","c":{"a":0,"k":[0.298039227724,0.396078437567,0.729411780834,1],"ix":4},"o":{"a":0,"k":100,"ix":5},"r":1,"bm":0,"nm":"Fill 1","mn":"ADBE Vector Graphic - Fill","hd":false},{"ty":"tr","p":{"a":0,"k":[626.257,526.51],"ix":2},"a":{"a":0,"k":[0,0],"ix":1},"s":{"a":0,"k":[100,100],"ix":3},"r":{"a":0,"k":0,"ix":6},"o":{"a":0,"k":100,"ix":7},"sk":{"a":0,"k":0,"ix":4},"sa":{"a":0,"k":0,"ix":5},"nm":"Transform"}],"nm":"Group 4","np":4,"cix":2,"bm":0,"ix":2,"mn":"ADBE Vector Group","hd":false},{"ty":"gr","it":[{"ind":0,"ty":"sh","ix":1,"ks":{"a":0,"k":{"i":[[34.348,0],[0,-34.348],[-34.348,0],[0,34.348]],"o":[[-34.348,0],[0,34.348],[34.348,0],[0,-34.348]],"v":[[576.097,406.103],[513.805,468.395],[576.097,530.687],[638.389,468.395]],"c":true},"ix":2},"nm":"Path 1","mn":"ADBE Vector Shape - Group","hd":false},{"ind":1,"ty":"sh","ix":2,"ks":{"a":0,"k":{"i":[[16.615,0],[0,41.277],[-41.277,0],[0,-41.277],[10.201,-13.205],[0,0],[0.044,-0.045],[0,0]],"o":[[-41.277,0],[0,-41.277],[41.277,0],[0,16.702],[0,0],[-0.099,0.074],[0,0],[-13.183,10.129]],"v":[[576.097,543.253],[501.238,468.395],[576.097,393.536],[650.955,468.395],[635.362,514.109],[635.175,514.295],[634.98,514.448],[621.646,527.771]],"c":true},"ix":2},"nm":"Path 4","mn":"ADBE Vector Shape - Group","hd":false},{"ty":"fl","c":{"a":0,"k":[0.243137255311,0.278431385756,0.607843160629,1],"ix":4},"o":{"a":0,"k":100,"ix":5},"r":1,"bm":0,"nm":"Fill 1","mn":"ADBE Vector Graphic - Fill","hd":false},{"ty":"tr","p":{"a":0,"k":[576.097,468.395],"ix":2},"a":{"a":0,"k":[576.097,468.395],"ix":1},"s":{"a":0,"k":[100,100],"ix":3},"r":{"a":0,"k":0,"ix":6},"o":{"a":0,"k":100,"ix":7},"sk":{"a":0,"k":0,"ix":4},"sa":{"a":0,"k":0,"ix":5},"nm":"Transform"}],"nm":"Group 5","np":3,"cix":2,"bm":0,"ix":3,"mn":"ADBE Vector Group","hd":false},{"ty":"tr","p":{"a":0,"k":[576.097,468.395],"ix":2},"a":{"a":0,"k":[576.097,468.395],"ix":1},"s":{"a":0,"k":[100,100],"ix":3},"r":{"a":0,"k":0,"ix":6},"o":{"a":0,"k":100,"ix":7},"sk":{"a":0,"k":0,"ix":4},"sa":{"a":0,"k":0,"ix":5},"nm":"Transform"}],"nm":"Group 2","np":3,"cix":2,"bm":0,"ix":1,"mn":"ADBE Vector Group","hd":false},{"ty":"gr","it":[{"ty":"gr","it":[{"ind":0,"ty":"sh","ix":1,"ks":{"a":0,"k":{"i":[[2.209,0],[0,2.209],[-31.929,0],[0,-2.209],[2.209,0],[0,-27.517]],"o":[[-2.209,0],[0,-31.929],[2.209,0],[0,2.209],[-27.518,0],[0,2.209]],"v":[[-48.452,8.452],[-52.452,4.452],[5.452,-53.452],[9.452,-49.452],[5.452,-45.452],[-44.452,4.452]],"c":true},"ix":2},"nm":"Path 2","mn":"ADBE Vector Shape - Group","hd":false},{"ty":"fl","c":{"a":0,"k":[1,1,1,1],"ix":4},"o":{"a":0,"k":70,"ix":5},"r":1,"bm":0,"nm":"Fill 2","mn":"ADBE Vector Graphic - Fill","hd":false},{"ind":2,"ty":"sh","ix":3,"ks":{"a":0,"k":{"i":[[34.955,0],[0,-34.955],[-34.955,0],[0,34.955]],"o":[[-34.955,0],[0,34.955],[34.955,0],[0,-34.955]],"v":[[0,-63.292],[-63.292,0],[0,63.292],[63.292,0]],"c":true},"ix":2},"nm":"Path 1","mn":"ADBE Vector Shape - Group","hd":false},{"ty":"gf","o":{"a":0,"k":100,"ix":10},"r":1,"bm":0,"g":{"p":3,"k":{"a":0,"k":[0.068,1,1,1,0.534,1,1,1,1,1,1,1,0.172,0,0.687,0.25,0.995,0.5],"ix":9}},"s":{"a":0,"k":[0,0],"ix":5},"e":{"a":0,"k":[63.5,0],"ix":6},"t":2,"h":{"a":0,"k":0,"ix":7},"a":{"a":0,"k":0,"ix":8},"nm":"Gradient Fill 1","mn":"ADBE Vector Graphic - G-Fill","hd":false},{"ty":"tr","p":{"a":0,"k":[0,0],"ix":2},"a":{"a":0,"k":[0,0],"ix":1},"s":{"a":0,"k":[100,100],"ix":3},"r":{"a":0,"k":0,"ix":6},"o":{"a":0,"k":100,"ix":7},"sk":{"a":0,"k":0,"ix":4},"sa":{"a":0,"k":0,"ix":5},"nm":"Transform"}],"nm":"Group 1","np":4,"cix":2,"bm":0,"ix":1,"mn":"ADBE Vector Group","hd":false},{"ty":"tr","p":{"a":0,"k":[576.097,468.395],"ix":2},"a":{"a":0,"k":[0,0],"ix":1},"s":{"a":0,"k":[100,100],"ix":3},"r":{"a":0,"k":0,"ix":6},"o":{"a":0,"k":100,"ix":7},"sk":{"a":0,"k":0,"ix":4},"sa":{"a":0,"k":0,"ix":5},"nm":"Transform"}],"nm":"Group 4","np":1,"cix":2,"bm":0,"ix":2,"mn":"ADBE Vector Group","hd":false}],"ip":0,"op":176,"st":0,"bm":0},{"ddd":0,"ind":3,"ty":4,"nm":"OBJECTS","parent":2,"td":1,"sr":1,"ks":{"o":{"a":0,"k":100,"ix":11},"r":{"a":0,"k":0,"ix":10},"p":{"a":0,"k":[600.192,492.967,0],"ix":2},"a":{"a":0,"k":[600.192,492.967,0],"ix":1},"s":{"a":0,"k":[100,100,100],"ix":6}},"ao":0,"shapes":[{"ty":"gr","it":[{"ty":"gr","it":[{"ind":0,"ty":"sh","ix":1,"ks":{"a":0,"k":{"i":[[34.955,0],[0,-34.955],[-34.955,0],[0,34.955]],"o":[[-34.955,0],[0,34.955],[34.955,0],[0,-34.955]],"v":[[0,-63.292],[-63.292,0],[0,63.292],[63.292,0]],"c":true},"ix":2},"nm":"Path 1","mn":"ADBE Vector Shape - Group","hd":false},{"ty":"fl","c":{"a":0,"k":[1,0,0,1],"ix":4},"o":{"a":0,"k":100,"ix":5},"r":1,"bm":0,"nm":"Fill 1","mn":"ADBE Vector Graphic - Fill","hd":false},{"ty":"tr","p":{"a":0,"k":[0,0],"ix":2},"a":{"a":0,"k":[0,0],"ix":1},"s":{"a":0,"k":[100,100],"ix":3},"r":{"a":0,"k":0,"ix":6},"o":{"a":0,"k":100,"ix":7},"sk":{"a":0,"k":0,"ix":4},"sa":{"a":0,"k":0,"ix":5},"nm":"Transform"}],"nm":"Group 1","np":2,"cix":2,"bm":0,"ix":1,"mn":"ADBE Vector Group","hd":false},{"ty":"tr","p":{"a":0,"k":[576.097,468.395],"ix":2},"a":{"a":0,"k":[0,0],"ix":1},"s":{"a":0,"k":[100,100],"ix":3},"r":{"a":0,"k":0,"ix":6},"o":{"a":0,"k":100,"ix":7},"sk":{"a":0,"k":0,"ix":4},"sa":{"a":0,"k":0,"ix":5},"nm":"Transform"}],"nm":"Group 4","np":1,"cix":2,"bm":0,"ix":1,"mn":"ADBE Vector Group","hd":false}],"ip":0,"op":176,"st":0,"bm":0},{"ddd":0,"ind":4,"ty":0,"nm":"all","parent":1,"tt":1,"refId":"comp_0","sr":1,"ks":{"o":{"a":0,"k":100,"ix":11},"r":{"a":0,"k":0,"ix":10},"p":{"a":1,"k":[{"i":{"x":0.22,"y":1},"o":{"x":0.333,"y":0},"t":0,"s":[80,-32,0],"to":[5,1.833,0],"ti":[-5,0.833,0]},{"i":{"x":0.22,"y":1},"o":{"x":0.333,"y":0},"t":14,"s":[110,-21,0],"to":[5,-0.833,0],"ti":[-1.667,4.333,0]},{"i":{"x":0.22,"y":1},"o":{"x":0.333,"y":0},"t":39,"s":[110,-37,0],"to":[1.667,-4.333,0],"ti":[3.333,0,0]},{"i":{"x":0.22,"y":1},"o":{"x":0.333,"y":0},"t":56,"s":[150,-77,0],"to":[-3.333,0,0],"ti":[5,1.667,0]},{"i":{"x":0.22,"y":1},"o":{"x":0.333,"y":0},"t":69,"s":[110,-37,0],"to":[-5,-1.667,0],"ti":[0,0,0]},{"i":{"x":0.22,"y":1},"o":{"x":0.333,"y":0},"t":91,"s":[90,-77,0],"to":[0,0,0],"ti":[0,-6.667,0]},{"i":{"x":0.22,"y":1},"o":{"x":0.333,"y":0},"t":115,"s":[90,-37,0],"to":[0,6.667,0],"ti":[1.667,-0.833,0]},{"i":{"x":0.22,"y":1},"o":{"x":0.333,"y":0},"t":131,"s":[90,-17,0],"to":[-1.667,0.833,0],"ti":[1.667,2.5,0]},{"t":150,"s":[80,-32,0]}],"ix":2},"a":{"a":0,"k":[580,468,0],"ix":1},"s":{"a":0,"k":[140,140,100],"ix":6}},"ao":0,"w":1000,"h":1000,"ip":0,"op":176,"st":0,"bm":0},{"ddd":0,"ind":5,"ty":0,"nm":"all","parent":1,"refId":"comp_0","sr":1,"ks":{"o":{"a":0,"k":100,"ix":11},"r":{"a":0,"k":0,"ix":10},"p":{"a":0,"k":[0,0,0],"ix":2},"a":{"a":0,"k":[500,500,0],"ix":1},"s":{"a":0,"k":[100,100,100],"ix":6}},"ao":0,"w":1000,"h":1000,"ip":0,"op":176,"st":0,"bm":0},{"ddd":0,"ind":6,"ty":4,"nm":"BACKGROUND","parent":1,"sr":1,"ks":{"o":{"a":0,"k":100,"ix":11},"r":{"a":0,"k":0,"ix":10},"p":{"a":0,"k":[6.89,-17.736,0],"ix":2},"a":{"a":0,"k":[506.89,482.264,0],"ix":1},"s":{"a":0,"k":[100,100,100],"ix":6}},"ao":0,"shapes":[{"ty":"gr","it":[{"ind":0,"ty":"sh","ix":1,"ks":{"a":0,"k":{"i":[[9.248,8.588],[8.588,-9.248],[-9.248,-8.588],[-11.987,3.948]],"o":[[-9.248,-8.588],[-8.588,9.248],[9.248,8.588],[16.717,-5.507]],"v":[[16.52,-18.271],[-15.774,-17.076],[-20.546,21.643],[14.641,12.257]],"c":true},"ix":2},"nm":"Path 1","mn":"ADBE Vector Shape - Group","hd":false},{"ty":"fl","c":{"a":0,"k":[0.882352948189,0.886274516582,0.996078431606,1],"ix":4},"o":{"a":0,"k":100,"ix":5},"r":1,"bm":0,"nm":"Fill 1","mn":"ADBE Vector Graphic - Fill","hd":false},{"ty":"tr","p":{"a":1,"k":[{"i":{"x":0.667,"y":1},"o":{"x":0.333,"y":0},"t":0,"s":[313.017,296.905],"to":[0,0],"ti":[0,0]},{"i":{"x":0.667,"y":1},"o":{"x":0.333,"y":0},"t":50,"s":[301.017,305.905],"to":[0,0],"ti":[0,0]},{"i":{"x":0.667,"y":1},"o":{"x":0.333,"y":0},"t":100,"s":[288.01,333.41],"to":[0,0],"ti":[0,0]},{"t":150,"s":[313.017,296.905]}],"ix":2},"a":{"a":0,"k":[0,0],"ix":1},"s":{"a":0,"k":[100,100],"ix":3},"r":{"a":1,"k":[{"i":{"x":[0.667],"y":[1]},"o":{"x":[0.333],"y":[0]},"t":0,"s":[0]},{"i":{"x":[0.667],"y":[1]},"o":{"x":[0.333],"y":[0]},"t":50,"s":[12]},{"i":{"x":[0.667],"y":[1]},"o":{"x":[0.333],"y":[0]},"t":100,"s":[-18]},{"t":150,"s":[0]}],"ix":6},"o":{"a":0,"k":47,"ix":7},"sk":{"a":0,"k":0,"ix":4},"sa":{"a":0,"k":0,"ix":5},"nm":"Transform"}],"nm":"Group 1","np":2,"cix":2,"bm":0,"ix":1,"mn":"ADBE Vector Group","hd":false},{"ty":"gr","it":[{"ind":0,"ty":"sh","ix":1,"ks":{"a":0,"k":{"i":[[-8.408,-5.428],[-5.428,8.408],[8.407,5.428],[8.814,-4.739]],"o":[[8.408,5.428],[5.428,-8.408],[-8.408,-5.428],[-12.293,6.61]],"v":[[-9.956,17.35],[15.095,11.955],[13.471,-18.938],[-12.707,-6.747]],"c":true},"ix":2},"nm":"Path 1","mn":"ADBE Vector Shape - Group","hd":false},{"ty":"fl","c":{"a":0,"k":[0.882352948189,0.886274516582,0.996078431606,1],"ix":4},"o":{"a":0,"k":100,"ix":5},"r":1,"bm":0,"nm":"Fill 1","mn":"ADBE Vector Graphic - Fill","hd":false},{"ty":"tr","p":{"a":1,"k":[{"i":{"x":0.667,"y":1},"o":{"x":0.333,"y":0},"t":0,"s":[682.659,671.752],"to":[0,0],"ti":[0,0]},{"i":{"x":0.667,"y":1},"o":{"x":0.333,"y":0},"t":50,"s":[663.659,680.752],"to":[0,0],"ti":[0,0]},{"i":{"x":0.667,"y":1},"o":{"x":0.333,"y":0},"t":100,"s":[695.159,659.252],"to":[0,0],"ti":[0,0]},{"t":150,"s":[682.659,671.752]}],"ix":2},"a":{"a":0,"k":[0,0],"ix":1},"s":{"a":0,"k":[100,100],"ix":3},"r":{"a":1,"k":[{"i":{"x":[0.667],"y":[1]},"o":{"x":[0.333],"y":[0]},"t":0,"s":[0]},{"i":{"x":[0.667],"y":[1]},"o":{"x":[0.333],"y":[0]},"t":50,"s":[-39]},{"i":{"x":[0.667],"y":[1]},"o":{"x":[0.333],"y":[0]},"t":100,"s":[11.5]},{"t":150,"s":[0]}],"ix":6},"o":{"a":0,"k":47,"ix":7},"sk":{"a":0,"k":0,"ix":4},"sa":{"a":0,"k":0,"ix":5},"nm":"Transform"}],"nm":"Group 2","np":2,"cix":2,"bm":0,"ix":2,"mn":"ADBE Vector Group","hd":false},{"ty":"gr","it":[{"ind":0,"ty":"sh","ix":1,"ks":{"a":0,"k":{"i":[[-5.965,11.62],[11.62,5.965],[5.965,-11.62],[-7.293,-10.837]],"o":[[5.965,-11.62],[-11.62,-5.965],[-5.965,11.62],[10.171,15.114]],"v":[[24.368,10.668],[14.129,-21.174],[-25.786,-15.079],[-6.575,17.35]],"c":true},"ix":2},"nm":"Path 1","mn":"ADBE Vector Shape - Group","hd":false},{"ty":"fl","c":{"a":0,"k":[0.92549020052,0.945098042488,0.96862745285,1],"ix":4},"o":{"a":0,"k":100,"ix":5},"r":1,"bm":0,"nm":"Fill 1","mn":"ADBE Vector Graphic - Fill","hd":false},{"ty":"tr","p":{"a":1,"k":[{"i":{"x":0.667,"y":1},"o":{"x":0.333,"y":0},"t":0,"s":[699.145,321.283],"to":[0,0],"ti":[0,0]},{"i":{"x":0.667,"y":1},"o":{"x":0.333,"y":0},"t":50,"s":[674.145,311.283],"to":[0,0],"ti":[0,0]},{"i":{"x":0.667,"y":1},"o":{"x":0.333,"y":0},"t":100,"s":[681.645,346.283],"to":[0,0],"ti":[0,0]},{"t":150,"s":[699.145,321.283]}],"ix":2},"a":{"a":0,"k":[0,0],"ix":1},"s":{"a":0,"k":[100,100],"ix":3},"r":{"a":1,"k":[{"i":{"x":[0.667],"y":[1]},"o":{"x":[0.333],"y":[0]},"t":0,"s":[0]},{"i":{"x":[0.667],"y":[1]},"o":{"x":[0.333],"y":[0]},"t":50,"s":[28]},{"i":{"x":[0.667],"y":[1]},"o":{"x":[0.333],"y":[0]},"t":100,"s":[-26]},{"t":150,"s":[0]}],"ix":6},"o":{"a":0,"k":47,"ix":7},"sk":{"a":0,"k":0,"ix":4},"sa":{"a":0,"k":0,"ix":5},"nm":"Transform"}],"nm":"Group 3","np":2,"cix":2,"bm":0,"ix":3,"mn":"ADBE Vector Group","hd":false}],"ip":0,"op":176,"st":0,"bm":0},{"ddd":0,"ind":7,"ty":4,"nm":"BACKGROUND 2","parent":1,"sr":1,"ks":{"o":{"a":0,"k":100,"ix":11},"r":{"a":0,"k":0,"ix":10},"p":{"a":0,"k":[-8.52,-10.982,0],"ix":2},"a":{"a":0,"k":[491.48,489.018,0],"ix":1},"s":{"a":0,"k":[100,100,100],"ix":6}},"ao":0,"shapes":[{"ty":"gr","it":[{"ty":"gr","it":[{"ind":0,"ty":"sh","ix":1,"ks":{"a":0,"k":{"i":[[0.259,-2.915],[4.029,-14.154],[5.692,-16.637],[-10.214,-23.955],[-9.82,-7.42],[-18.655,1.451],[-27.915,-3.278],[-7.956,-10.998],[-13.547,-6.504],[-25.502,10.861],[1.56,32.025],[-2.745,14.557],[-9.975,14.885],[-1.308,20],[-0.014,0.227],[32.833,10.798],[0.003,0.001],[65.177,-34.214],[4.73,-15.211]],"o":[[-1.27,14.292],[-4.824,16.945],[-8.411,24.584],[4.923,11.545],[15.139,11.439],[27.764,-2.159],[15.404,1.809],[8.998,12.439],[24.952,11.978],[27.227,-11.596],[-0.722,-14.815],[3.446,-18.269],[11.016,-16.439],[0.015,-0.227],[2.045,-34.503],[0,0],[-70.886,-23.313],[-14.104,7.404],[-0.893,2.87]],"v":[[-171.011,-91.868],[-171.49,-48.694],[-195.97,-2.419],[-193.762,73.668],[-171.828,103.363],[-118.198,115.859],[-33.223,104.958],[-5.16,134.437],[29.639,163.149],[110.039,165.4],[159.437,93.462],[155.53,49.375],[182.717,-0.427],[201.709,-56.47],[201.752,-57.151],[149.201,-133.92],[79.34,-156.896],[-127.548,-145.224],[-169.347,-100.55]],"c":true},"ix":2},"nm":"Path 1","mn":"ADBE Vector Shape - Group","hd":false},{"ty":"fl","c":{"a":0,"k":[0.882352948189,0.886274516582,0.996078431606,1],"ix":4},"o":{"a":0,"k":100,"ix":5},"r":1,"bm":0,"nm":"Fill 1","mn":"ADBE Vector Graphic - Fill","hd":false},{"ty":"tr","p":{"a":0,"k":[0,0],"ix":2},"a":{"a":0,"k":[0,0],"ix":1},"s":{"a":0,"k":[100,100],"ix":3},"r":{"a":0,"k":0,"ix":6},"o":{"a":0,"k":100,"ix":7},"sk":{"a":0,"k":0,"ix":4},"sa":{"a":0,"k":0,"ix":5},"nm":"Transform"}],"nm":"Group 1","np":2,"cix":2,"bm":0,"ix":1,"mn":"ADBE Vector Group","hd":false},{"ty":"tr","p":{"a":1,"k":[{"i":{"x":0.667,"y":1},"o":{"x":0.333,"y":0},"t":0,"s":[492.184,486.224],"to":[0,2],"ti":[2.167,0]},{"i":{"x":0.667,"y":1},"o":{"x":0.333,"y":0},"t":50,"s":[492.184,498.224],"to":[-2.167,0],"ti":[0,2]},{"i":{"x":0.667,"y":1},"o":{"x":0.333,"y":0},"t":100,"s":[479.184,486.224],"to":[0,-2],"ti":[-2.167,0]},{"t":150,"s":[492.184,486.224]}],"ix":2},"a":{"a":0,"k":[0,0],"ix":1},"s":{"a":0,"k":[100,100],"ix":3},"r":{"a":1,"k":[{"i":{"x":[0.667],"y":[1]},"o":{"x":[0.333],"y":[0]},"t":0,"s":[-13]},{"i":{"x":[0.667],"y":[1]},"o":{"x":[0.333],"y":[0]},"t":50,"s":[0]},{"i":{"x":[0.667],"y":[1]},"o":{"x":[0.333],"y":[0]},"t":100,"s":[-20]},{"t":150,"s":[-13]}],"ix":6},"o":{"a":0,"k":100,"ix":7},"sk":{"a":0,"k":0,"ix":4},"sa":{"a":0,"k":0,"ix":5},"nm":"Transform"}],"nm":"Group 1","np":1,"cix":2,"bm":0,"ix":1,"mn":"ADBE Vector Group","hd":false},{"ty":"gr","it":[{"ind":0,"ty":"sh","ix":1,"ks":{"a":0,"k":{"i":[[1.842,-4],[-3.956,-19.29],[4.899,-24.193],[1.513,-14.581],[-24.115,-14.246],[-22.519,0.309],[-19.64,5.032],[-19.839,-2.016],[-15.366,-5.319],[-33.546,19.331],[-6.683,21.663],[4.004,17.675],[-2.155,18.908],[1.104,13.215],[4.727,7.435],[30.574,10.015],[29.956,-2.268],[63.296,13.538],[23.912,-36.092]],"o":[[-8.245,17.898],[4.65,22.678],[-2.984,14.736],[-3.107,29.94],[19.587,11.57],[20.268,-0.278],[18.927,-4.85],[16.5,1.677],[36.685,12.699],[21.529,-12.406],[5.341,-17.312],[-4.11,-18.147],[1.502,-13.176],[-0.734,-8.781],[-17.262,-27.149],[-28.773,-9.426],[-61.936,4.688],[-40.863,-8.74],[-2.439,3.681]],"v":[[-212.919,-92.593],[-219.459,-34.771],[-205.589,29.523],[-210.833,72.491],[-170.385,143.057],[-105.316,158.66],[-45.177,149.607],[12.094,140.383],[58.82,154.511],[173.491,149.67],[216.772,95.453],[218.787,44.277],[209.892,-11.07],[216.316,-50.178],[206.989,-74.632],[130.249,-129.973],[41.847,-143.956],[-96.012,-162.644],[-206.496,-104.136]],"c":true},"ix":2},"nm":"Path 1","mn":"ADBE Vector Shape - Group","hd":false},{"ty":"fl","c":{"a":0,"k":[0.882352948189,0.886274516582,0.996078431606,1],"ix":4},"o":{"a":0,"k":100,"ix":5},"r":1,"bm":0,"nm":"Fill 1","mn":"ADBE Vector Graphic - Fill","hd":false},{"ty":"tr","p":{"a":1,"k":[{"i":{"x":0.667,"y":1},"o":{"x":0.333,"y":0},"t":0,"s":[482.48,480.055],"to":[1.5,-1.5],"ti":[-2.333,-1.5]},{"i":{"x":0.667,"y":1},"o":{"x":0.333,"y":0},"t":50,"s":[491.48,471.055],"to":[2.333,1.5],"ti":[1.5,-1.5]},{"i":{"x":0.667,"y":1},"o":{"x":0.333,"y":0},"t":100,"s":[496.48,489.055],"to":[-1.5,1.5],"ti":[2.333,1.5]},{"t":150,"s":[482.48,480.055]}],"ix":2},"a":{"a":0,"k":[0,0],"ix":1},"s":{"a":0,"k":[100,100],"ix":3},"r":{"a":1,"k":[{"i":{"x":[0.667],"y":[1]},"o":{"x":[0.333],"y":[0]},"t":0,"s":[0]},{"i":{"x":[0.667],"y":[1]},"o":{"x":[0.333],"y":[0]},"t":50,"s":[0]},{"i":{"x":[0.667],"y":[1]},"o":{"x":[0.333],"y":[0]},"t":100,"s":[8]},{"t":150,"s":[0]}],"ix":6},"o":{"a":0,"k":47,"ix":7},"sk":{"a":0,"k":0,"ix":4},"sa":{"a":0,"k":0,"ix":5},"nm":"Transform"}],"nm":"Group 2","np":2,"cix":2,"bm":0,"ix":2,"mn":"ADBE Vector Group","hd":false}],"ip":0,"op":176,"st":0,"bm":0}],"markers":[]}</script>
+  <script id="userSuccessLottieData" type="application/json">{"nm":"Main Scene","ddd":0,"h":1920,"w":1920,"meta":{"g":"@lottiefiles/creator 1.79.0"},"layers":[{"ty":4,"nm":"Tick","sr":1,"st":0,"op":1800,"ip":0,"hd":false,"ddd":0,"bm":0,"hasMask":false,"ao":0,"ks":{"a":{"a":0,"k":[278.033,227.218,0],"ix":1},"s":{"a":1,"k":[{"o":{"x":0.333,"y":0},"i":{"x":0.667,"y":1},"s":[20,20,100],"t":30},{"s":[100,100,100],"t":60}],"ix":6},"sk":{"a":0,"k":0},"p":{"a":0,"k":[346.916,346.917,0],"ix":2},"r":{"a":1,"k":[{"o":{"x":0.333,"y":0},"i":{"x":0.667,"y":1},"s":[-99],"t":30},{"s":[0],"t":60}],"ix":10},"sa":{"a":0,"k":0},"o":{"a":1,"k":[{"o":{"x":0.167,"y":0.167},"i":{"x":0.833,"y":0.833},"s":[0],"t":0},{"o":{"x":0.167,"y":0.167},"i":{"x":0.833,"y":0.833},"s":[100],"t":4},{"s":[100],"t":32}],"ix":11}},"shapes":[{"ty":"gr","bm":0,"hd":false,"mn":"ADBE Vector Group","nm":"Group 1","ix":1,"cix":2,"np":2,"it":[{"ty":"sh","bm":0,"hd":false,"mn":"ADBE Vector Shape - Group","nm":"Path 1","ix":1,"d":1,"ks":{"a":0,"k":{"c":false,"i":[[0,0],[0,0],[0,0]],"o":[[0,0],[0,0],[0,0]],"v":[[-153.033,0.588],[-51.404,102.218],[153.032,-102.218]]},"ix":2}},{"ty":"st","bm":0,"hd":false,"mn":"ADBE Vector Graphic - Stroke","nm":"Stroke 1","lc":2,"lj":2,"ml":1,"o":{"a":0,"k":100,"ix":4},"w":{"a":0,"k":50,"ix":5},"c":{"a":0,"k":[1,1,1],"ix":3}},{"ty":"tr","a":{"a":0,"k":[0,0],"ix":1},"s":{"a":0,"k":[100,100],"ix":3},"sk":{"a":0,"k":0,"ix":4},"p":{"a":0,"k":[278.033,227.218],"ix":2},"r":{"a":0,"k":0,"ix":6},"sa":{"a":0,"k":0,"ix":5},"o":{"a":0,"k":100,"ix":7}}]},{"ty":"tm","bm":0,"hd":false,"mn":"ADBE Vector Filter - Trim","nm":"Trim Paths 1","ix":2,"e":{"a":1,"k":[{"o":{"x":0.67,"y":0},"i":{"x":0.33,"y":1},"s":[0],"t":31},{"s":[100],"t":60}],"ix":2},"o":{"a":0,"k":0,"ix":3},"s":{"a":0,"k":0,"ix":1},"m":1}],"ind":1,"parent":4},{"ty":4,"nm":"Glow Mask","sr":1,"st":0,"op":1800,"ip":0,"hd":false,"ddd":0,"bm":0,"hasMask":false,"td":1,"ao":0,"ks":{"a":{"a":0,"k":[346.917,346.917,0],"ix":1},"s":{"a":1,"k":[{"o":{"x":0.333,"y":0},"i":{"x":0.667,"y":1},"s":[20,20,100],"t":30},{"o":{"x":0.333,"y":0},"i":{"x":0.833,"y":1},"s":[110,110,100],"t":60},{"o":{"x":0.167,"y":0},"i":{"x":0.833,"y":1},"s":[95,95,100],"t":80},{"o":{"x":0.167,"y":0},"i":{"x":0.833,"y":1},"s":[102,102,100],"t":92},{"o":{"x":0.167,"y":0},"i":{"x":0.833,"y":1},"s":[98,98,100],"t":100},{"s":[100,100,100],"t":110}],"ix":6},"sk":{"a":0,"k":0},"p":{"a":1,"k":[{"o":{"x":0.506,"y":0},"i":{"x":0.783,"y":0.496},"s":[1099.01,1187.835],"t":0},{"o":{"x":0.337,"y":0.495},"i":{"x":0.576,"y":1},"s":[989.155,1114.015,0],"t":30,"ti":[3.563,56.649,0],"to":[-26.997,-33.775,0]},{"s":[947.01,981.835,0],"t":50}],"ix":2},"r":{"a":0,"k":0,"ix":10},"sa":{"a":0,"k":0},"o":{"a":1,"k":[{"o":{"x":0.167,"y":0.167},"i":{"x":0.833,"y":0.833},"s":[0],"t":0},{"o":{"x":0.167,"y":0.167},"i":{"x":0.833,"y":0.833},"s":[100],"t":4},{"s":[100],"t":32}],"ix":11}},"shapes":[{"ty":"gr","bm":0,"hd":false,"mn":"ADBE Vector Group","nm":"Group 1","ix":1,"cix":2,"np":2,"it":[{"ty":"sh","bm":0,"hd":false,"mn":"ADBE Vector Shape - Group","nm":"Path 1","ix":1,"d":1,"ks":{"a":0,"k":{"c":true,"i":[[0,-191.459],[191.459,0],[0,191.458],[-191.458,0]],"o":[[0,191.458],[-191.458,0],[0,-191.459],[191.459,0]],"v":[[346.667,0],[0,346.667],[-346.667,0],[0,-346.666]]},"ix":2}},{"ty":"fl","bm":0,"hd":false,"mn":"ADBE Vector Graphic - Fill","nm":"Fill 1","c":{"a":0,"k":[0.1176,0.4431,0.9294],"ix":4},"r":1,"o":{"a":0,"k":100,"ix":5}},{"ty":"tr","a":{"a":0,"k":[0,0],"ix":1},"s":{"a":0,"k":[100,100],"ix":3},"sk":{"a":0,"k":0,"ix":4},"p":{"a":0,"k":[346.916,346.917],"ix":2},"r":{"a":0,"k":0,"ix":6},"sa":{"a":0,"k":0,"ix":5},"o":{"a":0,"k":100,"ix":7}}]}],"ind":2},{"ty":4,"nm":"Glow","sr":1,"st":0,"op":1800,"ip":0,"hd":false,"ddd":0,"bm":0,"tt":1,"hasMask":false,"ao":0,"ks":{"a":{"a":0,"k":[0,0,0],"ix":1},"s":{"a":0,"k":[100,100,100],"ix":6},"sk":{"a":0,"k":0},"p":{"a":1,"k":[{"o":{"x":0.167,"y":0.167},"i":{"x":0.833,"y":0.833},"s":[56,440],"t":0},{"o":{"x":0.72,"y":0},"i":{"x":0.833,"y":0.788},"s":[56,440,0],"t":94,"ti":[-226.667,-131.333,0],"to":[226.667,131.333,0]},{"s":[1416,1228,0],"t":140}],"ix":2},"r":{"a":0,"k":0,"ix":10},"sa":{"a":0,"k":0},"o":{"a":1,"k":[{"o":{"x":0.167,"y":0},"i":{"x":0.833,"y":1},"s":[0],"t":0},{"o":{"x":0.167,"y":0},"i":{"x":0.833,"y":1},"s":[100],"t":4},{"o":{"x":0.72,"y":0},"i":{"x":0.833,"y":0.643},"s":[100],"t":110},{"s":[0],"t":140}],"ix":11}},"shapes":[{"ty":"gr","bm":0,"hd":false,"mn":"ADBE Vector Group","nm":"Shape 1","ix":1,"cix":2,"np":3,"it":[{"ty":"sh","bm":0,"hd":false,"mn":"ADBE Vector Shape - Group","nm":"Path 1","ix":1,"d":1,"ks":{"a":0,"k":{"c":true,"i":[[0,0],[348.655,1.947],[0,0],[35.647,880.072]],"o":[[0,0],[-8.868,-0.049],[0,0],[-3.819,-94.283]],"v":[[211.999,-440],[-480,280],[-136,648],[483.999,-312]]},"ix":2}},{"ty":"fl","bm":0,"hd":false,"mn":"ADBE Vector Graphic - Fill","nm":"Fill 1","c":{"a":0,"k":[0.7686,0.8235,1],"ix":4},"r":1,"o":{"a":0,"k":30,"ix":5}},{"ty":"tr","a":{"a":0,"k":[0,0],"ix":1},"s":{"a":0,"k":[100,100],"ix":3},"sk":{"a":0,"k":0,"ix":4},"p":{"a":0,"k":[0,0],"ix":2},"r":{"a":0,"k":0,"ix":6},"sa":{"a":0,"k":0,"ix":5},"o":{"a":0,"k":100,"ix":7}}]}],"ind":3,"tp":2},{"ty":4,"nm":"Background Circle (Blue)","sr":1,"st":0,"op":1800,"ip":0,"hd":false,"ddd":0,"bm":0,"hasMask":false,"ao":0,"ks":{"a":{"a":0,"k":[346.917,346.917,0],"ix":1},"s":{"a":1,"k":[{"o":{"x":0.333,"y":0},"i":{"x":0.667,"y":1},"s":[20,20,100],"t":30},{"o":{"x":0.333,"y":0},"i":{"x":0.833,"y":1},"s":[110,110,100],"t":60},{"o":{"x":0.167,"y":0},"i":{"x":0.833,"y":1},"s":[95,95,100],"t":80},{"o":{"x":0.167,"y":0},"i":{"x":0.833,"y":1},"s":[102,102,100],"t":92},{"o":{"x":0.167,"y":0},"i":{"x":0.833,"y":1},"s":[98,98,100],"t":100},{"s":[100,100,100],"t":110}],"ix":6},"sk":{"a":0,"k":0},"p":{"a":1,"k":[{"o":{"x":0.506,"y":0},"i":{"x":0.783,"y":0.496},"s":[1099.01,1187.835],"t":0},{"o":{"x":0.337,"y":0.495},"i":{"x":0.576,"y":1},"s":[989.155,1114.015,0],"t":30,"ti":[3.563,56.649,0],"to":[-26.997,-33.775,0]},{"s":[947.01,981.835,0],"t":50}],"ix":2},"r":{"a":0,"k":0,"ix":10},"sa":{"a":0,"k":0},"o":{"a":1,"k":[{"o":{"x":0.167,"y":0.167},"i":{"x":0.833,"y":0.833},"s":[0],"t":0},{"o":{"x":0.167,"y":0.167},"i":{"x":0.833,"y":0.833},"s":[100],"t":4},{"s":[100],"t":32}],"ix":11}},"shapes":[{"ty":"gr","bm":0,"hd":false,"mn":"ADBE Vector Group","nm":"Group 1","ix":1,"cix":2,"np":2,"it":[{"ty":"sh","bm":0,"hd":false,"mn":"ADBE Vector Shape - Group","nm":"Path 1","ix":1,"d":1,"ks":{"a":0,"k":{"c":true,"i":[[0,-191.459],[191.459,0],[0,191.458],[-191.458,0]],"o":[[0,191.458],[-191.458,0],[0,-191.459],[191.459,0]],"v":[[346.667,0],[0,346.667],[-346.667,0],[0,-346.666]]},"ix":2}},{"ty":"fl","bm":0,"hd":false,"mn":"ADBE Vector Graphic - Fill","nm":"Fill 1","c":{"a":0,"k":[0.2235,0.7098,0.2902],"ix":4},"r":1,"o":{"a":0,"k":100,"ix":5}},{"ty":"tr","a":{"a":0,"k":[0,0],"ix":1},"s":{"a":0,"k":[100,100],"ix":3},"sk":{"a":0,"k":0,"ix":4},"p":{"a":0,"k":[346.916,346.917],"ix":2},"r":{"a":0,"k":0,"ix":6},"sa":{"a":0,"k":0,"ix":5},"o":{"a":0,"k":100,"ix":7}}]}],"ind":4},{"ty":4,"nm":"Background(Blue)","sr":1,"st":0,"op":1800,"ip":0,"hd":false,"ddd":0,"bm":0,"hasMask":false,"ao":0,"ks":{"a":{"a":0,"k":[346.917,346.917,0],"ix":1},"s":{"a":1,"k":[{"o":{"x":0.67,"y":0},"i":{"x":0.33,"y":1},"s":[100,100,100],"t":0},{"o":{"x":0.67,"y":0},"i":{"x":0.33,"y":1},"s":[148,148,100],"t":60},{"s":[88,88,100],"t":110}],"ix":6},"sk":{"a":0,"k":0},"p":{"a":1,"k":[{"o":{"x":0.167,"y":0.167},"i":{"x":0.833,"y":0.833},"s":[346.917,346.917,0],"t":30,"ti":[0,0,0],"to":[0,0,0]},{"s":[346.917,346.917,0],"t":49}],"ix":2},"r":{"a":0,"k":0,"ix":10},"sa":{"a":0,"k":0},"o":{"a":1,"k":[{"o":{"x":0.167,"y":0.167},"i":{"x":0.833,"y":0.833},"s":[0],"t":0},{"o":{"x":0.167,"y":0.167},"i":{"x":0.833,"y":0.833},"s":[20],"t":4},{"s":[20],"t":32}],"ix":11}},"shapes":[{"ty":"gr","bm":0,"hd":false,"mn":"ADBE Vector Group","nm":"Group 1","ix":1,"cix":2,"np":2,"it":[{"ty":"sh","bm":0,"hd":false,"mn":"ADBE Vector Shape - Group","nm":"Path 1","ix":1,"d":1,"ks":{"a":0,"k":{"c":true,"i":[[0,-191.459],[191.459,0],[0,191.458],[-191.458,0]],"o":[[0,191.458],[-191.458,0],[0,-191.459],[191.459,0]],"v":[[346.667,0],[0,346.667],[-346.667,0],[0,-346.666]]},"ix":2}},{"ty":"fl","bm":0,"hd":false,"mn":"ADBE Vector Graphic - Fill","nm":"Fill 1","c":{"a":0,"k":[0.2235,0.7098,0.2902],"ix":4},"r":1,"o":{"a":0,"k":100,"ix":5}},{"ty":"tr","a":{"a":0,"k":[0,0],"ix":1},"s":{"a":0,"k":[100,100],"ix":3},"sk":{"a":0,"k":0,"ix":4},"p":{"a":0,"k":[346.916,346.917],"ix":2},"r":{"a":0,"k":0,"ix":6},"sa":{"a":0,"k":0,"ix":5},"o":{"a":0,"k":100,"ix":7}}]}],"ind":5,"parent":4},{"ty":4,"nm":"Element 11","sr":1,"st":0,"op":1800,"ip":0,"hd":false,"ddd":0,"bm":0,"hasMask":false,"ao":0,"ks":{"a":{"a":0,"k":[88.379,84.132,0],"ix":1},"s":{"a":0,"k":[100,100,100],"ix":6},"sk":{"a":0,"k":0},"p":{"a":1,"k":[{"o":{"x":0.167,"y":0.167},"i":{"x":0.833,"y":0.833},"s":[1088.545,1185.048],"t":0},{"o":{"x":0.174,"y":0},"i":{"x":0.33,"y":1},"s":[1088.545,1185.048,0],"t":10,"ti":[34.333,-69,0],"to":[-154.333,61,0]},{"s":[774.545,1455.048,0],"t":42}],"ix":2},"r":{"a":0,"k":0,"ix":10},"sa":{"a":0,"k":0},"o":{"a":1,"k":[{"o":{"x":0.167,"y":0},"i":{"x":0.833,"y":1},"s":[0],"t":0},{"o":{"x":0.167,"y":0},"i":{"x":0.833,"y":1},"s":[100],"t":4},{"o":{"x":0.72,"y":0},"i":{"x":0.833,"y":0.601},"s":[100],"t":32},{"s":[0],"t":87}],"ix":11}},"shapes":[{"ty":"gr","bm":0,"hd":false,"mn":"ADBE Vector Group","nm":"Group 1","ix":1,"cix":2,"np":2,"it":[{"ty":"sh","bm":0,"hd":false,"mn":"ADBE Vector Shape - Group","nm":"Path 1","ix":1,"d":1,"ks":{"a":0,"k":{"c":false,"i":[[0,0],[-17.539,13.457],[-12.743,-16.607],[0,0]],"o":[[-12.743,-16.608],[17.539,-13.458],[0,0],[0,0]],"v":[[-25.635,34.132],[-16.894,-20.673],[38.306,-14.931],[38.379,-14.837]]},"ix":2}},{"ty":"st","bm":0,"hd":false,"mn":"ADBE Vector Graphic - Stroke","nm":"Stroke 1","lc":2,"lj":2,"ml":1,"o":{"a":0,"k":100,"ix":4},"w":{"a":0,"k":20,"ix":5},"c":{"a":0,"k":[0.2549,0.6863,0.502],"ix":3}},{"ty":"tr","a":{"a":0,"k":[0,0],"ix":1},"s":{"a":0,"k":[100,100],"ix":3},"sk":{"a":0,"k":0,"ix":4},"p":{"a":0,"k":[88.378,84.131],"ix":2},"r":{"a":0,"k":0,"ix":6},"sa":{"a":0,"k":0,"ix":5},"o":{"a":0,"k":100,"ix":7}}]}],"ind":6},{"ty":4,"nm":"Element 10","sr":1,"st":0,"op":1800,"ip":0,"hd":false,"ddd":0,"bm":0,"hasMask":false,"ao":0,"ks":{"a":{"a":0,"k":[33.514,41.664,0],"ix":1},"s":{"a":0,"k":[100,100,100],"ix":6},"sk":{"a":0,"k":0},"p":{"a":1,"k":[{"o":{"x":0.167,"y":0.167},"i":{"x":0.833,"y":0.833},"s":[1088.113,1187.051],"t":0},{"o":{"x":0.229,"y":0},"i":{"x":0.33,"y":1},"s":[1088.113,1187.051,0],"t":10,"ti":[-71.667,-48,0],"to":[37.667,40,0]},{"s":[1314.113,1427.051,0],"t":46}],"ix":2},"r":{"a":0,"k":0,"ix":10},"sa":{"a":0,"k":0},"o":{"a":1,"k":[{"o":{"x":0.167,"y":0},"i":{"x":0.833,"y":1},"s":[0],"t":0},{"o":{"x":0.167,"y":0},"i":{"x":0.833,"y":1},"s":[100],"t":4},{"o":{"x":0.72,"y":0},"i":{"x":0.833,"y":0.601},"s":[100],"t":32},{"s":[0],"t":87}],"ix":11}},"shapes":[{"ty":"gr","bm":0,"hd":false,"mn":"ADBE Vector Group","nm":"Group 1","ix":1,"cix":2,"np":2,"it":[{"ty":"sh","bm":0,"hd":false,"mn":"ADBE Vector Shape - Group","nm":"Path 1","ix":1,"d":1,"ks":{"a":0,"k":{"c":true,"i":[[3.281,-1.895],[0,0],[1.894,3.281],[0,0],[-3.281,1.894],[0,0],[-1.894,-3.282],[0,0]],"o":[[0,0],[-3.281,1.894],[0,0],[-1.894,-3.283],[0,0],[3.281,-1.895],[0,0],[1.894,3.281]],"v":[[28.859,29.055],[10.732,39.52],[1.361,37.009],[-31.37,-19.681],[-28.859,-29.053],[-10.732,-39.519],[-1.361,-37.008],[31.37,19.683]]},"ix":2}},{"ty":"fl","bm":0,"hd":false,"mn":"ADBE Vector Graphic - Fill","nm":"Fill 1","c":{"a":0,"k":[0.2745,0.5137,0.9608],"ix":4},"r":1,"o":{"a":0,"k":100,"ix":5}},{"ty":"tr","a":{"a":0,"k":[0,0],"ix":1},"s":{"a":0,"k":[100,100],"ix":3},"sk":{"a":0,"k":0,"ix":4},"p":{"a":0,"k":[33.514,41.664],"ix":2},"r":{"a":0,"k":0,"ix":6},"sa":{"a":0,"k":0,"ix":5},"o":{"a":0,"k":100,"ix":7}}]}],"ind":7},{"ty":4,"nm":"Element 9","sr":1,"st":0,"op":1800,"ip":0,"hd":false,"ddd":0,"bm":0,"hasMask":false,"ao":0,"ks":{"a":{"a":0,"k":[60.548,78.82,0],"ix":1},"s":{"a":0,"k":[100,100,100],"ix":6},"sk":{"a":0,"k":0},"p":{"a":1,"k":[{"o":{"x":0.167,"y":0.167},"i":{"x":0.833,"y":0.833},"s":[1106.768,1189.936],"t":0},{"o":{"x":0.189,"y":0},"i":{"x":0.33,"y":1},"s":[1106.768,1189.936,0],"t":10,"ti":[-62.333,-30.333,0],"to":[70.333,-5.667,0]},{"s":[1420.768,1239.936,0],"t":43}],"ix":2},"r":{"a":0,"k":0,"ix":10},"sa":{"a":0,"k":0},"o":{"a":1,"k":[{"o":{"x":0.167,"y":0},"i":{"x":0.833,"y":1},"s":[0],"t":0},{"o":{"x":0.167,"y":0},"i":{"x":0.833,"y":1},"s":[100],"t":4},{"o":{"x":0.72,"y":0},"i":{"x":0.833,"y":0.601},"s":[100],"t":32},{"s":[0],"t":87}],"ix":11}},"shapes":[{"ty":"gr","bm":0,"hd":false,"mn":"ADBE Vector Group","nm":"Group 1","ix":1,"cix":2,"np":2,"it":[{"ty":"sh","bm":0,"hd":false,"mn":"ADBE Vector Shape - Group","nm":"Path 1","ix":1,"d":1,"ks":{"a":0,"k":{"c":false,"i":[[0,0],[2.886,-21.917],[20.753,2.734],[0.039,0.005]],"o":[[20.754,2.733],[-2.886,21.918],[-0.04,-0.005],[0,0]],"v":[[-12.409,-41.32],[20.162,3.615],[-22.93,38.586],[-23.048,38.571]]},"ix":2}},{"ty":"st","bm":0,"hd":false,"mn":"ADBE Vector Graphic - Stroke","nm":"Stroke 1","lc":2,"lj":2,"ml":1,"o":{"a":0,"k":100,"ix":4},"w":{"a":0,"k":15,"ix":5},"c":{"a":0,"k":[0.8706,0.2471,0.2471],"ix":3}},{"ty":"tr","a":{"a":0,"k":[0,0],"ix":1},"s":{"a":0,"k":[100,100],"ix":3},"sk":{"a":0,"k":0,"ix":4},"p":{"a":0,"k":[60.548,78.82],"ix":2},"r":{"a":0,"k":0,"ix":6},"sa":{"a":0,"k":0,"ix":5},"o":{"a":0,"k":100,"ix":7}}]}],"ind":8},{"ty":4,"nm":"Element 8","sr":1,"st":0,"op":1800,"ip":0,"hd":false,"ddd":0,"bm":0,"hasMask":false,"ao":0,"ks":{"a":{"a":0,"k":[47.326,47.325,0],"ix":1},"s":{"a":0,"k":[100,100,100],"ix":6},"sk":{"a":0,"k":0},"p":{"a":1,"k":[{"o":{"x":0.167,"y":0.167},"i":{"x":0.833,"y":0.833},"s":[1095.413,1171.271],"t":0},{"o":{"x":0.263,"y":0},"i":{"x":0.33,"y":1},"s":[1095.413,1171.271,0],"t":10,"ti":[-98.333,51.667,0],"to":[46.333,-81.667,0]},{"s":[1397.413,873.271,0],"t":68}],"ix":2},"r":{"a":0,"k":0,"ix":10},"sa":{"a":0,"k":0},"o":{"a":1,"k":[{"o":{"x":0.167,"y":0},"i":{"x":0.833,"y":1},"s":[0],"t":0},{"o":{"x":0.167,"y":0},"i":{"x":0.833,"y":1},"s":[100],"t":4},{"o":{"x":0.72,"y":0},"i":{"x":0.833,"y":0.601},"s":[100],"t":32},{"s":[0],"t":87}],"ix":11}},"shapes":[{"ty":"gr","bm":0,"hd":false,"mn":"ADBE Vector Group","nm":"Group 1","ix":1,"cix":2,"np":2,"it":[{"ty":"sh","bm":0,"hd":false,"mn":"ADBE Vector Shape - Group","nm":"Path 1","ix":1,"d":1,"ks":{"a":0,"k":{"c":true,"i":[[-11.644,-3.948],[0,0],[-3.912,2.92],[0,0],[0.157,-12.294],[0,0],[-3.985,-2.819],[0,0],[11.74,-3.65],[0,0],[1.449,-4.662],[0,0],[7.098,10.038],[0,0],[4.882,-0.063],[0,0],[-7.354,9.853],[0,0],[1.569,4.624],[0,0]],"o":[[0,0],[4.623,1.568],[0,0],[9.854,-7.353],[0,0],[-0.062,4.882],[0,0],[10.038,7.099],[0,0],[-4.662,1.449],[0,0],[-3.649,11.74],[0,0],[-2.82,-3.986],[0,0],[-12.293,0.156],[0,0],[2.92,-3.913],[0,0],[-3.948,-11.644]],"v":[[-17.558,-36.37],[-13.481,-34.987],[0.154,-37.147],[3.606,-39.722],[27.31,-27.644],[27.255,-23.339],[33.522,-11.038],[37.038,-8.552],[32.877,17.724],[28.763,19.002],[19.003,28.764],[17.724,32.876],[-8.551,37.037],[-11.037,33.522],[-23.338,27.255],[-27.644,27.31],[-39.721,3.606],[-37.146,0.155],[-34.987,-13.481],[-36.37,-17.558]]},"ix":2}},{"ty":"fl","bm":0,"hd":false,"mn":"ADBE Vector Graphic - Fill","nm":"Fill 1","c":{"a":0,"k":[1,0.7373,0.1961],"ix":4},"r":1,"o":{"a":0,"k":100,"ix":5}},{"ty":"tr","a":{"a":0,"k":[0,0],"ix":1},"s":{"a":0,"k":[100,100],"ix":3},"sk":{"a":0,"k":0,"ix":4},"p":{"a":0,"k":[47.325,47.325],"ix":2},"r":{"a":0,"k":0,"ix":6},"sa":{"a":0,"k":0,"ix":5},"o":{"a":0,"k":100,"ix":7}}]}],"ind":9},{"ty":4,"nm":"Element 7","sr":1,"st":0,"op":1800,"ip":0,"hd":false,"ddd":0,"bm":0,"hasMask":false,"ao":0,"ks":{"a":{"a":0,"k":[77.856,74.774,0],"ix":1},"s":{"a":0,"k":[100,100,100],"ix":6},"sk":{"a":0,"k":0},"p":{"a":1,"k":[{"o":{"x":0.167,"y":0.167},"i":{"x":0.833,"y":0.833},"s":[1086.148,1173.839],"t":0},{"o":{"x":0.229,"y":0},"i":{"x":0.33,"y":1},"s":[1086.148,1173.839,0],"t":10,"ti":[-64.333,76,0],"to":[18.333,-110,0]},{"s":[1316.148,645.839,0],"t":46}],"ix":2},"r":{"a":0,"k":0,"ix":10},"sa":{"a":0,"k":0},"o":{"a":1,"k":[{"o":{"x":0.167,"y":0},"i":{"x":0.833,"y":1},"s":[0],"t":0},{"o":{"x":0.167,"y":0},"i":{"x":0.833,"y":1},"s":[100],"t":4},{"o":{"x":0.72,"y":0},"i":{"x":0.833,"y":0.601},"s":[100],"t":32},{"s":[0],"t":87}],"ix":11}},"shapes":[{"ty":"gr","bm":0,"hd":false,"mn":"ADBE Vector Group","nm":"Group 1","ix":1,"cix":2,"np":2,"it":[{"ty":"sh","bm":0,"hd":false,"mn":"ADBE Vector Shape - Group","nm":"Path 1","ix":1,"d":1,"ks":{"a":0,"k":{"c":false,"i":[[0,0],[-12.731,9.768],[-9.249,-12.055],[-0.018,-0.022]],"o":[[-9.249,-12.055],[12.73,-9.768],[0.018,0.023],[0,0]],"v":[[-18.607,24.774],[-12.262,-15.006],[27.805,-10.838],[27.857,-10.77]]},"ix":2}},{"ty":"st","bm":0,"hd":false,"mn":"ADBE Vector Graphic - Stroke","nm":"Stroke 1","lc":2,"lj":2,"ml":1,"o":{"a":0,"k":100,"ix":4},"w":{"a":0,"k":20,"ix":5},"c":{"a":0,"k":[0.2706,0.5216,0.9686],"ix":3}},{"ty":"tr","a":{"a":0,"k":[0,0],"ix":1},"s":{"a":0,"k":[100,100],"ix":3},"sk":{"a":0,"k":0,"ix":4},"p":{"a":0,"k":[77.856,74.774],"ix":2},"r":{"a":0,"k":0,"ix":6},"sa":{"a":0,"k":0,"ix":5},"o":{"a":0,"k":100,"ix":7}}]}],"ind":10},{"ty":4,"nm":"Element 6","sr":1,"st":0,"op":1800,"ip":0,"hd":false,"ddd":0,"bm":0,"hasMask":false,"ao":0,"ks":{"a":{"a":0,"k":[47.326,47.325,0],"ix":1},"s":{"a":0,"k":[100,100,100],"ix":6},"sk":{"a":0,"k":0},"p":{"a":1,"k":[{"o":{"x":0.167,"y":0.167},"i":{"x":0.833,"y":0.833},"s":[1081.471,1169.811],"t":0},{"o":{"x":0.189,"y":0},"i":{"x":0.33,"y":1},"s":[1081.471,1169.811,0],"t":10,"ti":[110,-64.333,0],"to":[-138,24.333,0]},{"s":[529.471,1363.811,0],"t":43}],"ix":2},"r":{"a":0,"k":0,"ix":10},"sa":{"a":0,"k":0},"o":{"a":1,"k":[{"o":{"x":0.167,"y":0},"i":{"x":0.833,"y":1},"s":[0],"t":0},{"o":{"x":0.167,"y":0},"i":{"x":0.833,"y":1},"s":[100],"t":4},{"o":{"x":0.72,"y":0},"i":{"x":0.833,"y":0.601},"s":[100],"t":32},{"s":[0],"t":87}],"ix":11}},"shapes":[{"ty":"gr","bm":0,"hd":false,"mn":"ADBE Vector Group","nm":"Group 1","ix":1,"cix":2,"np":2,"it":[{"ty":"sh","bm":0,"hd":false,"mn":"ADBE Vector Shape - Group","nm":"Path 1","ix":1,"d":1,"ks":{"a":0,"k":{"c":true,"i":[[-11.644,-3.948],[0,0],[-3.913,2.92],[0,0],[0.157,-12.294],[0,0],[-3.986,-2.819],[0,0],[11.74,-3.65],[0,0],[1.449,-4.662],[0,0],[7.099,10.038],[0,0],[4.881,-0.062],[0,0],[-7.353,9.853],[0,0],[1.568,4.624],[0,0]],"o":[[0,0],[4.623,1.567],[0,0],[9.853,-7.352],[0,0],[-0.063,4.882],[0,0],[10.038,7.1],[0,0],[-4.662,1.449],[0,0],[-3.649,11.741],[0,0],[-2.819,-3.987],[0,0],[-12.293,0.157],[0,0],[2.92,-3.913],[0,0],[-3.948,-11.644]],"v":[[-17.558,-36.37],[-13.481,-34.987],[0.154,-37.147],[3.605,-39.723],[27.31,-27.644],[27.255,-23.339],[33.521,-11.038],[37.037,-8.553],[32.875,17.724],[28.763,19.002],[19.003,28.764],[17.724,32.875],[-8.552,37.037],[-11.039,33.522],[-23.339,27.254],[-27.645,27.31],[-39.722,3.606],[-37.146,0.154],[-34.987,-13.481],[-36.37,-17.558]]},"ix":2}},{"ty":"fl","bm":0,"hd":false,"mn":"ADBE Vector Graphic - Fill","nm":"Fill 1","c":{"a":0,"k":[0.2824,0.5098,0.9804],"ix":4},"r":1,"o":{"a":0,"k":100,"ix":5}},{"ty":"tr","a":{"a":0,"k":[0,0],"ix":1},"s":{"a":0,"k":[100,100],"ix":3},"sk":{"a":0,"k":0,"ix":4},"p":{"a":0,"k":[47.325,47.325],"ix":2},"r":{"a":0,"k":0,"ix":6},"sa":{"a":0,"k":0,"ix":5},"o":{"a":0,"k":100,"ix":7}}]}],"ind":11},{"ty":4,"nm":"Element 5","sr":1,"st":0,"op":1800,"ip":0,"hd":false,"ddd":0,"bm":0,"hasMask":false,"ao":0,"ks":{"a":{"a":0,"k":[30.771,30.771,0],"ix":1},"s":{"a":0,"k":[100,100,100],"ix":6},"sk":{"a":0,"k":0},"p":{"a":1,"k":[{"o":{"x":0.167,"y":0.167},"i":{"x":0.833,"y":0.833},"s":[1071.297,1171.159],"t":0},{"o":{"x":0.283,"y":0},"i":{"x":0.33,"y":1},"s":[1071.297,1171.159,0],"t":10,"ti":[132.333,-35,0],"to":[-118.333,-25,0]},{"s":[517.297,1177.159,0],"t":70}],"ix":2},"r":{"a":0,"k":0,"ix":10},"sa":{"a":0,"k":0},"o":{"a":1,"k":[{"o":{"x":0.167,"y":0},"i":{"x":0.833,"y":1},"s":[0],"t":0},{"o":{"x":0.167,"y":0},"i":{"x":0.833,"y":1},"s":[100],"t":4},{"o":{"x":0.72,"y":0},"i":{"x":0.833,"y":0.601},"s":[100],"t":32},{"s":[0],"t":87}],"ix":11}},"shapes":[{"ty":"gr","bm":0,"hd":false,"mn":"ADBE Vector Group","nm":"Group 1","ix":1,"cix":2,"np":2,"it":[{"ty":"sh","bm":0,"hd":false,"mn":"ADBE Vector Shape - Group","nm":"Path 1","ix":1,"d":1,"ks":{"a":0,"k":{"c":true,"i":[[0,-16.856],[16.856,0],[0,16.856],[-16.857,0]],"o":[[0,16.856],[-16.857,0],[0,-16.856],[16.856,0]],"v":[[30.521,0],[0,30.521],[-30.521,0],[0,-30.521]]},"ix":2}},{"ty":"fl","bm":0,"hd":false,"mn":"ADBE Vector Graphic - Fill","nm":"Fill 1","c":{"a":0,"k":[0.9804,0.7529,0.2],"ix":4},"r":1,"o":{"a":0,"k":100,"ix":5}},{"ty":"tr","a":{"a":0,"k":[0,0],"ix":1},"s":{"a":0,"k":[100,100],"ix":3},"sk":{"a":0,"k":0,"ix":4},"p":{"a":0,"k":[30.771,30.771],"ix":2},"r":{"a":0,"k":0,"ix":6},"sa":{"a":0,"k":0,"ix":5},"o":{"a":0,"k":100,"ix":7}}]}],"ind":12},{"ty":4,"nm":"Element 4","sr":1,"st":0,"op":1800,"ip":0,"hd":false,"ddd":0,"bm":0,"hasMask":false,"ao":0,"ks":{"a":{"a":0,"k":[42,25.144,0],"ix":1},"s":{"a":0,"k":[100,100,100],"ix":6},"sk":{"a":0,"k":0},"p":{"a":1,"k":[{"o":{"x":0.167,"y":0.167},"i":{"x":0.833,"y":0.833},"s":[1074.624,1178.727],"t":0},{"o":{"x":0.273,"y":0},"i":{"x":0.33,"y":1},"s":[1074.624,1178.727,0],"t":10,"ti":[140.667,20.667,0],"to":[-94.667,-86.667,0]},{"s":[446.624,934.727,0],"t":69}],"ix":2},"r":{"a":0,"k":0,"ix":10},"sa":{"a":0,"k":0},"o":{"a":1,"k":[{"o":{"x":0.167,"y":0},"i":{"x":0.833,"y":1},"s":[0],"t":0},{"o":{"x":0.167,"y":0},"i":{"x":0.833,"y":1},"s":[100],"t":4},{"o":{"x":0.72,"y":0},"i":{"x":0.833,"y":0.601},"s":[100],"t":32},{"s":[0],"t":87}],"ix":11}},"shapes":[{"ty":"gr","bm":0,"hd":false,"mn":"ADBE Vector Group","nm":"Group 1","ix":1,"cix":2,"np":2,"it":[{"ty":"sh","bm":0,"hd":false,"mn":"ADBE Vector Shape - Group","nm":"Path 1","ix":1,"d":1,"ks":{"a":0,"k":{"c":true,"i":[[-0.829,-3.697],[0,0],[3.698,-0.828],[0,0],[0.83,3.697],[0,0],[-3.697,0.828],[0,0]],"o":[[0,0],[0.829,3.697],[0,0],[-3.697,0.828],[0,0],[-0.828,-3.697],[0,0],[3.697,-0.828]],"v":[[36.343,-18.872],[40.921,1.552],[35.727,9.747],[-28.148,24.066],[-36.344,18.872],[-40.922,-1.553],[-35.728,-9.747],[28.148,-24.066]]},"ix":2}},{"ty":"fl","bm":0,"hd":false,"mn":"ADBE Vector Graphic - Fill","nm":"Fill 1","c":{"a":0,"k":[0.2745,0.5137,0.9608],"ix":4},"r":1,"o":{"a":0,"k":100,"ix":5}},{"ty":"tr","a":{"a":0,"k":[0,0],"ix":1},"s":{"a":0,"k":[100,100],"ix":3},"sk":{"a":0,"k":0,"ix":4},"p":{"a":0,"k":[42,25.144],"ix":2},"r":{"a":0,"k":0,"ix":6},"sa":{"a":0,"k":0,"ix":5},"o":{"a":0,"k":100,"ix":7}}]}],"ind":13},{"ty":4,"nm":"Element 3","sr":1,"st":0,"op":1800,"ip":0,"hd":false,"ddd":0,"bm":0,"hasMask":false,"ao":0,"ks":{"a":{"a":0,"k":[47.326,47.325,0],"ix":1},"s":{"a":0,"k":[100,100,100],"ix":6},"sk":{"a":0,"k":0},"p":{"a":1,"k":[{"o":{"x":0.167,"y":0.167},"i":{"x":0.833,"y":0.833},"s":[1067.471,1180.071],"t":0},{"o":{"x":0.174,"y":0},"i":{"x":0.33,"y":1},"s":[1067.471,1180.071,0],"t":10,"ti":[149.667,68,0],"to":[-115.667,-176,0]},{"s":[529.471,736.071,0],"t":61}],"ix":2},"r":{"a":0,"k":0,"ix":10},"sa":{"a":0,"k":0},"o":{"a":1,"k":[{"o":{"x":0.167,"y":0},"i":{"x":0.833,"y":1},"s":[0],"t":0},{"o":{"x":0.167,"y":0},"i":{"x":0.833,"y":1},"s":[100],"t":4},{"o":{"x":0.72,"y":0},"i":{"x":0.833,"y":0.601},"s":[100],"t":32},{"s":[0],"t":87}],"ix":11}},"shapes":[{"ty":"gr","bm":0,"hd":false,"mn":"ADBE Vector Group","nm":"Group 1","ix":1,"cix":2,"np":2,"it":[{"ty":"sh","bm":0,"hd":false,"mn":"ADBE Vector Shape - Group","nm":"Path 1","ix":1,"d":1,"ks":{"a":0,"k":{"c":true,"i":[[-11.644,-3.948],[0,0],[-3.913,2.92],[0,0],[0.157,-12.294],[0,0],[-3.986,-2.819],[0,0],[11.74,-3.65],[0,0],[1.449,-4.662],[0,0],[7.099,10.038],[0,0],[4.881,-0.063],[0,0],[-7.353,9.854],[0,0],[1.568,4.624],[0,0]],"o":[[0,0],[4.623,1.568],[0,0],[9.853,-7.353],[0,0],[-0.063,4.882],[0,0],[10.038,7.099],[0,0],[-4.662,1.449],[0,0],[-3.649,11.74],[0,0],[-2.819,-3.986],[0,0],[-12.293,0.157],[0,0],[2.92,-3.912],[0,0],[-3.948,-11.644]],"v":[[-17.558,-36.37],[-13.481,-34.987],[0.154,-37.147],[3.605,-39.722],[27.31,-27.644],[27.255,-23.339],[33.521,-11.038],[37.037,-8.552],[32.875,17.724],[28.763,19.002],[19.003,28.764],[17.724,32.876],[-8.552,37.037],[-11.039,33.522],[-23.339,27.255],[-27.645,27.309],[-39.722,3.605],[-37.146,0.154],[-34.987,-13.481],[-36.37,-17.558]]},"ix":2}},{"ty":"fl","bm":0,"hd":false,"mn":"ADBE Vector Graphic - Fill","nm":"Fill 1","c":{"a":0,"k":[0.2784,0.6784,0.4902],"ix":4},"r":1,"o":{"a":0,"k":100,"ix":5}},{"ty":"tr","a":{"a":0,"k":[0,0],"ix":1},"s":{"a":0,"k":[100,100],"ix":3},"sk":{"a":0,"k":0,"ix":4},"p":{"a":0,"k":[47.325,47.325],"ix":2},"r":{"a":0,"k":0,"ix":6},"sa":{"a":0,"k":0,"ix":5},"o":{"a":0,"k":100,"ix":7}}]}],"ind":14},{"ty":4,"nm":"Element 2","sr":1,"st":0,"op":1800,"ip":0,"hd":false,"ddd":0,"bm":0,"hasMask":false,"ao":0,"ks":{"a":{"a":0,"k":[33.515,41.664,0],"ix":1},"s":{"a":0,"k":[100,100,100],"ix":6},"sk":{"a":0,"k":0},"p":{"a":1,"k":[{"o":{"x":0.167,"y":0.167},"i":{"x":0.833,"y":0.833},"s":[1098.638,1189.457],"t":0},{"o":{"x":0.292,"y":0},"i":{"x":0.33,"y":1},"s":[1098.638,1189.457,0],"t":10,"ti":[3.667,95,0],"to":[-95.667,-127,0]},{"s":[788.638,547.457,0],"t":71}],"ix":2},"r":{"a":0,"k":0,"ix":10},"sa":{"a":0,"k":0},"o":{"a":1,"k":[{"o":{"x":0.167,"y":0},"i":{"x":0.833,"y":1},"s":[0],"t":0},{"o":{"x":0.167,"y":0},"i":{"x":0.833,"y":1},"s":[100],"t":4},{"o":{"x":0.72,"y":0},"i":{"x":0.833,"y":0.601},"s":[100],"t":32},{"s":[0],"t":87}],"ix":11}},"shapes":[{"ty":"gr","bm":0,"hd":false,"mn":"ADBE Vector Group","nm":"Group 1","ix":1,"cix":2,"np":2,"it":[{"ty":"sh","bm":0,"hd":false,"mn":"ADBE Vector Shape - Group","nm":"Path 1","ix":1,"d":1,"ks":{"a":0,"k":{"c":true,"i":[[3.281,-1.895],[0,0],[1.895,3.281],[0,0],[-3.281,1.894],[0,0],[-1.895,-3.281],[0,0]],"o":[[0,0],[-3.282,1.895],[0,0],[-1.895,-3.281],[0,0],[3.281,-1.894],[0,0],[1.895,3.282]],"v":[[28.859,29.054],[10.733,39.519],[1.36,37.008],[-31.37,-19.683],[-28.859,-29.054],[-10.732,-39.52],[-1.36,-37.009],[31.37,19.682]]},"ix":2}},{"ty":"fl","bm":0,"hd":false,"mn":"ADBE Vector Graphic - Fill","nm":"Fill 1","c":{"a":0,"k":[0.8784,0.2667,0.2431],"ix":4},"r":1,"o":{"a":0,"k":100,"ix":5}},{"ty":"tr","a":{"a":0,"k":[0,0],"ix":1},"s":{"a":0,"k":[100,100],"ix":3},"sk":{"a":0,"k":0,"ix":4},"p":{"a":0,"k":[33.515,41.664],"ix":2},"r":{"a":0,"k":0,"ix":6},"sa":{"a":0,"k":0,"ix":5},"o":{"a":0,"k":100,"ix":7}}]}],"ind":15},{"ty":4,"nm":"Element 1","sr":1,"st":0,"op":1800,"ip":0,"hd":false,"ddd":0,"bm":0,"hasMask":false,"ao":0,"ks":{"a":{"a":0,"k":[30.771,30.771,0],"ix":1},"s":{"a":0,"k":[100,100,100],"ix":6},"sk":{"a":0,"k":0},"p":{"a":1,"k":[{"o":{"x":0.167,"y":0.167},"i":{"x":0.833,"y":0.833},"s":[1087.199,1174.507],"t":0},{"o":{"x":0.252,"y":0},"i":{"x":0.33,"y":1},"s":[1087.199,1174.507,0],"t":10,"ti":[40,75.667,0],"to":[22,-151.667,0]},{"s":[1027.199,504.507,0],"t":67}],"ix":2},"r":{"a":0,"k":0,"ix":10},"sa":{"a":0,"k":0},"o":{"a":1,"k":[{"o":{"x":0.167,"y":0.167},"i":{"x":0.833,"y":0.833},"s":[0],"t":0},{"o":{"x":0.167,"y":0.167},"i":{"x":0.833,"y":0.833},"s":[100],"t":4},{"o":{"x":0.167,"y":0.167},"i":{"x":0.833,"y":0.833},"s":[100],"t":32},{"s":[0],"t":87}],"ix":11}},"shapes":[{"ty":"gr","bm":0,"hd":false,"mn":"ADBE Vector Group","nm":"Group 1","ix":1,"cix":2,"np":2,"it":[{"ty":"sh","bm":0,"hd":false,"mn":"ADBE Vector Shape - Group","nm":"Path 1","ix":1,"d":1,"ks":{"a":0,"k":{"c":true,"i":[[0,-16.856],[16.856,0],[0,16.857],[-16.857,0]],"o":[[0,16.857],[-16.857,0],[0,-16.856],[16.856,0]],"v":[[30.522,-0.001],[0,30.522],[-30.522,-0.001],[0,-30.522]]},"ix":2}},{"ty":"fl","bm":0,"hd":false,"mn":"ADBE Vector Graphic - Fill","nm":"Fill 1","c":{"a":0,"k":[0.2549,0.6863,0.502],"ix":4},"r":1,"o":{"a":0,"k":100,"ix":5}},{"ty":"tr","a":{"a":0,"k":[0,0],"ix":1},"s":{"a":0,"k":[100,100],"ix":3},"sk":{"a":0,"k":0,"ix":4},"p":{"a":0,"k":[30.771,30.772],"ix":2},"r":{"a":0,"k":0,"ix":6},"sa":{"a":0,"k":0,"ix":5},"o":{"a":0,"k":100,"ix":7}}]}],"ind":16}],"v":"5.7.0","fr":60,"op":180,"ip":0,"assets":[]}</script>
+
+<script>
+    let qrMain = null;
+function redirectToPage(page) {
+      var target = String(page || 'user').toLowerCase();
+      window.location.href = window.getLocalPageUrl ? window.getLocalPageUrl(target) : (target === 'admin' ? 'admin.html' : 'index.html');
+    }
+
+    function showCuteLoading(title) {
+      Swal.fire({
+        title: title || 'กำลังโหลด...',
+        html: `
+          <div class="flex items-center justify-center gap-3">
+            <div class="magnifier"></div>
+            <div class="text-sm text-gray-600">โปรดรอสักครู่</div>
+          </div>
+        `,
+        showConfirmButton: false,
+        allowOutsideClick: false,
+        padding: '2rem',
+        customClass: { popup: 'swal-512x300' }
+      });
+    }
+
+                    var securityLottieDataCache = null;
+    var successLottieDataCache = null;
+
+    function initUserLottieDataCache() {
+      try {
+        var secEl = document.getElementById('userSecurityLottieData');
+        var sucEl = document.getElementById('userSuccessLottieData');
+        securityLottieDataCache = secEl ? JSON.parse(secEl.textContent || '{}') : null;
+        successLottieDataCache = sucEl ? JSON.parse(sucEl.textContent || '{}') : null;
+      } catch (err) {
+        console.error('initUserLottieDataCache error', err);
+      }
+    }
+
+    function ensureLottieLibrary(onReady) {
+      try {
+        onReady(window.lottie || window.bodymovin || null);
+      } catch (err) {
+        console.error('ensureLottieLibrary error', err);
+        onReady(null);
+      }
+    }
+
+    function mountLottie(containerId, animationData) {
+      var container = document.getElementById(containerId);
+      if (!container) return;
+      if (!animationData) {
+        container.innerHTML = '<div style="font-size:24px;line-height:1">Loading...</div>';
+        return;
+      }
+      ensureLottieLibrary(function(lottieLib) {
+        if (!lottieLib) {
+          container.innerHTML = '<div style="font-size:24px;line-height:1">Loading...</div>';
+          return;
+        }
+        try {
+          lottieLib.loadAnimation({
+            container: container,
+            renderer: 'svg',
+            loop: true,
+            autoplay: true,
+            animationData: animationData,
+            rendererSettings: { preserveAspectRatio: 'xMidYMid meet' }
+          });
+        } catch (err) {
+          console.error('mountLottie error', err);
+          container.innerHTML = '<div style="font-size:24px;line-height:1">Loading...</div>';
+        }
+      });
+    }
+
+    initUserLottieDataCache();
+
+    function showSecurityLoading() {
+      Swal.fire({
+        title: '\u0E01\u0E33\u0E25\u0E31\u0E07\u0E15\u0E23\u0E27\u0E08\u0E2A\u0E2D\u0E1A\u0E2A\u0E34\u0E17\u0E18\u0E34\u0E4C...',
+        html: `
+          <div class="flex flex-col items-center justify-center gap-2">
+            <div id="securityLottieBox" style="width: 376px; height: 192px; max-width: 100%;"></div>
+            <div class="text-sm text-gray-600">\u0E23\u0E30\u0E1A\u0E1A\u0E01\u0E33\u0E25\u0E31\u0E07\u0E15\u0E23\u0E27\u0E08\u0E2A\u0E2D\u0E1A\u0E2A\u0E34\u0E17\u0E18\u0E34\u0E4C\u0E01\u0E32\u0E23\u0E43\u0E0A\u0E49\u0E07\u0E32\u0E19</div>
+          </div>
+        `,
+        showConfirmButton: false,
+        allowOutsideClick: false,
+        padding: '1.2rem',
+        width: 460,
+        didOpen: function() {
+          mountLottie('securityLottieBox', securityLottieDataCache);
+        }
+      });
+    }
+
+    function showLoginSuccessLoading() {
+      Swal.fire({
+        title: '\u0E40\u0E02\u0E49\u0E32\u0E2A\u0E39\u0E48\u0E23\u0E30\u0E1A\u0E1A\u0E2A\u0E33\u0E40\u0E23\u0E47\u0E08',
+        html: `
+          <div class="flex flex-col items-center justify-center">
+            <div id="successLottieBox" style="width: 376px; height: 192px; max-width: 100%;"></div>
+            <div class="text-sm text-gray-600 -mt-1">\u0E01\u0E33\u0E25\u0E31\u0E07\u0E40\u0E02\u0E49\u0E32\u0E2A\u0E39\u0E48\u0E23\u0E30\u0E1A\u0E1A\u0E08\u0E31\u0E14\u0E01\u0E32\u0E23\u0E1E\u0E31\u0E2A\u0E14\u0E38...</div>
+          </div>
+        `,
+        showConfirmButton: false,
+        allowOutsideClick: false,
+        width: 460,
+        padding: '1.2rem',
+        didOpen: function() {
+          mountLottie('successLottieBox', successLottieDataCache);
+        }
+      });
+    }
+function showMiniLoading(title) {
+      const id = 'mini-loading-overlay';
+      let overlay = document.getElementById(id);
+      if (!overlay) {
+        overlay = document.createElement('div');
+        overlay.id = id;
+        overlay.style.cssText = `
+          position: fixed;
+          inset: 0;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          background: rgba(15,23,42,0.30);
+          backdrop-filter: blur(2px);
+          z-index: 9999;
+        `;
+        const box = document.createElement('div');
+        box.id = 'mini-loading-box';
+        box.style.cssText = `
+          min-width: 300px;
+          min-height: 220px;
+          padding: 0.6rem 1rem;
+          background: transparent;
+          border-radius: 0;
+          box-shadow: none;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          gap: 10px;
+          color: #e2e8f0;
+          text-shadow: 0 1px 8px rgba(15,23,42,0.55);
+        `;
+        box.innerHTML = `
+          <div id="miniLoadingLottie" style="width: 320px; height: 164px; max-width: 84vw;"></div>
+          <div class="mini-loading-title text-sm font-semibold text-slate-100">\u0E01\u0E33\u0E25\u0E31\u0E07\u0E42\u0E2B\u0E25\u0E14\u0E02\u0E49\u0E2D\u0E21\u0E39\u0E25</div>
+          <div class="text-xs text-slate-200/90">\u0E01\u0E23\u0E38\u0E13\u0E32\u0E23\u0E2D\u0E2A\u0E31\u0E01\u0E04\u0E23\u0E39\u0E48</div>
+        `;
+        overlay.appendChild(box);
+        document.body.appendChild(overlay);
+        mountLottie('miniLoadingLottie', securityLottieDataCache);
+      }
+      const box = document.getElementById('mini-loading-box');
+      if (box) {
+        const titleEl = box.querySelector('.mini-loading-title');
+        if (titleEl) {
+          titleEl.textContent = title || '\u0E01\u0E33\u0E25\u0E31\u0E07\u0E42\u0E2B\u0E25\u0E14\u0E02\u0E49\u0E2D\u0E21\u0E39\u0E25';
+        }
+      }
+      overlay.style.display = 'flex';
+      mountLottie('miniLoadingLottie', securityLottieDataCache);
+    }
+
+function hideMiniLoading() {
+      const overlay = document.getElementById('mini-loading-overlay');
+      if (overlay) {
+        overlay.style.display = 'none';
+      }
+    }
+
+    function normalizeAssetStatusClient(status) {
+      const raw = String(status || '').trim();
+      if (!raw) return 'ปกติ';
+      const s = raw.toLowerCase();
+      if (s.includes('ปกติ') || s.includes('ใช้งานได้') || s.includes('normal')) return 'ปกติ';
+      if (s.includes('ชำรุด') || s.includes('damaged')) return 'ชำรุด';
+      if (s.includes('ซ่อม') || s.includes('repair')) return 'ส่งซ่อม';
+      if (s.includes('จำหน่าย') || s.includes('สูญหาย') || s.includes('disposed') || s.includes('lost') || s.includes('ซาก')) return 'จำหน่าย/สูญหาย';
+      return raw;
+    }
+
+    function renderUserStatusBadge(status) {
+      const s = normalizeAssetStatusClient(status);
+      if (s === 'ปกติ') return '<span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-emerald-100 text-emerald-700">● ปกติ</span>';
+      if (s === 'ส่งซ่อม') return '<span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-amber-100 text-amber-700">● ส่งซ่อม</span>';
+      if (s === 'ชำรุด') return '<span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-rose-100 text-rose-700">● ชำรุด</span>';
+      return `<span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-slate-100 text-slate-700">● ${s || '-'}</span>`;
+    }
+
+    function normalizeUserCategory(item) {
+      const direct = String((item && item.category) || '').trim();
+      if (['คอมพิวเตอร์', 'กล้องวงจรปิด', 'โสตทัศนูปกรณ์', 'อุปกรณ์เครือข่าย'].includes(direct)) return direct;
+      if (['อุปกรณ์จัดเก็บข้อมูล', 'อุปกรณ์พกพา'].includes(direct)) return 'คอมพิวเตอร์';
+      if (['หน้าจอแสดงผล', 'ปริ้นเตอร์', 'เครื่องสำรองไฟ', 'โปรเจคเตอร์', 'โสตทัศนูปกรณ์', 'อื่นๆ'].includes(direct)) return 'โสตทัศนูปกรณ์';
+      const text = `${direct} ${(item && item.assetName) || ''} ${(item && item.notes) || ''}`.toLowerCase();
+      if (text.includes('กล้องวงจรปิด') || text.includes('cctv') || text.includes('camera')) return 'กล้องวงจรปิด';
+      if (text.includes('router') || text.includes('switch') || text.includes('network') || text.includes('เครือข่าย')) return 'อุปกรณ์เครือข่าย';
+      if (text.includes('คอม') || text.includes('computer') || text.includes('pc') || text.includes('desktop') || text.includes('notebook') || text.includes('laptop') || text.includes('tablet') || text.includes('ipad') || text.includes('mobile') || text.includes('storage') || text.includes('hdd') || text.includes('ssd')) return 'คอมพิวเตอร์';
+      return 'โสตทัศนูปกรณ์';
+    }
+
+    function openComputerAssetsPopup() {
+      showCuteLoading('กำลังโหลดรายการคอมพิวเตอร์...');
+      google.script.run.withSuccessHandler(function(supplies) {
+        Swal.close();
+        const list = (Array.isArray(supplies) ? supplies : []).filter(function(item) {
+          return normalizeUserCategory(item) === 'คอมพิวเตอร์';
+        });
+
+        const scanOverlayId = 'user-computer-scan-overlay';
+        let qrComputer = null;
+        let filtered = list.slice();
+
+        const renderRows = function () {
+          const tbody = document.getElementById('computerAssetsBody');
+          const summary = document.getElementById('computerAssetsSummary');
+          if (!tbody) return;
+          if (summary) summary.textContent = `แสดง ${filtered.length} จาก ${list.length} รายการ`;
+          if (!filtered.length) {
+            tbody.innerHTML = '<tr><td class="px-4 py-4 text-slate-500 text-center" colspan="6">ไม่พบข้อมูลตามเงื่อนไขที่ค้นหา</td></tr>';
+            return;
+          }
+          tbody.innerHTML = filtered.map(function (s) {
+            return `
+              <tr class="hover:bg-slate-50">
+                <td class="px-4 py-3"><span class="inline-flex items-center px-3 py-1 rounded-lg bg-slate-100 text-slate-700 font-semibold">${s.assetNumber || '-'}</span></td>
+                <td class="px-4 py-3"><div class="font-semibold text-slate-800">${s.assetName || '-'}</div></td>
+                <td class="px-4 py-3 text-slate-700">${s.owner || '-'}</td>
+                <td class="px-4 py-3 text-slate-700">${s.location || '-'}</td>
+                <td class="px-4 py-3">${renderUserStatusBadge(s.status)}</td>
+                <td class="px-4 py-3"><span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-sky-50 text-sky-700 border border-sky-100">${normalizeUserCategory(s)}</span></td>
+              </tr>
+            `;
+          }).join('');
+        };
+
+        const closeScanOverlay = function () {
+          const overlay = document.getElementById(scanOverlayId);
+          if (overlay) overlay.style.display = 'none';
+          if (qrComputer && qrComputer.isScanning) {
+            qrComputer.stop().then(() => qrComputer.clear()).catch(() => {});
+          }
+        };
+
+        Swal.fire({
+          title: 'รายการครุภัณฑ์คอมพิวเตอร์',
+          html: `
+            <div class="text-left text-xs text-slate-500 mb-2">ดูข้อมูลได้อย่างเดียว (ไม่มีเพิ่ม/แก้ไข/ลบ)</div>
+            <div class="flex flex-wrap items-center gap-2 mb-3">
+              <input id="computerAssetSearch" type="text" placeholder="ค้นหา รหัส, ชื่อครุภัณฑ์, ผู้รับผิดชอบ, หรือที่ตั้ง..." class="swal2-input" style="margin:0; width:min(420px, 72vw);">
+              <button id="computerAssetScanBtn" class="swal2-confirm swal2-styled" style="height:44px; margin:0; background:#10b981;">สแกน QR เพื่อค้นหา</button>
+            </div>
+            <div id="computerAssetsSummary" class="text-left text-xs text-slate-500 mb-2">แสดง 0 รายการ</div>
+            <div style="max-height:55vh; overflow:auto; border:1px solid #e2e8f0; border-radius:12px;">
+              <table class="w-full text-sm">
+                <thead class="bg-slate-100 text-slate-600 sticky top-0">
+                  <tr>
+                    <th class="px-4 py-3 text-left">หมายเลข สวพส.(อร)</th>
+                    <th class="px-4 py-3 text-left">ชื่อครุภัณฑ์</th>
+                    <th class="px-4 py-3 text-left">ผู้รับผิดชอบ</th>
+                    <th class="px-4 py-3 text-left">ที่ตั้ง</th>
+                    <th class="px-4 py-3 text-left">สถานะ</th>
+                    <th class="px-4 py-3 text-left">ประเภท</th>
+                  </tr>
+                </thead>
+                <tbody id="computerAssetsBody" class="divide-y divide-slate-100"></tbody>
+              </table>
+            </div>
+          `,
+          width: 1200,
+          showConfirmButton: false,
+          showCancelButton: true,
+          cancelButtonText: 'ปิด',
+          customClass: { popup: 'swal-change' },
+          didOpen: function () {
+            const searchEl = document.getElementById('computerAssetSearch');
+            const scanBtn = document.getElementById('computerAssetScanBtn');
+
+            const applyFilter = function () {
+              const q = String((searchEl && searchEl.value) || '').trim().toLowerCase();
+              filtered = list.filter(function (s) {
+                if (!q) return true;
+                const text = [s.assetNumber || '', s.assetName || '', s.owner || '', s.location || '', normalizeUserCategory(s)].join(' ').toLowerCase();
+                return text.includes(q);
+              });
+              renderRows();
+            };
+
+            if (searchEl) {
+              searchEl.addEventListener('input', applyFilter);
+            }
+            if (scanBtn) {
+              scanBtn.addEventListener('click', function (e) {
+                e.preventDefault();
+                let overlay = document.getElementById(scanOverlayId);
+                if (!overlay) {
+                  overlay = document.createElement('div');
+                  overlay.id = scanOverlayId;
+                  overlay.style.cssText = 'position:fixed; inset:0; background:rgba(0,0,0,0.55); display:flex; align-items:center; justify-content:center; z-index:99999;';
+                  overlay.innerHTML = `
+                    <div style="width:min(520px,92vw); background:#fff; border-radius:16px; padding:16px; box-shadow:0 12px 30px rgba(0,0,0,0.25); text-align:center;">
+                      <div style="font-weight:600; margin-bottom:10px;">สแกน QR เพื่อค้นหารายการ</div>
+                      <div id="userComputerQrReader" style="width:100%;"></div>
+                      <button id="userComputerQrClose" style="margin-top:12px; width:100%; height:44px; border:0; background:#6b7280; color:#fff; border-radius:10px;">ปิดกล้อง</button>
+                    </div>
+                  `;
+                  document.body.appendChild(overlay);
+                }
+                overlay.style.display = 'flex';
+
+                if (!qrComputer) qrComputer = new Html5Qrcode('userComputerQrReader');
+                else qrComputer.clear();
+
+                qrComputer.start({ facingMode: 'environment' }, { fps: 10, qrbox: 220 }, function (decodedText) {
+                  if (searchEl) {
+                    searchEl.value = decodedText;
+                    searchEl.dispatchEvent(new Event('input', { bubbles: true }));
+                  }
+                  closeScanOverlay();
+                }).catch(() => {});
+
+                const closeBtn = document.getElementById('userComputerQrClose');
+                if (closeBtn) {
+                  closeBtn.onclick = function (evt) {
+                    evt.preventDefault();
+                    closeScanOverlay();
+                  };
+                }
+              });
+            }
+            renderRows();
+          },
+          willClose: function () {
+            closeScanOverlay();
+          }
+        });
+      }).withFailureHandler(function(err) {
+        Swal.close();
+        Swal.fire({ icon: 'error', title: 'โหลดข้อมูลไม่สำเร็จ', text: (err && err.message) ? err.message : 'ไม่สามารถดึงรายการครุภัณฑ์ได้' });
+      }).getSupplies();
+    }
+
+    function openTrackPopup() {
+      showCuteLoading('กำลังโหลดรายการ...');
+      google.script.run.withSuccessHandler(function(supplies) {
+        Swal.close();
+        const list = Array.isArray(supplies) ? supplies : [];
+        Swal.fire({
+            title: 'ตรวจสอบครุภัณฑ์',
+            html: `
+              <div class="text-center text-xs text-slate-500 mb-2">สแกน QR หรือพิมพ์รหัสเพื่อตรวจสอบ</div>
+              <div id="reader" class="mt-2 bg-black/20 rounded-lg p-2 hidden"></div>
+              <div class="mt-3 relative" style="width: min(277px, 82vw); margin:0 auto;">
+                <input id="codeInput" type="text" placeholder="หมายเลข สวพส.(อร)" class="swal2-input" style="width:100%; height:54px; line-height:54px; box-sizing:border-box; margin:0 auto; display:block;">
+                <div id="trackDropdown" style="display:none; position:absolute; top:58px; left:0; right:0; max-height:200px; overflow:auto; border:1px solid #e2e8f0; border-radius:10px; background:#fff; box-shadow:0 6px 16px rgba(0,0,0,0.08); z-index:10;"></div>
+              </div>
+              <div class="mt-2 flex flex-col items-center">
+                <button id="searchBtn" class="swal2-confirm swal2-styled" style="width: min(277px, 82vw); height:54px; margin:6px auto 0; display:block;">ค้นหา</button>
+                <button id="scanStartBtn" class="swal2-confirm swal2-styled" style="width: min(277px, 82vw); height:54px; margin:6px auto 0; display:block; background:#10b981;">สแกน QR</button>
+              </div>
+              <div id="loading" class="loading-wrap mt-3 bg-white text-gray-800 rounded-2xl p-4 shadow-lg items-center gap-4 border border-slate-100 hidden">
+                <div class="magnifier"></div>
+                <div>
+                  <div class="text-lg font-semibold">กำลังค้นหา...</div>
+                  <div class="text-sm text-gray-600">โปรดรอสักครู่</div>
+                </div>
+              </div>
+              <div id="result" class="mt-3 bg-white text-gray-800 rounded-2xl p-4 shadow-lg hidden border border-slate-100"></div>
+            `,
+            showConfirmButton: false,
+            showCancelButton: true,
+            cancelButtonText: 'ปิด',
+            customClass: { popup: 'swal-change' },
+            didOpen: () => {
+              const searchBtn = document.getElementById('searchBtn');
+              const scanStartBtn = document.getElementById('scanStartBtn');
+              const readerEl = document.getElementById('reader');
+              const input = document.getElementById('codeInput');
+              const dropdown = document.getElementById('trackDropdown');
+
+              const renderDropdown = (value) => {
+                const q = (value || '').toLowerCase();
+                const matches = list.filter(s => (s.assetNumber || '').toLowerCase().includes(q)).slice(0, 8);
+                if (!q || matches.length === 0) {
+                  dropdown.style.display = 'none';
+                  dropdown.innerHTML = '';
+                  return;
+                }
+                dropdown.innerHTML = matches.map(m => `
+                  <div class="px-3 py-2 hover:bg-emerald-50 cursor-pointer" data-value="${m.assetNumber}">
+                    <div class="text-sm font-medium">${m.assetNumber || '-'}</div>
+                    <div class="text-xs text-slate-500">${m.location || '-'} • ${m.owner || '-'}</div>
+                  </div>
+                `).join('');
+                dropdown.style.display = 'block';
+                Array.from(dropdown.querySelectorAll('[data-value]')).forEach(el => {
+                  el.addEventListener('click', () => {
+                    input.value = el.getAttribute('data-value');
+                    dropdown.style.display = 'none';
+                    searchByInput();
+                  });
+                });
+              };
+
+              input.addEventListener('input', () => renderDropdown(input.value));
+              input.addEventListener('focus', () => renderDropdown(input.value));
+              input.addEventListener('blur', () => setTimeout(() => { dropdown.style.display = 'none'; }, 150));
+
+              searchBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                searchByInput();
+              });
+
+              const startScanner = () => {
+                if (!qrMain) {
+                  qrMain = new Html5Qrcode('reader');
+                }
+                readerEl.classList.remove('hidden');
+              qrMain.start({ facingMode: 'environment' }, { fps: 10, qrbox: 220 }, (decodedText) => {
+                document.getElementById('codeInput').value = decodedText;
+                searchByInput();
+                if (qrMain && qrMain.isScanning) {
+                  qrMain.stop().then(() => {
+                    qrMain.clear();
+                  }).catch(() => {});
+                }
+              }).catch(() => {});
+            };
+
+              scanStartBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                if (qrMain && qrMain.isScanning) return;
+                if (qrMain) {
+                  qrMain.clear();
+                }
+                startScanner();
+              });
+            },
+            willClose: () => {
+              if (qrMain && qrMain.isScanning) {
+                qrMain.stop().then(() => {
+                  qrMain.clear();
+                }).catch(() => {});
+              }
+            }
+          });
+      }).getSupplies();
+    }
+
+    function searchByInput() {
+      const input = document.getElementById('codeInput');
+      const loading = document.getElementById('loading');
+      const result = document.getElementById('result');
+      if (!input || !loading || !result) return;
+
+      const code = (input.value || '').trim();
+      if (!code) return;
+
+      loading.classList.remove('hidden');
+      loading.classList.add('flex');
+      result.classList.add('hidden');
+      result.innerHTML = '';
+      showMiniLoading('กำลังค้นหา...');
+
+      google.script.run.withSuccessHandler(function(res) {
+        hideMiniLoading();
+        loading.classList.add('hidden');
+        loading.classList.remove('flex');
+        if (res && res.success && res.data) {
+          const d = res.data;
+          showUserSupplyDetails(d);
+        } else {
+          result.innerHTML = `<div class="text-sm text-rose-600">ไม่พบข้อมูลครุภัณฑ์</div>`;
+          result.classList.remove('hidden');
+          return;
+        }
+      }).getSupplyByCode(code);
+    }
+
+    function getQrImageUrl(text) {
+      return 'https://api.qrserver.com/v1/create-qr-code/?size=232x232&data=' + encodeURIComponent(String(text || ''));
+    }
+
+    function viewImage(url, code, name) {
+      if (!url) return;
+      Swal.fire({
+        imageUrl: url,
+        imageWidth: 250,
+        imageHeight: 250,
+        imageAlt: 'รูปครุภัณฑ์',
+        html: `
+          <div class="mt-4">
+            <p class="text-xl font-bold text-slate-800">${code || '-'}</p>
+            <p class="text-gray-700">${name || '-'}</p>
+          </div>
+        `,
+        showConfirmButton: true,
+        confirmButtonText: 'ปิด',
+        confirmButtonColor: '#64748b',
+        showCloseButton: true
+      });
+    }
+
+    function showUserSupplyDetails(supply) {
+      const statusText = String(supply.status || '-');
+      const statusClass = statusText === 'ปกติ'
+        ? 'status-normal'
+        : (statusText === 'ชำรุด' || statusText === 'จำหน่าย/สูญหาย' ? 'status-danger' : 'status-warning');
+      const safeAssetNumber = String(supply.assetNumber || '').replace(/'/g, "\\'");
+      const safeImageUrl = String(supply.imageUrl || '').replace(/'/g, "\\'");
+      const priceNumber = Number(supply.price || 0);
+      const priceDisplay = Number.isFinite(priceNumber) && priceNumber > 0 ? priceNumber.toFixed(2) + ' บาท' : '-';
+      const html = `
+        <div class="asset-detail-wrap">
+          <div class="asset-detail-grid">
+            <div>
+              <div class="asset-title-row flex items-center flex-wrap">
+                <h3 class="text-4xl font-bold text-slate-800 tracking-tight">${supply.assetName || '-'}</h3>
+                <span class="status-pill ${statusClass}">${statusText}</span>
+              </div>
+              <div class="asset-code-line">
+                <i class="fas fa-barcode mr-1"></i>${supply.assetNumber || '-'}
+              </div>
+
+              <div class="asset-detail-card mb-4">
+                <div class="asset-section-title">ข้อมูลทั่วไป</div>
+                <div class="asset-meta-grid">
+                  <div>
+                    <div class="asset-meta-label">ประเภท</div>
+                    <div class="asset-meta-value">${normalizeUserCategory(supply)}</div>
+                  </div>
+                  <div>
+                    <div class="asset-meta-label">ราคา</div>
+                    <div class="asset-meta-value">${priceDisplay}</div>
+                  </div>
+                  <div>
+                    <div class="asset-meta-label">วันที่ได้รับ</div>
+                    <div class="asset-meta-value">${formatThaiDate(supply.receivedDate)}</div>
+                  </div>
+                  <div>
+                    <div class="asset-meta-label">อายุการใช้งาน</div>
+                    <div class="asset-meta-value">${supply.usageAge || formatUsageAge(supply.receivedDate)}</div>
+                  </div>
+                  <div>
+                    <div class="asset-meta-label">สถานที่ตั้ง</div>
+                    <div class="asset-meta-value">${supply.location || '-'}</div>
+                  </div>
+                  <div>
+                    <div class="asset-meta-label">ผู้รับผิดชอบ</div>
+                    <div class="asset-meta-value">${supply.owner || '-'}</div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="asset-detail-card">
+                <div class="asset-section-title mb-2">
+                  <i class="fas fa-clock-rotate-left mr-1"></i>ประวัติการตรวจสอบ
+                </div>
+                <div id="userInspectionListPopup" class="text-slate-500">กำลังโหลด...</div>
+              </div>
+            </div>
+
+            <div>
+              <div class="asset-detail-card mb-4">
+                ${supply.imageUrl ? `
+                  <img src="${supply.imageUrl}" class="w-full object-contain rounded-lg cursor-pointer" style="height:260px;" onclick="viewImage('${safeImageUrl}', '${supply.assetNumber || '-'}', '${safeAssetNumber}')" alt="รูปครุภัณฑ์">
+                ` : `
+                  <div class="w-full rounded-lg bg-slate-100 flex items-center justify-center text-slate-400" style="height:260px;">ไม่มีรูปภาพ</div>
+                `}
+              </div>
+              <div class="asset-detail-card text-center">
+                <div class="asset-section-title text-slate-600 mb-3">QR Code ครุภัณฑ์</div>
+                <img id="userAssetQrInPopup" class="asset-qr-img" alt="QR Code">
+                <p class="text-xs text-slate-400 mt-3">สแกนเพื่อดูข้อมูลครุภัณฑ์</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      `;
+
+      Swal.fire({
+        html: html,
+        showConfirmButton: false,
+        showCloseButton: false,
+        customClass: { popup: 'asset-detail-popup' },
+        didOpen: function () {
+          const qrEl = document.getElementById('userAssetQrInPopup');
+          if (qrEl) qrEl.src = getQrImageUrl(supply.assetNumber || '');
+        }
+      });
+
+      google.script.run.withSuccessHandler(function(items) {
+        const list = items || [];
+        const target = document.getElementById('userInspectionListPopup');
+        if (!target) return;
+        if (list.length === 0) {
+          target.innerHTML = '<p class="text-gray-500">ยังไม่มีประวัติการตรวจสอบ</p>';
+          return;
+        }
+        const rows = list.map(function(i) {
+          return `
+            <div class="inspection-item">
+              <div class="inspection-date text-slate-500">${formatThaiDate(i.inspectedDate)}</div>
+              <div class="inspection-topic font-semibold text-slate-700">${i.item || '-'}</div>
+              <div class="inspection-meta text-slate-600">${i.condition || '-'} | ผู้ตรวจ: ${i.inspector || '-'}</div>
+              <div class="inspection-note text-slate-500">${i.note || ''}</div>
+            </div>
+          `;
+        }).join('');
+        target.innerHTML = '<div style="max-height: 280px; overflow:auto; padding-right: 4px;">' + rows + '</div>';
+      }).getInspectionsByAsset(supply.assetNumber || '');
+    }
+
+    function normalizeBuddhistYearClient(year) {
+      const y = Number(year);
+      if (!Number.isFinite(y)) return NaN;
+      return y >= 2400 ? y - 543 : y;
+    }
+
+    function normalizeLikelyThaiYearTypoClient(year, month, day) {
+      const y = Number(year);
+      const m = Number(month);
+      const d = Number(day);
+      if (!Number.isFinite(y) || !Number.isFinite(m) || !Number.isFinite(d)) return y;
+      if (y < 1900 || y > 1999) return y;
+
+      const candidateBE = y + 600;
+      const candidateAD = candidateBE - 543;
+      const corrected = new Date(candidateAD, m - 1, d);
+      if (corrected.getFullYear() !== candidateAD || corrected.getMonth() !== m - 1 || corrected.getDate() !== d) return y;
+
+      const raw = new Date(y, m - 1, d);
+      if (raw.getFullYear() !== y || raw.getMonth() !== m - 1 || raw.getDate() !== d) return y;
+
+      const today = new Date();
+      const latestAllowed = new Date(today.getFullYear() + 1, 11, 31);
+      if (corrected.getTime() > latestAllowed.getTime()) return y;
+
+      const rawAgeYears = (today.getTime() - raw.getTime()) / (1000 * 60 * 60 * 24 * 365.25);
+      const correctedAgeYears = (today.getTime() - corrected.getTime()) / (1000 * 60 * 60 * 24 * 365.25);
+      if (rawAgeYears >= 40 && correctedAgeYears >= 0 && correctedAgeYears <= 40) return candidateBE;
+      return y;
+    }
+
+    function parseFlexibleDateClient(value) {
+      if (value === null || value === undefined || value === '') return null;
+      if (Object.prototype.toString.call(value) === '[object Date]') {
+        if (Number.isNaN(value.getTime())) return null;
+        const y = normalizeBuddhistYearClient(value.getFullYear());
+        return new Date(y, value.getMonth(), value.getDate());
+      }
+
+      const text = String(value).trim();
+      if (!text) return null;
+
+      const m = text.match(/^(\d{1,4})[-\/.](\d{1,2})[-\/.](\d{1,4})(?:\s.*)?$/);
+      if (m) {
+        let year;
+        let month;
+        let day;
+        if (m[1].length === 4) {
+          month = Number(m[2]);
+          day = Number(m[3]);
+          year = normalizeLikelyThaiYearTypoClient(m[1], month, day);
+          year = normalizeBuddhistYearClient(year);
+        } else if (m[3].length === 4) {
+          month = Number(m[2]);
+          day = Number(m[1]);
+          year = normalizeLikelyThaiYearTypoClient(m[3], month, day);
+          year = normalizeBuddhistYearClient(year);
+        } else {
+          return null;
+        }
+        const d = new Date(year, month - 1, day);
+        if (d.getFullYear() !== year || d.getMonth() !== month - 1 || d.getDate() !== day) return null;
+        return d;
+      }
+
+      const parsed = new Date(text);
+      if (Number.isNaN(parsed.getTime())) return null;
+      const y = normalizeBuddhistYearClient(parsed.getFullYear());
+      return new Date(y, parsed.getMonth(), parsed.getDate());
+    }
+
+    function formatThaiDate(value) {
+      const date = parseFlexibleDateClient(value);
+      if (!date) return value || '-';
+      const months = ['มกราคม', 'กุมภาพันธ์', 'มีนาคม', 'เมษายน', 'พฤษภาคม', 'มิถุนายน', 'กรกฎาคม', 'สิงหาคม', 'กันยายน', 'ตุลาคม', 'พฤศจิกายน', 'ธันวาคม'];
+      return `${date.getDate()} ${months[date.getMonth()]} ${date.getFullYear() + 543}`;
+    }
+
+    function formatUsageAge(receivedDate) {
+      if (!receivedDate) return '-';
+      const d = parseFlexibleDateClient(receivedDate);
+      if (!d || Number.isNaN(d.getTime())) return '-';
+      const now = new Date();
+      const start = new Date(d.getFullYear(), d.getMonth(), d.getDate());
+      const end = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+      if (end.getTime() < start.getTime()) return '0 วัน';
+
+      let years = end.getFullYear() - start.getFullYear();
+      let months = end.getMonth() - start.getMonth();
+      let days = end.getDate() - start.getDate();
+
+      if (days < 0) {
+        const prevMonthLastDay = new Date(end.getFullYear(), end.getMonth(), 0).getDate();
+        days += prevMonthLastDay;
+        months -= 1;
+      }
+      if (months < 0) {
+        months += 12;
+        years -= 1;
+      }
+
+      const totalDays = Math.floor((end.getTime() - start.getTime()) / (1000 * 60 * 60 * 24));
+      if (years <= 0 && months <= 0) return `${totalDays} วัน`;
+      if (years <= 0) return `${months} เดือน ${days} วัน`;
+      return `${years} ปี ${months} เดือน`;
+    }
+
+    function openLogin() {
+      const remembered = localStorage.getItem('admin_login_remember') === '1';
+      const rememberedUser = remembered ? (localStorage.getItem('admin_login_user') || '') : '';
+      const rememberedPass = remembered ? (localStorage.getItem('admin_login_pass') || '') : '';
+
+      Swal.fire({
+        title: 'Admin Login',
+        html: `
+          <div class="swal-login-wrap">
+            <div class="swal-login-icon"><i class="fas fa-key"></i></div>
+            <div class="swal-login-subtitle">กรุณาระบุรหัสผ่านเพื่อเข้าสู่ระบบหลังบ้าน</div>
+            <label class="swal-login-label">Username</label>
+            <input id="loginUser" class="swal-login-input" placeholder="Admin" value="${rememberedUser.replace(/"/g, '&quot;')}">
+            <label class="swal-login-label">Password</label>
+            <div class="swal-login-pass-wrap">
+              <input id="loginPass" type="password" class="swal-login-input" placeholder="••••••••" value="${rememberedPass.replace(/"/g, '&quot;')}">
+              <button type="button" id="togglePassBtn" class="swal-login-toggle" title="แสดง/ซ่อนรหัสผ่าน"><i class="fas fa-eye"></i></button>
+            </div>
+            <label class="swal-login-remember">
+              <input id="rememberLogin" type="checkbox" ${remembered ? 'checked' : ''}>
+              <span>จำข้อมูลในเครื่องนี้</span>
+            </label>
+          </div>
+        `,
+        confirmButtonText: 'เข้าสู่ระบบ',
+        showCancelButton: true,
+        cancelButtonText: 'กลับหน้าหลัก',
+        customClass: { popup: 'swal-login' },
+        didOpen: () => {
+          const userEl = document.getElementById('loginUser');
+          const passEl = document.getElementById('loginPass');
+          const toggleBtn = document.getElementById('togglePassBtn');
+          const submitOnEnter = (e) => {
+            if (e.key === 'Enter') {
+              e.preventDefault();
+              Swal.clickConfirm();
+            }
+          };
+          if (userEl) userEl.addEventListener('keydown', submitOnEnter);
+          if (passEl) passEl.addEventListener('keydown', submitOnEnter);
+          if (toggleBtn && passEl) {
+            toggleBtn.addEventListener('click', () => {
+              const isPassword = passEl.type === 'password';
+              passEl.type = isPassword ? 'text' : 'password';
+              toggleBtn.innerHTML = isPassword ? '<i class="fas fa-eye-slash"></i>' : '<i class="fas fa-eye"></i>';
+            });
+          }
+        },
+        preConfirm: () => {
+          const username = (document.getElementById('loginUser').value || '').trim();
+          const password = document.getElementById('loginPass').value || '';
+          const remember = !!document.getElementById('rememberLogin').checked;
+          if (!username || !password) {
+            Swal.showValidationMessage('กรุณากรอกชื่อผู้ใช้และรหัสผ่านให้ครบ');
+            return false;
+          }
+          return { username, password, remember };
+        }
+      }).then(result => {
+        if (!result.isConfirmed) return;
+        const { username, password, remember } = result.value;
+        showSecurityLoading();
+        google.script.run.withSuccessHandler(res => {
+            if (res && res.success) {
+              localStorage.setItem('admin_auth', '1');
+              localStorage.setItem('admin_user', username || 'admin');
+            if (remember) {
+              localStorage.setItem('admin_login_remember', '1');
+              localStorage.setItem('admin_login_user', username || '');
+              localStorage.setItem('admin_login_pass', password || '');
+              } else {
+                localStorage.removeItem('admin_login_remember');
+                localStorage.removeItem('admin_login_user');
+                localStorage.removeItem('admin_login_pass');
+              }
+            showLoginSuccessLoading();
+            setTimeout(() => redirectToPage('admin'), 1800);
+          } else {
+            Swal.close();
+            Swal.fire({ icon: 'error', title: 'เข้าสู่ระบบไม่สำเร็จ', text: res.message || '' });
+          }
+      }).validateLogin(username, password);
+      });
+    }
+
+    function openChangeOwner() {
+      showCuteLoading('กำลังโหลดแบบฟอร์ม...');
+      google.script.run.withSuccessHandler(function(supplies) {
+        const list = Array.isArray(supplies) ? supplies : [];
+        const options = list.map(s => {
+          const label = `${s.assetNumber || '-'}`;
+          const owner = (s.owner || '').replace(/"/g, '&quot;');
+          return `<option value="${label}" data-owner="${owner}"></option>`;
+        }).join('');
+
+        Swal.fire({
+          title: 'แจ้งเปลี่ยนผู้รับผิดชอบครุภัณฑ์',
+          html: `
+            <div class="text-left text-xs text-slate-500 mb-2">ค้นหาด้วยการพิมพ์ หรือสแกน QR</div>
+            <div class="relative">
+              <input id="changeAsset" class="swal2-input" placeholder="หมายเลข สวพส.(อร)">
+              <div id="assetDropdown" style="display:none; position:absolute; top:48px; left:0; right:0; max-height:180px; overflow:auto; border:1px solid #e2e8f0; border-radius:8px; background:#fff; box-shadow:0 6px 16px rgba(0,0,0,0.08); z-index:10;"></div>
+            </div>
+            <button id="scanBtn" class="swal2-confirm swal2-styled" style="width:276.38px; height:53.15px; margin-top:8px;">สแกน QR</button>
+            <input id="changeFrom" class="swal2-input" placeholder="ผู้รับผิดชอบเดิม" readonly>
+            <input id="changeTo" class="swal2-input" placeholder="ผู้รับผิดชอบใหม่">
+            <input id="changeReason" class="swal2-input" placeholder="เหตุผล/รายละเอียด">
+            <input id="changeContact" class="swal2-input" placeholder="ผู้ติดต่อ / เบอร์โทร">
+          `,
+          confirmButtonText: 'ส่งคำขอ',
+          showCancelButton: true,
+          cancelButtonText: 'ยกเลิก',
+          customClass: { popup: 'swal-change' },
+          didOpen: () => {
+            const input = document.getElementById('changeAsset');
+            const fromInput = document.getElementById('changeFrom');
+            const dropdown = document.getElementById('assetDropdown');
+            const scanBtn = document.getElementById('scanBtn');
+            let qrChange = null;
+
+            const ownerMap = {};
+            list.forEach(s => { ownerMap[s.assetNumber] = s.owner || ''; });
+
+            const fillOwner = (value) => {
+              fromInput.value = ownerMap[value] || '';
+            };
+
+            const renderDropdown = (value) => {
+              const q = (value || '').toLowerCase();
+              const matches = list.filter(s => (s.assetNumber || '').toLowerCase().includes(q)).slice(0, 8);
+              if (!q || matches.length === 0) {
+                dropdown.style.display = 'none';
+                dropdown.innerHTML = '';
+                return;
+              }
+              dropdown.innerHTML = matches.map(m => `
+                <div class="px-3 py-2 hover:bg-emerald-50 cursor-pointer" data-value="${m.assetNumber}">
+                  <div class="text-sm font-medium">${m.assetNumber}</div>
+                  <div class="text-xs text-slate-500">${m.owner || '-'}</div>
+                </div>
+              `).join('');
+              dropdown.style.display = 'block';
+              Array.from(dropdown.querySelectorAll('[data-value]')).forEach(el => {
+                el.addEventListener('click', () => {
+                  input.value = el.getAttribute('data-value');
+                  fillOwner(input.value);
+                  dropdown.style.display = 'none';
+                });
+              });
+            };
+
+            input.addEventListener('input', () => {
+              renderDropdown(input.value);
+              fillOwner(input.value);
+            });
+            input.addEventListener('focus', () => renderDropdown(input.value));
+            input.addEventListener('blur', () => setTimeout(() => { dropdown.style.display = 'none'; }, 150));
+
+            scanBtn.addEventListener('click', (e) => {
+              e.preventDefault();
+              const overlayId = 'qr-scan-overlay';
+              let overlay = document.getElementById(overlayId);
+              if (!overlay) {
+                overlay = document.createElement('div');
+                overlay.id = overlayId;
+                overlay.style.cssText = `
+                  position: fixed;
+                  inset: 0;
+                  background: rgba(0,0,0,0.5);
+                  display: flex;
+                  align-items: center;
+                  justify-content: center;
+                  z-index: 9999;
+                `;
+                overlay.innerHTML = `
+                  <div style="width: min(520px, 92vw); background:#fff; border-radius:16px; padding:16px; box-shadow:0 12px 30px rgba(0,0,0,0.2); text-align:center;">
+                    <div style="font-weight:600; margin-bottom:10px;">สแกน QR</div>
+                    <div id="qrReader" style="width:100%;"></div>
+                    <button id="qrCloseBtn" style="margin-top:12px; width:100%; height:44px; background:#6b7280; color:#fff; border-radius:10px;">ปิดกล้อง</button>
+                  </div>
+                `;
+                document.body.appendChild(overlay);
+              }
+              overlay.style.display = 'flex';
+
+              const closeOverlay = () => {
+                if (qrChange && qrChange.isScanning) {
+                  qrChange.stop().then(() => qrChange.clear()).catch(() => {});
+                }
+                overlay.style.display = 'none';
+              };
+
+              if (!qrChange) {
+                qrChange = new Html5Qrcode('qrReader');
+              } else {
+                qrChange.clear();
+              }
+              qrChange.start({ facingMode: 'environment' }, { fps: 10, qrbox: 220 }, (decodedText) => {
+                input.value = decodedText;
+                fillOwner(decodedText);
+                dropdown.style.display = 'none';
+                closeOverlay();
+              }).catch(() => {});
+
+              const closeBtn = document.getElementById('qrCloseBtn');
+              closeBtn.addEventListener('click', (evt) => {
+                evt.preventDefault();
+                closeOverlay();
+              });
+            });
+          },
+          preConfirm: () => {
+            const assetNumber = document.getElementById('changeAsset').value.trim();
+            const fromOwner = document.getElementById('changeFrom').value.trim();
+            const toOwner = document.getElementById('changeTo').value.trim();
+            const reason = document.getElementById('changeReason').value.trim();
+            const contact = document.getElementById('changeContact').value.trim();
+
+            if (!assetNumber) {
+              Swal.showValidationMessage('กรุณาระบุหมายเลข สวพส.(อร)');
+              return false;
+            }
+            if (!fromOwner) {
+              Swal.showValidationMessage('ไม่พบผู้รับผิดชอบเดิม กรุณาเลือกครุภัณฑ์จากรายการ');
+              return false;
+            }
+            if (!toOwner) {
+              Swal.showValidationMessage('กรุณากรอกผู้รับผิดชอบใหม่');
+              return false;
+            }
+            if (fromOwner === toOwner) {
+              Swal.showValidationMessage('ผู้รับผิดชอบใหม่ต้องไม่ซ้ำผู้รับผิดชอบเดิม');
+              return false;
+            }
+            if (!reason) {
+              Swal.showValidationMessage('กรุณากรอกเหตุผล/รายละเอียด');
+              return false;
+            }
+            if (!contact) {
+              Swal.showValidationMessage('กรุณากรอกผู้ติดต่อ / เบอร์โทร');
+              return false;
+            }
+
+            return {
+              assetNumber: assetNumber,
+              fromOwner: fromOwner,
+              toOwner: toOwner,
+              reason: reason,
+              contact: contact,
+              actor: localStorage.getItem('admin_user') || contact || 'user'
+            };
+          }
+        }).then(result => {
+          if (!result.isConfirmed) return;
+          const payload = result.value;
+          google.script.run.withSuccessHandler(function(res) {
+            if (res && res.success) {
+              Swal.fire({
+                icon: 'success',
+                title: 'ส่งคำขอแล้ว',
+                text: 'เจ้าหน้าที่จะตรวจสอบและติดต่อกลับ',
+                confirmButtonColor: '#10b981'
+              });
+            } else {
+              Swal.fire({ icon: 'error', title: 'ส่งคำขอไม่สำเร็จ', text: res.message || '' });
+            }
+          }).saveChangeRequest(payload);
+        });
+      }).getSupplies();
+    }
+  </script>
+</body>
+</html>
