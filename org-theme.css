@@ -679,6 +679,51 @@ textarea:disabled {
   padding-top: 1rem;
 }
 
+.desktop-header,
+.gradient-header {
+  border-bottom: 1px solid var(--org-border);
+  background: var(--org-surface) !important;
+}
+
+.desktop-header {
+  box-shadow: 0 1px 0 rgba(16, 32, 51, 0.03);
+}
+
+.gradient-header {
+  background: linear-gradient(180deg, #ffffff 0%, #f9fcff 100%) !important;
+}
+
+.desktop-header .text-slate-500,
+.desktop-header .text-slate-600,
+.desktop-header .text-slate-700,
+.desktop-header .text-slate-800,
+.gradient-header .text-slate-500,
+.gradient-header .text-slate-600,
+.gradient-header .text-slate-700,
+.gradient-header .text-slate-800 {
+  color: var(--org-text) !important;
+}
+
+.desktop-header .border-slate-200,
+.gradient-header .border-slate-200 {
+  border-color: var(--org-border) !important;
+}
+
+.desktop-header button,
+.gradient-header button,
+.desktop-header .header-actions,
+.gradient-header .header-actions {
+  color: var(--org-text);
+}
+
+.desktop-header .header-actions,
+.gradient-header .header-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
 .sidebar .tab-btn {
   width: 100%;
   justify-content: flex-start;
@@ -695,6 +740,45 @@ textarea:disabled {
   background: rgba(255, 255, 255, 0.14);
   color: #ffffff;
   border-color: rgba(255, 255, 255, 0.16);
+}
+
+.sidebar .tab-btn:focus-visible,
+.desktop-header button:focus-visible,
+.gradient-header button:focus-visible {
+  box-shadow: var(--org-focus);
+}
+
+.sidebar .sidebar-brand,
+.sidebar .sidebar-title {
+  color: #f8fbff;
+  font-weight: 700;
+}
+
+.sidebar .sidebar-subtitle {
+  color: rgba(248, 251, 255, 0.72);
+}
+
+.sidebar .sidebar-nav,
+.sidebar .sidebar-section {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.sidebar .sidebar-link,
+.sidebar .sidebar-item {
+  border-radius: 14px;
+}
+
+.sidebar .sidebar-footer {
+  margin-top: auto;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.sidebar .nav-active-indicator {
+  background: var(--org-primary);
+  border-radius: 999px;
 }
 
 .table-container {
@@ -788,6 +872,11 @@ tbody tr:hover {
   .app-sidebar {
     box-shadow: var(--org-shadow);
     border-right: 0;
+  }
+
+  .desktop-header,
+  .gradient-header {
+    box-shadow: none;
   }
 
   .public-page,
