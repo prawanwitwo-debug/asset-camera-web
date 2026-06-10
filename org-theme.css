@@ -1310,6 +1310,7 @@ tbody tr:hover {
 @media (max-width: 768px) {
   body {
     font-size: 15px;
+    overflow-x: hidden;
   }
 
   .card,
@@ -1417,6 +1418,73 @@ tbody tr:hover {
   .asset-table-wrap,
   .asset-table-container {
     border-radius: 14px;
+  }
+
+  .sidebar {
+    width: min(88vw, 20rem);
+    max-width: 20rem;
+  }
+
+  .sidebar .tab-btn {
+    width: 100%;
+    min-height: 48px;
+    padding: 0.9rem 1rem;
+  }
+
+  .desktop-header,
+  .gradient-header {
+    padding-left: 0.75rem;
+    padding-right: 0.75rem;
+  }
+
+  .desktop-header .header-actions,
+  .gradient-header .header-actions {
+    gap: 0.4rem;
+  }
+
+  .desktop-header button,
+  .gradient-header button {
+    min-height: 44px;
+  }
+
+  #supplyModal .bg-white {
+    width: min(100% - 1rem, 42rem);
+    margin-left: auto;
+    margin-right: auto;
+    padding: 1rem;
+    max-height: calc(100vh - 1rem);
+  }
+
+  #supplyModal .mb-5,
+  #supplyModal .mb-4,
+  #supplyModal .mb-6 {
+    margin-bottom: 0.85rem;
+  }
+
+  #supplyModal .grid {
+    gap: 0.7rem;
+  }
+
+  #supplyModal input,
+  #supplyModal select,
+  #supplyModal textarea {
+    min-height: 46px;
+  }
+
+  #assetImageDropZone {
+    min-height: 132px;
+  }
+
+  #assetImagePreviewEmpty {
+    min-height: 100px;
+  }
+
+  .table-actions {
+    gap: 0.4rem;
+  }
+
+  .table-action-btn {
+    min-height: 42px;
   }
 
   #supplyModal .max-w-2xl {
