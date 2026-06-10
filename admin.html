@@ -1284,17 +1284,897 @@
         <!-- Main Content -->
         <main class="main-content">
         <!-- Home Tab -->
-                <?!= include('DashboradTab'); ?>
+                <div id="homeTab" class="tab-content">
+            <!-- Asset Status Cards (Match Top Style) -->
+            <div class="grid grid-cols-2 md:grid-cols-5 gap-6 mb-8">
+                <div class="dashboard-hover-card card-gradient-1 card-decoration rounded-lg shadow-lg p-6 text-slate-900 cursor-pointer"
+                    onclick="goManageByStatusFilter('')" title="เปิดหน้าจัดการครุภัณฑ์ (ทั้งหมด)">
+                    <div class="relative z-10">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-sm text-slate-700">ครุภัณฑ์ทั้งหมด</p>
+                                <h3 class="text-3xl font-bold mt-2" id="totalAssets">0</h3>
+                            </div>
+                            <i class="fas fa-boxes text-5xl text-slate-500/40"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="dashboard-hover-card card-gradient-2 card-decoration rounded-lg shadow-lg p-6 text-slate-900 cursor-pointer"
+                    onclick="goManageByStatusFilter('ปกติ')" title="เปิดหน้าจัดการครุภัณฑ์ (ปกติ)">
+                    <div class="relative z-10">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-sm text-slate-700">ปกติ</p>
+                                <h3 class="text-3xl font-bold mt-2" id="normalAssets">0</h3>
+                            </div>
+                            <i class="fas fa-check-circle text-5xl text-slate-500/40"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="dashboard-hover-card card-gradient-3 card-decoration rounded-lg shadow-lg p-6 text-slate-900 cursor-pointer"
+                    onclick="goManageByStatusFilter('ชำรุด')" title="เปิดหน้าจัดการครุภัณฑ์ (ชำรุด)">
+                    <div class="relative z-10">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-sm text-slate-700">ชำรุด</p>
+                                <h3 class="text-3xl font-bold mt-2" id="damagedAssets">0</h3>
+                            </div>
+                            <i class="fas fa-exclamation-triangle text-5xl text-slate-500/40"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="dashboard-hover-card card-gradient-4 card-decoration rounded-lg shadow-lg p-6 text-slate-900 cursor-pointer"
+                    onclick="goManageByStatusFilter('ส่งซ่อม')" title="เปิดหน้าจัดการครุภัณฑ์ (ส่งซ่อม)">
+                    <div class="relative z-10">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-sm text-slate-700">ส่งซ่อม</p>
+                                <h3 class="text-3xl font-bold mt-2" id="repairAssets">0</h3>
+                            </div>
+                            <i class="fas fa-tools text-5xl text-slate-500/40"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="dashboard-hover-card card-gradient-5 card-decoration rounded-lg shadow-lg p-6 text-slate-900 cursor-pointer"
+                    onclick="goManageByStatusFilter('จำหน่าย/สูญหาย')" title="เปิดหน้าจัดการครุภัณฑ์ (จำหน่าย/สูญหาย)">
+                    <div class="relative z-10">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-sm text-slate-700">จำหน่าย/สูญหาย</p>
+                                <h3 class="text-3xl font-bold mt-2" id="disposedAssets">0</h3>
+                            </div>
+                            <i class="fas fa-trash-alt text-5xl text-slate-500/40"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Age by Category -->
+            <div class="dashboard-hover-card bg-white rounded-2xl shadow-lg p-6 mb-8">
+                <div class="flex items-start gap-3 mb-6">
+                    <div class="h-10 w-10 rounded-xl bg-gradient-to-br from-blue-600 to-indigo-700 text-white flex items-center justify-center shadow-md shadow-indigo-300">
+                        <i class="fas fa-chart-bar"></i>
+                    </div>
+                    <div>
+                        <div class="inline-flex items-center gap-2 rounded-full bg-indigo-100 text-indigo-900 border border-indigo-300 px-3 py-1 text-sm font-bold shadow-sm">
+                            <span class="inline-block h-2 w-2 rounded-full bg-indigo-600"></span>
+                            อายุของครุภัณฑ์ (รายประเภท)
+                        </div>
+                        <div class="text-sm text-slate-500">แสดงจำนวนครุภัณฑ์แต่ละช่วงอายุ: 0-2 ปี (ใหม่), 3-5 ปี, 6+ ปี (เก่า)</div>
+                    </div>
+                </div>
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <div class="dashboard-hover-card rounded-2xl p-5 text-white" style="background: linear-gradient(135deg, #4f7cff, #5d6bff);">
+                        <div class="flex items-center gap-3 mb-2">
+                            <div class="h-10 w-10 rounded-full bg-white/20 flex items-center justify-center"><i class="fas fa-desktop"></i></div>
+                            <div>
+                                <div class="font-semibold">คอมพิวเตอร์</div>
+                                <div class="text-xs text-white/80">จำนวนทั้งหมด <span id="count-computer">0</span> รายการ</div>
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-4 gap-2 text-[11px] mb-3">
+                            <div class="bg-blue-100/95 rounded-lg px-2 py-1 text-center text-blue-950 font-semibold shadow-sm ring-1 ring-blue-50/80">ทั้งหมด <span id="count-computer-total">0</span></div>
+                            <div class="bg-emerald-200/95 rounded-lg px-2 py-1 text-center text-emerald-950 font-semibold shadow-sm ring-1 ring-emerald-100">0-2 ปี(ใหม่) <span id="count-computer-new">0</span></div>
+                            <div class="bg-amber-200/95 rounded-lg px-2 py-1 text-center text-amber-950 font-semibold shadow-sm ring-1 ring-amber-100">3-5 ปี <span id="count-computer-mid">0</span></div>
+                            <div class="bg-rose-200/95 rounded-lg px-2 py-1 text-center text-rose-950 font-semibold shadow-sm ring-1 ring-rose-100">6+ ปี (เก่า) <span id="count-computer-old">0</span></div>
+                        </div>
+                        <div class="h-44"><canvas id="chart-computer"></canvas></div>
+                    </div>
+                    <div class="dashboard-hover-card rounded-2xl p-5 text-white" style="background: linear-gradient(135deg, #0ea5e9, #2563eb);">
+                        <div class="flex items-center gap-3 mb-2">
+                            <div class="h-10 w-10 rounded-full bg-white/20 flex items-center justify-center"><i class="fas fa-camera"></i></div>
+                            <div>
+                                <div class="font-semibold">กล้องวงจรปิด</div>
+                                <div class="text-xs text-white/80">จำนวนทั้งหมด <span id="count-cctv">0</span> รายการ</div>
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-4 gap-2 text-[11px] mb-3">
+                            <div class="bg-sky-100/95 rounded-lg px-2 py-1 text-center text-sky-950 font-semibold shadow-sm ring-1 ring-sky-50/80">ทั้งหมด <span id="count-cctv-total">0</span></div>
+                            <div class="bg-emerald-200/95 rounded-lg px-2 py-1 text-center text-emerald-950 font-semibold shadow-sm ring-1 ring-emerald-100">0-2 ปี(ใหม่) <span id="count-cctv-new">0</span></div>
+                            <div class="bg-amber-200/95 rounded-lg px-2 py-1 text-center text-amber-950 font-semibold shadow-sm ring-1 ring-amber-100">3-5 ปี <span id="count-cctv-mid">0</span></div>
+                            <div class="bg-rose-200/95 rounded-lg px-2 py-1 text-center text-rose-950 font-semibold shadow-sm ring-1 ring-rose-100">6+ ปี (เก่า) <span id="count-cctv-old">0</span></div>
+                        </div>
+                        <div class="h-44"><canvas id="chart-cctv"></canvas></div>
+                    </div>
+                    <div class="dashboard-hover-card rounded-2xl p-5 text-white" style="background: linear-gradient(135deg, #f97316, #ef4444);">
+                        <div class="flex items-center gap-3 mb-2">
+                            <div class="h-10 w-10 rounded-full bg-white/20 flex items-center justify-center"><i class="fas fa-photo-video"></i></div>
+                            <div>
+                                <div class="font-semibold">โสตทัศนูปกรณ์</div>
+                                <div class="text-xs text-white/80">จำนวนทั้งหมด <span id="count-av">0</span> รายการ</div>
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-4 gap-2 text-[11px] mb-3">
+                            <div class="bg-orange-100/95 rounded-lg px-2 py-1 text-center text-orange-950 font-semibold shadow-sm ring-1 ring-orange-50/80">ทั้งหมด <span id="count-av-total">0</span></div>
+                            <div class="bg-emerald-200/95 rounded-lg px-2 py-1 text-center text-emerald-950 font-semibold shadow-sm ring-1 ring-emerald-100">0-2 ปี(ใหม่) <span id="count-av-new">0</span></div>
+                            <div class="bg-amber-200/95 rounded-lg px-2 py-1 text-center text-amber-950 font-semibold shadow-sm ring-1 ring-amber-100">3-5 ปี <span id="count-av-mid">0</span></div>
+                            <div class="bg-rose-200/95 rounded-lg px-2 py-1 text-center text-rose-950 font-semibold shadow-sm ring-1 ring-rose-100">6+ ปี (เก่า) <span id="count-av-old">0</span></div>
+                        </div>
+                        <div class="h-44"><canvas id="chart-av"></canvas></div>
+                    </div>
+                    <div class="dashboard-hover-card rounded-2xl p-5 text-white" style="background: linear-gradient(135deg, #14b8a6, #0f766e);">
+                        <div class="flex items-center gap-3 mb-2">
+                            <div class="h-10 w-10 rounded-full bg-white/20 flex items-center justify-center"><i class="fas fa-network-wired"></i></div>
+                            <div>
+                                <div class="font-semibold">อุปกรณ์เครือข่าย</div>
+                                <div class="text-xs text-white/80">จำนวนทั้งหมด <span id="count-network">0</span> รายการ</div>
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-4 gap-2 text-[11px] mb-3">
+                            <div class="bg-emerald-100/95 rounded-lg px-2 py-1 text-center text-emerald-950 font-semibold shadow-sm ring-1 ring-emerald-50/80">ทั้งหมด <span id="count-network-total">0</span></div>
+                            <div class="bg-emerald-200/95 rounded-lg px-2 py-1 text-center text-emerald-950 font-semibold shadow-sm ring-1 ring-emerald-100">0-2 ปี(ใหม่) <span id="count-network-new">0</span></div>
+                            <div class="bg-amber-200/95 rounded-lg px-2 py-1 text-center text-amber-950 font-semibold shadow-sm ring-1 ring-amber-100">3-5 ปี <span id="count-network-mid">0</span></div>
+                            <div class="bg-rose-200/95 rounded-lg px-2 py-1 text-center text-rose-950 font-semibold shadow-sm ring-1 ring-rose-100">6+ ปี (เก่า) <span id="count-network-old">0</span></div>
+                        </div>
+                        <div class="h-44"><canvas id="chart-network"></canvas></div>
+                    </div>
+                </div>
+                <div class="mt-4 text-xs text-slate-500">
+                    สีกราฟ: เขียว (0-2 ปี), ส้ม (3-5 ปี), แดง (6+ ปี)
+                </div>
+            </div>
+
+            <!-- Location / Department Summary -->
+            <div class="dashboard-hover-card bg-white rounded-2xl shadow-lg p-6 mb-8">
+                <div class="flex items-start gap-3 mb-5">
+                    <div class="h-10 w-10 rounded-xl bg-gradient-to-br from-emerald-600 to-teal-700 text-white flex items-center justify-center shadow-md shadow-emerald-300">
+                        <i class="fas fa-building"></i>
+                    </div>
+                    <div>
+                        <div class="inline-flex items-center gap-2 rounded-full bg-emerald-100 text-emerald-900 border border-emerald-300 px-3 py-1 text-sm font-bold shadow-sm">
+                            <span class="inline-block h-2 w-2 rounded-full bg-emerald-600"></span>
+                            สรุปตามหน่วยงาน/สถานที่
+                        </div>
+                        <div class="text-sm text-slate-500">จำนวนครุภัณฑ์ทั้งหมด และจำนวนที่ชำรุด/ส่งซ่อมในแต่ละจุด</div>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 xl:grid-cols-2 gap-6">
+                    <div class="dashboard-hover-card rounded-2xl border border-slate-100 bg-slate-50 p-4">
+                        <div class="flex items-center justify-between gap-3 mb-3">
+                            <div>
+                                <div class="inline-flex items-center gap-2 rounded-full bg-emerald-100 text-emerald-900 border border-emerald-300 px-3 py-1 text-sm font-semibold shadow-sm">
+                                    <i class="fas fa-sitemap text-xs"></i>
+                                    อาคาร/แผนก (สรุป)
+                                </div>
+                                <div class="text-xs text-slate-500">สรุปจากข้อความนำหน้าของสถานที่ (เช่น ก่อนคำว่า "ห้อง")</div>
+                            </div>
+                            <span id="locationGroupSummaryCount" class="text-xs font-medium text-emerald-700 bg-emerald-100 border border-emerald-200 rounded-full px-2.5 py-1">0 จุด</span>
+                        </div>
+                        <div class="max-h-[360px] overflow-auto rounded-xl border border-slate-100 bg-white">
+                            <table class="min-w-full text-sm">
+                                <thead class="bg-emerald-50 text-emerald-900 sticky top-0">
+                                    <tr>
+                                        <th class="px-4 py-2 text-left">อาคาร/แผนก</th>
+                                        <th class="px-3 py-2 text-right">ทั้งหมด</th>
+                                        <th class="px-3 py-2 text-right">ชำรุด</th>
+                                        <th class="px-3 py-2 text-right">ส่งซ่อม</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="dashboardLocationGroupBody" class="divide-y divide-slate-100"></tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="dashboard-hover-card rounded-2xl border border-slate-100 bg-slate-50 p-4">
+                        <div class="flex items-center justify-between gap-3 mb-3">
+                            <div>
+                                <div class="inline-flex items-center gap-2 rounded-full bg-cyan-100 text-cyan-900 border border-cyan-300 px-3 py-1 text-sm font-semibold shadow-sm">
+                                    <i class="fas fa-location-dot text-xs"></i>
+                                    สถานที่ / จุดติดตั้ง
+                                </div>
+                                <div class="text-xs text-slate-500">แสดงจุดที่มีจำนวนครุภัณฑ์มากที่สุด พร้อมสถานะต้องติดตาม</div>
+                            </div>
+                            <span id="locationPointSummaryCount" class="text-xs font-medium text-cyan-700 bg-cyan-100 border border-cyan-200 rounded-full px-2.5 py-1">0 จุด</span>
+                        </div>
+                        <div class="max-h-[360px] overflow-auto rounded-xl border border-slate-100 bg-white">
+                            <table class="min-w-full text-sm">
+                                <thead class="bg-cyan-50 text-cyan-900 sticky top-0">
+                                    <tr>
+                                        <th class="px-4 py-2 text-left">สถานที่</th>
+                                        <th class="px-3 py-2 text-right">ทั้งหมด</th>
+                                        <th class="px-3 py-2 text-right">ชำรุด</th>
+                                        <th class="px-3 py-2 text-right">ส่งซ่อม</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="dashboardLocationPointBody" class="divide-y divide-slate-100"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Oldest Assets Table -->
+            <div class="dashboard-hover-card bg-rose-50 rounded-2xl shadow-lg p-4 md:p-6 border border-rose-100">
+                <div class="flex flex-col gap-3 md:flex-row md:items-center md:justify-between mb-4">
+                    <h2 class="inline-flex w-fit items-center gap-2 rounded-full bg-rose-200 text-rose-900 border border-rose-300 px-4 py-2 text-base md:text-lg font-bold shadow-sm leading-snug">
+                        <i class="fas fa-triangle-exclamation"></i>
+                        รายการครุภัณฑ์ที่เก่าที่สุด (ควรพิจารณาเปลี่ยน)
+                    </h2>
+                    <span class="text-xs md:text-sm text-slate-500 md:text-right">แสดงเฉพาะอายุ 6 ปีขึ้นไป<br class="md:hidden">เลื่อนดูเพิ่มเติมได้</span>
+                </div>
+                <div id="oldestAssetsMobile" class="md:hidden space-y-3 max-h-[70vh] overflow-y-auto"></div>
+                <div class="hidden md:block max-h-[430px] overflow-x-auto overflow-y-auto">
+                    <table class="w-full min-w-[1260px] table-fixed text-sm">
+                        <colgroup>
+                            <col class="w-[140px]">
+                            <col class="w-[170px]">
+                            <col>
+                            <col class="w-[210px]">
+                            <col class="w-[220px]">
+                            <col class="w-[140px]">
+                            <col class="w-[150px]">
+                            <col class="w-[130px]">
+                        </colgroup>
+                        <thead class="bg-rose-100 text-rose-900 sticky top-0">
+                            <tr>
+                                <th class="text-left px-4 py-2 whitespace-nowrap">ประเภท</th>
+                                <th class="text-left px-4 py-2 whitespace-nowrap">หมายเลข สวพส.(อร)</th>
+                                <th class="text-left px-4 py-2">ชื่อครุภัณฑ์</th>
+                                <th class="text-left px-4 py-2">ผู้รับผิดชอบ</th>
+                                <th class="text-left px-4 py-2">ที่ตั้ง</th>
+                                <th class="text-left px-4 py-2 whitespace-nowrap">สถานะ</th>
+                                <th class="text-left px-4 py-2 whitespace-nowrap">วันที่ได้รับ</th>
+                                <th class="text-left px-4 py-2 whitespace-nowrap">อายุการใช้งาน</th>
+                            </tr>
+                        </thead>
+                        <tbody id="oldestAssetsBody" class="divide-y"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+
+
+
+
+
+
+
+
 <!-- Manage Tab -->
-                <?!= include('AssetTab'); ?>
+                <div id="manageTab" class="tab-content hidden">
+    <div class="bg-white rounded-2xl shadow-lg p-4 md:p-6 mb-6 border border-slate-100 theme-panel-accent theme-panel-manage">
+        <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-5">
+            <div>
+                <h2 class="theme-tab-title theme-tab-title-manage"><i class="fas fa-box"></i>จัดการครุภัณฑ์</h2>
+                <p class="text-sm mt-2 theme-subtitle-manage">ทะเบียนคุมทรัพย์สินและประวัติการใช้งาน</p>
+            </div>
+            <button onclick="openAddModal()"
+                class="w-full md:w-auto btn-theme btn-theme-manage-solid px-6 py-3 justify-center">
+                <i class="fas fa-plus-circle mr-2"></i>เพิ่มครุภัณฑ์ใหม่
+            </button>
+        </div>
+
+        <div class="rounded-2xl border border-slate-200 bg-slate-50 p-4 md:p-5 space-y-4">
+            <div class="relative w-full">
+                <i class="fas fa-search absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"></i>
+                <input id="manageSearch" type="text" placeholder="ค้นหา รหัส, ชื่อครุภัณฑ์, ผู้รับผิดชอบ, หรือที่ตั้ง..."
+                    class="w-full h-12 pl-11 pr-4 rounded-2xl border border-slate-200 bg-white text-slate-700 focus:outline-none focus:ring-2 focus:ring-emerald-200 focus:border-emerald-300">
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_220px] gap-4 items-start">
+                <div class="min-w-0">
+                    <div class="text-[11px] font-semibold uppercase tracking-wide text-slate-400 mb-2">สถานะ</div>
+                    <input type="hidden" id="manageStatusFilter" value="">
+                    <div id="manageStatusFilterGroup" class="grid grid-cols-2 md:grid-cols-3 xl:flex xl:flex-wrap rounded-2xl border border-slate-200 bg-white p-2 gap-2"></div>
+                </div>
+                <div>
+                    <div class="text-[11px] font-semibold uppercase tracking-wide text-slate-400 mb-2">ประเภท</div>
+                    <select id="manageCategoryFilter"
+                        class="w-full h-12 px-4 rounded-2xl border border-slate-200 bg-white text-slate-700 focus:outline-none focus:ring-2 focus:ring-emerald-200">
+                        <option value="">ประเภททั้งหมด</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <button onclick="toggleSelectAllSupplies(this)"
+                    class="h-12 whitespace-nowrap btn-theme btn-theme-manage-soft px-4 justify-center">
+                    <i class="fas fa-check-square mr-2"></i>เลือกทั้งหมด
+                </button>
+                <button onclick="printSelectedSupplyQRCodes()"
+                    class="h-12 whitespace-nowrap btn-theme btn-theme-check-soft px-4 justify-center">
+                    <i class="fas fa-print mr-2"></i>พิมพ์ QR หลายรายการ
+                </button>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-5 gap-3">
+                <button type="button" onclick="goManageByDashboardPreset('over_age')" class="text-left rounded-2xl border border-rose-200 bg-rose-50 px-4 py-4 shadow-sm hover:shadow-md transition-shadow">
+                    <div class="flex items-start justify-between gap-3">
+                        <div>
+                            <div class="text-sm font-bold text-rose-900">เกินอายุใช้งาน</div>
+                            <div class="text-xs text-rose-700 mt-1">อายุ 6 ปีขึ้นไป</div>
+                        </div>
+                        <i class="fas fa-hourglass-end text-rose-300 text-xl"></i>
+                    </div>
+                    <div id="overAgeAssets" class="text-2xl font-black text-rose-700 mt-3">0</div>
+                </button>
+                <button type="button" onclick="goManageByDashboardPreset('no_owner')" class="text-left rounded-2xl border border-amber-200 bg-amber-50 px-4 py-4 shadow-sm hover:shadow-md transition-shadow">
+                    <div class="flex items-start justify-between gap-3">
+                        <div class="text-sm font-bold text-amber-900">ไม่มีผู้รับผิดชอบ</div>
+                        <i class="fas fa-user-slash text-amber-300 text-xl"></i>
+                    </div>
+                    <div id="noOwnerAssets" class="text-2xl font-black text-amber-700 mt-3">0</div>
+                </button>
+                <button type="button" onclick="goManageByDashboardPreset('no_location')" class="text-left rounded-2xl border border-cyan-200 bg-cyan-50 px-4 py-4 shadow-sm hover:shadow-md transition-shadow">
+                    <div class="flex items-start justify-between gap-3">
+                        <div class="text-sm font-bold text-cyan-900">ไม่มีสถานที่</div>
+                        <i class="fas fa-location-dot text-cyan-300 text-xl"></i>
+                    </div>
+                    <div id="noLocationAssets" class="text-2xl font-black text-cyan-700 mt-3">0</div>
+                </button>
+                <button type="button" onclick="goManageByDashboardPreset('no_received_date')" class="text-left rounded-2xl border border-violet-200 bg-violet-50 px-4 py-4 shadow-sm hover:shadow-md transition-shadow">
+                    <div class="flex items-start justify-between gap-3">
+                        <div class="text-sm font-bold text-violet-900">ไม่มีวันที่ได้รับ</div>
+                        <i class="fas fa-calendar-xmark text-violet-300 text-xl"></i>
+                    </div>
+                    <div id="noDateAssets" class="text-2xl font-black text-violet-700 mt-3">0</div>
+                </button>
+                <button type="button" onclick="goManageByDashboardPreset('no_image')" class="text-left rounded-2xl border border-slate-200 bg-slate-50 px-4 py-4 shadow-sm hover:shadow-md transition-shadow">
+                    <div class="flex items-start justify-between gap-3">
+                        <div class="text-sm font-bold text-slate-900">ไม่มีรูปภาพ</div>
+                        <i class="fas fa-image text-slate-300 text-xl"></i>
+                    </div>
+                    <div id="noImageAssets" class="text-2xl font-black text-slate-700 mt-3">0</div>
+                </button>
+            </div>
+
+            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 text-sm text-slate-600">
+                <span id="selectedCountText" class="text-slate-500">เลือก 0 รายการ</span>
+                <div id="managePresetFilterBadge" class="hidden items-center gap-2 rounded-full border border-indigo-200 bg-indigo-50 px-3 py-1 text-xs text-indigo-700 w-fit">
+                    <i class="fas fa-filter"></i>
+                    <span id="managePresetFilterText">ตัวกรองจากแดชบอร์ด</span>
+                    <button type="button" onclick="clearManageDashboardPresetFilter(true)" class="font-semibold text-indigo-700 hover:text-indigo-900">ล้าง</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="bg-white rounded-2xl shadow-lg border border-slate-100 overflow-hidden theme-panel-accent theme-panel-manage">
+        <div id="suppliesMobileList" class="md:hidden p-4 space-y-3 bg-slate-50/70"></div>
+        <div class="hidden md:block overflow-x-auto">
+            <table class="w-full min-w-[1560px] manage-supplies-table" id="suppliesTable">
+                <colgroup>
+                    <col style="width:56px;">
+                    <col style="width:180px;">
+                    <col>
+                    <col style="width:180px;">
+                    <col style="width:220px;">
+                    <col style="width:110px;">
+                    <col style="width:140px;">
+                    <col style="width:190px;">
+                </colgroup>
+                <thead class="bg-slate-100 text-slate-600 text-sm">
+                    <tr>
+                        <th class="px-4 py-3 text-left">เลือก</th>
+                        <th class="px-4 py-3 text-left">หมายเลข สวพส.(อร)</th>
+                        <th class="px-4 py-3 text-left">ชื่อครุภัณฑ์</th>
+                        <th class="px-4 py-3 text-left">ผู้รับผิดชอบ</th>
+                        <th class="px-4 py-3 text-left">ที่ตั้ง</th>
+                        <th class="px-4 py-3 text-left">สถานะ</th>
+                        <th class="px-4 py-3 text-left">ประเภท</th>
+                        <th class="px-4 py-3 text-left">จัดการ</th>
+                    </tr>
+                </thead>
+                <tbody id="suppliesTableBody" class="divide-y divide-slate-100">
+                    <!-- Data will be loaded here -->
+                </tbody>
+            </table>
+        </div>
+        <div class="px-4 py-3 text-sm text-slate-500 border-t border-slate-100 flex items-center justify-between gap-3 flex-wrap">
+            <div class="flex items-center gap-3">
+                <span id="manageTableSummary">แสดง 0 รายการ</span>
+                <div class="inline-flex items-center gap-2">
+                    <label for="managePageSizeSelect" class="text-slate-500">แสดง</label>
+                    <select id="managePageSizeSelect" class="h-9 px-2 rounded-lg border border-slate-200 bg-white text-slate-700">
+                        <option value="5">5</option>
+                        <option value="10" selected>10</option>
+                        <option value="25">25</option>
+                        <option value="50">50</option>
+                    </select>
+                    <span class="text-slate-500">รายการ</span>
+                </div>
+            </div>
+            <div class="inline-flex items-center gap-2">
+                <button type="button" id="managePrevPage" onclick="changeManagePage(-1)" class="btn-theme btn-theme-manage-soft px-3 py-1.5 disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:shadow-none disabled:hover:translate-y-0">ก่อนหน้า</button>
+                <span id="managePageInfo" class="text-slate-500">หน้า 1 / 1</span>
+                <button type="button" id="manageNextPage" onclick="changeManagePage(1)" class="btn-theme btn-theme-manage-soft px-3 py-1.5 disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:shadow-none disabled:hover:translate-y-0">ถัดไป</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
 <!-- Check Tab -->
-                <?!= include('CheckTab'); ?>
+                <div id="checkTab" class="tab-content hidden">
+            <div class="bg-white rounded-lg shadow-lg p-6 theme-panel-accent theme-panel-check">
+                <h2 class="theme-tab-title theme-tab-title-check mb-4"><i class="fas fa-clipboard-check"></i>ค้นหาครุภัณฑ์เพื่อตรวจสอบ</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                    <div>
+                        <input type="text" id="searchCheck" placeholder="ค้นหาครุภัณฑ์..."
+                            class="w-full px-4 py-2 border rounded-lg">
+                    </div>
+                    
+
+<div>
+                        <button onclick="openScannerCheck()"
+                            class="w-full btn-theme btn-theme-check-solid px-6 py-3">
+                            <i class="fas fa-qrcode mr-2"></i>สแกน QR/บาร์โค้ด
+                        </button>
+                    </div>
+                </div>
+                <div id="checkResults" class="mt-4"></div>
+
+                <!-- Recent KPI -->
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mt-6 mb-8">
+                    <button onclick="openReportWithPresetDays(7)" class="text-left rounded-xl border border-blue-100 bg-blue-50 p-4 hover:shadow-md transition">
+                        <div class="text-sm text-blue-700">กิจกรรม 7 วัน</div>
+                        <div id="kpiActivity7" class="text-2xl font-bold text-blue-900 mt-1">0</div>
+                        <div class="text-xs text-blue-600 mt-1">คลิกเพื่อดูในรายงาน</div>
+                    </button>
+                    <button onclick="openReportWithPresetDays(30)" class="text-left rounded-xl border border-emerald-100 bg-emerald-50 p-4 hover:shadow-md transition">
+                        <div class="text-sm text-emerald-700">กิจกรรม 30 วัน</div>
+                        <div id="kpiActivity30" class="text-2xl font-bold text-emerald-900 mt-1">0</div>
+                        <div class="text-xs text-emerald-600 mt-1">คลิกเพื่อดูในรายงาน</div>
+                    </button>
+                    <button onclick="openReportImport7Days()" class="text-left rounded-xl border border-amber-100 bg-amber-50 p-4 hover:shadow-md transition">
+                        <div class="text-sm text-amber-700">นำเข้า 7 วัน</div>
+                        <div id="kpiImport7" class="text-2xl font-bold text-amber-900 mt-1">0</div>
+                        <div class="text-xs text-amber-600 mt-1">SUPPLY_IMPORT_SUMMARY</div>
+                    </button>
+                    <button onclick="openReportUpdate7Days()" class="text-left rounded-xl border border-purple-100 bg-purple-50 p-4 hover:shadow-md transition">
+                        <div class="text-sm text-purple-700">แก้ไขครุภัณฑ์ 7 วัน</div>
+                        <div id="kpiUpdate7" class="text-2xl font-bold text-purple-900 mt-1">0</div>
+                        <div class="text-xs text-purple-600 mt-1">SUPPLY_UPDATE</div>
+                    </button>
+                </div>
+                <!-- Data Quality Checks -->
+                <div class="bg-white rounded-2xl shadow-lg p-4 md:p-6 mb-8 border border-slate-100 theme-panel-accent theme-panel-check">
+                    <div class="flex flex-col gap-3 md:flex-row md:items-start md:justify-between mb-4">
+                        <div class="flex items-start gap-3">
+                            <div class="h-10 w-10 rounded-xl bg-amber-500 text-white flex items-center justify-center shrink-0">
+                                <i class="fas fa-shield-alt"></i>
+                            </div>
+                            <div>
+                                <div class="text-lg font-bold text-slate-800">ตรวจสอบคุณภาพข้อมูล</div>
+                                <div class="text-sm text-slate-500">ตรวจสอบข้อมูลครุภัณฑ์ที่ตกหล่นหรือผิดรูปแบบ เพื่อให้พร้อมใช้งานและตรวจสอบย้อนหลังได้</div>
+                            </div>
+                        </div>
+                        <div class="w-full md:w-auto">
+                            <button onclick="exportDataQualityCsv()" class="w-full md:w-auto btn-theme btn-theme-danger-soft px-4 py-2">
+                                ส่งออกเฉพาะรายการที่มีปัญหา (CSV)
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+                        <div class="rounded-lg border border-amber-100 bg-amber-50 p-4">
+                            <div class="text-sm text-amber-800">ข้อมูลไม่ครบ</div>
+                            <div id="dqMissingCount" class="text-2xl font-bold text-amber-900 mt-1">0</div>
+                        </div>
+                        <div class="rounded-lg border border-rose-100 bg-rose-50 p-4">
+                            <div class="text-sm text-rose-800">รูปแบบข้อมูลผิด</div>
+                            <div id="dqInvalidCount" class="text-2xl font-bold text-rose-900 mt-1">0</div>
+                        </div>
+                        <div class="rounded-lg border border-slate-200 bg-slate-50 p-4">
+                            <div class="text-sm text-slate-700">รายการเร่งด่วน</div>
+                            <div id="dqUrgentCount" class="text-2xl font-bold text-slate-900 mt-1">0</div>
+                        </div>
+                    </div>
+
+                    <div id="dqIssuesMobile" class="md:hidden space-y-3"></div>
+                    <div class="hidden md:block rounded-xl border border-slate-200 overflow-hidden bg-white shadow-sm">
+                        <div id="dqIssuesDesktopTableContainer" class="table-container overflow-y-auto">
+                            <table class="min-w-full text-sm">
+                                <thead class="bg-slate-50 sticky top-0">
+                                    <tr>
+                                        <th class="text-left px-4 py-3 whitespace-nowrap">หมายเลข สวพส.(อร)</th>
+                                        <th class="text-left px-4 py-3">ชื่อครุภัณฑ์</th>
+                                        <th class="text-left px-4 py-3 whitespace-nowrap">ประเภทปัญหา</th>
+                                        <th class="text-left px-4 py-3">รายละเอียด</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="dqIssuesBody" class="divide-y divide-slate-100"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="mt-4 flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
+                        <div class="flex flex-wrap items-center gap-2 text-sm text-slate-600">
+                            <label for="dqPageSize" class="font-medium">แสดงผล</label>
+                            <select id="dqPageSize" onchange="setDqPageSize(this.value)" class="rounded-lg border border-slate-200 px-3 py-2 bg-white">
+                                <option value="5">5</option>
+                                <option value="10" selected>10</option>
+                                <option value="25">25</option>
+                                <option value="50">50</option>
+                            </select>
+                            <span id="dqTotalCount" class="text-sm text-slate-500">ไม่พบรายการ</span>
+                        </div>
+                        <div class="flex items-center justify-between gap-2 md:justify-end">
+                            <button type="button" id="dqPrevBtn" onclick="changeDqPage(-1)" class="btn-theme btn-theme-neutral-soft px-4 py-2 text-sm font-semibold">ก่อนหน้า</button>
+                            <span id="dqPageInfo" class="min-w-[88px] text-center text-sm font-medium text-slate-600">หน้า 1 / 1</span>
+                            <button type="button" id="dqNextBtn" onclick="changeDqPage(1)" class="btn-theme btn-theme-check-soft px-4 py-2 text-sm font-semibold">ถัดไป</button>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="bg-white rounded-lg shadow-lg p-6 mt-6 theme-panel-accent theme-panel-check">
+                    <h3 class="text-lg font-semibold theme-subtitle-check mb-4">บันทึกการตรวจสอบ</h3>
+                    <input type="hidden" id="inspectionAssetNumber">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm text-gray-700 mb-1">รายการ</label>
+                            <input type="text" id="inspectionItem" class="w-full px-4 py-2 border rounded-lg">
+                        </div>
+                        <div>
+                            <label class="block text-sm text-gray-700 mb-1">สภาพการใช้งาน</label>
+                            <select id="inspectionCondition" class="w-full px-4 py-2 border rounded-lg">
+                                <option value="ปกติ">ปกติ</option>
+                                <option value="ชำรุด">ชำรุด</option>
+                                <option value="ซาก">ซาก</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm text-gray-700 mb-1">ผู้ตรวจสอบ</label>
+                            <input type="text" id="inspectionInspector" class="w-full px-4 py-2 border rounded-lg">
+                        </div>
+                        <div>
+                            <label class="block text-sm text-gray-700 mb-1">วันที่ตรวจสอบ</label>
+                            <input type="date" id="inspectionDate" class="w-full px-4 py-2 border rounded-lg">
+                        </div>
+                    </div>
+                    <div class="mt-4">
+                        <label class="block text-sm text-gray-700 mb-1">หมายเหตุการตรวจ</label>
+                        <textarea id="inspectionNote" class="w-full px-4 py-2 border rounded-lg" rows="3"></textarea>
+                    </div>
+                    <div class="mt-4">
+                        <button onclick="saveInspectionFromUI()" class="btn-theme btn-theme-check-solid px-4 py-2">บันทึกการตรวจสอบ</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+
 <!-- Report Tab -->
-                <?!= include('ReportTab'); ?>
+                <div id="reportTab" class="tab-content hidden">
+  <div class="bg-white rounded-lg shadow-lg p-6 mb-6 theme-panel-accent theme-panel-report">
+    <div class="mb-4">
+      <h2 class="theme-tab-title theme-tab-title-report"><i class="fas fa-chart-bar"></i>รายงานสรุป</h2>
+    </div>
+    <div class="flex flex-wrap items-end gap-3 mb-4">
+      <div>
+        <label class="block text-xs text-gray-600 mb-1">ปีรายงาน</label>
+        <select id="reportYear" class="px-3 py-2 border rounded-lg"></select>
+      </div>
+      <button onclick="loadReportSummary()" class="btn-theme btn-theme-report-solid px-4 py-2">โหลดสรุป</button>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+      <div class="rounded-lg border border-emerald-100 bg-emerald-50 p-4">
+        <div class="text-sm text-emerald-800">รายการครุภัณฑ์ทั้งหมด</div>
+        <div id="reportTotalAssets" class="text-2xl font-bold text-emerald-900 mt-1">0</div>
+      </div>
+      <div class="rounded-lg border border-blue-100 bg-blue-50 p-4">
+        <div class="text-sm text-blue-800">มูลค่าครุภัณฑ์รวม</div>
+        <div id="reportTotalValue" class="text-2xl font-bold text-blue-900 mt-1">0.00</div>
+      </div>
+      <div class="rounded-lg border border-amber-100 bg-amber-50 p-4">
+        <div class="text-sm text-amber-800">เพิ่มครุภัณฑ์ (ปีที่เลือก)</div>
+        <div id="reportCreateCount" class="text-2xl font-bold text-amber-900 mt-1">0</div>
+      </div>
+      <div class="rounded-lg border border-purple-100 bg-purple-50 p-4">
+        <div class="text-sm text-purple-800">แก้ไข/คำขอเปลี่ยน (ปีที่เลือก)</div>
+        <div id="reportUpdateCount" class="text-2xl font-bold text-purple-900 mt-1">0</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="bg-white rounded-lg shadow-lg p-6 mb-6 theme-panel-accent theme-panel-report">
+    <h3 class="text-lg font-semibold theme-subtitle-report mb-2">สรุปรายเดือน (ปีที่เลือก)</h3>
+    <div class="table-container max-h-96 overflow-y-auto">
+      <table class="w-full text-sm">
+        <thead class="bg-gray-100 sticky top-0">
+          <tr>
+            <th class="px-4 py-2 text-left">เดือน</th>
+            <th class="px-4 py-2 text-left">เพิ่มครุภัณฑ์</th>
+            <th class="px-4 py-2 text-left">แก้ไขครุภัณฑ์</th>
+            <th class="px-4 py-2 text-left">ลบครุภัณฑ์</th>
+            <th class="px-4 py-2 text-left">คำขอเปลี่ยนผู้รับผิดชอบ</th>
+            <th class="px-4 py-2 text-left">Normalize สถานะ</th>
+          </tr>
+        </thead>
+        <tbody id="reportMonthlyBody"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="bg-white rounded-lg shadow-lg p-6 mt-6 theme-panel-accent theme-panel-report">
+    <h3 class="text-lg font-semibold theme-subtitle-report mb-4">ส่งออกข้อมูล</h3>
+    <div class="flex flex-wrap gap-3">
+      <button onclick="exportSuppliesCsv()" class="btn-theme btn-theme-report-soft px-4 py-2">ส่งออก CSV (ครุภัณฑ์)</button>
+    </div>
+  </div>
+
+  <div class="bg-white rounded-2xl shadow-lg p-4 md:p-6 mt-6 border border-slate-100 theme-panel-accent theme-panel-report">
+    <div class="flex flex-col gap-3 md:flex-row md:items-start md:justify-between mb-5">
+      <div>
+        <h3 class="text-lg font-semibold theme-subtitle-report mb-2">นำเข้าข้อมูลครุภัณฑ์ (CSV)</h3>
+        <p class="text-sm text-gray-600">รองรับไฟล์ CSV จาก Excel (UTF-8) พร้อม preview/validate ก่อนบันทึกจริง</p>
+      </div>
+      <div class="inline-flex items-center rounded-full border border-violet-200 bg-violet-50 px-3 py-1 text-xs font-semibold text-violet-700 w-fit">
+        แสดงตัวอย่างสูงสุด 20 แถว
+      </div>
+    </div>
+
+    <div class="rounded-2xl border border-slate-200 bg-slate-50 p-4 md:p-5 space-y-4 mb-4">
+      <div class="grid grid-cols-1 xl:grid-cols-[minmax(0,1fr)_340px] gap-4 items-start">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 min-w-0">
+          <div>
+            <label class="block text-[11px] font-semibold uppercase tracking-wide text-slate-400 mb-2">ไฟล์ CSV</label>
+            <input id="suppliesCsvFile" type="file" accept=".csv,text/csv" class="w-full h-12 px-3 py-2 rounded-2xl border border-slate-200 bg-white text-slate-700 focus:outline-none focus:ring-2 focus:ring-violet-200 focus:border-violet-300">
+          </div>
+          <div>
+            <label class="block text-[11px] font-semibold uppercase tracking-wide text-slate-400 mb-2">โหมดนำเข้า</label>
+            <select id="suppliesImportMode" class="w-full h-12 px-4 rounded-2xl border border-slate-200 bg-white text-slate-700 focus:outline-none focus:ring-2 focus:ring-violet-200 focus:border-violet-300">
+              <option value="upsert">Upsert (แนะนำ)</option>
+              <option value="append">Append (เพิ่มอย่างเดียว)</option>
+            </select>
+          </div>
+        </div>
+        <div>
+          <div class="text-[11px] font-semibold uppercase tracking-wide text-slate-400 mb-2">เครื่องมือ</div>
+          <div class="grid grid-cols-2 gap-2 rounded-2xl border border-slate-200 bg-white p-2">
+            <button onclick="downloadSuppliesCsvTemplate()" class="h-12 btn-theme btn-theme-report-soft px-4 justify-center">ดาวน์โหลด Template</button>
+            <button onclick="previewSuppliesCsv()" class="h-12 btn-theme btn-theme-report-solid px-4 justify-center">Preview</button>
+            <button onclick="importSuppliesCsv()" class="h-12 btn-theme btn-theme-report-solid px-4 justify-center">Import</button>
+            <button onclick="restoreLatestSuppliesBackup()" class="h-12 btn-theme btn-theme-danger-soft px-4 justify-center">ย้อนกลับล่าสุด</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-3 mb-4">
+      <div class="rounded-xl border border-slate-200 bg-slate-50 p-4">
+        <div class="text-sm text-slate-600">จำนวนแถวในไฟล์</div>
+        <div id="csvPreviewTotal" class="text-2xl font-bold text-slate-900 mt-1">0</div>
+      </div>
+      <div class="rounded-xl border border-emerald-200 bg-emerald-50 p-4">
+        <div class="text-sm text-emerald-700">แถวผ่าน validation</div>
+        <div id="csvPreviewValid" class="text-2xl font-bold text-emerald-900 mt-1">0</div>
+      </div>
+      <div class="rounded-xl border border-rose-200 bg-rose-50 p-4">
+        <div class="text-sm text-rose-700">แถวไม่ผ่าน validation</div>
+        <div id="csvPreviewInvalid" class="text-2xl font-bold text-rose-900 mt-1">0</div>
+      </div>
+      <div class="rounded-xl border border-amber-200 bg-amber-50 p-4">
+        <div class="text-sm text-amber-700">ข้อผิดพลาดตัวอย่าง</div>
+        <div id="csvPreviewErrors" class="text-sm text-amber-900 mt-2 leading-6">-</div>
+      </div>
+    </div>
+
+    <div id="csvPreviewMobile" class="md:hidden space-y-3"></div>
+    <div class="hidden md:block rounded-2xl border border-slate-200 overflow-hidden bg-white shadow-sm">
+      <div class="table-container max-h-80 overflow-y-auto">
+        <table class="w-full text-sm">
+          <thead class="bg-slate-100 text-slate-600 sticky top-0">
+            <tr>
+              <th class="px-4 py-3 text-left">หมายเลข สวพส.(อร)</th>
+              <th class="px-4 py-3 text-left">ประเภท</th>
+              <th class="px-4 py-3 text-left">ชื่อครุภัณฑ์</th>
+              <th class="px-4 py-3 text-left">ราคา</th>
+              <th class="px-4 py-3 text-left">วันที่ได้รับ</th>
+              <th class="px-4 py-3 text-left">สถานะ</th>
+              <th class="px-4 py-3 text-left">ผลตรวจ</th>
+            </tr>
+          </thead>
+          <tbody id="csvPreviewBody" class="divide-y divide-slate-100">
+            <tr><td class="px-4 py-3 text-gray-500" colspan="7">ยังไม่ได้ preview ไฟล์</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="bg-white rounded-lg shadow-lg p-6 mt-6 theme-panel-accent theme-panel-report">
+    <h3 class="text-lg font-semibold theme-subtitle-report mb-2">ประวัติการย้ายสถานที่/เปลี่ยนผู้รับผิดชอบ</h3>
+    <p class="text-sm text-gray-600 mb-4">ใช้ตรวจสอบย้อนหลังว่าใครแก้ไขอะไร เมื่อไหร่</p>
+    <div class="flex flex-wrap gap-2 mb-3">
+      <button onclick="applyAuditPreset('today')" data-audit-preset="today" class="audit-preset-btn btn-theme btn-theme-report-soft px-3 py-1.5">วันนี้</button>
+      <button onclick="applyAuditPreset('7days')" data-audit-preset="7days" class="audit-preset-btn btn-theme btn-theme-report-soft px-3 py-1.5">7 วันล่าสุด</button>
+      <button onclick="applyAuditPreset('30days')" data-audit-preset="30days" class="audit-preset-btn btn-theme btn-theme-report-soft px-3 py-1.5">30 วันล่าสุด</button>
+      <button onclick="applyAuditPreset('month')" data-audit-preset="month" class="audit-preset-btn btn-theme btn-theme-report-soft px-3 py-1.5">เดือนนี้</button>
+      <button onclick="applyAuditPreset('clear')" class="btn-theme btn-theme-danger-soft px-3 py-1.5">ล้างช่วงเวลา</button>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-7 gap-3 mb-4">
+      <div>
+        <label class="block text-xs text-gray-600 mb-1">จากวันที่</label>
+        <input type="date" id="auditFromDate" class="w-full px-3 py-2 border rounded-lg">
+      </div>
+      <div>
+        <label class="block text-xs text-gray-600 mb-1">ถึงวันที่</label>
+        <input type="date" id="auditToDate" class="w-full px-3 py-2 border rounded-lg">
+      </div>
+      <div>
+        <label class="block text-xs text-gray-600 mb-1">ผู้ดำเนินการ</label>
+        <input type="text" id="auditActor" placeholder="เช่น ผู้ดูแลระบบ" class="w-full px-3 py-2 border rounded-lg">
+      </div>
+      <div>
+        <label class="block text-xs text-gray-600 mb-1">ประเภทเหตุการณ์</label>
+        <select id="auditEventType" class="w-full px-3 py-2 border rounded-lg">
+          <option value="">ทั้งหมด</option>
+          <option value="SUPPLY_CREATE">SUPPLY_CREATE</option>
+          <option value="SUPPLY_UPDATE">SUPPLY_UPDATE</option>
+          <option value="SUPPLY_DELETE">SUPPLY_DELETE</option>
+          <option value="SUPPLY_STATUS_NORMALIZE">SUPPLY_STATUS_NORMALIZE</option>
+          <option value="SUPPLY_IMPORT_BACKUP">SUPPLY_IMPORT_BACKUP</option>
+          <option value="SUPPLY_IMPORT_SUMMARY">SUPPLY_IMPORT_SUMMARY</option>
+          <option value="SUPPLY_IMPORT_RESTORE">SUPPLY_IMPORT_RESTORE</option>
+          <option value="REQUEST_OWNER_CHANGE">REQUEST_OWNER_CHANGE</option>
+        </select>
+      </div>
+      <div>
+        <label class="block text-xs text-gray-600 mb-1">แหล่งข้อมูล</label>
+        <select id="auditSource" class="w-full px-3 py-2 border rounded-lg">
+          <option value="">ทั้งหมด</option>
+          <option value="Supplies">Supplies</option>
+          <option value="SuppliesImport">SuppliesImport</option>
+          <option value="ChangeRequests">ChangeRequests</option>
+        </select>
+      </div>
+      <div class="flex items-end gap-2">
+        <button onclick="loadAuditLogs()" class="btn-theme btn-theme-report-solid px-4 py-2">กรอง</button>
+        <button onclick="clearAuditFilters()" class="btn-theme btn-theme-neutral-soft px-4 py-2">ล้าง</button>
+      </div>
+    </div>
+    <div id="auditLogMobile" class="md:hidden space-y-3"></div>
+    <div class="hidden md:block table-container max-h-96 overflow-y-auto">
+      <table class="w-full text-sm">
+        <thead class="bg-gray-100 sticky top-0">
+          <tr>
+            <th class="px-4 py-2 text-left">วันที่</th>
+            <th class="px-4 py-2 text-left">เหตุการณ์</th>
+            <th class="px-4 py-2 text-left">หมายเลข สวพส.(อร)</th>
+            <th class="px-4 py-2 text-left">ชื่อครุภัณฑ์</th>
+            <th class="px-4 py-2 text-left">จากสถานที่</th>
+            <th class="px-4 py-2 text-left">ถึงสถานที่</th>
+            <th class="px-4 py-2 text-left">จากผู้รับผิดชอบ</th>
+            <th class="px-4 py-2 text-left">ถึงผู้รับผิดชอบ</th>
+            <th class="px-4 py-2 text-left">ผู้ดำเนินการ</th>
+            <th class="px-4 py-2 text-left">หมายเหตุ</th>
+          </tr>
+        </thead>
+        <tbody id="auditLogBody"></tbody>
+      </table>
+    </div>
+    <div class="mt-4 flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
+      <div class="flex items-center gap-2 text-sm text-slate-600">
+        <label for="auditPageSize" class="font-medium">แสดงผล</label>
+        <span id="auditTotalCount" class="ml-2 text-sm text-slate-500">ทั้งหมด 0 รายการ</span>
+        <select id="auditPageSize" onchange="setAuditPageSize(this.value)" class="rounded-lg border border-slate-200 px-3 py-2 bg-white">
+          <option value="5">5</option>
+          <option value="10" selected>10</option>
+          <option value="25">25</option>
+          <option value="50">50</option>
+        </select>
+      </div>
+      <div class="flex items-center justify-between gap-2 md:justify-end">
+        <button type="button" id="auditPrevBtn" onclick="changeAuditPage(-1)" class="btn-theme btn-theme-neutral-soft px-4 py-2 text-sm font-semibold">ก่อนหน้า</button>
+        <span id="auditPageInfo" class="min-w-[88px] text-center text-sm font-medium text-slate-600">หน้า 1 / 1</span>
+        <button type="button" id="auditNextBtn" onclick="changeAuditPage(1)" class="btn-theme btn-theme-report-soft px-4 py-2 text-sm font-semibold">ถัดไป</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
 <!-- Change Requests Tab -->
-                <?!= include('ChangeRequestsTab'); ?>
+                <div id="changeTab" class="tab-content hidden">
+  <div class="bg-white rounded-2xl shadow-lg p-4 md:p-6 theme-panel-accent border border-slate-100">
+    <div class="flex flex-col gap-3 md:flex-row md:items-center md:justify-between mb-4">
+      <div class="flex flex-col gap-2">
+        <h2 class="theme-tab-title theme-tab-title-manage"><i class="fas fa-user-pen"></i>คำขอเปลี่ยนผู้รับผิดชอบครุภัณฑ์</h2>
+        <p class="text-sm text-slate-500">ติดตามคำขอที่ส่งเข้ามาและสถานะล่าสุด</p>
+      </div>
+      <div class="inline-flex items-center gap-2 self-start rounded-full border border-amber-200 bg-amber-50 px-3 py-1.5 text-sm font-semibold text-amber-700">
+        <i class="fas fa-hourglass-half text-xs"></i>
+        <span>รอดำเนินการ</span>
+        <span id="changeRequestsPendingBadge" class="inline-flex min-w-[1.75rem] justify-center rounded-full bg-white px-2 py-0.5 text-xs font-bold text-amber-700">0</span>
+      </div>
+    </div>
+
+    <div class="mb-4">
+      <label for="changeRequestSearch" class="block text-sm font-medium text-slate-600 mb-2">ค้นหา</label>
+      <div class="grid grid-cols-1 sm:grid-cols-[minmax(0,1fr)_auto] gap-2">
+        <div class="relative">
+          <span class="pointer-events-none absolute inset-y-0 left-3 flex items-center text-slate-400"><i class="fas fa-search"></i></span>
+          <input id="changeRequestSearch" type="text" oninput="setChangeRequestSearch(this.value)" class="w-full rounded-xl border border-slate-200 bg-white pl-10 pr-4 py-2.5 text-sm text-slate-700 shadow-sm focus:border-emerald-300 focus:outline-none focus:ring-2 focus:ring-emerald-100" placeholder="หมายเลขครุภัณฑ์,ผู้รับผิดชอบเดิม,ผู้รับผิดชอบใหม่">
+        </div>
+        <button type="button" onclick="clearChangeRequestSearch()" class="inline-flex items-center justify-center gap-2 rounded-xl border border-slate-300 bg-white px-4 py-2.5 text-sm font-semibold text-slate-700 shadow-sm transition hover:bg-slate-50 whitespace-nowrap"><i class="fas fa-xmark"></i><span>ล้างการค้นหา</span></button>
+      </div>
+    </div>
+
+    <div id="changeRequestFilterGroup" class="grid grid-cols-2 gap-2 md:flex md:flex-wrap mb-4">
+      <button type="button" onclick="setChangeRequestStatusFilter('')" data-status="" class="change-request-filter-btn btn-theme btn-theme-manage-soft px-4 py-2 text-sm font-semibold">ทั้งหมด</button>
+      <button type="button" onclick="setChangeRequestStatusFilter('รอดำเนินการ')" data-status="รอดำเนินการ" class="change-request-filter-btn btn-theme btn-theme-manage-soft px-4 py-2 text-sm font-semibold">รอดำเนินการ</button>
+      <button type="button" onclick="setChangeRequestStatusFilter('อนุมัติแล้ว')" data-status="อนุมัติแล้ว" class="change-request-filter-btn btn-theme btn-theme-manage-soft px-4 py-2 text-sm font-semibold">อนุมัติแล้ว</button>
+      <button type="button" onclick="setChangeRequestStatusFilter('ปฏิเสธ')" data-status="ปฏิเสธ" class="change-request-filter-btn btn-theme btn-theme-manage-soft px-4 py-2 text-sm font-semibold">ปฏิเสธ</button>
+    </div>
+
+    <div id="changeRequestsMobile" class="md:hidden space-y-3"></div>
+    <div class="hidden md:block table-container">
+      <table class="w-full">
+        <thead class="bg-gray-200">
+          <tr>
+            <th class="px-4 py-2 text-left">วันที่ส่งคำขอ</th>
+            <th class="px-4 py-2 text-left">หมายเลข สวพส.(อร)</th>
+            <th class="px-4 py-2 text-left">เดิม</th>
+            <th class="px-4 py-2 text-left">ใหม่</th>
+            <th class="px-4 py-2 text-left">เหตุผล</th>
+            <th class="px-4 py-2 text-left">ผู้ติดต่อ</th>
+            <th class="px-4 py-2 text-left">สถานะ</th>
+            <th class="px-4 py-2 text-left whitespace-nowrap">จัดการ</th>
+          </tr>
+        </thead>
+        <tbody id="changeRequestsBody"></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
 <!-- Setting Tab -->
-                <?!= include('SettingTab'); ?>
+                <div id="settingTab" class="tab-content hidden">
+  <div class="bg-white rounded-lg shadow-lg p-6">
+    <h2 class="text-2xl font-bold mb-4 text-gray-800">การตั้งค่า</h2>
+    <p class="text-gray-600 mb-6">จัดการการเชื่อมต่อกูเกิลไดรฟ์และสเปรดชีต</p>
+
+    <div class="space-y-4">
+      <div>
+        <label class="block text-sm font-medium text-gray-700">รหัสโฟลเดอร์ (เก็บรูป QR/บาร์โค้ด)</label>
+        <input id="settingFolderId" type="text" class="mt-1 w-full px-4 py-2 border border-slate-200 rounded-lg" placeholder="เช่น 1PXKZE..." />
+      </div>
+      <div>
+        <label class="block text-sm font-medium text-gray-700">รหัสสเปรดชีต (ถ้าเว้นว่าง จะใช้ไฟล์ปัจจุบัน)</label>
+        <input id="settingSpreadsheetId" type="text" class="mt-1 w-full px-4 py-2 border border-slate-200 rounded-lg" placeholder="เช่น 1AbC..." />
+      </div>
+    </div>
+
+    <div class="mt-6 flex gap-3 flex-wrap">
+      <button onclick="saveSettingsTab()" class="bg-emerald-50 text-emerald-700 px-5 py-2 rounded-lg hover:bg-emerald-100 border border-emerald-100">บันทึก</button>
+      <button onclick="loadSettingsTab()" class="bg-slate-100 text-slate-700 px-5 py-2 rounded-lg hover:bg-slate-200">รีเฟรชค่า</button>
+      <button onclick="normalizeSuppliesStatusFromSettings()" class="bg-amber-50 text-amber-700 px-5 py-2 rounded-lg hover:bg-amber-100 border border-amber-100">Normalize สถานะเดิม</button>
+      <button onclick="setupSheetsAndSeedSamplesFromSettings()" class="bg-blue-50 text-blue-700 px-5 py-2 rounded-lg hover:bg-blue-100 border border-blue-100">สร้างชีท + ใส่ข้อมูลตัวอย่าง</button>
+    </div>
+
+    <div class="mt-6 text-xs text-gray-500">
+      หมายเหตุ: เปลี่ยนรหัสสเปรดชีตจะมีผลกับข้อมูลทั้งหมดในระบบ
+    </div>
+  </div>
+</div>
+
+
 </main>
     </div>
 
