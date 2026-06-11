@@ -14,7 +14,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     <script src="https://unpkg.com/@dotlottie/player-component@2.7.12/dist/dotlottie-player.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="./org-theme.css?v=23">
+    <link rel="stylesheet" href="./org-theme.css?v=30">
     <style>
         * {
             font-family: 'Kanit', sans-serif;
@@ -4833,28 +4833,27 @@
                     Swal.fire({ icon: 'error', title: 'เปิดหน้าต่างพิมพ์ไม่สำเร็จ', text: 'กรุณาอนุญาต Popup ในเบราว์เซอร์' });
                     return;
                 }
-
-                win.document.write(`
-                    <html>
-                        <head>
-                            <title>พิมพ์ QR ครุภัณฑ์</title>
-                            <style>
-                                body { font-family: Tahoma, sans-serif; padding: 18px; color: #0f172a; }
-                                .wrap { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
-                                .qr-card { border: 1px solid #cbd5e1; border-radius: 10px; padding: 10px; text-align: center; break-inside: avoid; }
-                                .qr-card img { width: 180px; height: 180px; object-fit: contain; display: block; margin: 0 auto 8px; }
-                                .qr-code { font-weight: 700; font-size: 14px; margin-bottom: 4px; }
-                                .qr-name { font-size: 12px; margin-bottom: 2px; }
-                                .qr-meta { font-size: 11px; color: #475569; }
-                                @media print { body { margin: 0; padding: 12px; } .wrap { gap: 8px; } }
-                            </style>
-                        </head>
-                        <body>
-                            <h3>QR Code ครุภัณฑ์ (${selected.length} รายการ)</h3>
-                            <div class="wrap">${cards}</div>
-                        </body>
-                    </html>
-                `);
+                win.document.write([
+                    '<html>',
+                    '<head>',
+                    '<title>พิมพ์ QR ครุภัณฑ์</title>',
+                    '<style>',
+                    'body { font-family: Tahoma, sans-serif; padding: 18px; color: #0f172a; }',
+                    '.wrap { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }',
+                    '.qr-card { border: 1px solid #cbd5e1; border-radius: 10px; padding: 10px; text-align: center; break-inside: avoid; }',
+                    '.qr-card img { width: 180px; height: 180px; object-fit: contain; display: block; margin: 0 auto 8px; }',
+                    '.qr-code { font-weight: 700; font-size: 14px; margin-bottom: 4px; }',
+                    '.qr-name { font-size: 12px; margin-bottom: 2px; }',
+                    '.qr-meta { font-size: 11px; color: #475569; }',
+                    '@media print { body { margin: 0; padding: 12px; } .wrap { gap: 8px; } }',
+                    '</style>',
+                    '</head>',
+                    '<body>',
+                    '<h3>QR Code ครุภัณฑ์ (' + selected.length + ' รายการ)</h3>',
+                    '<div class="wrap">' + cards + '</div>',
+                    '</body>',
+                    '</html>'
+                ].join(''));
                 win.document.close();
                 win.focus();
                 win.print();
@@ -4873,6 +4872,14 @@
             }
 
             const item = supplies.find(function (s) { return String(s.assetNumber || '').trim() === code; }) || {};
+            const escapeHtml = function (value) {
+                return String(value === null || value === undefined ? '' : value)
+                    .replace(/&/g, '&amp;')
+                    .replace(/</g, '&lt;')
+                    .replace(/>/g, '&gt;')
+                    .replace(/"/g, '&quot;')
+                    .replace(/'/g, '&#39;');
+            };
             Swal.fire({
                 title: 'กำลังเตรียม QR...',
                 text: 'โปรดรอสักครู่',
@@ -4889,29 +4896,29 @@
                     return;
                 }
 
-                win.document.write(`
-                    <html>
-                        <head>
-                            <title>พิมพ์ QR ครุภัณฑ์</title>
-                            <style>
-                                body { font-family: Tahoma, sans-serif; margin: 0; padding: 24px; text-align: center; color: #0f172a; }
-                                .card { border: 1px solid #cbd5e1; border-radius: 12px; max-width: 360px; margin: 0 auto; padding: 16px; }
-                                img { width: 240px; height: 240px; object-fit: contain; }
-                                .code { font-weight: 700; font-size: 18px; margin-top: 10px; }
-                                .name { font-size: 14px; margin-top: 4px; }
-                                .meta { font-size: 12px; color: #475569; margin-top: 2px; }
-                            </style>
-                        </head>
-                        <body>
-                            <div class="card">
-                                <img src="${qrData}" alt="QR ${code}" />
-                                <div class="code">${code}</div>
-                                <div class="name">${item.assetName || '-'}</div>
-                                <div class="meta">${getCanonicalCategoryLabel(item)} | ${item.owner || '-'}</div>
-                            </div>
-                        </body>
-                    </html>
-                `);
+                win.document.write([
+                    '<html>',
+                        '<head>',
+                            '<title>พิมพ์ QR ครุภัณฑ์</title>',
+                            '<style>',
+                                'body { font-family: Tahoma, sans-serif; margin: 0; padding: 24px; text-align: center; color: #0f172a; }',
+                                '.card { border: 1px solid #cbd5e1; border-radius: 12px; max-width: 360px; margin: 0 auto; padding: 16px; }',
+                                'img { width: 240px; height: 240px; object-fit: contain; }',
+                                '.code { font-weight: 700; font-size: 18px; margin-top: 10px; }',
+                                '.name { font-size: 14px; margin-top: 4px; }',
+                                '.meta { font-size: 12px; color: #475569; margin-top: 2px; }',
+                            '</style>',
+                        '</head>',
+                        '<body>',
+                            '<div class="card">',
+                                '<img src="' + escapeHtml(qrData) + '" alt="QR ' + escapeHtml(code) + '" />',
+                                '<div class="code">' + escapeHtml(code) + '</div>',
+                                '<div class="name">' + escapeHtml(item.assetName || '-') + '</div>',
+                                '<div class="meta">' + escapeHtml(getCanonicalCategoryLabel(item)) + ' | ' + escapeHtml(item.owner || '-') + '</div>',
+                            '</div>',
+                        '</body>',
+                    '</html>'
+                ].join(''));
                 win.document.close();
                 win.focus();
                 win.print();
@@ -5199,7 +5206,9 @@
                             legend: { display: false },
                             datalabels: {
                                 color: '#243B35',
-                                backgroundColor: 'rgba(15,23,42,0.40)',
+                                backgroundColor: 'rgba(226,232,240,0.95)',
+                                borderColor: 'rgba(100,116,139,0.35)',
+                                borderWidth: 1,
                                 borderRadius: 999,
                                 padding: { top: 4, right: 8, bottom: 4, left: 8 },
                                 anchor: 'end',
@@ -6214,8 +6223,9 @@
 
             Swal.fire({
                 html: html,
-                showConfirmButton: false,
-                showCloseButton: false,
+                showConfirmButton: true,
+                confirmButtonText: 'ปิด',
+                showCloseButton: true,
                 customClass: { popup: 'asset-detail-popup' },
                 didOpen: function () {
                     const qrEl = document.getElementById('assetQrInPopup');
