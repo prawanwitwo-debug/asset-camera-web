@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>รายละเอียดครุภัณฑ์</title>
+  <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="./org-theme.css?v=45">
+  <script src="config.js"></script>
+  <script src="api-shim.js"></script>
+</head>
+<body class="asset-public-page">
+  <main class="asset-public-shell">
+    <div class="mb-4 flex items-center justify-between gap-3">
+      <div>
+        <div class="text-sm font-semibold text-emerald-700">Royal Park Rajapruek</div>
+        <h1 class="text-xl font-extrabold text-slate-800">รายละเอียดครุภัณฑ์</h1>
+      </div>
+      <a href="./index.html" class="inline-flex items-center gap-2 rounded-full border border-emerald-100 bg-white px-4 py-2 text-sm font-semibold text-emerald-700 shadow-sm">
+        <i class="fas fa-home"></i>หน้าหลัก
+      </a>
+    </div>
+
+    <section id="assetContent" class="asset-public-card">
+      <div class="asset-public-loading">
+        <i class="fas fa-circle-notch fa-spin text-2xl text-emerald-600 mb-3"></i>
+        <div class="font-semibold">กำลังโหลดข้อมูลครุภัณฑ์...</div>
+      </div>
+    </section>
+  </main>
+
+<script>
+(function () {
+  'use strict';
+
+  function getParam(name) {
+    return new URLSearchParams(window.location.search).get(name) || '';
+  }
+
+  function getAssetKeyFromUrl() {
+    return getParam('k') || getParam('assetKey') || getParam('code') || getParam('q') || '';
+  }
+
+  function escapeHtml(value) {
+    return String(value === null || value === undefined ? '' : value)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#39;');
+  }
+
+  function parseFlexibleDateClient(value) {
+    if (!value) return null;
+    if (value instanceof Date && !isNaN(value)) return value;
+    const text = String(value).trim();
+    let m = text.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})/);
+    if (m) {
+      let y = parseInt(m[3], 10);
+      if (y > 2400) y -= 543;
+      const d = new Date(y, parseInt(m[2], 10) - 1, parseInt(m[1], 10));
+      return isNaN(d) ? null : d;
+    }
+    m = text.match(/^(\d{4})-(\d{1,2})-(\d{1,2})/);
+    if (m) {
+      const d = new Date(parseInt(m[1], 10), parseInt(m[2], 10) - 1, parseInt(m[3], 10));
+      return isNaN(d) ? null : d;
+    }
+    const d = new Date(text);
+    return isNaN(d) ? null : d;
+  }
+
+  function formatThaiDate(value) {
+    if (!value) return '-';
+    const d = parseFlexibleDateClient(value);
+    if (!d) return escapeHtml(value);
+    const months = ['มกราคม','กุมภาพันธ์','มีนาคม','เมษายน','พฤษภาคม','มิถุนายน','กรกฎาคม','สิงหาคม','กันยายน','ตุลาคม','พฤศจิกายน','ธันวาคม'];
+    return d.getDate() + ' ' + months[d.getMonth()] + ' ' + (d.getFullYear() + 543);
+  }
+
+  function getStatusClass(status) {
+    const text = String(status || '');
+    if (text === 'ปกติ') return 'status-normal';
+    if (text === 'ชำรุด' || text === 'จำหน่าย/สูญหาย' || text === 'ซาก') return 'status-danger';
+    return 'status-warning';
+  }
+
+  function renderError(message) {
+    document.getElementById('assetContent').innerHTML = '<div class="asset-public-error">' +
+      '<i class="fas fa-triangle-exclamation text-3xl text-amber-500 mb-3"></i>' +
+      '<div class="text-lg font-bold text-slate-800">ไม่สามารถแสดงข้อมูลได้</div>' +
+      '<div class="mt-2">' + escapeHtml(message || 'ไม่พบข้อมูลครุภัณฑ์') + '</div>' +
+    '</div>';
+  }
+
+  function renderAsset(asset) {
+    const latest = asset.latestInspection || null;
+    const latestHtml = latest ? `
+      <div class="asset-public-grid">
+        <div class="asset-public-field">
+          <div class="asset-public-label">วันที่ตรวจล่าสุด</div>
+          <div class="asset-public-value">${formatThaiDate(latest.inspectedDate)}</div>
+        </div>
+        <div class="asset-public-field">
+          <div class="asset-public-label">สภาพ/ผลตรวจ</div>
+          <div class="asset-public-value">${escapeHtml(latest.condition || '-')}</div>
+        </div>
+      </div>
+      <div class="mt-3 text-sm text-slate-600 leading-7">
+        <div><strong>รายการ:</strong> ${escapeHtml(latest.item || '-')}</div>
+        <div><strong>หมายเหตุ:</strong> ${escapeHtml(latest.note || '-')}</div>
+      </div>
+    ` : '<div class="text-slate-500 font-semibold">ยังไม่มีประวัติตรวจสอบ</div>';
+
+    document.getElementById('assetContent').innerHTML = `
+      <div class="asset-public-header">
+        <div class="asset-public-title">${escapeHtml(asset.assetName || '-')}</div>
+        <div class="asset-public-code"><i class="fas fa-barcode mr-2 mt-1"></i>${escapeHtml(asset.assetNumberDisplay || asset.assetKey || '-')}</div>
+      </div>
+      <div class="asset-public-body">
+        <div>
+          <div class="asset-public-grid">
+            <div class="asset-public-field">
+              <div class="asset-public-label">ประเภท</div>
+              <div class="asset-public-value">${escapeHtml(asset.category || '-')}</div>
+            </div>
+            <div class="asset-public-field">
+              <div class="asset-public-label">สถานะ</div>
+              <div><span class="asset-public-status ${getStatusClass(asset.status)}">● ${escapeHtml(asset.status || '-')}</span></div>
+            </div>
+            <div class="asset-public-field">
+              <div class="asset-public-label">สถานที่ตั้ง</div>
+              <div class="asset-public-value">${escapeHtml(asset.location || '-')}</div>
+            </div>
+            <div class="asset-public-field">
+              <div class="asset-public-label">วันที่ได้รับ</div>
+              <div class="asset-public-value">${formatThaiDate(asset.receivedDate)}</div>
+            </div>
+          </div>
+
+          <div class="asset-public-section">
+            <div class="asset-public-label">หมายเหตุทั่วไป</div>
+            <div class="text-slate-700 leading-7">${escapeHtml(asset.notes || '-')}</div>
+          </div>
+
+          <div class="asset-public-section">
+            <div class="asset-public-label">ประวัติตรวจล่าสุด</div>
+            ${latestHtml}
+          </div>
+        </div>
+
+        <aside>
+          ${asset.imageUrl ? '<img class="asset-public-photo" src="' + escapeHtml(asset.imageUrl) + '" alt="รูปครุภัณฑ์">' : '<div class="asset-public-photo-empty"><i class="fas fa-image mr-2"></i>ไม่มีรูปภาพ</div>'}
+        </aside>
+      </div>
+    `;
+  }
+
+  async function loadAsset() {
+    const key = getAssetKeyFromUrl();
+    if (!key) {
+      renderError('URL ไม่มีรหัสครุภัณฑ์ เช่น asset.html?k=RPRP%3A51-1-13-01%2F68');
+      return;
+    }
+    try {
+      const result = await window.apiCall('getPublicAssetDetail', key);
+      if (!result || result.success === false) {
+        renderError(result && result.message ? result.message : 'ไม่พบข้อมูลครุภัณฑ์');
+        return;
+      }
+      renderAsset(result.data || result);
+    } catch (error) {
+      renderError(error && error.message ? error.message : String(error));
+    }
+  }
+
+  loadAsset();
+})();
+</script>
+</body>
+</html>

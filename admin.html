@@ -14,7 +14,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     <script src="https://unpkg.com/@dotlottie/player-component@2.7.12/dist/dotlottie-player.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="./org-theme.css?v=44">
+    <link rel="stylesheet" href="./org-theme.css?v=45">
     <style>
         * {
             font-family: 'Kanit', sans-serif;
@@ -2457,6 +2457,39 @@
             const orgName = String(supply.assetOrgName || '').trim();
             const number = String(supply.assetNumber || '').trim();
             return orgName && number ? (orgName + ' / ' + number) : (number || orgName || '-');
+        }
+
+        function getAssetPublicBaseUrlClient() {
+            try {
+                return new URL('asset.html', window.location.href.split('#')[0].split('?')[0]).href;
+            } catch (error) {
+                return './asset.html';
+            }
+        }
+
+        function getAssetPublicUrlClient(supplyOrKey) {
+            let key = '';
+            if (typeof supplyOrKey === 'object' && supplyOrKey !== null) {
+                key = getAssetLookupKeyClient(supplyOrKey);
+            } else {
+                key = String(supplyOrKey || '').trim();
+            }
+            return getAssetPublicBaseUrlClient() + '?k=' + encodeURIComponent(key);
+        }
+
+        function extractAssetLookupFromQrClient(value) {
+            const raw = String(value || '').trim();
+            if (!raw) return '';
+            try {
+                const parsed = new URL(raw, window.location.href);
+                const key = parsed.searchParams.get('k') || parsed.searchParams.get('assetKey') || parsed.searchParams.get('code') || parsed.searchParams.get('q');
+                if (key) return decodeURIComponent(key).trim();
+            } catch (error) { }
+            const match = raw.match(/[?&](?:k|assetKey|code|q)=([^&#]+)/i);
+            if (match && match[1]) {
+                try { return decodeURIComponent(match[1]).trim(); } catch (error) { return match[1].trim(); }
+            }
+            return raw;
         }
 
         function redirectToPage(page) {
@@ -4904,7 +4937,7 @@
 
             try {
                 const qrData = await Promise.all(selected.map(function (item) {
-                    return createQrDataUrl(getAssetLookupKeyClient(item) || item.assetNumber || '');
+                    return createQrDataUrl(getAssetPublicUrlClient(item));
                 }));
                 const cards = selected.map(function (item, idx) {
                     return `
@@ -4956,7 +4989,7 @@
         }
 
         async function printSingleSupplyQRCode(assetNumber) {
-            const code = String(assetNumber || '').trim();
+            const code = extractAssetLookupFromQrClient(assetNumber);
             if (!code) {
                 Swal.fire({ icon: 'warning', title: 'ไม่พบหมายเลขครุภัณฑ์' });
                 return;
@@ -4965,7 +4998,7 @@
             const item = supplies.find(function (s) {
                 return getAssetLookupKeyClient(s) === code || String(s.assetNumber || '').trim() === code;
             }) || {};
-            const qrText = getAssetLookupKeyClient(item) || code;
+            const qrText = getAssetPublicUrlClient(Object.keys(item).length ? item : code);
             const displayCode = item.assetNumber ? getAssetNumberDisplayClient(item) : code;
             const escapeHtml = function (value) {
                 return String(value === null || value === undefined ? '' : value)
@@ -6175,7 +6208,8 @@
         }
 
         function searchSupplyByCode(code, mode) {
-            const normalizedSearchCode = normalizeCode(code);
+            const lookupCode = extractAssetLookupFromQrClient(code);
+            const normalizedSearchCode = normalizeCode(lookupCode);
             let supply = supplies.find(function (s) {
                 return normalizeCode(s.assetKey) === normalizedSearchCode ||
                     normalizeCode(s.id) === normalizedSearchCode ||
@@ -6198,7 +6232,7 @@
                 Swal.fire({
                     icon: 'warning',
                     title: 'ไม่พบครุภัณฑ์',
-                    html: `ไม่พบครุภัณฑ์ที่มีรหัส: <strong>${code}</strong><br><br>กรุณาตรวจสอบว่าได้เพิ่มครุภัณฑ์นี้แล้วหรือยัง`,
+                    html: `ไม่พบครุภัณฑ์ที่มีรหัส: <strong>${lookupCode || code}</strong><br><br>กรุณาตรวจสอบว่าได้เพิ่มครุภัณฑ์นี้แล้วหรือยัง`,
                     confirmButtonColor: '#FFCA28'
                 });
                 return;
@@ -6337,7 +6371,7 @@
                 didOpen: function () {
                     const qrEl = document.getElementById('assetQrInPopup');
                     if (qrEl) {
-                        createQrDataUrl(getAssetLookupKeyClient(supply) || supply.assetNumber || '').then(function (dataUrl) {
+                        createQrDataUrl(getAssetPublicUrlClient(supply)).then(function (dataUrl) {
                             qrEl.src = dataUrl;
                         }).catch(function () {
                             qrEl.style.display = 'none';
