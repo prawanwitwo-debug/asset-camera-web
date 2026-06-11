@@ -14,7 +14,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     <script src="https://unpkg.com/@dotlottie/player-component@2.7.12/dist/dotlottie-player.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="./org-theme.css?v=30">
+    <link rel="stylesheet" href="./org-theme.css?v=31">
     <style>
         * {
             font-family: 'Kanit', sans-serif;
@@ -1170,7 +1170,7 @@
     <script src="api-shim.js"></script>
 </head>
 
-<body class="bg-gray-50 text-slate-800">
+<body class="admin-page bg-gray-50 text-slate-800">
     <!-- Loading Overlay -->
     <div id="loadingOverlay" class="fixed inset-0 bg-slate-900/35 backdrop-blur-[2px] flex items-center justify-center z-50 hidden">
         <div class="flex flex-col items-center gap-2 pointer-events-none">
@@ -4833,27 +4833,28 @@
                     Swal.fire({ icon: 'error', title: 'เปิดหน้าต่างพิมพ์ไม่สำเร็จ', text: 'กรุณาอนุญาต Popup ในเบราว์เซอร์' });
                     return;
                 }
-                win.document.write([
-                    '<html>',
-                    '<head>',
-                    '<title>พิมพ์ QR ครุภัณฑ์</title>',
-                    '<style>',
-                    'body { font-family: Tahoma, sans-serif; padding: 18px; color: #0f172a; }',
-                    '.wrap { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }',
-                    '.qr-card { border: 1px solid #cbd5e1; border-radius: 10px; padding: 10px; text-align: center; break-inside: avoid; }',
-                    '.qr-card img { width: 180px; height: 180px; object-fit: contain; display: block; margin: 0 auto 8px; }',
-                    '.qr-code { font-weight: 700; font-size: 14px; margin-bottom: 4px; }',
-                    '.qr-name { font-size: 12px; margin-bottom: 2px; }',
-                    '.qr-meta { font-size: 11px; color: #475569; }',
-                    '@media print { body { margin: 0; padding: 12px; } .wrap { gap: 8px; } }',
-                    '</style>',
-                    '</head>',
-                    '<body>',
-                    '<h3>QR Code ครุภัณฑ์ (' + selected.length + ' รายการ)</h3>',
-                    '<div class="wrap">' + cards + '</div>',
-                    '</body>',
-                    '</html>'
-                ].join(''));
+
+                win.document.write(`
+                    <html>
+                        <head>
+                            <title>พิมพ์ QR ครุภัณฑ์</title>
+                            <style>
+                                body { font-family: Tahoma, sans-serif; padding: 18px; color: #0f172a; }
+                                .wrap { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+                                .qr-card { border: 1px solid #cbd5e1; border-radius: 10px; padding: 10px; text-align: center; break-inside: avoid; }
+                                .qr-card img { width: 180px; height: 180px; object-fit: contain; display: block; margin: 0 auto 8px; }
+                                .qr-code { font-weight: 700; font-size: 14px; margin-bottom: 4px; }
+                                .qr-name { font-size: 12px; margin-bottom: 2px; }
+                                .qr-meta { font-size: 11px; color: #475569; }
+                                @media print { body { margin: 0; padding: 12px; } .wrap { gap: 8px; } }
+                            </style>
+                        </head>
+                        <body>
+                            <h3>QR Code ครุภัณฑ์ (${selected.length} รายการ)</h3>
+                            <div class="wrap">${cards}</div>
+                        </body>
+                    </html>
+                `);
                 win.document.close();
                 win.focus();
                 win.print();
@@ -5206,9 +5207,7 @@
                             legend: { display: false },
                             datalabels: {
                                 color: '#243B35',
-                                backgroundColor: 'rgba(226,232,240,0.95)',
-                                borderColor: 'rgba(100,116,139,0.35)',
-                                borderWidth: 1,
+                                backgroundColor: 'rgba(15,23,42,0.40)',
                                 borderRadius: 999,
                                 padding: { top: 4, right: 8, bottom: 4, left: 8 },
                                 anchor: 'end',

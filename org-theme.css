@@ -2932,3 +2932,132 @@ body.bg-hero .swal2-popup.swal-change:has(#computerAssetsBody) .computer-assets-
     width: 100%;
   }
 }
+
+/* Hotfix v31: clear selected state for Add/Edit Asset status buttons.
+   JS already toggles bg-emerald-600 / border-emerald-600 / text-white.
+   This CSS makes that selected state visible after theme overrides. */
+#assetStatusGroup {
+  gap: 0.65rem !important;
+}
+
+#assetStatusGroup .asset-status-btn,
+#supplyModal #assetStatusGroup .asset-status-btn,
+#assetStatusGroup button[data-status] {
+  position: relative !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 0.35rem !important;
+  min-height: 46px !important;
+  padding: 0.7rem 0.95rem !important;
+  border-radius: 999px !important;
+  border: 1.5px solid #DDEBE2 !important;
+  background: #ffffff !important;
+  color: #243B35 !important;
+  box-shadow: 0 2px 8px rgba(15, 23, 42, 0.05) !important;
+  font-weight: 700 !important;
+  line-height: 1.25 !important;
+  transform: none !important;
+}
+
+#assetStatusGroup .asset-status-btn:hover,
+#supplyModal #assetStatusGroup .asset-status-btn:hover,
+#assetStatusGroup button[data-status]:hover {
+  background: #F1F8F2 !important;
+  border-color: #7BCFA6 !important;
+  box-shadow: 0 6px 14px rgba(61, 139, 104, 0.12) !important;
+}
+
+/* selected state: selected status button */
+#assetStatusGroup .asset-status-btn.bg-emerald-600,
+#assetStatusGroup .asset-status-btn.border-emerald-600,
+#supplyModal #assetStatusGroup .asset-status-btn.bg-emerald-600,
+#supplyModal #assetStatusGroup .asset-status-btn.border-emerald-600,
+#assetStatusGroup button[data-status].bg-emerald-600,
+#assetStatusGroup button[data-status].border-emerald-600 {
+  background: linear-gradient(135deg, #3D8B68, #6FCF97) !important;
+  color: #ffffff !important;
+  border-color: #3D8B68 !important;
+  box-shadow:
+    0 10px 22px rgba(61, 139, 104, 0.30),
+    0 0 0 3px rgba(123, 207, 166, 0.24) !important;
+  transform: translateY(-1px) !important;
+  font-weight: 900 !important;
+}
+
+#assetStatusGroup .asset-status-btn.bg-emerald-600::after,
+#assetStatusGroup .asset-status-btn.border-emerald-600::after,
+#supplyModal #assetStatusGroup .asset-status-btn.bg-emerald-600::after,
+#supplyModal #assetStatusGroup .asset-status-btn.border-emerald-600::after,
+#assetStatusGroup button[data-status].bg-emerald-600::after,
+#assetStatusGroup button[data-status].border-emerald-600::after {
+  content: "✓" !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 20px !important;
+  height: 20px !important;
+  margin-left: 0.15rem !important;
+  border-radius: 999px !important;
+  background: rgba(255, 255, 255, 0.24) !important;
+  color: #ffffff !important;
+  font-size: 13px !important;
+  font-weight: 900 !important;
+  line-height: 1 !important;
+}
+
+/* selected tones by status */
+#assetStatusGroup .asset-status-btn.bg-emerald-600[data-status="ปกติ"],
+#assetStatusGroup button[data-status="ปกติ"].bg-emerald-600 {
+  background: linear-gradient(135deg, #2F855A, #70C99B) !important;
+  color: #ffffff !important;
+}
+
+#assetStatusGroup .asset-status-btn.bg-emerald-600[data-status="ชำรุด"],
+#assetStatusGroup button[data-status="ชำรุด"].bg-emerald-600 {
+  background: linear-gradient(135deg, #B9891B, #F6C85F) !important;
+  color: #243B35 !important;
+  border-color: #B9891B !important;
+}
+
+#assetStatusGroup .asset-status-btn.bg-emerald-600[data-status="ชำรุด"]::after,
+#assetStatusGroup button[data-status="ชำรุด"].bg-emerald-600::after {
+  color: #243B35 !important;
+  background: rgba(255, 255, 255, 0.38) !important;
+}
+
+#assetStatusGroup .asset-status-btn.bg-emerald-600[data-status="ส่งซ่อม"],
+#assetStatusGroup button[data-status="ส่งซ่อม"].bg-emerald-600 {
+  background: linear-gradient(135deg, #C76A22, #F6A85F) !important;
+  color: #ffffff !important;
+  border-color: #C76A22 !important;
+}
+
+#assetStatusGroup .asset-status-btn.bg-emerald-600[data-status="จำหน่าย/สูญหาย"],
+#assetStatusGroup button[data-status="จำหน่าย/สูญหาย"].bg-emerald-600 {
+  background: linear-gradient(135deg, #B91C1C, #E57373) !important;
+  color: #ffffff !important;
+  border-color: #B91C1C !important;
+}
+
+/* keep selected status text/check readable even after global contrast overrides */
+#supplyModal #assetStatusGroup .asset-status-btn.bg-emerald-600,
+#supplyModal #assetStatusGroup .asset-status-btn.bg-emerald-600 *,
+#supplyModal #assetStatusGroup .asset-status-btn.border-emerald-600,
+#supplyModal #assetStatusGroup .asset-status-btn.border-emerald-600 * {
+  color: #ffffff !important;
+}
+
+#supplyModal #assetStatusGroup .asset-status-btn.bg-emerald-600[data-status="ชำรุด"],
+#supplyModal #assetStatusGroup .asset-status-btn.bg-emerald-600[data-status="ชำรุด"] * {
+  color: #243B35 !important;
+}
+
+@media (max-width: 768px) {
+  #assetStatusGroup .asset-status-btn,
+  #supplyModal #assetStatusGroup .asset-status-btn,
+  #assetStatusGroup button[data-status] {
+    min-height: 48px !important;
+    padding: 0.75rem 0.8rem !important;
+  }
+}
