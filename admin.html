@@ -14,7 +14,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     <script src="https://unpkg.com/@dotlottie/player-component@2.7.12/dist/dotlottie-player.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="./org-theme.css?v=43">
+    <link rel="stylesheet" href="./org-theme.css?v=44">
     <style>
         * {
             font-family: 'Kanit', sans-serif;
@@ -4807,7 +4807,13 @@
         }
 
         function showSupplyDetailsById(id) {
-            const supply = supplies.find(function (s) { return String(s.id || '') === String(id || ''); });
+            const lookup = String(id || '').trim();
+            const supply = supplies.find(function (s) {
+                return String(s.id || '') === lookup
+                    || String(s.assetKey || '') === lookup
+                    || String(s.assetNumber || '') === lookup
+                    || getAssetLookupKeyClient(s) === lookup;
+            });
             if (!supply) {
                 Swal.fire({ icon: 'warning', title: 'ไม่พบข้อมูลครุภัณฑ์' });
                 return;
@@ -6240,6 +6246,9 @@
             const statusClass = statusText === 'ปกติ'
                 ? 'status-normal'
                 : (statusText === 'ชำรุด' || statusText === 'จำหน่าย/สูญหาย' ? 'status-danger' : 'status-warning');
+            const assetNumberDisplay = getAssetNumberDisplayClient(supply);
+            const assetLookupKey = getAssetLookupKeyClient(supply) || supply.assetNumber || '';
+            const safeAssetLookupKey = String(assetLookupKey || '').replace(/'/g, "\\'");
             const safeAssetNumber = String(supply.assetNumber || '').replace(/'/g, "\\'");
             const safeImageUrl = String(supply.imageUrl || '').replace(/'/g, "\\'");
             const html = `

@@ -3203,3 +3203,87 @@ body.admin-page #assetNumberValidationMsg {
     line-height: 1.35 !important;
   }
 }
+
+
+/* Hotfix v44: responsive desktop manage table after sidebar toggle
+   - Allow the table to fill the available desktop content width.
+   - Keep safe horizontal scroll only when the viewport is too narrow.
+   - Ensure "หน่วยงาน / หมายเลขครุภัณฑ์" and asset name are readable. */
+@media (min-width: 768px) {
+  body.admin-page .main-content {
+    overflow-x: hidden;
+  }
+
+  body.admin-page #suppliesTable {
+    width: 100% !important;
+    min-width: 1440px !important;
+    table-layout: auto !important;
+  }
+
+  body.admin-page #suppliesTable col:nth-child(1) { width: 64px !important; }
+  body.admin-page #suppliesTable col:nth-child(2) { width: clamp(300px, 22vw, 430px) !important; }
+  body.admin-page #suppliesTable col:nth-child(3) { width: auto !important; }
+  body.admin-page #suppliesTable col:nth-child(4) { width: clamp(150px, 12vw, 220px) !important; }
+  body.admin-page #suppliesTable col:nth-child(5) { width: clamp(170px, 14vw, 260px) !important; }
+  body.admin-page #suppliesTable col:nth-child(6) { width: 120px !important; }
+  body.admin-page #suppliesTable col:nth-child(7) { width: clamp(130px, 10vw, 180px) !important; }
+  body.admin-page #suppliesTable col:nth-child(8) { width: 210px !important; }
+
+  body.admin-page #suppliesTable th:nth-child(2),
+  body.admin-page #suppliesTable td:nth-child(2) {
+    min-width: 300px !important;
+    width: auto !important;
+    max-width: none !important;
+  }
+
+  body.admin-page #suppliesTable th:nth-child(3),
+  body.admin-page #suppliesTable td:nth-child(3) {
+    min-width: 280px !important;
+    width: auto !important;
+    max-width: none !important;
+  }
+
+  body.admin-page #suppliesTable th,
+  body.admin-page #suppliesTable td {
+    box-sizing: border-box;
+  }
+
+  body.admin-page #suppliesTable th:nth-child(2),
+  body.admin-page #suppliesTable th:nth-child(3),
+  body.admin-page #suppliesTable td:nth-child(2),
+  body.admin-page #suppliesTable td:nth-child(3) {
+    white-space: normal !important;
+    overflow: visible !important;
+    text-overflow: clip !important;
+    overflow-wrap: anywhere !important;
+    word-break: break-word !important;
+    line-height: 1.35 !important;
+  }
+
+  body.admin-page #suppliesTable td:nth-child(2) *,
+  body.admin-page #suppliesTable td:nth-child(3) * {
+    white-space: normal !important;
+    overflow: visible !important;
+    text-overflow: clip !important;
+    overflow-wrap: anywhere !important;
+    word-break: break-word !important;
+    line-height: 1.35 !important;
+  }
+
+  body.admin-page #suppliesTable td:nth-child(2) .manage-cell-wrap,
+  body.admin-page #suppliesTable td:nth-child(3) .manage-cell-wrap {
+    display: inline-flex !important;
+    max-width: 100% !important;
+  }
+
+  body.admin-page #suppliesTable td:nth-child(4) .manage-cell-ellipsis,
+  body.admin-page #suppliesTable td:nth-child(5) .manage-cell-ellipsis,
+  body.admin-page #suppliesTable td:nth-child(7) .manage-cell-ellipsis {
+    display: block !important;
+    min-width: 0 !important;
+    max-width: 100% !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+  }
+}
