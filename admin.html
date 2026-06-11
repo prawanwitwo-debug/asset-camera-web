@@ -14,7 +14,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     <script src="https://unpkg.com/@dotlottie/player-component@2.7.12/dist/dotlottie-player.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="./org-theme.css?v=42">
+    <link rel="stylesheet" href="./org-theme.css?v=43">
     <style>
         * {
             font-family: 'Kanit', sans-serif;
@@ -2189,15 +2189,23 @@
                 <input type="hidden" id="supplyId">
                 <input type="hidden" id="codeUrl">
 
-                <div class="mb-5 rounded-2xl border border-emerald-100 bg-emerald-50/50 p-4">
+                <div class="mb-5 rounded-2xl border border-emerald-100 bg-emerald-50/50 p-4 asset-identity-section">
                     <div class="text-sm font-semibold text-emerald-700 mb-3">กำหนดรหัสครุภัณฑ์</div>
-                    <div class="mb-4">
-                        <label class="block text-gray-700 mb-2">หมายเลขครุภัณฑ์ <span class="text-red-500">*</span></label>
-                        <div>
-                            <input type="text" id="assetNumber" required class="w-full px-4 py-2 border rounded-lg">
+                    <div class="grid grid-cols-1 md:grid-cols-[260px_minmax(0,1fr)] gap-4 items-start">
+                        <div class="mb-4">
+                            <label for="assetOrgCode" class="block text-gray-700 mb-2">หน่วยงานเจ้าของเลขครุภัณฑ์ <span class="text-red-500">*</span></label>
+                            <select id="assetOrgCode" required class="w-full px-4 py-2 border rounded-lg bg-white">
+                                <option value="RPRP">สวพส.(อร) - อุทยานหลวงราชพฤกษ์</option>
+                                <option value="HRDI">สวพส. - สถาบันวิจัยและพัฒนาพื้นที่สูง (องค์การมหาชน)</option>
+                            </select>
+                            <p id="assetOrgHelpText" class="text-xs text-slate-500 mt-1">ใช้แยกเลขครุภัณฑ์ของแต่ละหน่วยงาน เพื่อป้องกันเลขซ้ำข้ามหน่วยงาน</p>
                         </div>
-                        <p class="text-xs text-slate-500 mt-1">รูปแบบรองรับ เช่น 63-1-19-09/18, 64-R1-6-05/05, 68-R1-8-48/01.1, 63-1-7-11/03(1/3)</p>
-                        <p id="assetNumberValidationMsg" class="text-xs mt-1 hidden"></p>
+                        <div class="mb-4">
+                            <label id="assetNumberLabel" for="assetNumber" class="block text-gray-700 mb-2">หมายเลข สวพส.(อร) <span class="text-red-500">*</span></label>
+                            <input type="text" id="assetNumber" required class="w-full px-4 py-2 border rounded-lg">
+                            <p class="text-xs text-slate-500 mt-1">รูปแบบรองรับ เช่น 63-1-19-09/18, 64-R1-6-05/05, 68-R1-8-48/01.1, 63-1-7-11/03(1/3)</p>
+                            <p id="assetNumberValidationMsg" class="text-xs mt-1 hidden"></p>
+                        </div>
                     </div>
                 </div>
 
@@ -2381,6 +2389,75 @@
             assetLocation: { activeIndex: -1 }
         };
         let assetNumberValidationState = { checking: false, valid: true, message: '' };
+        const ASSET_ORGANIZATIONS_CLIENT = [
+            {
+                orgId: 'ORG_RPRP',
+                orgCode: 'RPRP',
+                orgShortName: 'สวพส.(อร)',
+                orgFullName: 'อุทยานหลวงราชพฤกษ์',
+                assetNumberLabel: 'หมายเลข สวพส.(อร)'
+            },
+            {
+                orgId: 'ORG_HRDI',
+                orgCode: 'HRDI',
+                orgShortName: 'สวพส.',
+                orgFullName: 'สถาบันวิจัยและพัฒนาพื้นที่สูง (องค์การมหาชน)',
+                assetNumberLabel: 'หมายเลข สวพส.'
+            }
+        ];
+        const DEFAULT_ASSET_ORG_CODE_CLIENT = 'RPRP';
+
+        function getAssetOrgClient(orgCode) {
+            const code = String(orgCode || '').trim().toUpperCase();
+            return ASSET_ORGANIZATIONS_CLIENT.find(function (org) {
+                return org.orgCode === code || org.orgId === code;
+            }) || ASSET_ORGANIZATIONS_CLIENT[0];
+        }
+
+        function getSelectedAssetOrgCode() {
+            const el = document.getElementById('assetOrgCode');
+            return String((el && el.value) || DEFAULT_ASSET_ORG_CODE_CLIENT).trim().toUpperCase();
+        }
+
+        function populateAssetOrgSelect(selectedCode) {
+            const el = document.getElementById('assetOrgCode');
+            if (!el) return;
+            const current = String(selectedCode || el.value || DEFAULT_ASSET_ORG_CODE_CLIENT).trim().toUpperCase();
+            el.innerHTML = ASSET_ORGANIZATIONS_CLIENT.map(function (org) {
+                const selected = org.orgCode === current ? ' selected' : '';
+                return '<option value="' + org.orgCode + '"' + selected + '>' + org.orgShortName + ' - ' + org.orgFullName + '</option>';
+            }).join('');
+            if (!ASSET_ORGANIZATIONS_CLIENT.some(function (org) { return org.orgCode === current; })) {
+                el.value = DEFAULT_ASSET_ORG_CODE_CLIENT;
+            }
+            updateAssetNumberLabel();
+        }
+
+        function updateAssetNumberLabel() {
+            const org = getAssetOrgClient(getSelectedAssetOrgCode());
+            const label = document.getElementById('assetNumberLabel');
+            if (label) label.innerHTML = (org.assetNumberLabel || 'หมายเลขครุภัณฑ์') + ' <span class="text-red-500">*</span>';
+            const help = document.getElementById('assetOrgHelpText');
+            if (help) help.textContent = 'เลือก ' + org.orgShortName + ' เพื่อสร้างรหัสอ้างอิงแบบ ' + org.orgCode + ':หมายเลขครุภัณฑ์';
+        }
+
+        function handleAssetOrgChange() {
+            updateAssetNumberLabel();
+            validateAssetNumberLive(true);
+        }
+
+        function getAssetLookupKeyClient(supply) {
+            return String((supply && (supply.assetKey || supply.id || supply.assetNumber)) || '').trim();
+        }
+
+        function getAssetNumberDisplayClient(supply) {
+            if (!supply) return '-';
+            const existing = String(supply.assetNumberDisplay || '').trim();
+            if (existing) return existing;
+            const orgName = String(supply.assetOrgName || '').trim();
+            const number = String(supply.assetNumber || '').trim();
+            return orgName && number ? (orgName + ' / ' + number) : (number || orgName || '-');
+        }
 
         function redirectToPage(page) {
             const target = String(page || 'user').toLowerCase();
@@ -2919,6 +2996,7 @@
                 bind(id, 'change', function () { setActiveAuditPresetButton(''); });
                 if (id === 'auditActor') bind(id, 'input', function () { setActiveAuditPresetButton(''); });
             });
+            bind('assetOrgCode', 'change', handleAssetOrgChange);
             bind('assetNumber', 'input', function () {
                 validateAssetNumberLive(false);
             });
@@ -4557,6 +4635,10 @@
                 if (!q) return true;
                 const haystack = [
                     s.assetNumber || '',
+                    s.assetKey || '',
+                    s.assetOrgName || '',
+                    s.assetOrgCode || '',
+                    getAssetNumberDisplayClient(s),
                     s.assetName || '',
                     s.owner || '',
                     s.location || '',
@@ -4572,7 +4654,7 @@
             const pageInfo = document.getElementById('managePageInfo');
             const prevBtn = document.getElementById('managePrevPage');
             const nextBtn = document.getElementById('manageNextPage');
-            const selected = filteredRows.filter(r => selectedSupplyCodes.has(String(r.assetNumber || '').trim())).length;
+            const selected = filteredRows.filter(r => selectedSupplyCodes.has(getAssetLookupKeyClient(r))).length;
             if (countText) countText.textContent = `เลือก ${selected} รายการ`;
             if (summary) summary.textContent = `แสดง ${pageRows.length} จาก ${filteredRows.length} รายการ (ทั้งหมด ${(Array.isArray(supplies) ? supplies.length : 0)})`;
             if (pageInfo) pageInfo.textContent = `หน้า ${manageCurrentPage} / ${Math.max(1, totalPages || 1)}`;
@@ -4597,17 +4679,19 @@
             const rows = filteredRows.slice(start, end);
 
             rows.forEach((supply) => {
-                const code = String(supply.assetNumber || '').trim();
+                const code = getAssetLookupKeyClient(supply);
+                const assetNumberDisplay = getAssetNumberDisplayClient(supply);
                 const isSelected = code && selectedSupplyCodes.has(code);
                 const categoryLabel = getCanonicalCategoryLabel(supply);
                 const categoryClass = getCanonicalCategoryClass(categoryLabel);
                 const escapedCode = code.replace(/'/g, "\\'");
                 const safeId = String(supply.id || '').replace(/'/g, "\\'");
-                const safeCode = String(supply.assetNumber || '').replace(/'/g, "\\'");
+                const safeCode = String(code || '').replace(/'/g, "\\'");
                 const safeNameTitle = String(supply.assetName || '-').replace(/"/g, '&quot;');
                 const safeOwnerTitle = String(supply.owner || '-').replace(/"/g, '&quot;');
                 const safeLocationTitle = String(supply.location || '-').replace(/"/g, '&quot;');
                 const safeCategoryTitle = String(categoryLabel || '-').replace(/"/g, '&quot;');
+                const safeAssetNumberDisplayTitle = String(assetNumberDisplay || '-').replace(/"/g, '&quot;');
 
                 if (tbody) {
                     const row = `
@@ -4621,7 +4705,7 @@
                                 />
                             </td>
                             <td class="px-4 py-3 whitespace-nowrap">
-                                <span class="inline-flex items-center px-3 py-1 rounded-lg bg-slate-100 text-slate-700 font-semibold">${supply.assetNumber || '-'}</span>
+                                <span class="inline-flex items-center px-3 py-1 rounded-lg bg-slate-100 text-slate-700 font-semibold manage-cell-wrap" title="${safeAssetNumberDisplayTitle}">${assetNumberDisplay}</span>
                             </td>
                             <td class="px-4 py-3">
                                 <div class="font-semibold text-slate-800 manage-cell-wrap" title="${safeNameTitle}">${supply.assetName || '-'}</div>
@@ -4676,7 +4760,7 @@
                         <div class="space-y-3">
                             <div>
                                 <div class="flex flex-wrap items-center gap-2 mb-2">
-                                    <span class="inline-flex items-center px-3 py-1 rounded-lg bg-slate-100 text-slate-700 text-xs font-semibold">${supply.assetNumber || '-'}</span>
+                                    <span class="inline-flex items-center px-3 py-1 rounded-lg bg-slate-100 text-slate-700 text-xs font-semibold" title="${safeAssetNumberDisplayTitle}">${assetNumberDisplay}</span>
                                     <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold ${categoryClass}">${categoryLabel}</span>
                                 </div>
                                 <div class="text-base font-bold text-slate-900 break-words">${supply.assetName || '-'}</div>
@@ -4748,7 +4832,7 @@
 
         function toggleSelectAllSupplies(buttonEl) {
             const allCodes = getFilteredSupplies()
-                .map(function (s) { return String(s.assetNumber || '').trim(); })
+                .map(function (s) { return getAssetLookupKeyClient(s); })
                 .filter(function (v) { return !!v; });
             const isAllSelected = allCodes.length > 0 && allCodes.every(function (c) { return selectedSupplyCodes.has(c); });
 
@@ -4797,7 +4881,7 @@
 
         async function printSelectedSupplyQRCodes() {
             const selected = supplies.filter(function (s) {
-                return selectedSupplyCodes.has(String(s.assetNumber || '').trim());
+                return selectedSupplyCodes.has(getAssetLookupKeyClient(s));
             });
 
             if (!selected.length) {
@@ -4814,13 +4898,13 @@
 
             try {
                 const qrData = await Promise.all(selected.map(function (item) {
-                    return createQrDataUrl(item.assetNumber || '');
+                    return createQrDataUrl(getAssetLookupKeyClient(item) || item.assetNumber || '');
                 }));
                 const cards = selected.map(function (item, idx) {
                     return `
                         <div class="qr-card">
-                            <img src="${qrData[idx]}" alt="QR ${item.assetNumber || ''}" />
-                            <div class="qr-code">${item.assetNumber || '-'}</div>
+                            <img src="${qrData[idx]}" alt="QR ${getAssetLookupKeyClient(item) || item.assetNumber || ''}" />
+                            <div class="qr-code">${getAssetNumberDisplayClient(item)}</div>
                             <div class="qr-name">${item.assetName || '-'}</div>
                             <div class="qr-meta">${getCanonicalCategoryLabel(item)} | ${item.owner || '-'}</div>
                         </div>
@@ -4872,7 +4956,11 @@
                 return;
             }
 
-            const item = supplies.find(function (s) { return String(s.assetNumber || '').trim() === code; }) || {};
+            const item = supplies.find(function (s) {
+                return getAssetLookupKeyClient(s) === code || String(s.assetNumber || '').trim() === code;
+            }) || {};
+            const qrText = getAssetLookupKeyClient(item) || code;
+            const displayCode = item.assetNumber ? getAssetNumberDisplayClient(item) : code;
             const escapeHtml = function (value) {
                 return String(value === null || value === undefined ? '' : value)
                     .replace(/&/g, '&amp;')
@@ -4889,7 +4977,7 @@
             });
 
             try {
-                const qrData = await createQrDataUrl(code);
+                const qrData = await createQrDataUrl(qrText);
                 const win = window.open('', '_blank', 'width=760,height=720');
                 if (!win) {
                     Swal.close();
@@ -4912,8 +5000,8 @@
                         '</head>',
                         '<body>',
                             '<div class="card">',
-                                '<img src="' + escapeHtml(qrData) + '" alt="QR ' + escapeHtml(code) + '" />',
-                                '<div class="code">' + escapeHtml(code) + '</div>',
+                                '<img src="' + escapeHtml(qrData) + '" alt="QR ' + escapeHtml(qrText) + '" />',
+                                '<div class="code">' + escapeHtml(displayCode) + '</div>',
                                 '<div class="name">' + escapeHtml(item.assetName || '-') + '</div>',
                                 '<div class="meta">' + escapeHtml(getCanonicalCategoryLabel(item)) + ' | ' + escapeHtml(item.owner || '-') + '</div>',
                             '</div>',
@@ -5452,6 +5540,7 @@
             document.getElementById('modalTitle').textContent = 'เพิ่มครุภัณฑ์ใหม่';
             document.getElementById('supplyForm').reset();
             document.getElementById('supplyId').value = '';
+            populateAssetOrgSelect(DEFAULT_ASSET_ORG_CODE_CLIENT);
             renderAssetStatusOptions('ปกติ');
             pendingAssetImageUpload = null;
             clearAssetImagePreview();
@@ -5486,7 +5575,7 @@
 
         function validateAssetNumberFormatClient(assetNumber) {
             const code = String(assetNumber || '').trim().toUpperCase();
-            if (!code) return { valid: false, message: 'กรุณากรอกหมายเลข สวพส.(อร)' };
+            if (!code) return { valid: false, message: 'กรุณากรอกหมายเลขครุภัณฑ์' };
             if (code.length < 3 || code.length > 50) return { valid: false, message: 'หมายเลขต้องยาว 3-50 ตัวอักษร' };
             const pattern = /^\d{2}-[A-Z0-9]+-\d{1,2}-\d{2}\/\d{1,3}(?:\.\d+)?(?:-\d{1,3}(?:\.\d+)?)?(?:\((?:\d+|\d+\/\d+)\))?$/;
             if (!pattern.test(code)) return { valid: false, message: 'รูปแบบไม่ถูกต้อง (ตัวอย่าง: 63-1-19-09/18 หรือ 68-R1-8-48/01.1)' };
@@ -5510,6 +5599,7 @@
             }
 
             const currentId = String((document.getElementById('supplyId') || {}).value || '').trim();
+            const assetOrgCode = getSelectedAssetOrgCode();
             assetNumberValidationState = { checking: true, valid: true, message: 'กำลังตรวจสอบหมายเลขซ้ำ...' };
             renderAssetNumberValidation();
             google.script.run
@@ -5526,7 +5616,7 @@
                     assetNumberValidationState = { checking: false, valid: false, message: 'ตรวจสอบหมายเลขไม่สำเร็จ กรุณาลองอีกครั้ง' };
                     renderAssetNumberValidation();
                 })
-                .checkAssetNumberExists(assetNumber, currentId);
+                .checkAssetNumberExists(assetNumber, currentId, assetOrgCode);
         }
 
         function clearAssetImagePreview() {
@@ -5819,7 +5909,7 @@
                     }
                 });
 
-                generateQRCodeAndSubmit(assetNumber);
+                generateQRCodeAndSubmit(getSelectedAssetOrgCode() + ':' + assetNumber);
             } else {
                 submitSupplyData();
             }
@@ -5899,6 +5989,7 @@
 
             const supplyData = {
                 id: document.getElementById('supplyId').value,
+                assetOrgCode: getSelectedAssetOrgCode(),
                 assetNumber: document.getElementById('assetNumber').value,
                 category: normalizeCategoryInputValue(document.getElementById('assetCategory').value),
                 assetName: document.getElementById('assetName').value,
@@ -5954,6 +6045,7 @@
             if (supply) {
                 document.getElementById('modalTitle').textContent = 'แก้ไขครุภัณฑ์';
                 document.getElementById('supplyId').value = supply.id;
+                populateAssetOrgSelect(supply.assetOrgCode || DEFAULT_ASSET_ORG_CODE_CLIENT);
                 document.getElementById('assetNumber').value = supply.assetNumber || '';
                 document.getElementById('assetCategory').value = getCanonicalCategoryLabel(supply);
                 document.getElementById('assetName').value = supply.assetName || '';
@@ -6078,12 +6170,19 @@
 
         function searchSupplyByCode(code, mode) {
             const normalizedSearchCode = normalizeCode(code);
-            let supply = supplies.find(s => s.assetNumber && normalizeCode(s.assetNumber) === normalizedSearchCode);
+            let supply = supplies.find(function (s) {
+                return normalizeCode(s.assetKey) === normalizedSearchCode ||
+                    normalizeCode(s.id) === normalizedSearchCode ||
+                    normalizeCode(s.assetNumber) === normalizedSearchCode;
+            });
             if (!supply) {
-                supply = supplies.find(s => s.assetNumber && (
-                    normalizeCode(s.assetNumber).includes(normalizedSearchCode) ||
-                    normalizedSearchCode.includes(normalizeCode(s.assetNumber))
-                ));
+                supply = supplies.find(function (s) {
+                    const values = [s.assetKey, s.id, s.assetNumber, s.assetNumberDisplay];
+                    return values.some(function (v) {
+                        const normalizedValue = normalizeCode(v);
+                        return normalizedValue && (normalizedValue.includes(normalizedSearchCode) || normalizedSearchCode.includes(normalizedValue));
+                    });
+                });
             }
             if (!supply) {
                 supply = supplies.find(s => s.location && normalizeCode(s.location).includes(normalizedSearchCode));
@@ -6158,7 +6257,7 @@
                                 <span class="status-pill ${statusClass}">${statusText}</span>
                             </div>
                             <div class="asset-code-line">
-                                <i class="fas fa-barcode mr-1"></i>${supply.assetNumber || '-'}
+                                <i class="fas fa-barcode mr-1"></i>${assetNumberDisplay}
                             </div>
 
                             <div class="asset-detail-card mb-4">
@@ -6211,7 +6310,7 @@
                                 <div class="asset-section-title text-slate-600 mb-3">QR Code ครุภัณฑ์</div>
                                 <img id="assetQrInPopup" class="asset-qr-img" alt="QR Code">
                                 <p class="text-xs text-slate-400 mt-3">สแกนเพื่อดูข้อมูลครุภัณฑ์</p>
-                                <button onclick="printSingleSupplyQRCode('${safeAssetNumber}')" class="mt-4 btn-theme btn-theme-check-solid px-4 py-2 rounded-full">
+                                <button onclick="printSingleSupplyQRCode('${safeAssetLookupKey}')" class="mt-4 btn-theme btn-theme-check-solid px-4 py-2 rounded-full">
                                     <i class="fas fa-print mr-1"></i>พิมพ์ QR Code
                                 </button>
                             </div>
@@ -6229,7 +6328,7 @@
                 didOpen: function () {
                     const qrEl = document.getElementById('assetQrInPopup');
                     if (qrEl) {
-                        createQrDataUrl(supply.assetNumber || '').then(function (dataUrl) {
+                        createQrDataUrl(getAssetLookupKeyClient(supply) || supply.assetNumber || '').then(function (dataUrl) {
                             qrEl.src = dataUrl;
                         }).catch(function () {
                             qrEl.style.display = 'none';

@@ -3147,3 +3147,59 @@ body.bg-hero .swal2-popup.swal-change:has(#computerAssetsBody) .computer-assets-
     white-space: normal !important;
   }
 }
+
+
+/* Hotfix v43: multi-agency asset identity UI restore */
+body.admin-page .asset-identity-section {
+  border-color: rgba(15, 118, 110, 0.18) !important;
+  background: linear-gradient(180deg, #F1F8F2 0%, #FFFFFF 100%) !important;
+}
+
+body.admin-page #assetOrgCode,
+body.admin-page #assetNumber {
+  min-height: 46px;
+}
+
+body.admin-page #assetNumberLabel,
+body.admin-page label[for="assetOrgCode"] {
+  color: #243B35 !important;
+  font-weight: 700 !important;
+}
+
+body.admin-page #assetOrgHelpText,
+body.admin-page #assetNumberValidationMsg {
+  line-height: 1.45;
+}
+
+@media (min-width: 768px) {
+  body.admin-page #suppliesTable {
+    min-width: 1760px !important;
+    table-layout: fixed !important;
+  }
+
+  body.admin-page #suppliesTable col:nth-child(2) {
+    width: 360px !important;
+  }
+
+  body.admin-page #suppliesTable col:nth-child(3) {
+    width: 360px !important;
+  }
+
+  body.admin-page #suppliesTable th:nth-child(2),
+  body.admin-page #suppliesTable td:nth-child(2),
+  body.admin-page #suppliesTable th:nth-child(3),
+  body.admin-page #suppliesTable td:nth-child(3) {
+    width: 360px !important;
+    max-width: 360px !important;
+  }
+
+  body.admin-page #suppliesTable td:nth-child(2) *,
+  body.admin-page #suppliesTable td:nth-child(3) * {
+    white-space: normal !important;
+    overflow: visible !important;
+    text-overflow: clip !important;
+    overflow-wrap: anywhere !important;
+    word-break: break-word !important;
+    line-height: 1.35 !important;
+  }
+}
