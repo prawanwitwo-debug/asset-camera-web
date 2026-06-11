@@ -3061,3 +3061,89 @@ body.bg-hero .swal2-popup.swal-change:has(#computerAssetsBody) .computer-assets-
     padding: 0.75rem 0.8rem !important;
   }
 }
+
+/* Hotfix v42: desktop asset table column width and readability
+   Goal: allow "หน่วยงาน / หมายเลขครุภัณฑ์" to display fully on desktop.
+   JS/data/API untouched. Mobile card list unaffected. */
+@media (min-width: 768px) {
+  body.admin-page #suppliesTable {
+    min-width: 1780px !important;
+    table-layout: fixed !important;
+  }
+
+  body.admin-page #suppliesTable col:nth-child(1) {
+    width: 56px !important;
+  }
+
+  body.admin-page #suppliesTable col:nth-child(2) {
+    width: 360px !important;
+  }
+
+  body.admin-page #suppliesTable col:nth-child(3) {
+    width: 380px !important;
+  }
+
+  body.admin-page #suppliesTable col:nth-child(4) {
+    width: 190px !important;
+  }
+
+  body.admin-page #suppliesTable col:nth-child(5) {
+    width: 230px !important;
+  }
+
+  body.admin-page #suppliesTable col:nth-child(6) {
+    width: 120px !important;
+  }
+
+  body.admin-page #suppliesTable col:nth-child(7) {
+    width: 140px !important;
+  }
+
+  body.admin-page #suppliesTable col:nth-child(8) {
+    width: 210px !important;
+  }
+
+  body.admin-page #suppliesTable th:nth-child(2),
+  body.admin-page #suppliesTable td:nth-child(2) {
+    width: 360px !important;
+    max-width: 360px !important;
+  }
+
+  body.admin-page #suppliesTable th:nth-child(3),
+  body.admin-page #suppliesTable td:nth-child(3) {
+    width: 380px !important;
+    max-width: 380px !important;
+  }
+
+  body.admin-page #suppliesTable th:nth-child(2),
+  body.admin-page #suppliesTable th:nth-child(3) {
+    white-space: normal !important;
+    line-height: 1.35 !important;
+  }
+
+  body.admin-page #suppliesTable td:nth-child(2),
+  body.admin-page #suppliesTable td:nth-child(3) {
+    white-space: normal !important;
+    overflow: visible !important;
+    text-overflow: clip !important;
+    overflow-wrap: anywhere !important;
+    word-break: break-word !important;
+    line-height: 1.35 !important;
+  }
+
+  body.admin-page #suppliesTable td:nth-child(2) *,
+  body.admin-page #suppliesTable td:nth-child(3) * {
+    white-space: normal !important;
+    overflow: visible !important;
+    text-overflow: clip !important;
+    overflow-wrap: anywhere !important;
+    word-break: break-word !important;
+    line-height: 1.35 !important;
+  }
+
+  body.admin-page #suppliesTable td:nth-child(2) .manage-cell-ellipsis,
+  body.admin-page #suppliesTable td:nth-child(3) .manage-cell-ellipsis {
+    display: block !important;
+    white-space: normal !important;
+  }
+}
