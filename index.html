@@ -162,7 +162,7 @@
     .swal2-popup.swal-track-upgrade {
       width: min(1040px, 94vw) !important;
       max-width: 1040px !important;
-      overflow: visible !important;
+      overflow: hidden !important;
       background: #f8fffb !important;
       border: 1px solid rgba(111, 207, 151, 0.36) !important;
       border-radius: 28px !important;
@@ -176,8 +176,22 @@
       margin-bottom: 0.5rem !important;
     }
     .swal2-popup.swal-track-upgrade .swal2-html-container {
-      overflow: visible !important;
+      overflow-y: auto !important;
+      overflow-x: hidden !important;
+      max-height: min(68vh, 620px) !important;
       margin: 0 !important;
+      padding: 0 0.15rem 0.2rem !important;
+    }
+    .swal2-popup.swal-track-upgrade .swal2-close {
+      color: #3D8B68 !important;
+      background: #ffffff !important;
+      border: 1px solid #DDEBE2 !important;
+      border-radius: 999px !important;
+      width: 42px !important;
+      height: 42px !important;
+      top: 16px !important;
+      right: 16px !important;
+      box-shadow: 0 8px 20px rgba(15, 23, 42, 0.08) !important;
     }
     .track-search-shell {
       max-width: 920px;
@@ -222,17 +236,15 @@
     }
     .track-dropdown-table {
       display: none;
-      position: absolute;
-      top: 66px;
-      left: 0;
-      right: 0;
-      z-index: 20;
-      max-height: 420px;
+      position: static;
+      width: 100%;
+      margin-top: 0.65rem;
+      max-height: min(48vh, 420px);
       overflow: auto;
       border: 1px solid #DDEBE2;
       border-radius: 18px;
       background: #ffffff;
-      box-shadow: 0 20px 50px rgba(15, 23, 42, 0.16);
+      box-shadow: 0 20px 50px rgba(15, 23, 42, 0.12);
     }
     .track-dropdown-table table {
       width: 100%;
@@ -305,7 +317,7 @@
         width: 100% !important;
       }
       .track-dropdown-table {
-        max-height: 360px;
+        max-height: min(48vh, 360px);
       }
       .track-dropdown-table thead {
         display: none;
@@ -977,8 +989,8 @@ function hideMiniLoading() {
           `,
           width: 1040,
           showConfirmButton: false,
-          showCancelButton: true,
-          cancelButtonText: 'ปิด',
+          showCancelButton: false,
+          showCloseButton: true,
           customClass: { popup: 'swal-track-upgrade' },
           didOpen: () => {
             const scanStartBtn = document.getElementById('scanStartBtn');
