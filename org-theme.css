@@ -3587,6 +3587,11 @@ body.bg-hero .swal2-container {
   z-index: 1;
 }
 
+body.bg-hero .home-botanical-stage {
+  position: relative;
+  isolation: isolate;
+}
+
 body.bg-hero main > .max-w-4xl {
   position: relative;
   z-index: 1;
@@ -3652,6 +3657,24 @@ body.bg-hero .home-card-secondary::after {
   filter: drop-shadow(0 6px 14px rgba(123, 207, 166, 0.14)) !important;
 }
 
+body.bg-hero .home-botanical-stage::after {
+  content: "" !important;
+  position: absolute !important;
+  left: 50% !important;
+  bottom: 34px !important;
+  width: min(420px, 86vw) !important;
+  height: min(220px, 24vw) !important;
+  transform: translateX(-50%) !important;
+  pointer-events: none !important;
+  z-index: 0 !important;
+  opacity: 0.28 !important;
+  background-repeat: no-repeat !important;
+  background-position: center bottom !important;
+  background-size: contain !important;
+  background-image: url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20480%20240'%3E%3Cg%20fill='none'%20stroke='%237BCFA6'%20stroke-width='5'%20stroke-linecap='round'%20stroke-linejoin='round'%20opacity='.95'%3E%3Cpath%20d='M40%20198C90%20134%20143%2096%20211%2064'/%3E%3Cpath%20d='M438%20198C388%20134%20335%2096%20269%2064'/%3E%3Cpath%20d='M142%20150c-38-4-69-24-92-59%2040%203%2071%2019%2095%2048'/%3E%3Cpath%20d='M340%20150c38-4%2069-24%2092-59-40%203-71%2019-95%2048'/%3E%3Cpath%20d='M211%2064c7-31%2023-56%2049-76%2011%2031%208%2059-8%2084'/%3E%3Cpath%20d='M269%2064c-7-31-23-56-49-76-11%2031-8%2059%208%2084'/%3E%3C/g%3E%3Cg%20fill='%23FFE082'%20opacity='.78'%3E%3Cellipse%20cx='240'%20cy='54'%20rx='18'%20ry='38'/%3E%3Cellipse%20cx='240'%20cy='164'%20rx='18'%20ry='38'/%3E%3Cellipse%20cx='176'%20cy='104'%20rx='38'%20ry='18'/%3E%3Cellipse%20cx='304'%20cy='104'%20rx='38'%20ry='18'/%3E%3Cellipse%20cx='188'%20cy='66'%20rx='28'%20ry='14' transform='rotate(-36%20188%2066)'/%3E%3Cellipse%20cx='292'%20cy='66'%20rx='28'%20ry='14' transform='rotate(36%20292%2066)'/%3E%3Cellipse%20cx='188'%20cy='142'%20rx='28'%20ry='14' transform='rotate(36%20188%20142)'/%3E%3Cellipse%20cx='292'%20cy='142'%20rx='28'%20ry='14' transform='rotate(-36%20292%20142)'/%3E%3C/g%3E%3Cg%20fill='%23F2C94C'%20opacity='.34'%3E%3Ccircle%20cx='240'%20cy='104'%20r='16'/%3E%3C/g%3E%3C/svg%3E") !important;
+  filter: drop-shadow(0 10px 20px rgba(123, 207, 166, 0.12)) !important;
+}
+
 @keyframes homeBotanicalFloat {
   0% { transform: translate3d(0, 0, 0) rotate(-1deg) !important; }
   100% { transform: translate3d(8px, -10px, 0) rotate(2deg) !important; }
@@ -3695,6 +3718,13 @@ body.bg-hero .home-card-secondary::after {
     height: 90px !important;
     bottom: -22px !important;
     opacity: 0.28 !important;
+  }
+
+  body.bg-hero .home-botanical-stage::after {
+    bottom: 22px !important;
+    width: min(320px, 88vw) !important;
+    height: min(180px, 34vw) !important;
+    opacity: 0.34 !important;
   }
 }
 
