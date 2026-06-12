@@ -3534,84 +3534,136 @@ body.admin-page #assetNumberValidationMsg {
   }
 }
 
-/* v55: Home floral background accent */
-body.bg-hero .home-floral-layer {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  z-index: 0;
-  overflow: hidden;
+/* v56: Home floral background visibility fix */
+body.bg-hero {
+  position: relative;
+  isolation: isolate;
+  background-color: #EEF8F1 !important;
+  background-image:
+    radial-gradient(520px 300px at 12% 8%, rgba(168, 230, 177, 0.22), transparent 66%),
+    radial-gradient(560px 320px at 92% 92%, rgba(255, 224, 130, 0.20), transparent 68%),
+    linear-gradient(180deg, #FBFEFC 0%, #EEF8F1 50%, #E6F1EA 100%) !important;
 }
 
-body.bg-hero .home-floral {
-  position: absolute;
-  width: min(42vw, 460px);
-  aspect-ratio: 1 / 1;
-  opacity: 0.075;
-  filter: saturate(0.95);
-  background-repeat: no-repeat;
-  background-size: contain;
-  background-position: center;
+body.bg-hero::before,
+body.bg-hero::after {
+  content: "" !important;
+  position: fixed !important;
+  display: block !important;
+  pointer-events: none !important;
+  z-index: 0 !important;
+  background-repeat: no-repeat !important;
+  background-position: center !important;
+  background-size: contain !important;
+  filter: none !important;
+  transform: none !important;
+  animation: homeBotanicalFloat 12s ease-in-out infinite alternate !important;
 }
 
-body.bg-hero .home-floral-top-left {
-  top: -48px;
-  left: -52px;
-  transform: rotate(-8deg);
+body.bg-hero::before {
+  width: 310px !important;
+  height: 310px !important;
+  left: -70px !important;
+  top: 18px !important;
+  opacity: 0.30 !important;
+  background-image: url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20320%20320'%3E%3Cg%20fill='none'%20stroke='%237BCFA6'%20stroke-width='5'%20stroke-linecap='round'%20stroke-linejoin='round'%20opacity='.78'%3E%3Cpath%20d='M86%20258C92%20198%20125%20155%20174%20120'/%3E%3Cpath%20d='M111%20205c-38-10-57-34-57-72%2037%204%2060%2023%2067%2058'/%3E%3Cpath%20d='M143%20163c-31-36-28-73%209-110%2026%2033%2027%2069%203%20108'/%3E%3Cpath%20d='M169%20124c32-26%2068-26%20108%201%20-30%2029-66%2033-104%2010'/%3E%3Cpath%20d='M121%20216c38%2010%2077%204%20116-18%20-35-17-72-14-112%209'/%3E%3C/g%3E%3Cg%20fill='%23FFE082'%20opacity='.74'%3E%3Ccircle%20cx='176'%20cy='114'%20r='10'/%3E%3Cellipse%20cx='176'%20cy='82'%20rx='14'%20ry='28'/%3E%3Cellipse%20cx='176'%20cy='146'%20rx='14'%20ry='28'/%3E%3Cellipse%20cx='144'%20cy='114'%20rx='28'%20ry='14'/%3E%3Cellipse%20cx='208'%20cy='114'%20rx='28'%20ry='14'/%3E%3Cellipse%20cx='153'%20cy='91'%20rx='24'%20ry='12'%20transform='rotate(-45%20153%2091)'/%3E%3Cellipse%20cx='199'%20cy='91'%20rx='24'%20ry='12'%20transform='rotate(45%20199%2091)'/%3E%3Cellipse%20cx='153'%20cy='137'%20rx='24'%20ry='12'%20transform='rotate(45%20153%20137)'/%3E%3Cellipse%20cx='199'%20cy='137'%20rx='24'%20ry='12'%20transform='rotate(-45%20199%20137)'/%3E%3C/g%3E%3C/svg%3E") !important;
 }
 
-body.bg-hero .home-floral-bottom-right {
-  right: -60px;
-  bottom: -56px;
-  transform: rotate(180deg) scale(1.02);
+body.bg-hero::after {
+  width: 360px !important;
+  height: 360px !important;
+  right: -95px !important;
+  bottom: -90px !important;
+  opacity: 0.34 !important;
+  animation-duration: 15s !important;
+  animation-direction: alternate-reverse !important;
+  background-image: url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20360%20360'%3E%3Cg%20fill='none'%20stroke='%236FCF97'%20stroke-width='5'%20stroke-linecap='round'%20stroke-linejoin='round'%20opacity='.82'%3E%3Cpath%20d='M270%20315C255%20252%20224%20207%20178%20170'/%3E%3Cpath%20d='M245%20260c43-2%2076-23%2097-62-43-10-77%204-103%2044'/%3E%3Cpath%20d='M213%20212c39-30%2048-68%2027-114-38%2024-53%2059-41%20105'/%3E%3Cpath%20d='M178%20170c-39-12-75-1-108%2035%2039%2016%2075%2011%20110-17'/%3E%3Cpath%20d='M251%20275c-36%2017-76%2017-121%200%2031-29%2068-39%20112-27'/%3E%3C/g%3E%3Cg%20fill='%23F2C94C'%20opacity='.70'%3E%3Ccircle%20cx='174'%20cy='166'%20r='9'/%3E%3Cellipse%20cx='174'%20cy='138'%20rx='12'%20ry='25'/%3E%3Cellipse%20cx='174'%20cy='194'%20rx='12'%20ry='25'/%3E%3Cellipse%20cx='146'%20cy='166'%20rx='25'%20ry='12'/%3E%3Cellipse%20cx='202'%20cy='166'%20rx='25'%20ry='12'/%3E%3Cellipse%20cx='154'%20cy='146'%20rx='21'%20ry='11'%20transform='rotate(-45%20154%20146)'/%3E%3Cellipse%20cx='194'%20cy='146'%20rx='21'%20ry='11'%20transform='rotate(45%20194%20146)'/%3E%3Cellipse%20cx='154'%20cy='186'%20rx='21'%20ry='11'%20transform='rotate(45%20154%20186)'/%3E%3Cellipse%20cx='194'%20cy='186'%20rx='21'%20ry='11'%20transform='rotate(-45%20194%20186)'/%3E%3C/g%3E%3C/svg%3E") !important;
 }
 
-body.bg-hero .main-wrap {
+body.bg-hero .main-wrap,
+body.bg-hero footer,
+body.bg-hero .swal2-container {
   position: relative;
   z-index: 1;
 }
 
-body.bg-hero .action-card {
+body.bg-hero main > .max-w-4xl {
   position: relative;
-  overflow: hidden;
+  z-index: 1;
+}
+
+body.bg-hero main > .max-w-4xl::before {
+  content: "";
+  position: absolute;
+  width: 170px;
+  height: 170px;
+  right: -64px;
+  top: 76px;
+  pointer-events: none;
+  z-index: -1;
+  opacity: 0.18;
+  background: radial-gradient(circle at 50% 50%, rgba(255, 224, 130, 0.42), transparent 68%);
+  border-radius: 999px;
 }
 
 body.bg-hero .action-card::after {
-  content: '';
-  position: absolute;
-  inset: auto -16px -18px auto;
-  width: 120px;
-  height: 120px;
-  background:
-    radial-gradient(circle at 35% 35%, rgba(123, 207, 166, 0.18) 0 7px, transparent 8px),
-    radial-gradient(circle at 62% 42%, rgba(255, 232, 163, 0.22) 0 10px, transparent 11px),
-    radial-gradient(circle at 50% 64%, rgba(223, 245, 233, 0.24) 0 14px, transparent 15px);
-  opacity: 0.72;
-  transform: rotate(-8deg);
-  pointer-events: none;
+  content: "" !important;
+  position: absolute !important;
+  right: 16px !important;
+  bottom: 12px !important;
+  width: 72px !important;
+  height: 72px !important;
+  pointer-events: none !important;
+  opacity: 0.13 !important;
+  background-repeat: no-repeat !important;
+  background-position: center !important;
+  background-size: contain !important;
+  background-image: url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2090%2090'%3E%3Cg%20fill='none'%20stroke='%233D8B68'%20stroke-width='5'%20stroke-linecap='round'%3E%3Cpath%20d='M22%2070C30%2045%2048%2032%2068%2022'/%3E%3Cpath%20d='M37%2051c-18-1-29-11-32-29%2018%204%2030%2014%2035%2028'/%3E%3Cpath%20d='M52%2038c-7-16-3-29%2013-40%206%2017%202%2030-12%2040'/%3E%3C/g%3E%3Ccircle%20cx='66'%20cy='23'%20r='7'%20fill='%23F2C94C'/%3E%3C/svg%3E") !important;
 }
 
-body.bg-hero .action-card:hover {
-  transform: translateY(-2px);
+@keyframes homeBotanicalFloat {
+  0% { transform: translate3d(0, 0, 0) rotate(-1deg) !important; }
+  100% { transform: translate3d(8px, -10px, 0) rotate(2deg) !important; }
 }
 
-body.bg-hero .action-card:active {
-  transform: translateY(0) scale(0.995);
+@media (max-width: 768px) {
+  body.bg-hero::before {
+    width: 210px !important;
+    height: 210px !important;
+    left: -58px !important;
+    top: 16px !important;
+    opacity: 0.38 !important;
+  }
+
+  body.bg-hero::after {
+    width: 250px !important;
+    height: 250px !important;
+    right: -78px !important;
+    bottom: -70px !important;
+    opacity: 0.40 !important;
+  }
+
+  body.bg-hero main > .max-w-4xl::before {
+    width: 132px;
+    height: 132px;
+    right: -50px;
+    top: 142px;
+    opacity: 0.16;
+  }
+
+  body.bg-hero .action-card::after {
+    width: 62px !important;
+    height: 62px !important;
+    right: 12px !important;
+    bottom: 10px !important;
+    opacity: 0.16 !important;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  body.bg-hero .bg-hero,
-  body.bg-hero .bg-hero::before,
-  body.bg-hero .bg-hero::after,
-  body.bg-hero .floaty,
-  body.bg-hero .action-card,
-  body.bg-hero .action-card::before {
+  body.bg-hero::before,
+  body.bg-hero::after {
     animation: none !important;
   }
-
-  body.bg-hero .action-card,
-  body.bg-hero .action-card:hover,
-  body.bg-hero .action-card:active {
-    transform: none !important;
-  }
 }
+
