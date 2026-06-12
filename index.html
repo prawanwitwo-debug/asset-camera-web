@@ -27,6 +27,35 @@
         linear-gradient(180deg, #0a0f35 0%, #070c2b 45%, #05081f 100%);
       animation: cyberGlow 8s ease-in-out infinite alternate;
     }
+    .home-floral-layer {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      overflow: hidden;
+    }
+    .home-floral {
+      position: absolute;
+      width: min(42vw, 460px);
+      aspect-ratio: 1 / 1;
+      opacity: 0.075;
+      filter: saturate(0.95);
+      background-repeat: no-repeat;
+      background-size: contain;
+      background-position: center;
+    }
+    .home-floral-top-left {
+      top: -48px;
+      left: -52px;
+      transform: rotate(-8deg);
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 520 520' fill='none'%3E%3Cpath d='M103 274c40-67 98-124 171-160 30-15 64-24 99-25' stroke='%237BCFA6' stroke-width='6' stroke-linecap='round'/%3E%3Cpath d='M153 216c-22-7-42-24-50-47 25-4 50 1 69 15-3 14-8 27-19 32Z' fill='%23DFF5E9'/%3E%3Cpath d='M208 166c-17-15-26-38-22-61 23 7 42 23 53 44-8 11-18 18-31 17Z' fill='%23FFF7DA'/%3E%3Cpath d='M267 136c-8-21-7-45 5-65 19 14 31 35 33 58-11 8-23 11-38 7Z' fill='%23F1F8F2'/%3E%3Cpath d='M325 121c2-23 14-44 34-58 12 20 15 44 8 66-14 5-28 3-42-8Z' fill='%23DFF5E9'/%3E%3Cpath d='M381 145c14-17 35-28 58-29-3 23-14 44-32 59-13-2-24-9-26-30Z' fill='%23FFF7DA'/%3E%3Cpath d='M417 201c21-10 45-12 67-5-11 22-29 38-53 46-10-7-14-20-14-41Z' fill='%23F1F8F2'/%3E%3Cpath d='M175 248c31-32 67-58 108-77 24 7 45 20 61 39-28 43-64 74-108 94-25-8-45-24-61-56Z' fill='%23FFFFFF' fill-opacity='.65'/%3E%3Cpath d='M300 189c19-26 45-45 77-55 13 29 13 58 0 87-29 1-54-8-77-32Z' fill='%23F8FCF8'/%3E%3Cpath d='M259 262c18-6 37-6 54 1-8 18-22 32-40 41-8-6-13-17-14-42Z' fill='%237BCFA6' fill-opacity='.58'/%3E%3Cpath d='M179 323c36 19 74 28 114 29 34-2 66-12 95-31' stroke='%237BCFA6' stroke-width='6' stroke-linecap='round' stroke-dasharray='1 18' opacity='.75'/%3E%3Cpath d='M118 363c18-25 43-41 74-47 0 29-9 54-29 76-18-3-33-12-45-29Z' fill='%23FFE8A3' fill-opacity='.82'/%3E%3Cpath d='M203 397c9-23 26-40 49-49 8 24 7 46-4 67-16 2-31-5-45-18Z' fill='%23DFF5E9' fill-opacity='.86'/%3E%3Cpath d='M281 414c10-20 27-34 48-42 6 22 3 43-8 62-17 3-30-4-40-20Z' fill='%23FFF7DA' fill-opacity='.86'/%3E%3Cpath d='M363 392c15-18 36-30 61-34 1 25-8 48-27 68-20-2-34-13-34-34Z' fill='%23F1F8F2' fill-opacity='.9'/%3E%3C/svg%3E");
+    }
+    .home-floral-bottom-right {
+      right: -60px;
+      bottom: -56px;
+      transform: rotate(180deg) scale(1.02);
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 520 520' fill='none'%3E%3Cpath d='M103 274c40-67 98-124 171-160 30-15 64-24 99-25' stroke='%23FFF7DA' stroke-width='6' stroke-linecap='round'/%3E%3Cpath d='M153 216c-22-7-42-24-50-47 25-4 50 1 69 15-3 14-8 27-19 32Z' fill='%23F1F8F2'/%3E%3Cpath d='M208 166c-17-15-26-38-22-61 23 7 42 23 53 44-8 11-18 18-31 17Z' fill='%23DFF5E9'/%3E%3Cpath d='M267 136c-8-21-7-45 5-65 19 14 31 35 33 58-11 8-23 11-38 7Z' fill='%23FFF7DA'/%3E%3Cpath d='M325 121c2-23 14-44 34-58 12 20 15 44 8 66-14 5-28 3-42-8Z' fill='%23DFF5E9'/%3E%3Cpath d='M381 145c14-17 35-28 58-29-3 23-14 44-32 59-13-2-24-9-26-30Z' fill='%23FFF7DA'/%3E%3Cpath d='M417 201c21-10 45-12 67-5-11 22-29 38-53 46-10-7-14-20-14-41Z' fill='%23F1F8F2'/%3E%3Cpath d='M175 248c31-32 67-58 108-77 24 7 45 20 61 39-28 43-64 74-108 94-25-8-45-24-61-56Z' fill='%23FFFFFF' fill-opacity='.6'/%3E%3Cpath d='M300 189c19-26 45-45 77-55 13 29 13 58 0 87-29 1-54-8-77-32Z' fill='%23F8FCF8'/%3E%3Cpath d='M259 262c18-6 37-6 54 1-8 18-22 32-40 41-8-6-13-17-14-42Z' fill='%237BCFA6' fill-opacity='.55'/%3E%3Cpath d='M179 323c36 19 74 28 114 29 34-2 66-12 95-31' stroke='%23FFF7DA' stroke-width='6' stroke-linecap='round' stroke-dasharray='1 18' opacity='.8'/%3E%3Cpath d='M118 363c18-25 43-41 74-47 0 29-9 54-29 76-18-3-33-12-45-29Z' fill='%23FFE8A3' fill-opacity='.74'/%3E%3Cpath d='M203 397c9-23 26-40 49-49 8 24 7 46-4 67-16 2-31-5-45-18Z' fill='%23DFF5E9' fill-opacity='.78'/%3E%3Cpath d='M281 414c10-20 27-34 48-42 6 22 3 43-8 62-17 3-30-4-40-20Z' fill='%23FFF7DA' fill-opacity='.82'/%3E%3Cpath d='M363 392c15-18 36-30 61-34 1 25-8 48-27 68-20-2-34-13-34-34Z' fill='%23F1F8F2' fill-opacity='.84'/%3E%3C/svg%3E");
+    }
     .bg-hero::before,
     .bg-hero::after {
       content: '';
@@ -67,6 +96,8 @@
     }
     .main-wrap {
       min-height: calc(100vh - 70px);
+      position: relative;
+      z-index: 1;
     }
     .floaty { animation: float 18s ease-in-out infinite; }
     .action-card {
@@ -95,17 +126,34 @@
       pointer-events: none;
       animation: cyberEdgeGlow 2.8s ease-in-out infinite;
     }
+    .action-card::after {
+      content: '';
+      position: absolute;
+      inset: auto -16px -18px auto;
+      width: 120px;
+      height: 120px;
+      background:
+        radial-gradient(circle at 35% 35%, rgba(123, 207, 166, 0.18) 0 7px, transparent 8px),
+        radial-gradient(circle at 62% 42%, rgba(255, 232, 163, 0.22) 0 10px, transparent 11px),
+        radial-gradient(circle at 50% 64%, rgba(223, 245, 233, 0.24) 0 14px, transparent 15px);
+      opacity: 0.72;
+      transform: rotate(-8deg);
+      pointer-events: none;
+    }
     .action-card:hover {
-      transform: translateY(-4px);
+      transform: translateY(-2px);
       box-shadow: inset -8px -8px 16px rgba(255, 255, 255, 0.95),
                   inset 8px 8px 16px rgba(0, 0, 0, 0.08),
-                  -14px -14px 26px rgba(255, 255, 255, 0.95),
-                  14px 14px 26px rgba(0, 0, 0, 0.12),
-                  0 0 24px rgba(56, 189, 248, 0.42);
+                  -12px -12px 22px rgba(255, 255, 255, 0.95),
+                  12px 12px 22px rgba(0, 0, 0, 0.10),
+                  0 0 20px rgba(56, 189, 248, 0.30);
     }
     .action-card:hover::before {
       opacity: 0.9;
       animation-duration: 1.8s;
+    }
+    .action-card:active {
+      transform: translateY(0) scale(0.995);
     }
     @keyframes cyberEdgeGlow {
       0% {
@@ -648,6 +696,22 @@
         height: 200px;
       }
     }
+    @media (prefers-reduced-motion: reduce) {
+      .bg-hero,
+      .bg-hero::before,
+      .bg-hero::after,
+      .floaty,
+      .action-card,
+      .action-card::before {
+        animation: none !important;
+      }
+
+      .action-card,
+      .action-card:hover,
+      .action-card:active {
+        transform: none !important;
+      }
+    }
   </style>
 
     <!-- GitHub Pages API bridge -->
@@ -655,6 +719,10 @@
     <script src="api-shim.js"></script>
 </head>
 <body class="min-h-screen bg-hero text-slate-800">
+  <div class="home-floral-layer" aria-hidden="true">
+    <span class="home-floral home-floral-top-left"></span>
+    <span class="home-floral home-floral-bottom-right"></span>
+  </div>
   <main class="main-wrap px-6 py-10 flex items-center">
     <div class="max-w-4xl mx-auto w-full">
       <div class="text-center mb-8">

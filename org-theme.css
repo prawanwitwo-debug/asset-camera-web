@@ -3533,3 +3533,85 @@ body.admin-page #assetNumberValidationMsg {
     font-size: 0.98rem !important;
   }
 }
+
+/* v55: Home floral background accent */
+body.bg-hero .home-floral-layer {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+}
+
+body.bg-hero .home-floral {
+  position: absolute;
+  width: min(42vw, 460px);
+  aspect-ratio: 1 / 1;
+  opacity: 0.075;
+  filter: saturate(0.95);
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
+}
+
+body.bg-hero .home-floral-top-left {
+  top: -48px;
+  left: -52px;
+  transform: rotate(-8deg);
+}
+
+body.bg-hero .home-floral-bottom-right {
+  right: -60px;
+  bottom: -56px;
+  transform: rotate(180deg) scale(1.02);
+}
+
+body.bg-hero .main-wrap {
+  position: relative;
+  z-index: 1;
+}
+
+body.bg-hero .action-card {
+  position: relative;
+  overflow: hidden;
+}
+
+body.bg-hero .action-card::after {
+  content: '';
+  position: absolute;
+  inset: auto -16px -18px auto;
+  width: 120px;
+  height: 120px;
+  background:
+    radial-gradient(circle at 35% 35%, rgba(123, 207, 166, 0.18) 0 7px, transparent 8px),
+    radial-gradient(circle at 62% 42%, rgba(255, 232, 163, 0.22) 0 10px, transparent 11px),
+    radial-gradient(circle at 50% 64%, rgba(223, 245, 233, 0.24) 0 14px, transparent 15px);
+  opacity: 0.72;
+  transform: rotate(-8deg);
+  pointer-events: none;
+}
+
+body.bg-hero .action-card:hover {
+  transform: translateY(-2px);
+}
+
+body.bg-hero .action-card:active {
+  transform: translateY(0) scale(0.995);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body.bg-hero .bg-hero,
+  body.bg-hero .bg-hero::before,
+  body.bg-hero .bg-hero::after,
+  body.bg-hero .floaty,
+  body.bg-hero .action-card,
+  body.bg-hero .action-card::before {
+    animation: none !important;
+  }
+
+  body.bg-hero .action-card,
+  body.bg-hero .action-card:hover,
+  body.bg-hero .action-card:active {
+    transform: none !important;
+  }
+}
