@@ -339,6 +339,142 @@
       }
     }
 
+
+    .swal2-popup.swal-change-upgrade {
+      width: min(920px, 94vw) !important;
+      max-width: 920px !important;
+      overflow: hidden !important;
+      background: #f8fffb !important;
+      border: 1px solid rgba(111, 207, 151, 0.36) !important;
+      border-radius: 28px !important;
+      box-shadow: 0 28px 80px rgba(15, 23, 42, 0.22) !important;
+      padding: 1.45rem !important;
+    }
+    .swal2-popup.swal-change-upgrade .swal2-title {
+      color: #243B35 !important;
+      font-size: clamp(1.75rem, 2.4vw, 2.35rem) !important;
+      font-weight: 900 !important;
+      line-height: 1.25 !important;
+      margin-bottom: 0.6rem !important;
+    }
+    .swal2-popup.swal-change-upgrade .swal2-html-container {
+      overflow-y: auto !important;
+      overflow-x: hidden !important;
+      max-height: min(70vh, 680px) !important;
+      margin: 0 !important;
+      padding: 0 0.15rem 0.2rem !important;
+    }
+    .swal2-popup.swal-change-upgrade .swal2-close {
+      color: #3D8B68 !important;
+      background: #ffffff !important;
+      border: 1px solid #DDEBE2 !important;
+      border-radius: 999px !important;
+      width: 42px !important;
+      height: 42px !important;
+      top: 16px !important;
+      right: 16px !important;
+      box-shadow: 0 8px 20px rgba(15, 23, 42, 0.08) !important;
+    }
+    .change-owner-shell {
+      max-width: 820px;
+      margin: 0 auto;
+      text-align: left;
+    }
+    .change-help-text {
+      text-align: center;
+      color: #6F827C;
+      font-size: 0.9rem;
+      line-height: 1.6;
+      margin-bottom: 0.9rem;
+    }
+    .change-dropdown-table {
+      max-height: min(42vh, 360px);
+    }
+    .change-selected-card {
+      margin-top: 0.85rem;
+      border: 1px solid #DDEBE2;
+      border-radius: 18px;
+      background: #ffffff;
+      padding: 0.9rem 1rem;
+      box-shadow: 0 10px 30px rgba(15, 23, 42, 0.07);
+    }
+    .change-selected-card.is-hidden {
+      display: none;
+    }
+    .change-selected-title {
+      font-weight: 900;
+      color: #243B35;
+      font-size: 0.98rem;
+      margin-bottom: 0.25rem;
+    }
+    .change-selected-meta {
+      color: #6F827C;
+      font-size: 0.84rem;
+      line-height: 1.4;
+    }
+    .change-form-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 0.75rem;
+      margin-top: 0.9rem;
+    }
+    .change-field {
+      min-width: 0;
+    }
+    .change-field-full {
+      grid-column: 1 / -1;
+    }
+    .change-field label {
+      display: block;
+      color: #48645B;
+      font-size: 0.78rem;
+      font-weight: 800;
+      margin: 0 0 0.35rem 0.15rem;
+    }
+    .change-field input.swal2-input {
+      width: 100% !important;
+      height: 52px !important;
+      margin: 0 !important;
+      border: 1px solid #CDEFD6 !important;
+      border-radius: 16px !important;
+      background: #ffffff !important;
+      color: #243B35 !important;
+      font-weight: 650 !important;
+      box-shadow: none !important;
+    }
+    .change-field input[readonly] {
+      background: #F4FBF7 !important;
+      color: #48645B !important;
+    }
+    .change-note {
+      margin-top: 0.75rem;
+      color: #6F827C;
+      font-size: 0.82rem;
+      text-align: center;
+    }
+    .swal2-popup.swal-change-upgrade .swal2-actions {
+      gap: 0.75rem !important;
+      margin-top: 1rem !important;
+    }
+    .swal2-popup.swal-change-upgrade .swal2-confirm,
+    .swal2-popup.swal-change-upgrade .swal2-cancel {
+      min-width: 150px !important;
+      border-radius: 16px !important;
+      font-weight: 800 !important;
+    }
+    @media (max-width: 767px) {
+      .swal2-popup.swal-change-upgrade {
+        width: 94vw !important;
+        padding: 1rem !important;
+      }
+      .change-form-grid {
+        grid-template-columns: 1fr;
+      }
+      .change-dropdown-table {
+        max-height: min(44vh, 340px);
+      }
+    }
+
     .swal2-popup.swal-result {
       width: 720px !important;
       max-width: 90vw !important;
@@ -1486,75 +1622,228 @@ function hideMiniLoading() {
     function openChangeOwner() {
       showCuteLoading('กำลังโหลดแบบฟอร์ม...');
       google.script.run.withSuccessHandler(function(supplies) {
+        Swal.close();
         const list = Array.isArray(supplies) ? supplies : [];
-        const options = list.map(s => {
-          const label = `${s.assetNumber || '-'}`;
-          const owner = (s.owner || '').replace(/"/g, '&quot;');
-          return `<option value="${label}" data-owner="${owner}"></option>`;
-        }).join('');
+        let selectedAsset = null;
+
+        const getChangeSearchText = (item) => [
+          getTrackAssetKey(item),
+          item.assetNumber,
+          getTrackAssetDisplay(item),
+          item.assetOrgName,
+          item.assetOrgCode,
+          item.assetName,
+          item.location,
+          item.owner,
+          item.category,
+          item.status
+        ].filter(Boolean).join(' ').toLowerCase();
+
+        const findChangeAsset = (raw) => {
+          const lookup = extractTrackKeyFromInput(raw);
+          const normalized = String(lookup || '').trim().toLowerCase();
+          if (!normalized) return null;
+          return list.find(function(item) {
+            const key = getTrackAssetKey(item);
+            const number = String(item.assetNumber || '').trim();
+            const display = getTrackAssetDisplay(item);
+            return String(key).toLowerCase() === normalized ||
+              String(number).toLowerCase() === normalized ||
+              String(display).toLowerCase() === normalized;
+          }) || null;
+        };
 
         Swal.fire({
           title: 'แจ้งเปลี่ยนผู้รับผิดชอบครุภัณฑ์',
           html: `
-            <div class="text-left text-xs text-slate-500 mb-2">ค้นหาด้วยการพิมพ์ หรือสแกน QR</div>
-            <div class="relative">
-              <input id="changeAsset" class="swal2-input" placeholder="หมายเลข สวพส.(อร)">
-              <div id="assetDropdown" style="display:none; position:absolute; top:48px; left:0; right:0; max-height:180px; overflow:auto; border:1px solid #e2e8f0; border-radius:8px; background:#fff; box-shadow:0 6px 16px rgba(0,0,0,0.08); z-index:10;"></div>
+            <div class="change-owner-shell">
+              <div class="change-help-text">ค้นหาด้วยการพิมพ์ หรือสแกน QR จากสติกเกอร์ แล้วเลือกรายการจากตาราง Auto Complete</div>
+              <div class="track-input-row">
+                <div class="track-input-wrap">
+                  <input id="changeAsset" class="swal2-input" placeholder="เช่น RPRP:50-1-13-01/39 หรือ 50-1-13-01/39" autocomplete="off">
+                  <div id="assetDropdown" class="track-dropdown-table change-dropdown-table"></div>
+                </div>
+                <button id="scanBtn" class="track-scan-btn swal2-styled" type="button"><i class="fas fa-qrcode mr-2"></i>สแกน QR</button>
+              </div>
+
+              <div id="changeSelectedSummary" class="change-selected-card is-hidden">
+                <div id="changeSelectedTitle" class="change-selected-title">-</div>
+                <div id="changeSelectedMeta" class="change-selected-meta">-</div>
+              </div>
+
+              <div class="change-form-grid">
+                <div class="change-field">
+                  <label for="changeFrom">ผู้รับผิดชอบปัจจุบัน</label>
+                  <input id="changeFrom" class="swal2-input" placeholder="ผู้รับผิดชอบปัจจุบัน" readonly>
+                </div>
+                <div class="change-field">
+                  <label for="changeCurrentLocation">สถานที่ใช้งานปัจจุบัน</label>
+                  <input id="changeCurrentLocation" class="swal2-input" placeholder="สถานที่ใช้งานปัจจุบัน" readonly>
+                </div>
+                <div class="change-field">
+                  <label for="changeTo">ผู้รับผิดชอบใหม่</label>
+                  <input id="changeTo" class="swal2-input" placeholder="ผู้รับผิดชอบใหม่" autocomplete="off">
+                </div>
+                <div class="change-field">
+                  <label for="changeNewLocation">ระบุสถานที่ใช้งานใหม่</label>
+                  <input id="changeNewLocation" class="swal2-input" placeholder="เว้นว่างได้ ถ้าไม่เปลี่ยนสถานที่" autocomplete="off">
+                </div>
+                <div class="change-field change-field-full">
+                  <label for="changeReason">เหตุผล/รายละเอียด</label>
+                  <input id="changeReason" class="swal2-input" placeholder="เหตุผล/รายละเอียด" autocomplete="off">
+                </div>
+                <div class="change-field change-field-full">
+                  <label for="changeContact">ผู้ติดต่อ / เบอร์โทร</label>
+                  <input id="changeContact" class="swal2-input" placeholder="ผู้ติดต่อ / เบอร์โทร" autocomplete="off">
+                </div>
+              </div>
+              <div class="change-note">คำขอจะเข้าสู่หลังบ้านเพื่อให้เจ้าหน้าที่อนุมัติ/ปฏิเสธก่อนอัปเดตข้อมูลจริง</div>
             </div>
-            <button id="scanBtn" class="swal2-confirm swal2-styled" style="width:276.38px; height:53.15px; margin-top:8px;">สแกน QR</button>
-            <input id="changeFrom" class="swal2-input" placeholder="ผู้รับผิดชอบเดิม" readonly>
-            <input id="changeTo" class="swal2-input" placeholder="ผู้รับผิดชอบใหม่">
-            <input id="changeReason" class="swal2-input" placeholder="เหตุผล/รายละเอียด">
-            <input id="changeContact" class="swal2-input" placeholder="ผู้ติดต่อ / เบอร์โทร">
           `,
           confirmButtonText: 'ส่งคำขอ',
           showCancelButton: true,
           cancelButtonText: 'ยกเลิก',
-          customClass: { popup: 'swal-change' },
+          showCloseButton: true,
+          confirmButtonColor: '#0f766e',
+          cancelButtonColor: '#e5e7eb',
+          customClass: { popup: 'swal-change-upgrade' },
           didOpen: () => {
             const input = document.getElementById('changeAsset');
             const fromInput = document.getElementById('changeFrom');
+            const currentLocationInput = document.getElementById('changeCurrentLocation');
+            const newLocationInput = document.getElementById('changeNewLocation');
             const dropdown = document.getElementById('assetDropdown');
             const scanBtn = document.getElementById('scanBtn');
+            const selectedBox = document.getElementById('changeSelectedSummary');
+            const selectedTitle = document.getElementById('changeSelectedTitle');
+            const selectedMeta = document.getElementById('changeSelectedMeta');
             let qrChange = null;
+            let activeIndex = -1;
+            let currentMatches = [];
 
-            const ownerMap = {};
-            list.forEach(s => { ownerMap[s.assetNumber] = s.owner || ''; });
-
-            const fillOwner = (value) => {
-              fromInput.value = ownerMap[value] || '';
+            const setSelectedAsset = (asset) => {
+              selectedAsset = asset || null;
+              if (!selectedAsset) {
+                fromInput.value = '';
+                currentLocationInput.value = '';
+                if (selectedBox) selectedBox.classList.add('is-hidden');
+                return;
+              }
+              const display = getTrackAssetDisplay(selectedAsset);
+              const assetKey = getTrackAssetKey(selectedAsset);
+              input.value = display;
+              fromInput.value = String(selectedAsset.owner || '').trim() || '-';
+              currentLocationInput.value = String(selectedAsset.location || '').trim() || '-';
+              if (!String(newLocationInput.value || '').trim()) {
+                newLocationInput.value = '';
+              }
+              if (selectedTitle) selectedTitle.textContent = display;
+              if (selectedMeta) {
+                selectedMeta.textContent = [
+                  selectedAsset.assetName || '-',
+                  'รหัสอ้างอิง: ' + (assetKey || '-'),
+                  'สถานะ: ' + normalizeAssetStatusClient(selectedAsset.status || '-')
+                ].join(' • ');
+              }
+              if (selectedBox) selectedBox.classList.remove('is-hidden');
             };
 
             const renderDropdown = (value) => {
-              const q = (value || '').toLowerCase();
-              const matches = list.filter(s => (s.assetNumber || '').toLowerCase().includes(q)).slice(0, 8);
-              if (!q || matches.length === 0) {
+              const q = String(value || '').trim().toLowerCase();
+              activeIndex = -1;
+              currentMatches = [];
+              if (!q) {
                 dropdown.style.display = 'none';
                 dropdown.innerHTML = '';
                 return;
               }
-              dropdown.innerHTML = matches.map(m => `
-                <div class="px-3 py-2 hover:bg-emerald-50 cursor-pointer" data-value="${m.assetNumber}">
-                  <div class="text-sm font-medium">${m.assetNumber}</div>
-                  <div class="text-xs text-slate-500">${m.owner || '-'}</div>
-                </div>
-              `).join('');
+              currentMatches = list.filter(function(item) {
+                return getChangeSearchText(item).includes(q);
+              }).slice(0, 30);
+              if (currentMatches.length === 0) {
+                dropdown.innerHTML = '<div class="px-4 py-4 text-center text-sm text-rose-600">ไม่พบข้อมูลที่ตรงกับคำค้น</div>';
+                dropdown.style.display = 'block';
+                return;
+              }
+              dropdown.innerHTML = `
+                <table>
+                  <thead>
+                    <tr>
+                      <th>หน่วยงาน / หมายเลข</th>
+                      <th>ชื่อครุภัณฑ์</th>
+                      <th>สถานที่ใช้งานปัจจุบัน</th>
+                      <th>ผู้รับผิดชอบปัจจุบัน</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    ${currentMatches.map(function(m, idx) {
+                      return `
+                        <tr data-index="${idx}" data-key="${escapeTrackHtml(getTrackAssetKey(m))}">
+                          <td>
+                            <div class="track-code-cell">${escapeTrackHtml(getTrackAssetDisplay(m))}</div>
+                            <div class="track-muted-cell">${escapeTrackHtml(getTrackAssetKey(m))}</div>
+                          </td>
+                          <td>${escapeTrackHtml(m.assetName || '-')}</td>
+                          <td>${escapeTrackHtml(m.location || '-')}</td>
+                          <td>
+                            <div>${escapeTrackHtml(m.owner || '-')}</div>
+                            <div class="track-muted-cell"><span class="track-status-pill">● ${escapeTrackHtml(normalizeAssetStatusClient(m.status || '-'))}</span></div>
+                          </td>
+                        </tr>
+                      `;
+                    }).join('')}
+                  </tbody>
+                </table>
+              `;
               dropdown.style.display = 'block';
-              Array.from(dropdown.querySelectorAll('[data-value]')).forEach(el => {
-                el.addEventListener('click', () => {
-                  input.value = el.getAttribute('data-value');
-                  fillOwner(input.value);
+              Array.from(dropdown.querySelectorAll('tr[data-index]')).forEach(function(row) {
+                row.addEventListener('mousedown', function(evt) {
+                  evt.preventDefault();
+                  const idx = Number(row.getAttribute('data-index'));
+                  setSelectedAsset(currentMatches[idx]);
                   dropdown.style.display = 'none';
                 });
               });
             };
 
             input.addEventListener('input', () => {
+              selectedAsset = null;
+              setSelectedAsset(null);
               renderDropdown(input.value);
-              fillOwner(input.value);
             });
             input.addEventListener('focus', () => renderDropdown(input.value));
-            input.addEventListener('blur', () => setTimeout(() => { dropdown.style.display = 'none'; }, 150));
+            input.addEventListener('blur', () => setTimeout(() => { dropdown.style.display = 'none'; }, 160));
+            input.addEventListener('keydown', (evt) => {
+              if (!currentMatches.length || dropdown.style.display === 'none') {
+                if (evt.key === 'Enter') {
+                  const exact = findChangeAsset(input.value);
+                  if (exact) {
+                    evt.preventDefault();
+                    setSelectedAsset(exact);
+                    dropdown.style.display = 'none';
+                  }
+                }
+                return;
+              }
+              if (evt.key === 'ArrowDown') {
+                evt.preventDefault();
+                activeIndex = Math.min(currentMatches.length - 1, activeIndex + 1);
+              } else if (evt.key === 'ArrowUp') {
+                evt.preventDefault();
+                activeIndex = Math.max(0, activeIndex - 1);
+              } else if (evt.key === 'Enter') {
+                evt.preventDefault();
+                if (activeIndex >= 0) {
+                  setSelectedAsset(currentMatches[activeIndex]);
+                  dropdown.style.display = 'none';
+                }
+              } else if (evt.key === 'Escape') {
+                dropdown.style.display = 'none';
+              }
+              Array.from(dropdown.querySelectorAll('tr[data-index]')).forEach((row, idx) => {
+                row.classList.toggle('is-active', idx === activeIndex);
+              });
+            });
 
             scanBtn.addEventListener('click', (e) => {
               e.preventDefault();
@@ -1566,17 +1855,18 @@ function hideMiniLoading() {
                 overlay.style.cssText = `
                   position: fixed;
                   inset: 0;
-                  background: rgba(0,0,0,0.5);
+                  background: rgba(0,0,0,0.55);
                   display: flex;
                   align-items: center;
                   justify-content: center;
                   z-index: 9999;
+                  padding: 16px;
                 `;
                 overlay.innerHTML = `
-                  <div style="width: min(520px, 92vw); background:#fff; border-radius:16px; padding:16px; box-shadow:0 12px 30px rgba(0,0,0,0.2); text-align:center;">
-                    <div style="font-weight:600; margin-bottom:10px;">สแกน QR</div>
+                  <div style="width: min(520px, 92vw); background:#fff; border-radius:20px; padding:16px; box-shadow:0 18px 45px rgba(0,0,0,0.22); text-align:center;">
+                    <div style="font-weight:800; margin-bottom:10px; color:#243B35;">สแกน QR</div>
                     <div id="qrReader" style="width:100%;"></div>
-                    <button id="qrCloseBtn" style="margin-top:12px; width:100%; height:44px; background:#6b7280; color:#fff; border-radius:10px;">ปิดกล้อง</button>
+                    <button id="qrCloseBtn" style="margin-top:12px; width:100%; height:44px; background:#6b7280; color:#fff; border-radius:12px; font-weight:700;">ปิดกล้อง</button>
                   </div>
                 `;
                 document.body.appendChild(overlay);
@@ -1596,9 +1886,14 @@ function hideMiniLoading() {
                 qrChange.clear();
               }
               qrChange.start({ facingMode: 'environment' }, { fps: 10, qrbox: 220 }, (decodedText) => {
-                input.value = decodedText;
-                fillOwner(decodedText);
-                dropdown.style.display = 'none';
+                const asset = findChangeAsset(decodedText);
+                if (asset) {
+                  setSelectedAsset(asset);
+                  dropdown.style.display = 'none';
+                } else {
+                  input.value = extractTrackKeyFromInput(decodedText);
+                  renderDropdown(input.value);
+                }
                 closeOverlay();
               }).catch(() => {});
 
@@ -1606,30 +1901,35 @@ function hideMiniLoading() {
               closeBtn.addEventListener('click', (evt) => {
                 evt.preventDefault();
                 closeOverlay();
-              });
+              }, { once: true });
             });
           },
           preConfirm: () => {
-            const assetNumber = document.getElementById('changeAsset').value.trim();
+            const inputValue = document.getElementById('changeAsset').value.trim();
+            const resolvedAsset = selectedAsset || findChangeAsset(inputValue);
             const fromOwner = document.getElementById('changeFrom').value.trim();
+            const currentLocation = document.getElementById('changeCurrentLocation').value.trim();
             const toOwner = document.getElementById('changeTo').value.trim();
+            const newLocation = document.getElementById('changeNewLocation').value.trim();
             const reason = document.getElementById('changeReason').value.trim();
             const contact = document.getElementById('changeContact').value.trim();
 
-            if (!assetNumber) {
-              Swal.showValidationMessage('กรุณาระบุหมายเลข สวพส.(อร)');
+            if (!inputValue) {
+              Swal.showValidationMessage('กรุณาระบุหรือเลือกครุภัณฑ์จากตาราง Auto Complete');
               return false;
             }
-            if (!fromOwner) {
-              Swal.showValidationMessage('ไม่พบผู้รับผิดชอบเดิม กรุณาเลือกครุภัณฑ์จากรายการ');
+            if (!resolvedAsset) {
+              Swal.showValidationMessage('กรุณาเลือกรายการครุภัณฑ์จากตาราง Auto Complete เพื่อป้องกันเลือกผิดรายการ');
               return false;
             }
+            const currentOwnerValue = String((resolvedAsset.owner || fromOwner || '-')).trim() || '-';
+            const currentLocationValue = String((resolvedAsset.location || currentLocation || '-')).trim() || '-';
             if (!toOwner) {
               Swal.showValidationMessage('กรุณากรอกผู้รับผิดชอบใหม่');
               return false;
             }
-            if (fromOwner === toOwner) {
-              Swal.showValidationMessage('ผู้รับผิดชอบใหม่ต้องไม่ซ้ำผู้รับผิดชอบเดิม');
+            if (currentOwnerValue !== '-' && currentOwnerValue === toOwner) {
+              Swal.showValidationMessage('ผู้รับผิดชอบใหม่ต้องไม่ซ้ำผู้รับผิดชอบปัจจุบัน');
               return false;
             }
             if (!reason) {
@@ -1642,9 +1942,14 @@ function hideMiniLoading() {
             }
 
             return {
-              assetNumber: assetNumber,
-              fromOwner: fromOwner,
+              assetNumber: String(resolvedAsset.assetNumber || '').trim(),
+              assetKey: getTrackAssetKey(resolvedAsset),
+              assetOrgName: String(resolvedAsset.assetOrgName || '').trim(),
+              assetName: String(resolvedAsset.assetName || '').trim(),
+              fromOwner: currentOwnerValue,
+              currentLocation: currentLocationValue,
               toOwner: toOwner,
+              newLocation: newLocation,
               reason: reason,
               contact: contact,
               actor: localStorage.getItem('admin_user') || contact || 'user'
@@ -1668,6 +1973,7 @@ function hideMiniLoading() {
         });
       }).getSupplies();
     }
+
   </script>
 </body>
 </html>

@@ -2112,7 +2112,7 @@
       <div class="grid grid-cols-1 sm:grid-cols-[minmax(0,1fr)_auto] gap-2">
         <div class="relative">
           <span class="pointer-events-none absolute inset-y-0 left-3 flex items-center text-slate-400"><i class="fas fa-search"></i></span>
-          <input id="changeRequestSearch" type="text" oninput="setChangeRequestSearch(this.value)" class="w-full rounded-xl border border-slate-200 bg-white pl-10 pr-4 py-2.5 text-sm text-slate-700 shadow-sm focus:border-emerald-300 focus:outline-none focus:ring-2 focus:ring-emerald-100" placeholder="หมายเลขครุภัณฑ์,ผู้รับผิดชอบเดิม,ผู้รับผิดชอบใหม่">
+          <input id="changeRequestSearch" type="text" oninput="setChangeRequestSearch(this.value)" class="w-full rounded-xl border border-slate-200 bg-white pl-10 pr-4 py-2.5 text-sm text-slate-700 shadow-sm focus:border-emerald-300 focus:outline-none focus:ring-2 focus:ring-emerald-100" placeholder="หมายเลขครุภัณฑ์,ผู้รับผิดชอบปัจจุบัน,ผู้รับผิดชอบใหม่,สถานที่">
         </div>
         <button type="button" onclick="clearChangeRequestSearch()" class="inline-flex items-center justify-center gap-2 rounded-xl border border-slate-300 bg-white px-4 py-2.5 text-sm font-semibold text-slate-700 shadow-sm transition hover:bg-slate-50 whitespace-nowrap"><i class="fas fa-xmark"></i><span>ล้างการค้นหา</span></button>
       </div>
@@ -2132,8 +2132,8 @@
           <tr>
             <th class="px-4 py-2 text-left">วันที่ส่งคำขอ</th>
             <th class="px-4 py-2 text-left">หน่วยงาน / หมายเลขครุภัณฑ์</th>
-            <th class="px-4 py-2 text-left">เดิม</th>
-            <th class="px-4 py-2 text-left">ใหม่</th>
+            <th class="px-4 py-2 text-left">ปัจจุบัน</th>
+            <th class="px-4 py-2 text-left">ขอเปลี่ยนเป็น</th>
             <th class="px-4 py-2 text-left">เหตุผล</th>
             <th class="px-4 py-2 text-left">ผู้ติดต่อ</th>
             <th class="px-4 py-2 text-left">สถานะ</th>
@@ -4246,6 +4246,37 @@
             `;
         }
 
+        function getChangeRequestCurrentOwner(item) {
+            return String((item && (item.currentOwner || item.fromOwner)) || '').trim() || '-';
+        }
+
+        function getChangeRequestCurrentLocation(item) {
+            return String((item && (item.currentLocation || item.fromLocation)) || '').trim() || '-';
+        }
+
+        function getChangeRequestNewLocation(item) {
+            return String((item && (item.newLocation || item.toLocation)) || '').trim();
+        }
+
+        function renderChangeRequestCurrentBlock(item) {
+            return `
+                <div class="space-y-1">
+                    <div class="font-semibold text-slate-800">${getChangeRequestCurrentOwner(item)}</div>
+                    <div class="text-xs text-slate-500"><i class="fas fa-location-dot mr-1"></i>${getChangeRequestCurrentLocation(item)}</div>
+                </div>
+            `;
+        }
+
+        function renderChangeRequestTargetBlock(item) {
+            const nextLocation = getChangeRequestNewLocation(item);
+            return `
+                <div class="space-y-1">
+                    <div class="font-semibold text-emerald-700">${item.toOwner || '-'}</div>
+                    <div class="text-xs ${nextLocation ? 'text-emerald-700' : 'text-slate-400'}"><i class="fas fa-location-dot mr-1"></i>${nextLocation || 'ไม่เปลี่ยนสถานที่'}</div>
+                </div>
+            `;
+        }
+
         function updateChangeRequestPendingBadge() {
             const badgeEl = document.getElementById('changeRequestsPendingBadge');
             if (!badgeEl) return;
@@ -4291,8 +4322,16 @@
                 if (!searchTerm) return true;
                 const haystack = [
                     item.assetNumber,
+                    item.assetKey,
                     item.fromOwner,
-                    item.toOwner
+                    item.currentOwner,
+                    item.toOwner,
+                    item.currentLocation,
+                    item.fromLocation,
+                    item.newLocation,
+                    item.toLocation,
+                    item.reason,
+                    item.contact
                 ].map((value) => String(value || '').toLowerCase()).join(' ');
                 return haystack.includes(searchTerm);
             });
@@ -4316,8 +4355,8 @@
                         <tr class="border-b align-top">
                             <td class="px-4 py-2 whitespace-nowrap">${formatThaiDateTime(r.createdAt)}</td>
                             <td class="px-4 py-2 font-semibold">${r.assetNumber || '-'}</td>
-                            <td class="px-4 py-2">${r.fromOwner || '-'}</td>
-                            <td class="px-4 py-2">${r.toOwner || '-'}</td>
+                            <td class="px-4 py-2">${renderChangeRequestCurrentBlock(r)}</td>
+                            <td class="px-4 py-2">${renderChangeRequestTargetBlock(r)}</td>
                             <td class="px-4 py-2">${r.reason || '-'}</td>
                             <td class="px-4 py-2">${r.contact || '-'}</td>
                             <td class="px-4 py-2 whitespace-nowrap">${statusBadge}</td>
@@ -4331,13 +4370,15 @@
                             <div class="mobile-info-card-header">
                                 <div class="mobile-info-card-title">
                                     <div class="mobile-info-card-code">${r.assetNumber || '-'}</div>
-                                    <div class="mobile-info-card-name">${r.fromOwner || '-'} -> ${r.toOwner || '-'}</div>
+                                    <div class="mobile-info-card-name">${getChangeRequestCurrentOwner(r)} -> ${r.toOwner || '-'}</div>
                                 </div>
                                 ${statusBadge}
                             </div>
                             <div class="mobile-info-card-grid">
                                 <div class="mobile-info-card-field"><div class="mobile-info-card-label">วันที่ส่งคำขอ</div><div class="mobile-info-card-value">${formatThaiDateTime(r.createdAt)}</div></div>
                                 <div class="mobile-info-card-field"><div class="mobile-info-card-label">ผู้ติดต่อ</div><div class="mobile-info-card-value">${r.contact || '-'}</div></div>
+                                <div class="mobile-info-card-field"><div class="mobile-info-card-label">สถานที่ปัจจุบัน</div><div class="mobile-info-card-value">${getChangeRequestCurrentLocation(r)}</div></div>
+                                <div class="mobile-info-card-field"><div class="mobile-info-card-label">สถานที่ใหม่</div><div class="mobile-info-card-value">${getChangeRequestNewLocation(r) || 'ไม่เปลี่ยนสถานที่'}</div></div>
                                 <div class="mobile-info-card-field sm:col-span-2"><div class="mobile-info-card-label">เหตุผล</div><div class="mobile-info-card-value">${r.reason || '-'}</div></div>
                             </div>
                             <div class="mobile-info-card-actions">${actionButtons}</div>
@@ -4372,8 +4413,8 @@
                         <tr class="border-b align-top">
                             <td class="px-4 py-2 whitespace-nowrap">${formatThaiDateTime(r.createdAt)}</td>
                             <td class="px-4 py-2 font-semibold">${r.assetNumber || '-'}</td>
-                            <td class="px-4 py-2">${r.fromOwner || '-'}</td>
-                            <td class="px-4 py-2">${r.toOwner || '-'}</td>
+                            <td class="px-4 py-2">${renderChangeRequestCurrentBlock(r)}</td>
+                            <td class="px-4 py-2">${renderChangeRequestTargetBlock(r)}</td>
                             <td class="px-4 py-2">${r.reason || '-'}</td>
                             <td class="px-4 py-2">${r.contact || '-'}</td>
                             <td class="px-4 py-2 whitespace-nowrap">${statusBadge}</td>
@@ -4387,13 +4428,15 @@
                             <div class="mobile-info-card-header">
                                 <div class="mobile-info-card-title">
                                     <div class="mobile-info-card-code">${r.assetNumber || '-'}</div>
-                                    <div class="mobile-info-card-name">${r.fromOwner || '-'} -> ${r.toOwner || '-'}</div>
+                                    <div class="mobile-info-card-name">${getChangeRequestCurrentOwner(r)} -> ${r.toOwner || '-'}</div>
                                 </div>
                                 ${statusBadge}
                             </div>
                             <div class="mobile-info-card-grid">
                                 <div class="mobile-info-card-field"><div class="mobile-info-card-label">วันที่ส่งคำขอ</div><div class="mobile-info-card-value">${formatThaiDateTime(r.createdAt)}</div></div>
                                 <div class="mobile-info-card-field"><div class="mobile-info-card-label">ผู้ติดต่อ</div><div class="mobile-info-card-value">${r.contact || '-'}</div></div>
+                                <div class="mobile-info-card-field"><div class="mobile-info-card-label">สถานที่ปัจจุบัน</div><div class="mobile-info-card-value">${getChangeRequestCurrentLocation(r)}</div></div>
+                                <div class="mobile-info-card-field"><div class="mobile-info-card-label">สถานที่ใหม่</div><div class="mobile-info-card-value">${getChangeRequestNewLocation(r) || 'ไม่เปลี่ยนสถานที่'}</div></div>
                                 <div class="mobile-info-card-field sm:col-span-2"><div class="mobile-info-card-label">เหตุผล</div><div class="mobile-info-card-value">${r.reason || '-'}</div></div>
                             </div>
                             <div class="mobile-info-card-actions">${actionButtons}</div>
