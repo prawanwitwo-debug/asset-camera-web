@@ -8,6 +8,9 @@
   --st-primary-soft: #e5f8ee;
   --st-warn: #f59e0b;
   --st-shadow: 0 18px 44px rgba(16, 32, 51, 0.08);
+  --page-padding: 8mm;
+  --label-w: 60mm;
+  --label-h: 40mm;
 }
 
 * {
@@ -35,7 +38,8 @@ body {
 .sticker-header,
 .sticker-toolbar,
 .sticker-status,
-.sticker-help {
+.sticker-help,
+.missing-panel {
   background: rgba(255, 255, 255, 0.94);
   border: 1px solid var(--st-border);
   border-radius: 22px;
@@ -63,6 +67,13 @@ body {
   font-weight: 900;
   letter-spacing: -0.03em;
   margin: 0;
+}
+
+.sticker-subtitle {
+  margin: 4px 0 0;
+  color: var(--st-muted);
+  font-size: 0.92rem;
+  font-weight: 600;
 }
 
 .sticker-actions {
@@ -153,6 +164,31 @@ body {
   margin-bottom: 14px;
 }
 
+.missing-panel {
+  padding: 14px 16px;
+  margin-bottom: 14px;
+  border-color: #f6c85f;
+  background: #fffdf3;
+  color: #7a5300;
+}
+
+.missing-panel.hidden {
+  display: none;
+}
+
+.missing-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 900;
+  margin-bottom: 8px;
+}
+
+.missing-panel ul {
+  margin: 0;
+  padding-left: 22px;
+}
+
 .sticker-preview-outer {
   display: flex;
   justify-content: center;
@@ -161,22 +197,41 @@ body {
 }
 
 .print-sheet {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 18px;
+  width: 100%;
+}
+
+.print-page {
+  position: relative;
   background: #ffffff;
   border: 1px solid var(--st-border);
   box-shadow: var(--st-shadow);
   border-radius: 18px;
-  padding: 8mm;
+  padding: var(--page-padding);
+  overflow: hidden;
 }
 
-.print-sheet.sheet-a4 {
+.print-page.page-a4 {
   width: 210mm;
   min-height: 297mm;
 }
 
-.print-sheet.sheet-single {
+.print-page.page-single {
   width: auto;
   min-width: 95mm;
   min-height: 70mm;
+}
+
+.page-marker {
+  position: absolute;
+  right: 10mm;
+  top: 4mm;
+  font-size: 10px;
+  font-weight: 800;
+  color: #94a3b8;
 }
 
 .sticker-grid {
@@ -238,17 +293,6 @@ body {
   --code-size: 11pt;
   --name-size: 9.2pt;
   --loc-size: 8pt;
-}
-
-.asset-label-code-only {
-  --label-w: 45mm;
-  --label-h: 25mm;
-  --qr-size: 18mm;
-  --label-gap: 2mm;
-  --label-pad: 2mm;
-  --code-size: 8pt;
-  --name-size: 6.5pt;
-  --loc-size: 6pt;
 }
 
 .label-qr {
@@ -342,6 +386,10 @@ body {
   color: #92400e;
 }
 
+.print-empty {
+  align-items: stretch;
+}
+
 @media (max-width: 920px) {
   body {
     padding: 12px;
@@ -365,6 +413,10 @@ body {
     overflow-x: auto;
     justify-content: flex-start;
     padding-bottom: 24px;
+  }
+
+  .print-sheet {
+    align-items: flex-start;
   }
 }
 
@@ -397,15 +449,28 @@ body {
     margin: 0;
   }
 
-  .print-sheet,
-  .print-sheet.sheet-a4,
-  .print-sheet.sheet-single {
+  .print-sheet {
+    display: block;
+    gap: 0;
+  }
+
+  .print-page,
+  .print-page.page-a4,
+  .print-page.page-single {
     width: auto;
     min-height: auto;
     border: 0;
     border-radius: 0;
     box-shadow: none;
     padding: 0;
+    overflow: visible;
+    page-break-after: always;
+    break-after: page;
+  }
+
+  .print-page:last-child {
+    page-break-after: auto;
+    break-after: auto;
   }
 
   .sticker-grid {

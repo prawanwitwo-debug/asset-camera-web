@@ -6,7 +6,7 @@
   <title>ออกแบบสติกเกอร์ QR ครุภัณฑ์</title>
   <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <link rel="stylesheet" href="./sticker.css?v=46">
+  <link rel="stylesheet" href="./sticker.css?v=47">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
   <script src="config.js"></script>
   <script src="api-shim.js"></script>
@@ -17,6 +17,7 @@
       <div>
         <div class="sticker-kicker">Royal Park Rajapruek</div>
         <h1 class="sticker-title">ออกแบบสติกเกอร์ QR ครุภัณฑ์</h1>
+        <p class="sticker-subtitle">เลือกแบบสติกเกอร์ ตรวจ Preview A4 แล้วพิมพ์ติดอุปกรณ์ได้ทันที</p>
       </div>
       <div class="sticker-actions">
         <a class="sticker-btn" href="admin.html">
@@ -65,17 +66,17 @@
 
     <section class="sticker-status no-print">
       <div id="statusText">กำลังโหลดข้อมูล...</div>
-      <div>QR เปิดหน้า <strong>asset.html</strong> โดยตรง</div>
+      <div id="pageText">A4 Preview</div>
     </section>
 
     <section class="sticker-help no-print">
-      เลือกแบบสติกเกอร์ แล้วกด “พิมพ์สติกเกอร์” ได้ทันที ข้อมูลที่แสดงคือ QR Code, หมายเลขครุภัณฑ์, ชื่อครุภัณฑ์ และสถานที่ติดตั้ง
+      ข้อมูลที่แสดงบนสติกเกอร์: <strong>QR Code</strong>, <strong>หมายเลขครุภัณฑ์</strong>, <strong>ชื่อครุภัณฑ์</strong> และ <strong>สถานที่ติดตั้ง</strong> โดย QR จะเปิดหน้า <strong>asset.html</strong> โดยตรง
     </section>
 
+    <section id="missingPanel" class="missing-panel no-print hidden"></section>
+
     <section class="sticker-preview-outer">
-      <div id="printSheet" class="print-sheet sheet-a4">
-        <div id="stickerGrid" class="sticker-grid"></div>
-      </div>
+      <div id="printSheet" class="print-sheet"></div>
     </section>
   </main>
 
@@ -93,8 +94,15 @@
     copyCount: 1
   };
 
+  const TEMPLATE_META = {
+    compact: { widthMm: 50, heightMm: 30, qrPx: 96, capacity: 24 },
+    standard: { widthMm: 60, heightMm: 40, qrPx: 124, capacity: 18 },
+    large: { widthMm: 70, heightMm: 50, qrPx: 154, capacity: 10 }
+  };
+
   const el = {
     statusText: document.getElementById('statusText'),
+    pageText: document.getElementById('pageText'),
     templateSelect: document.getElementById('templateSelect'),
     paperModeSelect: document.getElementById('paperModeSelect'),
     locationModeSelect: document.getElementById('locationModeSelect'),
@@ -102,7 +110,7 @@
     printBtn: document.getElementById('printBtn'),
     reloadBtn: document.getElementById('reloadBtn'),
     printSheet: document.getElementById('printSheet'),
-    stickerGrid: document.getElementById('stickerGrid')
+    missingPanel: document.getElementById('missingPanel')
   };
 
   function escapeHtml(value) {
@@ -133,21 +141,26 @@
     return getBaseUrl() + 'asset.html?k=' + encodeURIComponent(key);
   }
 
+  function parseKeysParam(value) {
+    const raw = String(value || '').trim();
+    if (!raw) return [];
+    return Array.from(new Set(raw.split(',').map(normalizeKey).filter(Boolean)));
+  }
+
   function getKeysFromUrlOrSession() {
     const params = new URLSearchParams(window.location.search || '');
     const singleKey = normalizeKey(params.get('k') || params.get('assetKey') || params.get('code') || params.get('q'));
     if (singleKey) return [singleKey];
 
-    const keysParam = String(params.get('keys') || '').trim();
-    if (keysParam) {
-      return Array.from(new Set(keysParam.split(',').map(normalizeKey).filter(Boolean)));
-    }
+    const keysFromUrl = parseKeysParam(params.get('keys') || '');
+    if (keysFromUrl.length) return keysFromUrl;
 
     try {
       const payload = JSON.parse(sessionStorage.getItem(SESSION_KEY) || '{}');
       if (payload && Array.isArray(payload.keys)) {
         if (payload.template) state.template = payload.template;
         if (payload.paperMode) state.paperMode = payload.paperMode;
+        if (payload.copyCount) state.copyCount = Math.max(1, Math.min(20, parseInt(payload.copyCount, 10) || 1));
         return Array.from(new Set(payload.keys.map(normalizeKey).filter(Boolean)));
       }
     } catch (error) {
@@ -170,9 +183,9 @@
     try {
       const batch = await window.apiCall('getPublicAssetDetails', keys);
       if (batch && batch.success !== false && Array.isArray(batch.data)) {
-        return batch.data.map(function (item) {
+        return batch.data.map(function (item, index) {
           if (item && item.success === false) return item;
-          return { success: true, data: item && item.data ? item.data : item };
+          return { success: true, key: keys[index] || '', data: item && item.data ? item.data : item };
         });
       }
     } catch (error) {
@@ -201,6 +214,10 @@
     el.statusText.innerHTML = text;
   }
 
+  function setPageText(text) {
+    el.pageText.innerHTML = text;
+  }
+
   function getCopies() {
     const n = parseInt(el.copyCountInput.value, 10);
     if (!Number.isFinite(n) || n < 1) return 1;
@@ -211,28 +228,44 @@
     return asset.assetNumberDisplay || [asset.assetOrgName, asset.assetNumber].filter(Boolean).join(' / ') || asset.assetKey || '-';
   }
 
-  function renderEmpty(message, extraClass) {
-    el.stickerGrid.innerHTML = '<div class="label-empty ' + (extraClass || '') + '">' + escapeHtml(message) + '</div>';
+  function getPageCapacity() {
+    if (state.paperMode === 'single') return 1;
+    const meta = TEMPLATE_META[state.template] || TEMPLATE_META.standard;
+    return meta.capacity;
   }
 
-  function renderLabels() {
-    state.template = el.templateSelect.value || 'standard';
-    state.paperMode = el.paperModeSelect.value || 'a4';
-    state.showLocation = el.locationModeSelect.value !== 'hide';
-    state.copyCount = getCopies();
+  function chunkArray(items, size) {
+    const pages = [];
+    for (let i = 0; i < items.length; i += size) {
+      pages.push(items.slice(i, i + size));
+    }
+    return pages.length ? pages : [[]];
+  }
 
-    el.printSheet.className = 'print-sheet ' + (state.paperMode === 'single' ? 'sheet-single' : 'sheet-a4');
-    el.stickerGrid.className = 'sticker-grid ' + (state.paperMode === 'single' ? 'single-grid' : '');
+  function renderEmpty(message, extraClass) {
+    el.printSheet.className = 'print-sheet print-empty';
+    el.printSheet.innerHTML = '<div class="label-empty ' + (extraClass || '') + '">' + escapeHtml(message) + '</div>';
+    el.missingPanel.classList.add('hidden');
+  }
 
-    const successItems = state.assets.filter(function (item) { return item && item.success && item.data; });
-    const failedItems = state.assets.filter(function (item) { return item && item.success === false; });
-
-    if (!successItems.length) {
-      renderEmpty(failedItems.length ? failedItems[0].message : 'ยังไม่มีข้อมูลสำหรับสร้างสติกเกอร์', 'label-error');
-      setStatus('<strong>0</strong> รายการพร้อมพิมพ์');
+  function renderMissingPanel(failedItems) {
+    if (!failedItems.length) {
+      el.missingPanel.classList.add('hidden');
+      el.missingPanel.innerHTML = '';
       return;
     }
+    el.missingPanel.classList.remove('hidden');
+    el.missingPanel.innerHTML = [
+      '<div class="missing-title"><i class="fas fa-triangle-exclamation"></i> ไม่พบข้อมูลบางรายการ</div>',
+      '<ul>',
+      failedItems.map(function (item) {
+        return '<li><strong>' + escapeHtml(item.key || '-') + '</strong> — ' + escapeHtml(item.message || 'ไม่พบข้อมูลครุภัณฑ์') + '</li>';
+      }).join(''),
+      '</ul>'
+    ].join('');
+  }
 
+  function buildCards(successItems) {
     const cards = [];
     successItems.forEach(function (item, index) {
       const asset = item.data;
@@ -241,9 +274,11 @@
         cards.push({ asset: asset, qrId: qrId });
       }
     });
+    return cards;
+  }
 
-    el.stickerGrid.style.setProperty('--label-w', state.template === 'compact' ? '50mm' : (state.template === 'large' ? '70mm' : '60mm'));
-    el.stickerGrid.innerHTML = cards.map(function (card) {
+  function renderPageCards(cards) {
+    return cards.map(function (card) {
       const asset = card.asset;
       const locationHtml = state.showLocation
         ? '<div class="label-location">' + escapeHtml(asset.location || '-') + '</div>'
@@ -260,17 +295,55 @@
         '</article>'
       ].join('');
     }).join('');
+  }
+
+  function renderLabels() {
+    state.template = el.templateSelect.value || 'standard';
+    state.paperMode = el.paperModeSelect.value || 'a4';
+    state.showLocation = el.locationModeSelect.value !== 'hide';
+    state.copyCount = getCopies();
+
+    const successItems = state.assets.filter(function (item) { return item && item.success && item.data; });
+    const failedItems = state.assets.filter(function (item) { return item && item.success === false; });
+    renderMissingPanel(failedItems);
+
+    if (!successItems.length) {
+      renderEmpty(failedItems.length ? failedItems[0].message : 'ยังไม่มีข้อมูลสำหรับสร้างสติกเกอร์', 'label-error');
+      setStatus('<strong>0</strong> รายการพร้อมพิมพ์');
+      setPageText('ไม่มีหน้า Preview');
+      return;
+    }
+
+    const cards = buildCards(successItems);
+    const capacity = getPageCapacity();
+    const pages = state.paperMode === 'single' ? [cards.slice(0, 1)] : chunkArray(cards, capacity);
+    const meta = TEMPLATE_META[state.template] || TEMPLATE_META.standard;
+
+    el.printSheet.className = 'print-sheet print-mode-' + state.paperMode;
+    el.printSheet.style.setProperty('--label-w', meta.widthMm + 'mm');
+    el.printSheet.style.setProperty('--label-h', meta.heightMm + 'mm');
+    el.printSheet.innerHTML = pages.map(function (pageCards, pageIndex) {
+      return [
+        '<section class="print-page ' + (state.paperMode === 'single' ? 'page-single' : 'page-a4') + '">',
+          state.paperMode === 'a4'
+            ? '<div class="page-marker no-print">หน้า ' + (pageIndex + 1) + ' / ' + pages.length + '</div>'
+            : '',
+          '<div class="sticker-grid ' + (state.paperMode === 'single' ? 'single-grid' : '') + '">',
+            renderPageCards(pageCards),
+          '</div>',
+        '</section>'
+      ].join('');
+    }).join('');
 
     cards.forEach(function (card) {
       const target = document.getElementById(card.qrId);
       if (!target) return;
-      const sizePx = state.template === 'compact' ? 96 : (state.template === 'large' ? 154 : 124);
       const assetUrl = getAssetUrl(card.asset);
       target.innerHTML = '';
       new QRCode(target, {
         text: assetUrl,
-        width: sizePx,
-        height: sizePx,
+        width: meta.qrPx,
+        height: meta.qrPx,
         colorDark: '#111827',
         colorLight: '#ffffff',
         correctLevel: QRCode.CorrectLevel.H
@@ -280,6 +353,9 @@
     const totalLabels = successItems.length * state.copyCount;
     const failedText = failedItems.length ? ' / ไม่พบข้อมูล ' + failedItems.length + ' รายการ' : '';
     setStatus('พร้อมพิมพ์ <strong>' + totalLabels + '</strong> ดวง จากครุภัณฑ์ <strong>' + successItems.length + '</strong> รายการ' + failedText);
+    setPageText(state.paperMode === 'single'
+      ? 'พรีวิวเดี่ยว 1 ดวง'
+      : 'A4 <strong>' + pages.length + '</strong> หน้า / สูงสุด <strong>' + capacity + '</strong> ดวงต่อหน้า');
   }
 
   async function load() {
@@ -287,15 +363,18 @@
     const params = new URLSearchParams(window.location.search || '');
     if (params.get('template')) state.template = params.get('template');
     if (params.get('paper')) state.paperMode = params.get('paper');
+    if (params.get('copies')) state.copyCount = Math.max(1, Math.min(20, parseInt(params.get('copies'), 10) || 1));
     updateControls();
 
     if (!state.keys.length) {
       renderEmpty('ไม่พบรายการครุภัณฑ์สำหรับทำสติกเกอร์ กรุณาเปิดจากหน้า Admin หรือส่งพารามิเตอร์ ?k=assetKey', 'label-error');
       setStatus('ไม่พบรายการสำหรับทำสติกเกอร์');
+      setPageText('ไม่มีหน้า Preview');
       return;
     }
 
     setStatus('กำลังโหลดข้อมูล <strong>' + state.keys.length + '</strong> รายการ...');
+    setPageText('กำลังจัดหน้า A4...');
     state.assets = await fetchAssets(state.keys);
     renderLabels();
   }
