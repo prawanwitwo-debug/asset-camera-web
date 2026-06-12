@@ -9,8 +9,9 @@
   --st-warn: #f59e0b;
   --st-shadow: 0 18px 44px rgba(16, 32, 51, 0.08);
   --page-padding: 8mm;
-  --label-w: 60mm;
+  --label-w: 70mm;
   --label-h: 40mm;
+  --grid-cols: 2;
 }
 
 * {
@@ -236,9 +237,9 @@ body {
 
 .sticker-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(var(--label-w), var(--label-w)));
+  grid-template-columns: repeat(var(--grid-cols), var(--label-w));
   align-content: start;
-  justify-content: start;
+  justify-content: center;
   gap: 3mm;
 }
 
@@ -263,36 +264,36 @@ body {
 }
 
 .asset-label.compact {
-  --label-w: 50mm;
+  --label-w: 60mm;
   --label-h: 30mm;
-  --qr-size: 20mm;
+  --qr-size: 22mm;
   --label-gap: 2mm;
   --label-pad: 2.2mm;
-  --code-size: 8.4pt;
-  --name-size: 7.1pt;
-  --loc-size: 6.5pt;
+  --code-size: 7.4pt;
+  --name-size: 6.6pt;
+  --loc-size: 6.2pt;
 }
 
 .asset-label.standard {
-  --label-w: 60mm;
+  --label-w: 70mm;
   --label-h: 40mm;
   --qr-size: 27mm;
   --label-gap: 2.5mm;
   --label-pad: 2.6mm;
-  --code-size: 9.8pt;
-  --name-size: 8.2pt;
-  --loc-size: 7.2pt;
+  --code-size: 8.2pt;
+  --name-size: 7.2pt;
+  --loc-size: 6.8pt;
 }
 
 .asset-label.large {
-  --label-w: 70mm;
+  --label-w: 80mm;
   --label-h: 50mm;
-  --qr-size: 34mm;
+  --qr-size: 32mm;
   --label-gap: 3mm;
   --label-pad: 3.2mm;
-  --code-size: 11pt;
-  --name-size: 9.2pt;
-  --loc-size: 8pt;
+  --code-size: 8.8pt;
+  --name-size: 7.8pt;
+  --loc-size: 7.2pt;
 }
 
 .label-qr {
@@ -332,36 +333,39 @@ body {
 
 .label-code {
   font-size: var(--code-size);
-  line-height: 1.12;
+  line-height: 1.08;
   font-weight: 1000;
-  letter-spacing: -0.01em;
+  letter-spacing: -0.02em;
   color: #071827;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
+  display: block;
+  width: 100%;
+  white-space: nowrap;
   overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .label-name {
   font-size: var(--name-size);
-  line-height: 1.18;
-  font-weight: 800;
+  line-height: 1.12;
+  font-weight: 850;
   color: #111827;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
+  display: block;
+  width: 100%;
+  white-space: nowrap;
   overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .label-location {
   font-size: var(--loc-size);
-  line-height: 1.16;
-  font-weight: 700;
+  line-height: 1.12;
+  font-weight: 750;
   color: #374151;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
+  display: block;
+  width: 100%;
+  white-space: nowrap;
   overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .label-location::before {

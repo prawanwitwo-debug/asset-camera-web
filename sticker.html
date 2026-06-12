@@ -6,7 +6,7 @@
   <title>ออกแบบสติกเกอร์ QR ครุภัณฑ์</title>
   <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <link rel="stylesheet" href="./sticker.css?v=47">
+  <link rel="stylesheet" href="./sticker.css?v=48">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
   <script src="config.js"></script>
   <script src="api-shim.js"></script>
@@ -39,9 +39,9 @@
       <div class="sticker-control">
         <label for="templateSelect">แบบสติกเกอร์</label>
         <select id="templateSelect">
-          <option value="compact">Template A — Compact 50 x 30 mm</option>
-          <option value="standard" selected>Template B — Standard 60 x 40 mm</option>
-          <option value="large">Template C — Large 70 x 50 mm</option>
+          <option value="compact">Template A — Compact 60 x 30 mm</option>
+          <option value="standard" selected>Template B — Standard 70 x 40 mm</option>
+          <option value="large">Template C — Large 80 x 50 mm</option>
         </select>
       </div>
       <div class="sticker-control">
@@ -95,9 +95,9 @@
   };
 
   const TEMPLATE_META = {
-    compact: { widthMm: 50, heightMm: 30, qrPx: 96, capacity: 24 },
-    standard: { widthMm: 60, heightMm: 40, qrPx: 124, capacity: 18 },
-    large: { widthMm: 70, heightMm: 50, qrPx: 154, capacity: 10 }
+    compact: { widthMm: 60, heightMm: 30, qrPx: 104, capacity: 24, columns: 3 },
+    standard: { widthMm: 70, heightMm: 40, qrPx: 124, capacity: 12, columns: 2 },
+    large: { widthMm: 80, heightMm: 50, qrPx: 150, capacity: 10, columns: 2 }
   };
 
   const el = {
@@ -242,6 +242,27 @@
     return pages.length ? pages : [[]];
   }
 
+  function fitSingleLineText(selector, minPx) {
+    const nodes = Array.from(document.querySelectorAll(selector));
+    nodes.forEach(function (node) {
+      node.style.fontSize = '';
+      const computed = window.getComputedStyle(node);
+      let size = parseFloat(computed.fontSize) || 10;
+      let guard = 0;
+      while (node.scrollWidth > node.clientWidth && size > minPx && guard < 24) {
+        size -= 0.5;
+        node.style.fontSize = size + 'px';
+        guard += 1;
+      }
+    });
+  }
+
+  function fitLabelText() {
+    fitSingleLineText('.label-code', 7);
+    fitSingleLineText('.label-name', 6.5);
+    fitSingleLineText('.label-location', 6.2);
+  }
+
   function renderEmpty(message, extraClass) {
     el.printSheet.className = 'print-sheet print-empty';
     el.printSheet.innerHTML = '<div class="label-empty ' + (extraClass || '') + '">' + escapeHtml(message) + '</div>';
@@ -281,15 +302,15 @@
     return cards.map(function (card) {
       const asset = card.asset;
       const locationHtml = state.showLocation
-        ? '<div class="label-location">' + escapeHtml(asset.location || '-') + '</div>'
+        ? '<div class="label-location" title="' + escapeHtml(asset.location || '-') + '">' + escapeHtml(asset.location || '-') + '</div>'
         : '';
       return [
         '<article class="asset-label ' + escapeHtml(state.template) + '">',
           '<div class="label-qr" id="' + escapeHtml(card.qrId) + '"></div>',
           '<div class="label-content">',
             '<div class="label-brand">Royal Park Rajapruek</div>',
-            '<div class="label-code">' + escapeHtml(getDisplayCode(asset)) + '</div>',
-            '<div class="label-name">' + escapeHtml(asset.assetName || '-') + '</div>',
+            '<div class="label-code" title="' + escapeHtml(getDisplayCode(asset)) + '">' + escapeHtml(getDisplayCode(asset)) + '</div>',
+            '<div class="label-name" title="' + escapeHtml(asset.assetName || '-') + '">' + escapeHtml(asset.assetName || '-') + '</div>',
             locationHtml,
           '</div>',
         '</article>'
@@ -322,6 +343,7 @@
     el.printSheet.className = 'print-sheet print-mode-' + state.paperMode;
     el.printSheet.style.setProperty('--label-w', meta.widthMm + 'mm');
     el.printSheet.style.setProperty('--label-h', meta.heightMm + 'mm');
+    el.printSheet.style.setProperty('--grid-cols', String(state.paperMode === 'single' ? 1 : (meta.columns || 2)));
     el.printSheet.innerHTML = pages.map(function (pageCards, pageIndex) {
       return [
         '<section class="print-page ' + (state.paperMode === 'single' ? 'page-single' : 'page-a4') + '">',
@@ -349,6 +371,8 @@
         correctLevel: QRCode.CorrectLevel.H
       });
     });
+
+    window.requestAnimationFrame(fitLabelText);
 
     const totalLabels = successItems.length * state.copyCount;
     const failedText = failedItems.length ? ' / ไม่พบข้อมูล ' + failedItems.length + ' รายการ' : '';
