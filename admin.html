@@ -4948,10 +4948,10 @@
                 console.warn('Cannot write sticker payload to sessionStorage:', error);
             }
 
-            const url = getStickerDesignerUrlClient() + '?src=session&v=49';
+            const url = getStickerDesignerUrlClient() + '?src=session&v=50';
             const win = window.open(url, '_blank', 'width=1180,height=820');
             if (!win) {
-                const fallbackUrl = getStickerDesignerUrlClient() + '?keys=' + encodeURIComponent(uniqueKeys.join(',')) + '&template=' + encodeURIComponent(payload.template) + '&paper=' + encodeURIComponent(payload.paperMode) + '&v=49';
+                const fallbackUrl = getStickerDesignerUrlClient() + '?keys=' + encodeURIComponent(uniqueKeys.join(',')) + '&template=' + encodeURIComponent(payload.template) + '&paper=' + encodeURIComponent(payload.paperMode) + '&v=50';
                 Swal.fire({
                     icon: 'warning',
                     title: 'เบราว์เซอร์บล็อก Popup',

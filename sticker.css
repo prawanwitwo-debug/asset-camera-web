@@ -115,7 +115,7 @@ body {
 .sticker-toolbar {
   padding: 14px;
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
   gap: 12px;
   margin-bottom: 14px;
 }
@@ -160,6 +160,26 @@ body {
   width: 16px;
   height: 16px;
   accent-color: var(--st-primary);
+}
+
+.sticker-mini-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  min-height: 40px;
+  padding: 8px 12px;
+  border: 1px solid var(--st-border);
+  border-radius: 999px;
+  background: var(--st-primary-soft);
+  color: var(--st-primary);
+  font: inherit;
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.sticker-mini-btn:hover {
+  background: #d9f4e7;
 }
 
 
@@ -293,7 +313,8 @@ body {
 .asset-label {
   width: var(--label-w);
   height: var(--label-h);
-  border: 0.35mm solid #111827;
+  --label-border-size: 0.35mm;
+  border: var(--label-border-size) solid #111827;
   border-radius: 2.4mm;
   background: #ffffff;
   color: #111827;
@@ -385,6 +406,23 @@ body {
   --loc-size: 8.0pt;
 }
 
+
+/* Border weight presets (ST-3.3) */
+.asset-label.border-none {
+  --label-border-size: 0mm;
+}
+
+.asset-label.border-thin {
+  --label-border-size: 0.2mm;
+}
+
+.asset-label.border-normal {
+  --label-border-size: 0.35mm;
+}
+
+.asset-label.border-thick {
+  --label-border-size: 0.65mm;
+}
 
 .label-qr {
   width: var(--qr-size);

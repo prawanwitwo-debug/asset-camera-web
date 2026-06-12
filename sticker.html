@@ -6,7 +6,7 @@
   <title>ออกแบบสติกเกอร์ QR ครุภัณฑ์</title>
   <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <link rel="stylesheet" href="./sticker.css?v=49">
+  <link rel="stylesheet" href="./sticker.css?v=50">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
   <script src="config.js"></script>
   <script src="api-shim.js"></script>
@@ -60,6 +60,15 @@
         </select>
       </div>
       <div class="sticker-control">
+        <label for="borderWeightSelect">ความหนาเส้นกรอบ</label>
+        <select id="borderWeightSelect">
+          <option value="none">ไม่มีกรอบ</option>
+          <option value="thin">บาง</option>
+          <option value="normal" selected>ปกติ</option>
+          <option value="thick">หนา</option>
+        </select>
+      </div>
+      <div class="sticker-control">
         <label for="copyCountInput">จำนวนซ้ำต่อรายการ</label>
         <input id="copyCountInput" type="number" min="1" max="20" value="1">
       </div>
@@ -71,6 +80,7 @@
       <label class="sticker-check"><input type="checkbox" id="showNameInput" checked><span>ชื่อครุภัณฑ์</span></label>
       <label class="sticker-check"><input type="checkbox" id="showLocationInput" checked><span>สถานที่ติดตั้ง</span></label>
       <label class="sticker-check"><input type="checkbox" id="showBrandInput" checked><span>Royal Park Rajapruek</span></label>
+      <button type="button" class="sticker-mini-btn" id="resetPresetBtn"><i class="fas fa-rotate-left"></i> คืนค่าเริ่มต้น</button>
     </section>
 
     <section class="sticker-status no-print">
@@ -79,7 +89,7 @@
     </section>
 
     <section class="sticker-help no-print">
-      เลือกข้อมูลที่ต้องการแสดงบนสติกเกอร์ได้ เช่น <strong>ชื่อหน่วยงาน</strong>, <strong>ชื่อครุภัณฑ์</strong>, <strong>สถานที่ติดตั้ง</strong> และปรับ <strong>ขนาดตัวอักษร</strong> ได้ โดย QR จะเปิดหน้า <strong>asset.html</strong> โดยตรง
+      เลือกข้อมูลที่ต้องการแสดงบนสติกเกอร์ได้ เช่น <strong>ชื่อหน่วยงาน</strong>, <strong>ชื่อครุภัณฑ์</strong>, <strong>สถานที่ติดตั้ง</strong> ปรับ <strong>ขนาดตัวอักษร</strong> และ <strong>ความหนาเส้นกรอบ</strong> ได้ ระบบจะจำค่าที่เลือกล่าสุดอัตโนมัติ โดย QR จะเปิดหน้า <strong>asset.html</strong> โดยตรง
     </section>
 
     <section id="missingPanel" class="missing-panel no-print hidden"></section>
@@ -94,13 +104,15 @@
   'use strict';
 
   const SESSION_KEY = 'assetStickerPrintPayload';
-  const SETTINGS_KEY = 'assetStickerSettingsV49';
+  const SETTINGS_KEY = 'assetStickerSettingsV50';
+  const LEGACY_SETTINGS_KEYS = ['assetStickerSettingsV49'];
   const state = {
     keys: [],
     assets: [],
     template: 'standard',
     paperMode: 'a4',
     fontSize: 'normal',
+    borderWeight: 'normal',
     showOrg: true,
     showName: true,
     showLocation: true,
@@ -120,6 +132,7 @@
     templateSelect: document.getElementById('templateSelect'),
     paperModeSelect: document.getElementById('paperModeSelect'),
     fontSizeSelect: document.getElementById('fontSizeSelect'),
+    borderWeightSelect: document.getElementById('borderWeightSelect'),
     showOrgInput: document.getElementById('showOrgInput'),
     showNameInput: document.getElementById('showNameInput'),
     showLocationInput: document.getElementById('showLocationInput'),
@@ -127,6 +140,7 @@
     copyCountInput: document.getElementById('copyCountInput'),
     printBtn: document.getElementById('printBtn'),
     reloadBtn: document.getElementById('reloadBtn'),
+    resetPresetBtn: document.getElementById('resetPresetBtn'),
     printSheet: document.getElementById('printSheet'),
     missingPanel: document.getElementById('missingPanel')
   };
@@ -141,21 +155,33 @@
   }
 
 
-  function loadSavedSettings() {
-    try {
-      const saved = JSON.parse(localStorage.getItem(SETTINGS_KEY) || '{}');
-      if (!saved || typeof saved !== 'object') return;
-      if (saved.template) state.template = saved.template;
-      if (saved.paperMode) state.paperMode = saved.paperMode;
-      if (saved.fontSize) state.fontSize = saved.fontSize;
-      if (typeof saved.showOrg === 'boolean') state.showOrg = saved.showOrg;
-      if (typeof saved.showName === 'boolean') state.showName = saved.showName;
-      if (typeof saved.showLocation === 'boolean') state.showLocation = saved.showLocation;
-      if (typeof saved.showBrand === 'boolean') state.showBrand = saved.showBrand;
-      if (saved.copyCount) state.copyCount = Math.max(1, Math.min(20, parseInt(saved.copyCount, 10) || 1));
-    } catch (error) {
-      console.warn('อ่านค่าตั้งค่าสติกเกอร์ไม่สำเร็จ:', error);
+  function readStoredSettings() {
+    const keys = [SETTINGS_KEY].concat(LEGACY_SETTINGS_KEYS);
+    for (const key of keys) {
+      try {
+        const raw = localStorage.getItem(key);
+        if (!raw) continue;
+        const saved = JSON.parse(raw);
+        if (saved && typeof saved === 'object') return saved;
+      } catch (error) {
+        console.warn('อ่านค่าตั้งค่าสติกเกอร์ไม่สำเร็จ:', error);
+      }
     }
+    return {};
+  }
+
+  function loadSavedSettings() {
+    const saved = readStoredSettings();
+    if (!saved || typeof saved !== 'object') return;
+    if (saved.template) state.template = saved.template;
+    if (saved.paperMode) state.paperMode = saved.paperMode;
+    if (saved.fontSize) state.fontSize = saved.fontSize;
+    if (saved.borderWeight) state.borderWeight = saved.borderWeight;
+    if (typeof saved.showOrg === 'boolean') state.showOrg = saved.showOrg;
+    if (typeof saved.showName === 'boolean') state.showName = saved.showName;
+    if (typeof saved.showLocation === 'boolean') state.showLocation = saved.showLocation;
+    if (typeof saved.showBrand === 'boolean') state.showBrand = saved.showBrand;
+    if (saved.copyCount) state.copyCount = Math.max(1, Math.min(20, parseInt(saved.copyCount, 10) || 1));
   }
 
   function saveSettings() {
@@ -164,6 +190,7 @@
         template: state.template,
         paperMode: state.paperMode,
         fontSize: state.fontSize,
+        borderWeight: state.borderWeight,
         showOrg: state.showOrg,
         showName: state.showName,
         showLocation: state.showLocation,
@@ -214,6 +241,7 @@
         if (payload.template) state.template = payload.template;
         if (payload.paperMode) state.paperMode = payload.paperMode;
         if (payload.fontSize) state.fontSize = payload.fontSize;
+        if (payload.borderWeight) state.borderWeight = payload.borderWeight;
         if (typeof payload.showOrg === 'boolean') state.showOrg = payload.showOrg;
         if (typeof payload.showName === 'boolean') state.showName = payload.showName;
         if (typeof payload.showLocation === 'boolean') state.showLocation = payload.showLocation;
@@ -265,6 +293,7 @@
     el.templateSelect.value = state.template;
     el.paperModeSelect.value = state.paperMode;
     el.fontSizeSelect.value = state.fontSize;
+    el.borderWeightSelect.value = state.borderWeight;
     el.showOrgInput.checked = !!state.showOrg;
     el.showNameInput.checked = !!state.showName;
     el.showLocationInput.checked = !!state.showLocation;
@@ -376,7 +405,7 @@
         ? '<div class="label-location" title="' + escapeHtml(asset.location || '-') + '">' + escapeHtml(asset.location || '-') + '</div>'
         : '';
       return [
-        '<article class="asset-label ' + escapeHtml(state.template) + ' font-' + escapeHtml(state.fontSize) + '">',
+        '<article class="asset-label ' + escapeHtml(state.template) + ' font-' + escapeHtml(state.fontSize) + ' border-' + escapeHtml(state.borderWeight) + '">',
           '<div class="label-qr" id="' + escapeHtml(card.qrId) + '"></div>',
           '<div class="label-content">',
             brandHtml,
@@ -393,6 +422,7 @@
     state.template = el.templateSelect.value || 'standard';
     state.paperMode = el.paperModeSelect.value || 'a4';
     state.fontSize = el.fontSizeSelect.value || 'normal';
+    state.borderWeight = el.borderWeightSelect.value || 'normal';
     state.showOrg = !!el.showOrgInput.checked;
     state.showName = !!el.showNameInput.checked;
     state.showLocation = !!el.showLocationInput.checked;
@@ -416,7 +446,7 @@
     const pages = state.paperMode === 'single' ? [cards.slice(0, 1)] : chunkArray(cards, capacity);
     const meta = TEMPLATE_META[state.template] || TEMPLATE_META.standard;
 
-    el.printSheet.className = 'print-sheet print-mode-' + state.paperMode + ' print-font-' + state.fontSize;
+    el.printSheet.className = 'print-sheet print-mode-' + state.paperMode + ' print-font-' + state.fontSize + ' print-border-' + state.borderWeight;
     el.printSheet.style.setProperty('--label-w', meta.widthMm + 'mm');
     el.printSheet.style.setProperty('--label-h', meta.heightMm + 'mm');
     el.printSheet.style.setProperty('--grid-cols', String(state.paperMode === 'single' ? 1 : (meta.columns || 2)));
@@ -465,6 +495,7 @@
     if (params.get('template')) state.template = params.get('template');
     if (params.get('paper')) state.paperMode = params.get('paper');
     if (params.get('font')) state.fontSize = params.get('font');
+    if (params.get('border')) state.borderWeight = params.get('border');
     if (params.has('org')) state.showOrg = params.get('org') !== '0';
     if (params.has('name')) state.showName = params.get('name') !== '0';
     if (params.has('location')) state.showLocation = params.get('location') !== '0';
@@ -485,9 +516,25 @@
     renderLabels();
   }
 
+  function resetPreset() {
+    state.template = 'standard';
+    state.paperMode = 'a4';
+    state.fontSize = 'normal';
+    state.borderWeight = 'normal';
+    state.showOrg = true;
+    state.showName = true;
+    state.showLocation = true;
+    state.showBrand = true;
+    state.copyCount = 1;
+    try { localStorage.removeItem(SETTINGS_KEY); } catch (error) {}
+    updateControls();
+    renderLabels();
+  }
+
   el.templateSelect.addEventListener('change', renderLabels);
   el.paperModeSelect.addEventListener('change', renderLabels);
   el.fontSizeSelect.addEventListener('change', renderLabels);
+  el.borderWeightSelect.addEventListener('change', renderLabels);
   el.showOrgInput.addEventListener('change', renderLabels);
   el.showNameInput.addEventListener('change', renderLabels);
   el.showLocationInput.addEventListener('change', renderLabels);
@@ -495,6 +542,7 @@
   el.copyCountInput.addEventListener('input', renderLabels);
   el.printBtn.addEventListener('click', function () { window.print(); });
   el.reloadBtn.addEventListener('click', load);
+  el.resetPresetBtn.addEventListener('click', resetPreset);
 
   load();
 })();
