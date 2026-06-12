@@ -6,7 +6,7 @@
   <title>ระบบครุภัณฑ์ Royal Park Rajapruek</title>
   <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <link rel="stylesheet" href="./org-theme.css?v=51">
+  <link rel="stylesheet" href="./org-theme.css?v=52">
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.12.2/lottie.min.js"></script>
@@ -158,6 +158,175 @@
     .swal2-popup.swal-change .swal2-html-container {
       overflow: visible !important;
     }
+
+    .swal2-popup.swal-track-upgrade {
+      width: min(1040px, 94vw) !important;
+      max-width: 1040px !important;
+      overflow: visible !important;
+      background: #f8fffb !important;
+      border: 1px solid rgba(111, 207, 151, 0.36) !important;
+      border-radius: 28px !important;
+      box-shadow: 0 28px 80px rgba(15, 23, 42, 0.22) !important;
+      padding: 1.5rem !important;
+    }
+    .swal2-popup.swal-track-upgrade .swal2-title {
+      color: #243B35 !important;
+      font-size: clamp(1.65rem, 2.3vw, 2.4rem) !important;
+      font-weight: 800 !important;
+      margin-bottom: 0.5rem !important;
+    }
+    .swal2-popup.swal-track-upgrade .swal2-html-container {
+      overflow: visible !important;
+      margin: 0 !important;
+    }
+    .track-search-shell {
+      max-width: 920px;
+      margin: 0 auto;
+      text-align: left;
+    }
+    .track-search-label {
+      text-align: center;
+      color: #6F827C;
+      font-size: 0.9rem;
+      margin-bottom: 0.85rem;
+    }
+    .track-input-row {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 0.75rem;
+      align-items: start;
+    }
+    .track-input-wrap {
+      position: relative;
+      min-width: 0;
+    }
+    .track-input-wrap input.swal2-input {
+      width: 100% !important;
+      height: 56px !important;
+      margin: 0 !important;
+      border: 1.5px solid #A8E6B1 !important;
+      border-radius: 18px !important;
+      color: #243B35 !important;
+      font-weight: 600 !important;
+      box-shadow: 0 0 0 4px rgba(111, 207, 151, 0.12) !important;
+    }
+    .track-scan-btn {
+      height: 56px !important;
+      min-width: 150px !important;
+      margin: 0 !important;
+      border-radius: 18px !important;
+      background: #0f766e !important;
+      color: #fff !important;
+      font-weight: 700 !important;
+      border: 0 !important;
+    }
+    .track-dropdown-table {
+      display: none;
+      position: absolute;
+      top: 66px;
+      left: 0;
+      right: 0;
+      z-index: 20;
+      max-height: 420px;
+      overflow: auto;
+      border: 1px solid #DDEBE2;
+      border-radius: 18px;
+      background: #ffffff;
+      box-shadow: 0 20px 50px rgba(15, 23, 42, 0.16);
+    }
+    .track-dropdown-table table {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0;
+      font-size: 0.92rem;
+    }
+    .track-dropdown-table thead th {
+      position: sticky;
+      top: 0;
+      z-index: 1;
+      background: #ECFDF5;
+      color: #243B35;
+      padding: 0.75rem 0.85rem;
+      text-align: left;
+      font-weight: 800;
+      border-bottom: 1px solid #DDEBE2;
+      white-space: nowrap;
+    }
+    .track-dropdown-table tbody tr {
+      cursor: pointer;
+      transition: background 0.15s ease;
+    }
+    .track-dropdown-table tbody tr:hover,
+    .track-dropdown-table tbody tr.is-active {
+      background: #E8F8EF;
+    }
+    .track-dropdown-table td {
+      padding: 0.75rem 0.85rem;
+      vertical-align: top;
+      border-bottom: 1px solid #EEF6F0;
+      color: #243B35;
+    }
+    .track-code-cell {
+      font-weight: 800;
+      color: #0f766e;
+      white-space: nowrap;
+    }
+    .track-muted-cell {
+      color: #6F827C;
+      font-size: 0.82rem;
+      line-height: 1.35;
+    }
+    .track-status-pill {
+      display: inline-flex;
+      align-items: center;
+      padding: 0.25rem 0.65rem;
+      border-radius: 999px;
+      background: #DFF5E9;
+      color: #15803d;
+      font-weight: 700;
+      font-size: 0.78rem;
+      white-space: nowrap;
+    }
+    .track-help-text {
+      margin-top: 0.8rem;
+      text-align: center;
+      color: #6F827C;
+      font-size: 0.85rem;
+    }
+    @media (max-width: 767px) {
+      .swal2-popup.swal-track-upgrade {
+        width: 94vw !important;
+        padding: 1rem !important;
+      }
+      .track-input-row {
+        grid-template-columns: 1fr;
+      }
+      .track-scan-btn {
+        width: 100% !important;
+      }
+      .track-dropdown-table {
+        max-height: 360px;
+      }
+      .track-dropdown-table thead {
+        display: none;
+      }
+      .track-dropdown-table table,
+      .track-dropdown-table tbody,
+      .track-dropdown-table tr,
+      .track-dropdown-table td {
+        display: block;
+        width: 100%;
+      }
+      .track-dropdown-table tr {
+        padding: 0.75rem;
+        border-bottom: 1px solid #EEF6F0;
+      }
+      .track-dropdown-table td {
+        border: 0;
+        padding: 0.15rem 0;
+      }
+    }
+
     .swal2-popup.swal-result {
       width: 720px !important;
       max-width: 90vw !important;
@@ -498,10 +667,6 @@
         </button>
       </div>
 
-      <div class="mt-6 rounded-2xl border border-emerald-100 bg-white/80 px-5 py-4 text-sm text-slate-600 shadow-sm">
-        <div class="font-semibold text-slate-800 mb-1">แนวทางคุ้มครองข้อมูลส่วนบุคคล</div>
-        <div>หน้าแรกไม่แสดงรายการครุภัณฑ์แบบตาราง เพื่อจำกัดการเปิดเผยข้อมูลตามหลัก PDPA</div>
-      </div>
     </div>
   </main>
 
@@ -720,7 +885,73 @@ function hideMiniLoading() {
       return 'โสตทัศนูปกรณ์';
     }
 
-    /* v51 PDPA cleanup: removed public asset table/list popup from landing page. */
+    function escapeTrackHtml(value) {
+      return String(value == null ? '' : value)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+    }
+
+    function getTrackAssetKey(item) {
+      if (!item) return '';
+      const direct = String(item.assetKey || item.assetReferenceKey || '').trim();
+      if (direct) return direct;
+      const number = String(item.assetNumber || '').trim();
+      const orgCode = String(item.assetOrgCode || '').trim();
+      if (orgCode && number) return orgCode + ':' + number;
+      return number;
+    }
+
+    function getTrackAssetDisplay(item) {
+      const number = String((item && item.assetNumber) || '').trim() || '-';
+      const org = String((item && (item.assetOrgName || item.assetOrgCode)) || '').trim();
+      return org ? (org + ' / ' + number) : number;
+    }
+
+    function extractTrackKeyFromInput(raw) {
+      const value = String(raw || '').trim();
+      if (!value) return '';
+      try {
+        const url = new URL(value, window.location.href);
+        const key = url.searchParams.get('k') || url.searchParams.get('key') || url.searchParams.get('assetKey');
+        if (key) return decodeURIComponent(key).trim();
+      } catch (err) {}
+      const match = value.match(/[?&](?:k|key|assetKey)=([^&#]+)/i);
+      if (match && match[1]) {
+        try { return decodeURIComponent(match[1]).trim(); } catch (err) { return match[1].trim(); }
+      }
+      return value;
+    }
+
+    function resolveTrackAssetKey(raw, list) {
+      const inputKey = extractTrackKeyFromInput(raw);
+      if (!inputKey) return '';
+      const normalized = inputKey.toLowerCase();
+      const items = Array.isArray(list) ? list : [];
+      const exact = items.find(function(item) {
+        const key = getTrackAssetKey(item);
+        const number = String(item.assetNumber || '').trim();
+        const display = getTrackAssetDisplay(item);
+        return String(key).toLowerCase() === normalized ||
+          String(number).toLowerCase() === normalized ||
+          String(display).toLowerCase() === normalized;
+      });
+      if (exact) return getTrackAssetKey(exact);
+      if (inputKey.includes(':')) return inputKey;
+      return '';
+    }
+
+    function openAssetDetailFromTrackValue(raw, list) {
+      const key = resolveTrackAssetKey(raw, list);
+      const hint = document.getElementById('trackHelpText');
+      if (!key) {
+        if (hint) hint.innerHTML = '<span class="text-rose-600 font-semibold">ไม่พบรหัสนี้ กรุณาเลือกจากตาราง Auto Complete หรือสแกน QR จากสติกเกอร์</span>';
+        return;
+      }
+      window.location.href = 'asset.html?k=' + encodeURIComponent(key);
+    }
 
     function openTrackPopup() {
       showCuteLoading('กำลังโหลดรายการ...');
@@ -729,87 +960,149 @@ function hideMiniLoading() {
         const list = Array.isArray(supplies) ? supplies : [];
         let syncDesktopTrackLayout = null;
         Swal.fire({
-            title: 'ตรวจสอบครุภัณฑ์',
-            html: `
-              <div class="text-center text-xs text-slate-500 mb-2">สแกน QR หรือพิมพ์รหัสเพื่อตรวจสอบ</div>
+          title: 'ตรวจสอบครุภัณฑ์',
+          html: `
+            <div class="track-search-shell">
+              <div class="track-search-label">พิมพ์รหัสหรือสแกน QR จากสติกเกอร์ ระบบจะเปิดหน้ารายละเอียดครุภัณฑ์โดยตรง</div>
               <div id="reader" class="mt-2 bg-black/20 rounded-lg p-2 hidden"></div>
-              <div class="mt-3 relative" style="width: min(360px, 100%); margin:0 auto;">
-                <input id="codeInput" type="text" placeholder="หมายเลข สวพส.(อร)" class="swal2-input" style="width:100%; height:54px; line-height:54px; box-sizing:border-box; margin:0 auto; display:block;">
-                <div id="trackDropdown" style="display:none; position:absolute; top:58px; left:0; right:0; max-height:200px; overflow:auto; border:1px solid #e2e8f0; border-radius:10px; background:#fff; box-shadow:0 6px 16px rgba(0,0,0,0.08); z-index:10;"></div>
-              </div>
-              <div class="track-actions mt-3 flex flex-col items-center">
-                <button id="searchBtn" class="track-action-btn swal2-confirm swal2-styled" style="width: min(360px, 100%); height:54px; margin:0 auto; display:block;">ค้นหา</button>
-                <button id="scanStartBtn" class="track-action-btn swal2-confirm swal2-styled" style="width: min(360px, 100%); height:54px; margin:0 auto; display:block; background:#10b981;">สแกน QR</button>
-              </div>
-              <div id="loading" class="loading-wrap mt-3 bg-white text-gray-800 rounded-2xl p-4 shadow-lg items-center gap-4 border border-slate-100 hidden">
-                <div class="magnifier"></div>
-                <div>
-                  <div class="text-lg font-semibold">กำลังค้นหา...</div>
-                  <div class="text-sm text-gray-600">โปรดรอสักครู่</div>
+              <div class="track-input-row">
+                <div class="track-input-wrap">
+                  <input id="codeInput" type="text" placeholder="เช่น RPRP:50-1-13-01/39 หรือ 50-1-13-01/39" class="swal2-input" autocomplete="off">
+                  <div id="trackDropdown" class="track-dropdown-table"></div>
                 </div>
+                <button id="scanStartBtn" class="track-scan-btn swal2-styled" type="button"><i class="fas fa-qrcode mr-2"></i>สแกน QR</button>
               </div>
-              <div id="result" class="mt-3 bg-white text-gray-800 rounded-2xl p-4 shadow-lg hidden border border-slate-100"></div>
-            `,
-            width: 920,
-            showConfirmButton: false,
-            showCancelButton: true,
-            cancelButtonText: 'ปิด',
-            customClass: { popup: 'swal-change' },
-            didOpen: () => {
-              const searchBtn = document.getElementById('searchBtn');
-              const scanStartBtn = document.getElementById('scanStartBtn');
-              const readerEl = document.getElementById('reader');
-              const input = document.getElementById('codeInput');
-              const dropdown = document.getElementById('trackDropdown');
-              const popup = document.querySelector('.swal2-popup.swal-change');
-              syncDesktopTrackLayout = function () {
-                if (!popup) return;
-                popup.style.width = window.matchMedia('(min-width: 1024px)').matches ? '920px' : '';
-              };
+              <div id="trackHelpText" class="track-help-text">เลือกครุภัณฑ์จากตาราง Auto Complete เพื่อเปิดหน้า asset.html แบบเดียวกับการสแกน QR</div>
+            </div>
+          `,
+          width: 1040,
+          showConfirmButton: false,
+          showCancelButton: true,
+          cancelButtonText: 'ปิด',
+          customClass: { popup: 'swal-track-upgrade' },
+          didOpen: () => {
+            const scanStartBtn = document.getElementById('scanStartBtn');
+            const readerEl = document.getElementById('reader');
+            const input = document.getElementById('codeInput');
+            const dropdown = document.getElementById('trackDropdown');
+            const popup = document.querySelector('.swal2-popup.swal-track-upgrade');
+            let activeIndex = -1;
+            let currentMatches = [];
 
-              const renderDropdown = (value) => {
-                const q = (value || '').toLowerCase();
-                const matches = list.filter(s => (s.assetNumber || '').toLowerCase().includes(q)).slice(0, 8);
-                if (!q || matches.length === 0) {
-                  dropdown.style.display = 'none';
-                  dropdown.innerHTML = '';
-                  return;
-                }
-                dropdown.innerHTML = matches.map(m => `
-                  <div class="px-3 py-2 hover:bg-emerald-50 cursor-pointer" data-value="${m.assetNumber}">
-                    <div class="text-sm font-medium">${m.assetNumber || '-'}</div>
-                    <div class="text-xs text-slate-500">${m.location || '-'} • ${m.owner || '-'}</div>
-                  </div>
-                `).join('');
+            syncDesktopTrackLayout = function () {
+              if (!popup) return;
+              popup.style.width = window.matchMedia('(min-width: 1024px)').matches ? '1040px' : '';
+            };
+
+            const getSearchText = (item) => [
+              getTrackAssetKey(item),
+              item.assetNumber,
+              item.assetOrgName,
+              item.assetOrgCode,
+              item.assetName,
+              item.location,
+              item.owner,
+              item.category
+            ].filter(Boolean).join(' ').toLowerCase();
+
+            const renderDropdown = (value) => {
+              const q = String(value || '').trim().toLowerCase();
+              activeIndex = -1;
+              currentMatches = [];
+              if (!q) {
+                dropdown.style.display = 'none';
+                dropdown.innerHTML = '';
+                return;
+              }
+              currentMatches = list.filter(function(item) {
+                return getSearchText(item).includes(q);
+              }).slice(0, 30);
+              if (currentMatches.length === 0) {
+                dropdown.innerHTML = '<div class="px-4 py-4 text-center text-sm text-rose-600">ไม่พบข้อมูลที่ตรงกับคำค้น</div>';
                 dropdown.style.display = 'block';
-                Array.from(dropdown.querySelectorAll('[data-value]')).forEach(el => {
-                  el.addEventListener('click', () => {
-                    input.value = el.getAttribute('data-value');
-                    dropdown.style.display = 'none';
-                    searchByInput();
-                  });
+                return;
+              }
+              dropdown.innerHTML = `
+                <table>
+                  <thead>
+                    <tr>
+                      <th>หน่วยงาน / หมายเลข</th>
+                      <th>ชื่อครุภัณฑ์</th>
+                      <th>สถานที่ติดตั้ง</th>
+                      <th>สถานะ</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    ${currentMatches.map(function(m, idx) {
+                      return `
+                        <tr data-index="${idx}" data-key="${escapeTrackHtml(getTrackAssetKey(m))}">
+                          <td>
+                            <div class="track-code-cell">${escapeTrackHtml(getTrackAssetDisplay(m))}</div>
+                            <div class="track-muted-cell">${escapeTrackHtml(getTrackAssetKey(m))}</div>
+                          </td>
+                          <td>${escapeTrackHtml(m.assetName || '-')}</td>
+                          <td>${escapeTrackHtml(m.location || '-')}</td>
+                          <td><span class="track-status-pill">● ${escapeTrackHtml(normalizeAssetStatusClient(m.status || '-'))}</span></td>
+                        </tr>
+                      `;
+                    }).join('')}
+                  </tbody>
+                </table>
+              `;
+              dropdown.style.display = 'block';
+              Array.from(dropdown.querySelectorAll('tr[data-key]')).forEach(el => {
+                el.addEventListener('mousedown', (event) => {
+                  event.preventDefault();
+                  openAssetDetailFromTrackValue(el.getAttribute('data-key'), list);
                 });
-              };
-
-              input.addEventListener('input', () => renderDropdown(input.value));
-              input.addEventListener('focus', () => renderDropdown(input.value));
-              input.addEventListener('blur', () => setTimeout(() => { dropdown.style.display = 'none'; }, 150));
-              window.addEventListener('resize', syncDesktopTrackLayout);
-              syncDesktopTrackLayout();
-
-              searchBtn.addEventListener('click', (e) => {
-                e.preventDefault();
-                searchByInput();
               });
+            };
 
-              const startScanner = () => {
-                if (!qrMain) {
-                  qrMain = new Html5Qrcode('reader');
+            const updateActiveRow = () => {
+              const rows = Array.from(dropdown.querySelectorAll('tr[data-index]'));
+              rows.forEach(function(row, idx) {
+                row.classList.toggle('is-active', idx === activeIndex);
+                if (idx === activeIndex) row.scrollIntoView({ block: 'nearest' });
+              });
+            };
+
+            input.addEventListener('input', () => renderDropdown(input.value));
+            input.addEventListener('focus', () => renderDropdown(input.value));
+            input.addEventListener('blur', () => setTimeout(() => { dropdown.style.display = 'none'; }, 180));
+            input.addEventListener('keydown', (event) => {
+              if (event.key === 'ArrowDown') {
+                event.preventDefault();
+                if (!currentMatches.length) return;
+                activeIndex = Math.min(activeIndex + 1, currentMatches.length - 1);
+                updateActiveRow();
+              } else if (event.key === 'ArrowUp') {
+                event.preventDefault();
+                if (!currentMatches.length) return;
+                activeIndex = Math.max(activeIndex - 1, 0);
+                updateActiveRow();
+              } else if (event.key === 'Enter') {
+                event.preventDefault();
+                if (activeIndex >= 0 && currentMatches[activeIndex]) {
+                  openAssetDetailFromTrackValue(getTrackAssetKey(currentMatches[activeIndex]), list);
+                } else if (currentMatches.length === 1) {
+                  openAssetDetailFromTrackValue(getTrackAssetKey(currentMatches[0]), list);
+                } else {
+                  openAssetDetailFromTrackValue(input.value, list);
                 }
-                readerEl.classList.remove('hidden');
+              }
+            });
+            window.addEventListener('resize', syncDesktopTrackLayout);
+            syncDesktopTrackLayout();
+            setTimeout(() => input && input.focus(), 80);
+
+            const startScanner = () => {
+              if (!qrMain) {
+                qrMain = new Html5Qrcode('reader');
+              }
+              readerEl.classList.remove('hidden');
               qrMain.start({ facingMode: 'environment' }, { fps: 10, qrbox: 220 }, (decodedText) => {
-                document.getElementById('codeInput').value = decodedText;
-                searchByInput();
+                input.value = decodedText;
+                openAssetDetailFromTrackValue(decodedText, list);
                 if (qrMain && qrMain.isScanning) {
                   qrMain.stop().then(() => {
                     qrMain.clear();
@@ -818,67 +1111,34 @@ function hideMiniLoading() {
               }).catch(() => {});
             };
 
-              scanStartBtn.addEventListener('click', (e) => {
-                e.preventDefault();
-                if (qrMain && qrMain.isScanning) return;
-                if (qrMain) {
-                  qrMain.clear();
-                }
-                startScanner();
-              });
-            },
-            willClose: () => {
-              if (syncDesktopTrackLayout) {
-                window.removeEventListener('resize', syncDesktopTrackLayout);
-                syncDesktopTrackLayout = null;
+            scanStartBtn.addEventListener('click', (e) => {
+              e.preventDefault();
+              if (qrMain && qrMain.isScanning) return;
+              if (qrMain) {
+                qrMain.clear();
               }
-              if (qrMain && qrMain.isScanning) {
-                qrMain.stop().then(() => {
-                  qrMain.clear();
-                }).catch(() => {});
-              }
+              startScanner();
+            });
+          },
+          willClose: () => {
+            if (syncDesktopTrackLayout) {
+              window.removeEventListener('resize', syncDesktopTrackLayout);
+              syncDesktopTrackLayout = null;
             }
-          });
+            if (qrMain && qrMain.isScanning) {
+              qrMain.stop().then(() => {
+                qrMain.clear();
+              }).catch(() => {});
+            }
+          }
+        });
       }).getSupplies();
     }
 
     function searchByInput() {
       const input = document.getElementById('codeInput');
-      const loading = document.getElementById('loading');
-      const result = document.getElementById('result');
-      if (!input || !loading || !result) return;
-
-      const code = (input.value || '').trim();
-      if (!code) return;
-
-      loading.classList.remove('hidden');
-      loading.classList.add('flex');
-      result.classList.add('hidden');
-      result.innerHTML = '';
-      showMiniLoading('กำลังค้นหา...');
-
-      google.script.run
-        .withSuccessHandler(function(res) {
-          hideMiniLoading();
-          loading.classList.add('hidden');
-          loading.classList.remove('flex');
-          if (res && res.success && res.data) {
-            const d = res.data;
-            showUserSupplyDetails(d);
-          } else {
-            result.innerHTML = `<div class="text-sm text-rose-600">ไม่พบข้อมูลครุภัณฑ์</div>`;
-            result.classList.remove('hidden');
-            return;
-          }
-        })
-        .withFailureHandler(function(err) {
-          hideMiniLoading();
-          loading.classList.add('hidden');
-          loading.classList.remove('flex');
-          result.innerHTML = `<div class="text-sm text-rose-600">${(err && err.message) ? err.message : 'ค้นหาไม่สำเร็จ'}</div>`;
-          result.classList.remove('hidden');
-        })
-        .getSupplyByCode(code);
+      if (!input) return;
+      openAssetDetailFromTrackValue(input.value, []);
     }
 
     function getQrImageUrl(text) {
