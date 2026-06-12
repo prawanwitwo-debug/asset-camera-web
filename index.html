@@ -6,7 +6,7 @@
   <title>ระบบครุภัณฑ์ Royal Park Rajapruek</title>
   <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <link rel="stylesheet" href="./org-theme.css?v=27">
+  <link rel="stylesheet" href="./org-theme.css?v=51">
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.12.2/lottie.min.js"></script>
@@ -480,27 +480,27 @@
         <div class="flex items-center justify-center gap-4">
           <img src="https://chiangmice.com/wp-content/uploads/2018/08/royal-park-rajapruek-logo.gif" alt="RPRP Logo" class="h-16 w-auto drop-shadow-lg floaty" />
           <div class="text-left">
-            <h1 class="text-3xl md:text-4xl font-bold leading-tight text-cyan-100 drop-shadow-[0_0_10px_rgba(56,189,248,0.55)]">ระบบบริหารครุภัณฑ์คอมพิวเตอร์</h1>
+            <h1 class="text-3xl md:text-4xl font-bold leading-tight text-cyan-100 drop-shadow-[0_0_10px_rgba(56,189,248,0.55)]">ระบบบริหารครุภัณฑ์</h1>
             <p class="text-lg md:text-xl text-blue-100 drop-shadow-[0_0_8px_rgba(125,211,252,0.45)]">อุทยานหลวงราชพฤกษ์</p>
           </div>
         </div>
       </div>
 
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-        <button onclick="openComputerAssetsPopup()" class="action-card p-8 md:p-10 text-center h-[190px] md:h-[220px] flex flex-col items-center justify-center">
-          <div class="text-2xl md:text-3xl font-bold text-slate-800 mb-2">รายการครุภัณฑ์คอมพิวเตอร์</div>
-          <div class="text-sm md:text-base text-slate-600">ดูรายการทั้งหมดแบบตาราง และค้นหาด้วยการสแกน QR</div>
-        </button>
-
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
         <button onclick="openTrackPopup()" class="action-card p-8 md:p-10 text-center h-[190px] md:h-[220px] flex flex-col items-center justify-center">
           <div class="text-2xl md:text-3xl font-bold text-slate-800 mb-2">ตรวจสอบครุภัณฑ์</div>
-          <div class="text-sm md:text-base text-slate-600">สแกน/ค้นหาเพื่อตรวจสอบข้อมูลครุภัณฑ์</div>
+          <div class="text-sm md:text-base text-slate-600">สแกน QR จากสติกเกอร์ หรือกรอกรหัสครุภัณฑ์ที่ทราบแล้ว</div>
         </button>
 
         <button onclick="openChangeOwner()" class="action-card p-8 md:p-10 text-center h-[190px] md:h-[220px] flex flex-col items-center justify-center">
           <div class="text-2xl md:text-3xl font-bold text-slate-800 mb-2">แจ้งเปลี่ยนผู้รับผิดชอบครุภัณฑ์</div>
           <div class="text-sm md:text-base text-slate-600">แจ้งเปลี่ยนผู้รับผิดชอบให้ตรงกับข้อมูลจริงในระบบ</div>
         </button>
+      </div>
+
+      <div class="mt-6 rounded-2xl border border-emerald-100 bg-white/80 px-5 py-4 text-sm text-slate-600 shadow-sm">
+        <div class="font-semibold text-slate-800 mb-1">แนวทางคุ้มครองข้อมูลส่วนบุคคล</div>
+        <div>หน้าแรกไม่แสดงรายการครุภัณฑ์แบบตาราง เพื่อจำกัดการเปิดเผยข้อมูลตามหลัก PDPA</div>
       </div>
     </div>
   </main>
@@ -720,277 +720,7 @@ function hideMiniLoading() {
       return 'โสตทัศนูปกรณ์';
     }
 
-    function openComputerAssetsPopup() {
-      showCuteLoading('กำลังโหลดรายการคอมพิวเตอร์...');
-      google.script.run.withSuccessHandler(function(supplies) {
-        Swal.close();
-        const list = (Array.isArray(supplies) ? supplies : []).filter(function(item) {
-          return normalizeUserCategory(item) === 'คอมพิวเตอร์';
-        });
-
-        const scanOverlayId = 'user-computer-scan-overlay';
-        let qrComputer = null;
-        let filtered = list.slice();
-        let currentPage = 1;
-        let isMobileList = window.matchMedia('(max-width: 768px)').matches;
-        let pageSize = isMobileList ? 5 : 25;
-        let handleAssetListResize = null;
-
-        const escapeHtml = function (value) {
-          return String(value == null ? '' : value)
-            .replace(/&/g, '&amp;')
-            .replace(/</g, '&lt;')
-            .replace(/>/g, '&gt;')
-            .replace(/"/g, '&quot;')
-            .replace(/'/g, '&#039;');
-        };
-
-        const getPageSizeOptions = function () {
-          return isMobileList ? [5, 10] : [5, 10, 25, 50];
-        };
-
-        const syncPageSizeOptions = function () {
-          const select = document.getElementById('computerAssetPageSize');
-          if (!select) return;
-          const options = getPageSizeOptions();
-          if (!options.includes(Number(pageSize))) pageSize = options[0];
-          select.innerHTML = options.map(function (size) {
-            return `<option value="${size}">${size}</option>`;
-          }).join('');
-          select.value = String(pageSize);
-        };
-
-        const renderRows = function () {
-          const tbody = document.getElementById('computerAssetsBody');
-          const cards = document.getElementById('computerAssetsCards');
-          const summary = document.getElementById('computerAssetsSummary');
-          const pager = document.getElementById('computerAssetsPager');
-          if (!tbody && !cards) return;
-
-          const total = filtered.length;
-          const pageCount = Math.max(1, Math.ceil(total / pageSize));
-          currentPage = Math.min(Math.max(1, currentPage), pageCount);
-          const start = total ? (currentPage - 1) * pageSize : 0;
-          const end = total ? Math.min(start + pageSize, total) : 0;
-          const pageItems = filtered.slice(start, end);
-
-          if (summary) {
-            summary.textContent = total
-              ? `แสดง ${start + 1}-${end} จาก ${total} รายการ (ทั้งหมด ${list.length})`
-              : `ไม่พบข้อมูลจาก ${list.length} รายการ`;
-          }
-
-          if (!filtered.length) {
-            if (tbody) tbody.innerHTML = '<tr><td class="px-4 py-4 text-slate-500 text-center" colspan="6">ไม่พบข้อมูลตามเงื่อนไขที่ค้นหา</td></tr>';
-            if (cards) cards.innerHTML = '<div class="computer-asset-empty">ไม่พบข้อมูลตามเงื่อนไขที่ค้นหา</div>';
-            if (pager) pager.innerHTML = '';
-            return;
-          }
-
-          if (tbody) {
-            tbody.innerHTML = pageItems.map(function (s) {
-              const assetNumber = escapeHtml(s.assetNumber || '-');
-              const assetName = escapeHtml(s.assetName || '-');
-              const owner = escapeHtml(s.owner || '-');
-              const location = escapeHtml(s.location || '-');
-              const category = escapeHtml(normalizeUserCategory(s));
-              return `
-                <tr class="hover:bg-slate-50">
-                  <td class="px-4 py-3"><span class="inline-flex items-center px-3 py-1 rounded-lg bg-slate-100 text-slate-700 font-semibold">${assetNumber}</span></td>
-                  <td class="px-4 py-3"><div class="font-semibold text-slate-800">${assetName}</div></td>
-                  <td class="px-4 py-3 text-slate-700">${owner}</td>
-                  <td class="px-4 py-3 text-slate-700">${location}</td>
-                  <td class="px-4 py-3">${renderUserStatusBadge(s.status)}</td>
-                  <td class="px-4 py-3"><span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-sky-50 text-sky-700 border border-sky-100">${category}</span></td>
-                </tr>
-              `;
-            }).join('');
-          }
-
-          if (cards) {
-            cards.innerHTML = pageItems.map(function (s) {
-              const assetNumber = escapeHtml(s.assetNumber || '-');
-              const assetName = escapeHtml(s.assetName || '-');
-              const owner = escapeHtml(s.owner || '-');
-              const location = escapeHtml(s.location || '-');
-              const category = escapeHtml(normalizeUserCategory(s));
-              return `
-                <article class="computer-asset-card">
-                  <div class="computer-asset-card-head">
-                    <span class="computer-asset-number">${assetNumber}</span>
-                    <span class="computer-asset-category">${category}</span>
-                  </div>
-                  <div class="computer-asset-name">${assetName}</div>
-                  <div class="computer-asset-meta">
-                    <div><span>ผู้รับผิดชอบ</span><strong>${owner}</strong></div>
-                    <div><span>ที่ตั้ง</span><strong>${location}</strong></div>
-                    <div><span>สถานะ</span><strong>${renderUserStatusBadge(s.status)}</strong></div>
-                  </div>
-                </article>
-              `;
-            }).join('');
-          }
-
-          if (pager) {
-            pager.innerHTML = `
-              <div class="computer-assets-page-info">หน้า ${currentPage} / ${pageCount}</div>
-              <div class="computer-assets-page-actions">
-                <button id="computerAssetPrevPage" type="button" ${currentPage <= 1 ? 'disabled' : ''}>ก่อนหน้า</button>
-                <button id="computerAssetNextPage" type="button" ${currentPage >= pageCount ? 'disabled' : ''}>ถัดไป</button>
-              </div>
-            `;
-            const prev = document.getElementById('computerAssetPrevPage');
-            const next = document.getElementById('computerAssetNextPage');
-            if (prev) prev.onclick = function () {
-              currentPage -= 1;
-              renderRows();
-            };
-            if (next) next.onclick = function () {
-              currentPage += 1;
-              renderRows();
-            };
-          }
-        };
-
-        const closeScanOverlay = function () {
-          const overlay = document.getElementById(scanOverlayId);
-          if (overlay) overlay.style.display = 'none';
-          if (qrComputer && qrComputer.isScanning) {
-            qrComputer.stop().then(() => qrComputer.clear()).catch(() => {});
-          }
-        };
-
-        Swal.fire({
-          title: 'รายการครุภัณฑ์คอมพิวเตอร์',
-          html: `
-            <div class="text-left text-xs text-slate-500 mb-2">ดูข้อมูลได้อย่างเดียว (ไม่มีเพิ่ม/แก้ไข/ลบ)</div>
-            <div class="computer-assets-toolbar">
-              <div class="computer-assets-search">
-                <input id="computerAssetSearch" type="text" placeholder="ค้นหา รหัส, ชื่อครุภัณฑ์, ผู้รับผิดชอบ, หรือที่ตั้ง..." class="swal2-input" style="margin:0; width:min(420px, 72vw);">
-                <button id="computerAssetScanBtn" class="swal2-confirm swal2-styled" style="height:44px; margin:0; background:#10b981;">สแกน QR เพื่อค้นหา</button>
-              </div>
-              <label class="computer-assets-page-size">
-                <span>แสดง</span>
-                <select id="computerAssetPageSize" aria-label="จำนวนรายการต่อหน้า"></select>
-                <span>รายการ</span>
-              </label>
-            </div>
-            <div id="computerAssetsSummary" class="text-left text-xs text-slate-500 mb-2">แสดง 0 รายการ</div>
-            <div class="computer-assets-table-frame" style="max-height:55vh; overflow:auto; border:1px solid #e2e8f0; border-radius:12px;">
-              <table class="w-full text-sm">
-                <thead class="bg-slate-100 text-slate-600 sticky top-0">
-                  <tr>
-                    <th class="px-4 py-3 text-left">หมายเลข สวพส.(อร)</th>
-                    <th class="px-4 py-3 text-left">ชื่อครุภัณฑ์</th>
-                    <th class="px-4 py-3 text-left">ผู้รับผิดชอบ</th>
-                    <th class="px-4 py-3 text-left">ที่ตั้ง</th>
-                    <th class="px-4 py-3 text-left">สถานะ</th>
-                    <th class="px-4 py-3 text-left">ประเภท</th>
-                  </tr>
-                </thead>
-                <tbody id="computerAssetsBody" class="divide-y divide-slate-100"></tbody>
-              </table>
-            </div>
-            <div id="computerAssetsCards" class="computer-assets-card-list"></div>
-            <div id="computerAssetsPager" class="computer-assets-pager"></div>
-          `,
-          width: 1200,
-          showConfirmButton: false,
-          showCancelButton: true,
-          cancelButtonText: 'ปิด',
-          customClass: { popup: 'swal-change' },
-          didOpen: function () {
-            const searchEl = document.getElementById('computerAssetSearch');
-            const scanBtn = document.getElementById('computerAssetScanBtn');
-            const pageSizeEl = document.getElementById('computerAssetPageSize');
-
-            const applyFilter = function () {
-              const q = String((searchEl && searchEl.value) || '').trim().toLowerCase();
-              filtered = list.filter(function (s) {
-                if (!q) return true;
-                const text = [s.assetNumber || '', s.assetName || '', s.owner || '', s.location || '', normalizeUserCategory(s)].join(' ').toLowerCase();
-                return text.includes(q);
-              });
-              currentPage = 1;
-              renderRows();
-            };
-
-            handleAssetListResize = function () {
-              const nextMobile = window.matchMedia('(max-width: 768px)').matches;
-              if (nextMobile !== isMobileList) {
-                isMobileList = nextMobile;
-                currentPage = 1;
-                syncPageSizeOptions();
-                renderRows();
-              }
-            };
-
-            syncPageSizeOptions();
-            if (searchEl) {
-              searchEl.addEventListener('input', applyFilter);
-            }
-            if (pageSizeEl) {
-              pageSizeEl.addEventListener('change', function () {
-                pageSize = Number(pageSizeEl.value) || pageSize;
-                currentPage = 1;
-                renderRows();
-              });
-            }
-            window.addEventListener('resize', handleAssetListResize);
-            if (scanBtn) {
-              scanBtn.addEventListener('click', function (e) {
-                e.preventDefault();
-                let overlay = document.getElementById(scanOverlayId);
-                if (!overlay) {
-                  overlay = document.createElement('div');
-                  overlay.id = scanOverlayId;
-                  overlay.style.cssText = 'position:fixed; inset:0; background:rgba(0,0,0,0.55); display:flex; align-items:center; justify-content:center; z-index:99999;';
-                  overlay.innerHTML = `
-                    <div style="width:min(520px,92vw); background:#fff; border-radius:16px; padding:16px; box-shadow:0 12px 30px rgba(0,0,0,0.25); text-align:center;">
-                      <div style="font-weight:600; margin-bottom:10px;">สแกน QR เพื่อค้นหารายการ</div>
-                      <div id="userComputerQrReader" style="width:100%;"></div>
-                      <button id="userComputerQrClose" style="margin-top:12px; width:100%; height:44px; border:0; background:#6b7280; color:#fff; border-radius:10px;">ปิดกล้อง</button>
-                    </div>
-                  `;
-                  document.body.appendChild(overlay);
-                }
-                overlay.style.display = 'flex';
-
-                if (!qrComputer) qrComputer = new Html5Qrcode('userComputerQrReader');
-                else qrComputer.clear();
-
-                qrComputer.start({ facingMode: 'environment' }, { fps: 10, qrbox: 220 }, function (decodedText) {
-                  if (searchEl) {
-                    searchEl.value = decodedText;
-                    searchEl.dispatchEvent(new Event('input', { bubbles: true }));
-                  }
-                  closeScanOverlay();
-                }).catch(() => {});
-
-                const closeBtn = document.getElementById('userComputerQrClose');
-                if (closeBtn) {
-                  closeBtn.onclick = function (evt) {
-                    evt.preventDefault();
-                    closeScanOverlay();
-                  };
-                }
-              });
-            }
-            renderRows();
-          },
-          willClose: function () {
-            if (handleAssetListResize) {
-              window.removeEventListener('resize', handleAssetListResize);
-              handleAssetListResize = null;
-            }
-            closeScanOverlay();
-          }
-        });
-      }).withFailureHandler(function(err) {
-        Swal.close();
-        Swal.fire({ icon: 'error', title: 'โหลดข้อมูลไม่สำเร็จ', text: (err && err.message) ? err.message : 'ไม่สามารถดึงรายการครุภัณฑ์ได้' });
-      }).getSupplies();
-    }
+    /* v51 PDPA cleanup: removed public asset table/list popup from landing page. */
 
     function openTrackPopup() {
       showCuteLoading('กำลังโหลดรายการ...');
