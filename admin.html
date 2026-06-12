@@ -14,7 +14,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     <script src="https://unpkg.com/@dotlottie/player-component@2.7.12/dist/dotlottie-player.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="./org-theme.css?v=45">
+    <link rel="stylesheet" href="./org-theme.css?v=46">
     <style>
         * {
             font-family: 'Kanit', sans-serif;
@@ -1595,8 +1595,9 @@
                     <i class="fas fa-check-square mr-2"></i>เลือกทั้งหมด
                 </button>
                 <button onclick="printSelectedSupplyQRCodes()"
-                    class="h-12 whitespace-nowrap btn-theme btn-theme-check-soft px-4 justify-center">
-                    <i class="fas fa-print mr-2"></i>พิมพ์ QR หลายรายการ
+                    class="h-12 whitespace-nowrap btn-theme btn-theme-check-soft px-4 justify-center"
+                    title="ออกแบบสติกเกอร์ QR จากรายการที่เลือก">
+                    <i class="fas fa-qrcode mr-2"></i>ออกแบบสติกเกอร์หลายรายการ
                 </button>
             </div>
             <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-5 gap-3">
@@ -4758,7 +4759,7 @@
                                     <button onclick="showSupplyDetailsById('${safeId}')" class="action-pill action-pill-view" title="ดูรายละเอียด/ประวัติ">
                                         <i class="fas fa-book-open"></i>
                                     </button>
-                                    <button onclick="printSingleSupplyQRCode('${safeCode}')" class="action-pill action-pill-print" title="พิมพ์ QR รายการเดียว">
+                                    <button onclick="printSingleSupplyQRCode('${safeCode}')" class="action-pill action-pill-print" title="ออกแบบ/พิมพ์สติกเกอร์ QR">
                                         <i class="fas fa-print"></i>
                                     </button>
                                     <button onclick="editSupply('${safeId}')" class="action-pill action-pill-edit" title="แก้ไขข้อมูล">
@@ -4815,7 +4816,7 @@
                                 </button>
                                 <button onclick="printSingleSupplyQRCode('${safeCode}')" class="h-14 rounded-xl bg-emerald-50 text-emerald-700 border border-emerald-100 text-xs font-semibold inline-flex flex-col items-center justify-center gap-1">
                                     <i class="fas fa-print text-base"></i>
-                                    <span>พิมพ์ QR</span>
+                                    <span>สติกเกอร์ QR</span>
                                 </button>
                                 <button onclick="editSupply('${safeId}')" class="h-14 rounded-xl bg-amber-50 text-amber-700 border border-amber-100 text-xs font-semibold inline-flex flex-col items-center justify-center gap-1">
                                     <i class="fas fa-pen text-base"></i>
@@ -4918,74 +4919,65 @@
             });
         }
 
+        function getStickerDesignerUrlClient() {
+            const base = window.location.href.split('#')[0].split('?')[0].replace(/[^/]*$/, '');
+            return base + 'sticker.html';
+        }
+
+        function openStickerDesignerForKeys(keys, options) {
+            const uniqueKeys = Array.from(new Set((Array.isArray(keys) ? keys : [])
+                .map(function (key) { return extractAssetLookupFromQrClient(key); })
+                .filter(function (key) { return !!key; })));
+
+            if (!uniqueKeys.length) {
+                Swal.fire({ icon: 'warning', title: 'ไม่พบรายการสำหรับทำสติกเกอร์' });
+                return;
+            }
+
+            const payload = {
+                version: 1,
+                keys: uniqueKeys,
+                template: (options && options.template) || 'standard',
+                paperMode: uniqueKeys.length > 1 ? 'a4' : 'single',
+                createdAt: new Date().toISOString()
+            };
+
+            try {
+                sessionStorage.setItem('assetStickerPrintPayload', JSON.stringify(payload));
+            } catch (error) {
+                console.warn('Cannot write sticker payload to sessionStorage:', error);
+            }
+
+            const url = getStickerDesignerUrlClient() + '?src=session&v=46';
+            const win = window.open(url, '_blank', 'width=1180,height=820');
+            if (!win) {
+                const fallbackUrl = getStickerDesignerUrlClient() + '?keys=' + encodeURIComponent(uniqueKeys.join(',')) + '&template=' + encodeURIComponent(payload.template) + '&paper=' + encodeURIComponent(payload.paperMode) + '&v=46';
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'เบราว์เซอร์บล็อก Popup',
+                    html: '<div class="text-left text-sm">กรุณาอนุญาต Popup หรือกดปุ่มด้านล่างเพื่อเปิดหน้าออกแบบสติกเกอร์</div>',
+                    showCancelButton: true,
+                    confirmButtonText: 'เปิดหน้าออกแบบ',
+                    cancelButtonText: 'ปิด'
+                }).then(function (result) {
+                    if (result.isConfirmed) window.location.href = fallbackUrl;
+                });
+            }
+        }
+
         async function printSelectedSupplyQRCodes() {
             const selected = supplies.filter(function (s) {
                 return selectedSupplyCodes.has(getAssetLookupKeyClient(s));
             });
 
             if (!selected.length) {
-                Swal.fire({ icon: 'warning', title: 'ยังไม่ได้เลือกรายการ', text: 'กรุณาเลือกครุภัณฑ์ที่ต้องการพิมพ์ QR ก่อน' });
+                Swal.fire({ icon: 'warning', title: 'ยังไม่ได้เลือกรายการ', text: 'กรุณาเลือกครุภัณฑ์ที่ต้องการทำสติกเกอร์ก่อน' });
                 return;
             }
 
-            Swal.fire({
-                title: 'กำลังเตรียม QR...',
-                text: 'โปรดรอสักครู่',
-                allowOutsideClick: false,
-                didOpen: function () { Swal.showLoading(); }
-            });
-
-            try {
-                const qrData = await Promise.all(selected.map(function (item) {
-                    return createQrDataUrl(getAssetPublicUrlClient(item));
-                }));
-                const cards = selected.map(function (item, idx) {
-                    return `
-                        <div class="qr-card">
-                            <img src="${qrData[idx]}" alt="QR ${getAssetLookupKeyClient(item) || item.assetNumber || ''}" />
-                            <div class="qr-code">${getAssetNumberDisplayClient(item)}</div>
-                            <div class="qr-name">${item.assetName || '-'}</div>
-                            <div class="qr-meta">${getCanonicalCategoryLabel(item)} | ${item.owner || '-'}</div>
-                        </div>
-                    `;
-                }).join('');
-
-                const win = window.open('', '_blank', 'width=1024,height=768');
-                if (!win) {
-                    Swal.close();
-                    Swal.fire({ icon: 'error', title: 'เปิดหน้าต่างพิมพ์ไม่สำเร็จ', text: 'กรุณาอนุญาต Popup ในเบราว์เซอร์' });
-                    return;
-                }
-
-                win.document.write(`
-                    <html>
-                        <head>
-                            <title>พิมพ์ QR ครุภัณฑ์</title>
-                            <style>
-                                body { font-family: Tahoma, sans-serif; padding: 18px; color: #0f172a; }
-                                .wrap { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
-                                .qr-card { border: 1px solid #cbd5e1; border-radius: 10px; padding: 10px; text-align: center; break-inside: avoid; }
-                                .qr-card img { width: 180px; height: 180px; object-fit: contain; display: block; margin: 0 auto 8px; }
-                                .qr-code { font-weight: 700; font-size: 14px; margin-bottom: 4px; }
-                                .qr-name { font-size: 12px; margin-bottom: 2px; }
-                                .qr-meta { font-size: 11px; color: #475569; }
-                                @media print { body { margin: 0; padding: 12px; } .wrap { gap: 8px; } }
-                            </style>
-                        </head>
-                        <body>
-                            <h3>QR Code ครุภัณฑ์ (${selected.length} รายการ)</h3>
-                            <div class="wrap">${cards}</div>
-                        </body>
-                    </html>
-                `);
-                win.document.close();
-                win.focus();
-                win.print();
-                Swal.close();
-            } catch (error) {
-                Swal.close();
-                Swal.fire({ icon: 'error', title: 'พิมพ์ QR ไม่สำเร็จ', text: error && error.message ? error.message : String(error) });
-            }
+            openStickerDesignerForKeys(selected.map(function (item) {
+                return getAssetLookupKeyClient(item);
+            }), { template: 'standard' });
         }
 
         async function printSingleSupplyQRCode(assetNumber) {
@@ -4994,67 +4986,7 @@
                 Swal.fire({ icon: 'warning', title: 'ไม่พบหมายเลขครุภัณฑ์' });
                 return;
             }
-
-            const item = supplies.find(function (s) {
-                return getAssetLookupKeyClient(s) === code || String(s.assetNumber || '').trim() === code;
-            }) || {};
-            const qrText = getAssetPublicUrlClient(Object.keys(item).length ? item : code);
-            const displayCode = item.assetNumber ? getAssetNumberDisplayClient(item) : code;
-            const escapeHtml = function (value) {
-                return String(value === null || value === undefined ? '' : value)
-                    .replace(/&/g, '&amp;')
-                    .replace(/</g, '&lt;')
-                    .replace(/>/g, '&gt;')
-                    .replace(/"/g, '&quot;')
-                    .replace(/'/g, '&#39;');
-            };
-            Swal.fire({
-                title: 'กำลังเตรียม QR...',
-                text: 'โปรดรอสักครู่',
-                allowOutsideClick: false,
-                didOpen: function () { Swal.showLoading(); }
-            });
-
-            try {
-                const qrData = await createQrDataUrl(qrText);
-                const win = window.open('', '_blank', 'width=760,height=720');
-                if (!win) {
-                    Swal.close();
-                    Swal.fire({ icon: 'error', title: 'เปิดหน้าต่างพิมพ์ไม่สำเร็จ', text: 'กรุณาอนุญาต Popup ในเบราว์เซอร์' });
-                    return;
-                }
-
-                win.document.write([
-                    '<html>',
-                        '<head>',
-                            '<title>พิมพ์ QR ครุภัณฑ์</title>',
-                            '<style>',
-                                'body { font-family: Tahoma, sans-serif; margin: 0; padding: 24px; text-align: center; color: #0f172a; }',
-                                '.card { border: 1px solid #cbd5e1; border-radius: 12px; max-width: 360px; margin: 0 auto; padding: 16px; }',
-                                'img { width: 240px; height: 240px; object-fit: contain; }',
-                                '.code { font-weight: 700; font-size: 18px; margin-top: 10px; }',
-                                '.name { font-size: 14px; margin-top: 4px; }',
-                                '.meta { font-size: 12px; color: #475569; margin-top: 2px; }',
-                            '</style>',
-                        '</head>',
-                        '<body>',
-                            '<div class="card">',
-                                '<img src="' + escapeHtml(qrData) + '" alt="QR ' + escapeHtml(qrText) + '" />',
-                                '<div class="code">' + escapeHtml(displayCode) + '</div>',
-                                '<div class="name">' + escapeHtml(item.assetName || '-') + '</div>',
-                                '<div class="meta">' + escapeHtml(getCanonicalCategoryLabel(item)) + ' | ' + escapeHtml(item.owner || '-') + '</div>',
-                            '</div>',
-                        '</body>',
-                    '</html>'
-                ].join(''));
-                win.document.close();
-                win.focus();
-                win.print();
-                Swal.close();
-            } catch (error) {
-                Swal.close();
-                Swal.fire({ icon: 'error', title: 'พิมพ์ QR ไม่สำเร็จ', text: error && error.message ? error.message : String(error) });
-            }
+            openStickerDesignerForKeys([code], { template: 'standard' });
         }
 
         const CANONICAL_ASSET_CATEGORIES = ['\u0E04\u0E2D\u0E21\u0E1E\u0E34\u0E27\u0E40\u0E15\u0E2D\u0E23\u0E4C', '\u0E01\u0E25\u0E49\u0E2D\u0E07\u0E27\u0E07\u0E08\u0E23\u0E1B\u0E34\u0E14', '\u0E42\u0E2A\u0E15\u0E17\u0E31\u0E28\u0E19\u0E39\u0E1B\u0E01\u0E23\u0E13\u0E4C', '\u0E2D\u0E38\u0E1B\u0E01\u0E23\u0E13\u0E4C\u0E40\u0E04\u0E23\u0E37\u0E2D\u0E02\u0E48\u0E32\u0E22'];

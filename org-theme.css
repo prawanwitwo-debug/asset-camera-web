@@ -3437,3 +3437,8 @@ body.admin-page #assetNumberValidationMsg {
     grid-template-columns: 1fr;
   }
 }
+
+/* Phase ST-1 v46: Sticker Designer entry helpers */
+.sticker-entry-note {
+  color: var(--org-text-muted, #6F827C);
+}

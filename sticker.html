@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ออกแบบสติกเกอร์ QR ครุภัณฑ์</title>
+  <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="./sticker.css?v=46">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+  <script src="config.js"></script>
+  <script src="api-shim.js"></script>
+</head>
+<body>
+  <main class="sticker-shell">
+    <header class="sticker-header no-print">
+      <div>
+        <div class="sticker-kicker">Royal Park Rajapruek</div>
+        <h1 class="sticker-title">ออกแบบสติกเกอร์ QR ครุภัณฑ์</h1>
+      </div>
+      <div class="sticker-actions">
+        <a class="sticker-btn" href="admin.html">
+          <i class="fas fa-arrow-left"></i>
+          กลับ Admin
+        </a>
+        <button type="button" class="sticker-btn" id="reloadBtn">
+          <i class="fas fa-rotate"></i>
+          โหลดใหม่
+        </button>
+        <button type="button" class="sticker-btn sticker-btn-primary" id="printBtn">
+          <i class="fas fa-print"></i>
+          พิมพ์สติกเกอร์
+        </button>
+      </div>
+    </header>
+
+    <section class="sticker-toolbar no-print" aria-label="ตั้งค่าสติกเกอร์">
+      <div class="sticker-control">
+        <label for="templateSelect">แบบสติกเกอร์</label>
+        <select id="templateSelect">
+          <option value="compact">Template A — Compact 50 x 30 mm</option>
+          <option value="standard" selected>Template B — Standard 60 x 40 mm</option>
+          <option value="large">Template C — Large 70 x 50 mm</option>
+        </select>
+      </div>
+      <div class="sticker-control">
+        <label for="paperModeSelect">รูปแบบพิมพ์</label>
+        <select id="paperModeSelect">
+          <option value="single">พรีวิวเดี่ยว</option>
+          <option value="a4" selected>A4 หลายดวง</option>
+        </select>
+      </div>
+      <div class="sticker-control">
+        <label for="locationModeSelect">สถานที่ติดตั้ง</label>
+        <select id="locationModeSelect">
+          <option value="show" selected>แสดงสถานที่</option>
+          <option value="hide">ซ่อนสถานที่</option>
+        </select>
+      </div>
+      <div class="sticker-control">
+        <label for="copyCountInput">จำนวนซ้ำต่อรายการ</label>
+        <input id="copyCountInput" type="number" min="1" max="20" value="1">
+      </div>
+    </section>
+
+    <section class="sticker-status no-print">
+      <div id="statusText">กำลังโหลดข้อมูล...</div>
+      <div>QR เปิดหน้า <strong>asset.html</strong> โดยตรง</div>
+    </section>
+
+    <section class="sticker-help no-print">
+      เลือกแบบสติกเกอร์ แล้วกด “พิมพ์สติกเกอร์” ได้ทันที ข้อมูลที่แสดงคือ QR Code, หมายเลขครุภัณฑ์, ชื่อครุภัณฑ์ และสถานที่ติดตั้ง
+    </section>
+
+    <section class="sticker-preview-outer">
+      <div id="printSheet" class="print-sheet sheet-a4">
+        <div id="stickerGrid" class="sticker-grid"></div>
+      </div>
+    </section>
+  </main>
+
+<script>
+(function () {
+  'use strict';
+
+  const SESSION_KEY = 'assetStickerPrintPayload';
+  const state = {
+    keys: [],
+    assets: [],
+    template: 'standard',
+    paperMode: 'a4',
+    showLocation: true,
+    copyCount: 1
+  };
+
+  const el = {
+    statusText: document.getElementById('statusText'),
+    templateSelect: document.getElementById('templateSelect'),
+    paperModeSelect: document.getElementById('paperModeSelect'),
+    locationModeSelect: document.getElementById('locationModeSelect'),
+    copyCountInput: document.getElementById('copyCountInput'),
+    printBtn: document.getElementById('printBtn'),
+    reloadBtn: document.getElementById('reloadBtn'),
+    printSheet: document.getElementById('printSheet'),
+    stickerGrid: document.getElementById('stickerGrid')
+  };
+
+  function escapeHtml(value) {
+    return String(value === null || value === undefined ? '' : value)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#39;');
+  }
+
+  function normalizeKey(value) {
+    const raw = String(value || '').trim();
+    if (!raw) return '';
+    let text = raw;
+    const match = text.match(/[?&](?:k|assetKey|code|q)=([^&#]+)/i);
+    if (match && match[1]) text = match[1];
+    try { text = decodeURIComponent(text); } catch (error) {}
+    return String(text || '').trim();
+  }
+
+  function getBaseUrl() {
+    return window.location.href.split('#')[0].split('?')[0].replace(/[^/]*$/, '');
+  }
+
+  function getAssetUrl(asset) {
+    const key = normalizeKey((asset && (asset.assetKey || asset.assetNumber)) || '');
+    return getBaseUrl() + 'asset.html?k=' + encodeURIComponent(key);
+  }
+
+  function getKeysFromUrlOrSession() {
+    const params = new URLSearchParams(window.location.search || '');
+    const singleKey = normalizeKey(params.get('k') || params.get('assetKey') || params.get('code') || params.get('q'));
+    if (singleKey) return [singleKey];
+
+    const keysParam = String(params.get('keys') || '').trim();
+    if (keysParam) {
+      return Array.from(new Set(keysParam.split(',').map(normalizeKey).filter(Boolean)));
+    }
+
+    try {
+      const payload = JSON.parse(sessionStorage.getItem(SESSION_KEY) || '{}');
+      if (payload && Array.isArray(payload.keys)) {
+        if (payload.template) state.template = payload.template;
+        if (payload.paperMode) state.paperMode = payload.paperMode;
+        return Array.from(new Set(payload.keys.map(normalizeKey).filter(Boolean)));
+      }
+    } catch (error) {
+      console.warn('อ่านข้อมูล sessionStorage ไม่สำเร็จ:', error);
+    }
+    return [];
+  }
+
+  async function fetchAssetByKey(key) {
+    const result = await window.apiCall('getPublicAssetDetail', key);
+    if (!result || result.success === false) {
+      return { success: false, key: key, message: result && result.message ? result.message : 'ไม่พบข้อมูลครุภัณฑ์' };
+    }
+    return { success: true, data: result.data || result };
+  }
+
+  async function fetchAssets(keys) {
+    if (!keys.length) return [];
+
+    try {
+      const batch = await window.apiCall('getPublicAssetDetails', keys);
+      if (batch && batch.success !== false && Array.isArray(batch.data)) {
+        return batch.data.map(function (item) {
+          if (item && item.success === false) return item;
+          return { success: true, data: item && item.data ? item.data : item };
+        });
+      }
+    } catch (error) {
+      console.warn('Batch API ไม่พร้อม ใช้การโหลดทีละรายการแทน:', error);
+    }
+
+    const results = [];
+    for (const key of keys) {
+      try {
+        results.push(await fetchAssetByKey(key));
+      } catch (error) {
+        results.push({ success: false, key: key, message: error && error.message ? error.message : String(error) });
+      }
+    }
+    return results;
+  }
+
+  function updateControls() {
+    el.templateSelect.value = state.template;
+    el.paperModeSelect.value = state.paperMode;
+    el.locationModeSelect.value = state.showLocation ? 'show' : 'hide';
+    el.copyCountInput.value = String(state.copyCount);
+  }
+
+  function setStatus(text) {
+    el.statusText.innerHTML = text;
+  }
+
+  function getCopies() {
+    const n = parseInt(el.copyCountInput.value, 10);
+    if (!Number.isFinite(n) || n < 1) return 1;
+    return Math.min(20, n);
+  }
+
+  function getDisplayCode(asset) {
+    return asset.assetNumberDisplay || [asset.assetOrgName, asset.assetNumber].filter(Boolean).join(' / ') || asset.assetKey || '-';
+  }
+
+  function renderEmpty(message, extraClass) {
+    el.stickerGrid.innerHTML = '<div class="label-empty ' + (extraClass || '') + '">' + escapeHtml(message) + '</div>';
+  }
+
+  function renderLabels() {
+    state.template = el.templateSelect.value || 'standard';
+    state.paperMode = el.paperModeSelect.value || 'a4';
+    state.showLocation = el.locationModeSelect.value !== 'hide';
+    state.copyCount = getCopies();
+
+    el.printSheet.className = 'print-sheet ' + (state.paperMode === 'single' ? 'sheet-single' : 'sheet-a4');
+    el.stickerGrid.className = 'sticker-grid ' + (state.paperMode === 'single' ? 'single-grid' : '');
+
+    const successItems = state.assets.filter(function (item) { return item && item.success && item.data; });
+    const failedItems = state.assets.filter(function (item) { return item && item.success === false; });
+
+    if (!successItems.length) {
+      renderEmpty(failedItems.length ? failedItems[0].message : 'ยังไม่มีข้อมูลสำหรับสร้างสติกเกอร์', 'label-error');
+      setStatus('<strong>0</strong> รายการพร้อมพิมพ์');
+      return;
+    }
+
+    const cards = [];
+    successItems.forEach(function (item, index) {
+      const asset = item.data;
+      for (let copy = 0; copy < state.copyCount; copy += 1) {
+        const qrId = 'qr_' + index + '_' + copy + '_' + Math.random().toString(36).slice(2);
+        cards.push({ asset: asset, qrId: qrId });
+      }
+    });
+
+    el.stickerGrid.style.setProperty('--label-w', state.template === 'compact' ? '50mm' : (state.template === 'large' ? '70mm' : '60mm'));
+    el.stickerGrid.innerHTML = cards.map(function (card) {
+      const asset = card.asset;
+      const locationHtml = state.showLocation
+        ? '<div class="label-location">' + escapeHtml(asset.location || '-') + '</div>'
+        : '';
+      return [
+        '<article class="asset-label ' + escapeHtml(state.template) + '">',
+          '<div class="label-qr" id="' + escapeHtml(card.qrId) + '"></div>',
+          '<div class="label-content">',
+            '<div class="label-brand">Royal Park Rajapruek</div>',
+            '<div class="label-code">' + escapeHtml(getDisplayCode(asset)) + '</div>',
+            '<div class="label-name">' + escapeHtml(asset.assetName || '-') + '</div>',
+            locationHtml,
+          '</div>',
+        '</article>'
+      ].join('');
+    }).join('');
+
+    cards.forEach(function (card) {
+      const target = document.getElementById(card.qrId);
+      if (!target) return;
+      const sizePx = state.template === 'compact' ? 96 : (state.template === 'large' ? 154 : 124);
+      const assetUrl = getAssetUrl(card.asset);
+      target.innerHTML = '';
+      new QRCode(target, {
+        text: assetUrl,
+        width: sizePx,
+        height: sizePx,
+        colorDark: '#111827',
+        colorLight: '#ffffff',
+        correctLevel: QRCode.CorrectLevel.H
+      });
+    });
+
+    const totalLabels = successItems.length * state.copyCount;
+    const failedText = failedItems.length ? ' / ไม่พบข้อมูล ' + failedItems.length + ' รายการ' : '';
+    setStatus('พร้อมพิมพ์ <strong>' + totalLabels + '</strong> ดวง จากครุภัณฑ์ <strong>' + successItems.length + '</strong> รายการ' + failedText);
+  }
+
+  async function load() {
+    state.keys = getKeysFromUrlOrSession();
+    const params = new URLSearchParams(window.location.search || '');
+    if (params.get('template')) state.template = params.get('template');
+    if (params.get('paper')) state.paperMode = params.get('paper');
+    updateControls();
+
+    if (!state.keys.length) {
+      renderEmpty('ไม่พบรายการครุภัณฑ์สำหรับทำสติกเกอร์ กรุณาเปิดจากหน้า Admin หรือส่งพารามิเตอร์ ?k=assetKey', 'label-error');
+      setStatus('ไม่พบรายการสำหรับทำสติกเกอร์');
+      return;
+    }
+
+    setStatus('กำลังโหลดข้อมูล <strong>' + state.keys.length + '</strong> รายการ...');
+    state.assets = await fetchAssets(state.keys);
+    renderLabels();
+  }
+
+  el.templateSelect.addEventListener('change', renderLabels);
+  el.paperModeSelect.addEventListener('change', renderLabels);
+  el.locationModeSelect.addEventListener('change', renderLabels);
+  el.copyCountInput.addEventListener('input', renderLabels);
+  el.printBtn.addEventListener('click', function () { window.print(); });
+  el.reloadBtn.addEventListener('click', load);
+
+  load();
+})();
+</script>
+</body>
+</html>
