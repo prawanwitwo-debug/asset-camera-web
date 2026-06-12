@@ -194,7 +194,8 @@
       box-shadow: 0 8px 20px rgba(15, 23, 42, 0.08) !important;
     }
     .track-search-shell {
-      max-width: 920px;
+      width: 100%;
+      max-width: 1000px;
       margin: 0 auto;
       text-align: left;
     }
@@ -209,6 +210,7 @@
       grid-template-columns: minmax(0, 1fr) auto;
       gap: 0.75rem;
       align-items: start;
+      width: 100%;
     }
     .track-input-wrap {
       position: relative;
@@ -238,9 +240,11 @@
       display: none;
       position: static;
       width: 100%;
-      margin-top: 0.65rem;
-      max-height: min(48vh, 420px);
+      margin-top: 0.7rem;
+      max-height: min(56vh, 520px);
       overflow: auto;
+      overscroll-behavior: contain;
+      scrollbar-gutter: stable both-edges;
       border: 1px solid #DDEBE2;
       border-radius: 18px;
       background: #ffffff;
@@ -248,6 +252,7 @@
     }
     .track-dropdown-table table {
       width: 100%;
+      min-width: 860px;
       border-collapse: separate;
       border-spacing: 0;
       font-size: 0.92rem;
@@ -317,10 +322,14 @@
         width: 100% !important;
       }
       .track-dropdown-table {
-        max-height: min(48vh, 360px);
+        max-height: min(52vh, 380px);
+        scrollbar-gutter: auto;
       }
       .track-dropdown-table thead {
         display: none;
+      }
+      .track-dropdown-table table {
+        min-width: 0;
       }
       .track-dropdown-table table,
       .track-dropdown-table tbody,
@@ -341,8 +350,8 @@
 
 
     .swal2-popup.swal-change-upgrade {
-      width: min(920px, 94vw) !important;
-      max-width: 920px !important;
+      width: min(1040px, 94vw) !important;
+      max-width: 1040px !important;
       overflow: hidden !important;
       background: #f8fffb !important;
       border: 1px solid rgba(111, 207, 151, 0.36) !important;
@@ -376,7 +385,8 @@
       box-shadow: 0 8px 20px rgba(15, 23, 42, 0.08) !important;
     }
     .change-owner-shell {
-      max-width: 820px;
+      width: 100%;
+      max-width: 1000px;
       margin: 0 auto;
       text-align: left;
     }
@@ -388,7 +398,7 @@
       margin-bottom: 0.9rem;
     }
     .change-dropdown-table {
-      max-height: min(42vh, 360px);
+      max-height: min(56vh, 520px);
     }
     .change-selected-card {
       margin-top: 0.85rem;
@@ -471,7 +481,7 @@
         grid-template-columns: 1fr;
       }
       .change-dropdown-table {
-        max-height: min(44vh, 340px);
+        max-height: min(52vh, 380px);
       }
     }
 
@@ -1103,6 +1113,40 @@ function hideMiniLoading() {
       window.location.href = 'asset.html?k=' + encodeURIComponent(key);
     }
 
+    function bindStableAutocompleteDropdown(input, dropdown) {
+      if (!input || !dropdown) return;
+      let pointerInsideDropdown = false;
+      let releaseTimer = null;
+      const lockDropdown = () => {
+        pointerInsideDropdown = true;
+        dropdown.dataset.pointerInside = '1';
+        if (releaseTimer) clearTimeout(releaseTimer);
+      };
+      const releaseDropdown = () => {
+        if (releaseTimer) clearTimeout(releaseTimer);
+        releaseTimer = setTimeout(() => {
+          pointerInsideDropdown = false;
+          dropdown.dataset.pointerInside = '0';
+        }, 320);
+      };
+      dropdown.addEventListener('pointerdown', lockDropdown);
+      dropdown.addEventListener('mousedown', lockDropdown);
+      dropdown.addEventListener('touchstart', lockDropdown, { passive: true });
+      document.addEventListener('pointerup', releaseDropdown);
+      document.addEventListener('mouseup', releaseDropdown);
+      document.addEventListener('touchend', releaseDropdown, { passive: true });
+      document.addEventListener('touchcancel', releaseDropdown, { passive: true });
+      input.addEventListener('blur', () => {
+        setTimeout(() => {
+          const keepOpen = pointerInsideDropdown ||
+            dropdown.dataset.pointerInside === '1' ||
+            dropdown.matches(':hover') ||
+            dropdown.contains(document.activeElement);
+          if (!keepOpen) dropdown.style.display = 'none';
+        }, 220);
+      });
+    }
+
     function openTrackPopup() {
       showCuteLoading('กำลังโหลดรายการ...');
       google.script.run.withSuccessHandler(function(supplies) {
@@ -1118,10 +1162,10 @@ function hideMiniLoading() {
               <div class="track-input-row">
                 <div class="track-input-wrap">
                   <input id="codeInput" type="text" placeholder="เช่น RPRP:50-1-13-01/39 หรือ 50-1-13-01/39" class="swal2-input" autocomplete="off">
-                  <div id="trackDropdown" class="track-dropdown-table"></div>
                 </div>
                 <button id="scanStartBtn" class="track-scan-btn swal2-styled" type="button"><i class="fas fa-qrcode mr-2"></i>สแกน QR</button>
               </div>
+              <div id="trackDropdown" class="track-dropdown-table"></div>
               <div id="trackHelpText" class="track-help-text">เลือกครุภัณฑ์จากตาราง Auto Complete เพื่อเปิดหน้า asset.html แบบเดียวกับการสแกน QR</div>
             </div>
           `,
@@ -1216,9 +1260,9 @@ function hideMiniLoading() {
               });
             };
 
+            bindStableAutocompleteDropdown(input, dropdown);
             input.addEventListener('input', () => renderDropdown(input.value));
             input.addEventListener('focus', () => renderDropdown(input.value));
-            input.addEventListener('blur', () => setTimeout(() => { dropdown.style.display = 'none'; }, 180));
             input.addEventListener('keydown', (event) => {
               if (event.key === 'ArrowDown') {
                 event.preventDefault();
@@ -1661,10 +1705,10 @@ function hideMiniLoading() {
               <div class="track-input-row">
                 <div class="track-input-wrap">
                   <input id="changeAsset" class="swal2-input" placeholder="เช่น RPRP:50-1-13-01/39 หรือ 50-1-13-01/39" autocomplete="off">
-                  <div id="assetDropdown" class="track-dropdown-table change-dropdown-table"></div>
                 </div>
                 <button id="scanBtn" class="track-scan-btn swal2-styled" type="button"><i class="fas fa-qrcode mr-2"></i>สแกน QR</button>
               </div>
+              <div id="assetDropdown" class="track-dropdown-table change-dropdown-table"></div>
 
               <div id="changeSelectedSummary" class="change-selected-card is-hidden">
                 <div id="changeSelectedTitle" class="change-selected-title">-</div>
@@ -1806,13 +1850,13 @@ function hideMiniLoading() {
               });
             };
 
+            bindStableAutocompleteDropdown(input, dropdown);
             input.addEventListener('input', () => {
               selectedAsset = null;
               setSelectedAsset(null);
               renderDropdown(input.value);
             });
             input.addEventListener('focus', () => renderDropdown(input.value));
-            input.addEventListener('blur', () => setTimeout(() => { dropdown.style.display = 'none'; }, 160));
             input.addEventListener('keydown', (evt) => {
               if (!currentMatches.length || dropdown.style.display === 'none') {
                 if (evt.key === 'Enter') {
