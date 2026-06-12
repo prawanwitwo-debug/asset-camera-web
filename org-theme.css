@@ -3621,6 +3621,37 @@ body.bg-hero .action-card::after {
   background-image: url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2090%2090'%3E%3Cg%20fill='none'%20stroke='%233D8B68'%20stroke-width='5'%20stroke-linecap='round'%3E%3Cpath%20d='M22%2070C30%2045%2048%2032%2068%2022'/%3E%3Cpath%20d='M37%2051c-18-1-29-11-32-29%2018%204%2030%2014%2035%2028'/%3E%3Cpath%20d='M52%2038c-7-16-3-29%2013-40%206%2017%202%2030-12%2040'/%3E%3C/g%3E%3Ccircle%20cx='66'%20cy='23'%20r='7'%20fill='%23F2C94C'/%3E%3C/svg%3E") !important;
 }
 
+body.bg-hero .home-card-secondary {
+  overflow: visible !important;
+}
+
+body.bg-hero .home-card-secondary > * {
+  position: relative !important;
+  z-index: 1 !important;
+}
+
+body.bg-hero .home-card-secondary::before {
+  opacity: 0.82 !important;
+}
+
+body.bg-hero .home-card-secondary::after {
+  content: "" !important;
+  position: absolute !important;
+  left: 50% !important;
+  bottom: -26px !important;
+  width: 176px !important;
+  height: 102px !important;
+  pointer-events: none !important;
+  z-index: 0 !important;
+  transform: translateX(-50%) !important;
+  opacity: 0.24 !important;
+  background-repeat: no-repeat !important;
+  background-position: center bottom !important;
+  background-size: contain !important;
+  background-image: url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20220%20120'%3E%3Cg%20fill='none'%20stroke='%237BCFA6'%20stroke-width='4.5'%20stroke-linecap='round'%20stroke-linejoin='round'%20opacity='.92'%3E%3Cpath%20d='M42%2098C58%2070%2080%2051%20110%2034'/%3E%3Cpath%20d='M83%2075c-28%20-4-45-18-54-45%2028%207%2044%2025%2054%2045'/%3E%3Cpath%20d='M112%2055c-9-24-1-43%2023-58%209%2025%203%2044-23%2058'/%3E%3Cpath%20d='M148%2054c18-18%2040-25%2066-18-12%2022-31%2034-56%2037'/%3E%3Cpath%20d='M97%2068c20%2014%2042%2019%2067%2015-15-18-35-27-61-27'/%3E%3C/g%3E%3Cg%20fill='%23F2C94C'%20opacity='.7'%3E%3Cellipse%20cx='111'%20cy='35'%20rx='11'%20ry='23'/%3E%3Cellipse%20cx='111'%20cy='65'%20rx='11'%20ry='23'/%3E%3Cellipse%20cx='86'%20cy='50'%20rx='22'%20ry='10'/%3E%3Cellipse%20cx='137'%20cy='50'%20rx='22'%20ry='10'/%3E%3Cellipse%20cx='94'%20cy='31'%20rx='18'%20ry='9'%20transform='rotate(-32%2094%2031)'/%3E%3Cellipse%20cx='128'%20cy='31'%20rx='18'%20ry='9'%20transform='rotate(32%20128%2031)'/%3E%3C/g%3E%3C/svg%3E") !important;
+  filter: drop-shadow(0 6px 14px rgba(123, 207, 166, 0.14)) !important;
+}
+
 @keyframes homeBotanicalFloat {
   0% { transform: translate3d(0, 0, 0) rotate(-1deg) !important; }
   100% { transform: translate3d(8px, -10px, 0) rotate(2deg) !important; }
@@ -3658,6 +3689,13 @@ body.bg-hero .action-card::after {
     bottom: 10px !important;
     opacity: 0.16 !important;
   }
+
+  body.bg-hero .home-card-secondary::after {
+    width: 150px !important;
+    height: 90px !important;
+    bottom: -22px !important;
+    opacity: 0.28 !important;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -3666,4 +3704,3 @@ body.bg-hero .action-card::after {
     animation: none !important;
   }
 }
-
