@@ -120,6 +120,49 @@ body {
   margin-bottom: 14px;
 }
 
+.sticker-options {
+  background: rgba(255, 255, 255, 0.94);
+  border: 1px solid var(--st-border);
+  border-radius: 22px;
+  box-shadow: var(--st-shadow);
+  padding: 12px 14px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 14px;
+}
+
+.sticker-options-title {
+  color: var(--st-muted);
+  font-weight: 900;
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin-right: 4px;
+}
+
+.sticker-check {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 40px;
+  padding: 8px 12px;
+  border: 1px solid var(--st-border);
+  border-radius: 999px;
+  background: #ffffff;
+  color: var(--st-text);
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.sticker-check input {
+  width: 16px;
+  height: 16px;
+  accent-color: var(--st-primary);
+}
+
+
 .sticker-control label {
   display: block;
   color: var(--st-muted);
@@ -269,6 +312,7 @@ body {
   --qr-size: 22mm;
   --label-gap: 2mm;
   --label-pad: 2.2mm;
+  --brand-size: 5.5pt;
   --code-size: 7.4pt;
   --name-size: 6.6pt;
   --loc-size: 6.2pt;
@@ -280,6 +324,7 @@ body {
   --qr-size: 27mm;
   --label-gap: 2.5mm;
   --label-pad: 2.6mm;
+  --brand-size: 5.8pt;
   --code-size: 8.2pt;
   --name-size: 7.2pt;
   --loc-size: 6.8pt;
@@ -291,10 +336,55 @@ body {
   --qr-size: 32mm;
   --label-gap: 3mm;
   --label-pad: 3.2mm;
+  --brand-size: 6.2pt;
   --code-size: 8.8pt;
   --name-size: 7.8pt;
   --loc-size: 7.2pt;
 }
+
+/* Font size presets (ST-3.2) */
+.asset-label.compact.font-small {
+  --brand-size: 5.0pt;
+  --code-size: 6.6pt;
+  --name-size: 5.8pt;
+  --loc-size: 5.5pt;
+}
+
+.asset-label.compact.font-large {
+  --brand-size: 6.1pt;
+  --code-size: 8.2pt;
+  --name-size: 7.2pt;
+  --loc-size: 6.7pt;
+}
+
+.asset-label.standard.font-small {
+  --brand-size: 5.2pt;
+  --code-size: 7.3pt;
+  --name-size: 6.4pt;
+  --loc-size: 6.1pt;
+}
+
+.asset-label.standard.font-large {
+  --brand-size: 6.5pt;
+  --code-size: 9.1pt;
+  --name-size: 8.0pt;
+  --loc-size: 7.5pt;
+}
+
+.asset-label.large.font-small {
+  --brand-size: 5.6pt;
+  --code-size: 7.9pt;
+  --name-size: 7.0pt;
+  --loc-size: 6.5pt;
+}
+
+.asset-label.large.font-large {
+  --brand-size: 7.0pt;
+  --code-size: 9.8pt;
+  --name-size: 8.7pt;
+  --loc-size: 8.0pt;
+}
+
 
 .label-qr {
   width: var(--qr-size);
@@ -322,7 +412,7 @@ body {
 }
 
 .label-brand {
-  font-size: 5.8pt;
+  font-size: var(--brand-size);
   line-height: 1;
   font-weight: 900;
   color: #0f766e;
@@ -411,6 +501,15 @@ body {
 
   .sticker-toolbar {
     grid-template-columns: 1fr;
+  }
+
+  .sticker-options {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .sticker-check {
+    justify-content: flex-start;
   }
 
   .sticker-preview-outer {

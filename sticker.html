@@ -6,7 +6,7 @@
   <title>ออกแบบสติกเกอร์ QR ครุภัณฑ์</title>
   <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <link rel="stylesheet" href="./sticker.css?v=48">
+  <link rel="stylesheet" href="./sticker.css?v=49">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
   <script src="config.js"></script>
   <script src="api-shim.js"></script>
@@ -52,10 +52,11 @@
         </select>
       </div>
       <div class="sticker-control">
-        <label for="locationModeSelect">สถานที่ติดตั้ง</label>
-        <select id="locationModeSelect">
-          <option value="show" selected>แสดงสถานที่</option>
-          <option value="hide">ซ่อนสถานที่</option>
+        <label for="fontSizeSelect">ขนาดตัวอักษร</label>
+        <select id="fontSizeSelect">
+          <option value="small">เล็ก</option>
+          <option value="normal" selected>ปกติ</option>
+          <option value="large">ใหญ่</option>
         </select>
       </div>
       <div class="sticker-control">
@@ -64,13 +65,21 @@
       </div>
     </section>
 
+    <section class="sticker-options no-print" aria-label="ข้อมูลที่แสดงบนสติกเกอร์">
+      <div class="sticker-options-title">ข้อมูลที่แสดง</div>
+      <label class="sticker-check"><input type="checkbox" id="showOrgInput" checked><span>ชื่อหน่วยงาน</span></label>
+      <label class="sticker-check"><input type="checkbox" id="showNameInput" checked><span>ชื่อครุภัณฑ์</span></label>
+      <label class="sticker-check"><input type="checkbox" id="showLocationInput" checked><span>สถานที่ติดตั้ง</span></label>
+      <label class="sticker-check"><input type="checkbox" id="showBrandInput" checked><span>Royal Park Rajapruek</span></label>
+    </section>
+
     <section class="sticker-status no-print">
       <div id="statusText">กำลังโหลดข้อมูล...</div>
       <div id="pageText">A4 Preview</div>
     </section>
 
     <section class="sticker-help no-print">
-      ข้อมูลที่แสดงบนสติกเกอร์: <strong>QR Code</strong>, <strong>หมายเลขครุภัณฑ์</strong>, <strong>ชื่อครุภัณฑ์</strong> และ <strong>สถานที่ติดตั้ง</strong> โดย QR จะเปิดหน้า <strong>asset.html</strong> โดยตรง
+      เลือกข้อมูลที่ต้องการแสดงบนสติกเกอร์ได้ เช่น <strong>ชื่อหน่วยงาน</strong>, <strong>ชื่อครุภัณฑ์</strong>, <strong>สถานที่ติดตั้ง</strong> และปรับ <strong>ขนาดตัวอักษร</strong> ได้ โดย QR จะเปิดหน้า <strong>asset.html</strong> โดยตรง
     </section>
 
     <section id="missingPanel" class="missing-panel no-print hidden"></section>
@@ -85,12 +94,17 @@
   'use strict';
 
   const SESSION_KEY = 'assetStickerPrintPayload';
+  const SETTINGS_KEY = 'assetStickerSettingsV49';
   const state = {
     keys: [],
     assets: [],
     template: 'standard',
     paperMode: 'a4',
+    fontSize: 'normal',
+    showOrg: true,
+    showName: true,
     showLocation: true,
+    showBrand: true,
     copyCount: 1
   };
 
@@ -105,7 +119,11 @@
     pageText: document.getElementById('pageText'),
     templateSelect: document.getElementById('templateSelect'),
     paperModeSelect: document.getElementById('paperModeSelect'),
-    locationModeSelect: document.getElementById('locationModeSelect'),
+    fontSizeSelect: document.getElementById('fontSizeSelect'),
+    showOrgInput: document.getElementById('showOrgInput'),
+    showNameInput: document.getElementById('showNameInput'),
+    showLocationInput: document.getElementById('showLocationInput'),
+    showBrandInput: document.getElementById('showBrandInput'),
     copyCountInput: document.getElementById('copyCountInput'),
     printBtn: document.getElementById('printBtn'),
     reloadBtn: document.getElementById('reloadBtn'),
@@ -120,6 +138,41 @@
       .replace(/>/g, '&gt;')
       .replace(/"/g, '&quot;')
       .replace(/'/g, '&#39;');
+  }
+
+
+  function loadSavedSettings() {
+    try {
+      const saved = JSON.parse(localStorage.getItem(SETTINGS_KEY) || '{}');
+      if (!saved || typeof saved !== 'object') return;
+      if (saved.template) state.template = saved.template;
+      if (saved.paperMode) state.paperMode = saved.paperMode;
+      if (saved.fontSize) state.fontSize = saved.fontSize;
+      if (typeof saved.showOrg === 'boolean') state.showOrg = saved.showOrg;
+      if (typeof saved.showName === 'boolean') state.showName = saved.showName;
+      if (typeof saved.showLocation === 'boolean') state.showLocation = saved.showLocation;
+      if (typeof saved.showBrand === 'boolean') state.showBrand = saved.showBrand;
+      if (saved.copyCount) state.copyCount = Math.max(1, Math.min(20, parseInt(saved.copyCount, 10) || 1));
+    } catch (error) {
+      console.warn('อ่านค่าตั้งค่าสติกเกอร์ไม่สำเร็จ:', error);
+    }
+  }
+
+  function saveSettings() {
+    try {
+      localStorage.setItem(SETTINGS_KEY, JSON.stringify({
+        template: state.template,
+        paperMode: state.paperMode,
+        fontSize: state.fontSize,
+        showOrg: state.showOrg,
+        showName: state.showName,
+        showLocation: state.showLocation,
+        showBrand: state.showBrand,
+        copyCount: state.copyCount
+      }));
+    } catch (error) {
+      console.warn('บันทึกค่าตั้งค่าสติกเกอร์ไม่สำเร็จ:', error);
+    }
   }
 
   function normalizeKey(value) {
@@ -160,6 +213,11 @@
       if (payload && Array.isArray(payload.keys)) {
         if (payload.template) state.template = payload.template;
         if (payload.paperMode) state.paperMode = payload.paperMode;
+        if (payload.fontSize) state.fontSize = payload.fontSize;
+        if (typeof payload.showOrg === 'boolean') state.showOrg = payload.showOrg;
+        if (typeof payload.showName === 'boolean') state.showName = payload.showName;
+        if (typeof payload.showLocation === 'boolean') state.showLocation = payload.showLocation;
+        if (typeof payload.showBrand === 'boolean') state.showBrand = payload.showBrand;
         if (payload.copyCount) state.copyCount = Math.max(1, Math.min(20, parseInt(payload.copyCount, 10) || 1));
         return Array.from(new Set(payload.keys.map(normalizeKey).filter(Boolean)));
       }
@@ -206,7 +264,11 @@
   function updateControls() {
     el.templateSelect.value = state.template;
     el.paperModeSelect.value = state.paperMode;
-    el.locationModeSelect.value = state.showLocation ? 'show' : 'hide';
+    el.fontSizeSelect.value = state.fontSize;
+    el.showOrgInput.checked = !!state.showOrg;
+    el.showNameInput.checked = !!state.showName;
+    el.showLocationInput.checked = !!state.showLocation;
+    el.showBrandInput.checked = !!state.showBrand;
     el.copyCountInput.value = String(state.copyCount);
   }
 
@@ -225,6 +287,9 @@
   }
 
   function getDisplayCode(asset) {
+    if (!asset) return '-';
+    const number = asset.assetNumber || asset.assetKey || '-';
+    if (!state.showOrg) return number;
     return asset.assetNumberDisplay || [asset.assetOrgName, asset.assetNumber].filter(Boolean).join(' / ') || asset.assetKey || '-';
   }
 
@@ -301,16 +366,22 @@
   function renderPageCards(cards) {
     return cards.map(function (card) {
       const asset = card.asset;
+      const brandHtml = state.showBrand
+        ? '<div class="label-brand">Royal Park Rajapruek</div>'
+        : '';
+      const nameHtml = state.showName
+        ? '<div class="label-name" title="' + escapeHtml(asset.assetName || '-') + '">' + escapeHtml(asset.assetName || '-') + '</div>'
+        : '';
       const locationHtml = state.showLocation
         ? '<div class="label-location" title="' + escapeHtml(asset.location || '-') + '">' + escapeHtml(asset.location || '-') + '</div>'
         : '';
       return [
-        '<article class="asset-label ' + escapeHtml(state.template) + '">',
+        '<article class="asset-label ' + escapeHtml(state.template) + ' font-' + escapeHtml(state.fontSize) + '">',
           '<div class="label-qr" id="' + escapeHtml(card.qrId) + '"></div>',
           '<div class="label-content">',
-            '<div class="label-brand">Royal Park Rajapruek</div>',
+            brandHtml,
             '<div class="label-code" title="' + escapeHtml(getDisplayCode(asset)) + '">' + escapeHtml(getDisplayCode(asset)) + '</div>',
-            '<div class="label-name" title="' + escapeHtml(asset.assetName || '-') + '">' + escapeHtml(asset.assetName || '-') + '</div>',
+            nameHtml,
             locationHtml,
           '</div>',
         '</article>'
@@ -321,8 +392,13 @@
   function renderLabels() {
     state.template = el.templateSelect.value || 'standard';
     state.paperMode = el.paperModeSelect.value || 'a4';
-    state.showLocation = el.locationModeSelect.value !== 'hide';
+    state.fontSize = el.fontSizeSelect.value || 'normal';
+    state.showOrg = !!el.showOrgInput.checked;
+    state.showName = !!el.showNameInput.checked;
+    state.showLocation = !!el.showLocationInput.checked;
+    state.showBrand = !!el.showBrandInput.checked;
     state.copyCount = getCopies();
+    saveSettings();
 
     const successItems = state.assets.filter(function (item) { return item && item.success && item.data; });
     const failedItems = state.assets.filter(function (item) { return item && item.success === false; });
@@ -340,7 +416,7 @@
     const pages = state.paperMode === 'single' ? [cards.slice(0, 1)] : chunkArray(cards, capacity);
     const meta = TEMPLATE_META[state.template] || TEMPLATE_META.standard;
 
-    el.printSheet.className = 'print-sheet print-mode-' + state.paperMode;
+    el.printSheet.className = 'print-sheet print-mode-' + state.paperMode + ' print-font-' + state.fontSize;
     el.printSheet.style.setProperty('--label-w', meta.widthMm + 'mm');
     el.printSheet.style.setProperty('--label-h', meta.heightMm + 'mm');
     el.printSheet.style.setProperty('--grid-cols', String(state.paperMode === 'single' ? 1 : (meta.columns || 2)));
@@ -383,10 +459,16 @@
   }
 
   async function load() {
+    loadSavedSettings();
     state.keys = getKeysFromUrlOrSession();
     const params = new URLSearchParams(window.location.search || '');
     if (params.get('template')) state.template = params.get('template');
     if (params.get('paper')) state.paperMode = params.get('paper');
+    if (params.get('font')) state.fontSize = params.get('font');
+    if (params.has('org')) state.showOrg = params.get('org') !== '0';
+    if (params.has('name')) state.showName = params.get('name') !== '0';
+    if (params.has('location')) state.showLocation = params.get('location') !== '0';
+    if (params.has('brand')) state.showBrand = params.get('brand') !== '0';
     if (params.get('copies')) state.copyCount = Math.max(1, Math.min(20, parseInt(params.get('copies'), 10) || 1));
     updateControls();
 
@@ -405,7 +487,11 @@
 
   el.templateSelect.addEventListener('change', renderLabels);
   el.paperModeSelect.addEventListener('change', renderLabels);
-  el.locationModeSelect.addEventListener('change', renderLabels);
+  el.fontSizeSelect.addEventListener('change', renderLabels);
+  el.showOrgInput.addEventListener('change', renderLabels);
+  el.showNameInput.addEventListener('change', renderLabels);
+  el.showLocationInput.addEventListener('change', renderLabels);
+  el.showBrandInput.addEventListener('change', renderLabels);
   el.copyCountInput.addEventListener('input', renderLabels);
   el.printBtn.addEventListener('click', function () { window.print(); });
   el.reloadBtn.addEventListener('click', load);
