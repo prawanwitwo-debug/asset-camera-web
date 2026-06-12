@@ -3442,3 +3442,94 @@ body.admin-page #assetNumberValidationMsg {
 .sticker-entry-note {
   color: var(--org-text-muted, #6F827C);
 }
+
+/* v54: Public home mobile typography upgrade */
+@media (max-width: 768px) {
+  body.bg-hero .main-wrap {
+    padding: 1.85rem 1rem 1.35rem !important;
+  }
+
+  body.bg-hero main .text-center.mb-8 {
+    margin-bottom: 1.45rem !important;
+  }
+
+  body.bg-hero main img[alt="RPRP Logo"] {
+    height: 3.75rem !important;
+    margin-bottom: 0.1rem !important;
+  }
+
+  body.bg-hero main h1 {
+    font-size: clamp(1.52rem, 7.2vw, 1.88rem) !important;
+    line-height: 1.18 !important;
+    font-weight: 800 !important;
+    letter-spacing: -0.01em !important;
+    color: #243B35 !important;
+    text-wrap: balance !important;
+    word-break: keep-all !important;
+    overflow-wrap: anywhere !important;
+  }
+
+  body.bg-hero main h1 + p {
+    margin-top: 0.28rem !important;
+    font-size: clamp(1.06rem, 4.6vw, 1.22rem) !important;
+    line-height: 1.35 !important;
+    font-weight: 500 !important;
+    color: #49635B !important;
+  }
+
+  body.bg-hero .grid.grid-cols-1 {
+    gap: 1rem !important;
+  }
+
+  body.bg-hero .action-card {
+    min-height: 146px !important;
+    padding: 1.45rem 1.35rem !important;
+    border-radius: 16px !important;
+  }
+
+  body.bg-hero .action-card > div:first-child {
+    font-size: clamp(1.26rem, 5.25vw, 1.48rem) !important;
+    line-height: 1.22 !important;
+    font-weight: 800 !important;
+    letter-spacing: -0.01em !important;
+  }
+
+  body.bg-hero .action-card > div:last-child {
+    max-width: none !important;
+    margin-top: 0.32rem !important;
+    font-size: clamp(1rem, 4.15vw, 1.1rem) !important;
+    line-height: 1.58 !important;
+    font-weight: 400 !important;
+    color: #5D716A !important;
+  }
+
+  body.bg-hero .action-card:active {
+    transform: scale(0.992) !important;
+    background: #fbfefc !important;
+  }
+
+  body.bg-hero footer {
+    font-size: 0.82rem !important;
+    line-height: 1.5 !important;
+    padding-inline: 1.25rem !important;
+  }
+
+  body.bg-hero footer button {
+    min-height: 38px !important;
+    font-size: 0.82rem !important;
+  }
+}
+
+@media (max-width: 380px) {
+  body.bg-hero main h1 {
+    font-size: 1.42rem !important;
+  }
+
+  body.bg-hero .action-card > div:first-child {
+    font-size: 1.2rem !important;
+  }
+
+  body.bg-hero .action-card > div:last-child {
+    font-size: 0.98rem !important;
+  }
+}
