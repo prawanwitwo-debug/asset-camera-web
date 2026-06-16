@@ -4175,3 +4175,94 @@ body.bg-hero .swal2-popup.swal-track-upgrade .swal2-html-container {
     animation: none !important;
   }
 }
+
+
+/* v64: SweetAlert overlay regression fix
+   v63 desktop z-index rules accidentally changed .swal2-container back to relative.
+   Keep SweetAlert as a true viewport overlay above the public home page. */
+body.bg-hero.swal2-shown,
+body.bg-hero.swal2-height-auto {
+  height: 100% !important;
+  overflow: hidden !important;
+}
+
+html:has(body.bg-hero.swal2-shown),
+html:has(body.bg-hero.swal2-height-auto) {
+  height: 100% !important;
+  overflow: hidden !important;
+}
+
+body.bg-hero .swal2-container,
+body.bg-hero.swal2-shown .swal2-container,
+body.bg-hero.swal2-height-auto .swal2-container,
+body.bg-hero .swal2-container.swal2-center,
+body.bg-hero .swal2-container.swal2-backdrop-show {
+  position: fixed !important;
+  inset: 0 !important;
+  left: 0 !important;
+  top: 0 !important;
+  right: 0 !important;
+  bottom: 0 !important;
+  width: 100vw !important;
+  height: 100vh !important;
+  height: 100dvh !important;
+  min-height: 100vh !important;
+  min-height: 100dvh !important;
+  margin: 0 !important;
+  padding: clamp(0.75rem, 2.5vw, 1.5rem) !important;
+  display: grid !important;
+  place-items: center !important;
+  align-items: center !important;
+  justify-items: center !important;
+  z-index: 2147483000 !important;
+  overflow-x: hidden !important;
+  overflow-y: auto !important;
+  pointer-events: auto !important;
+  transform: none !important;
+}
+
+body.bg-hero .swal2-container.swal2-backdrop-show,
+body.bg-hero .swal2-container.swal2-noanimation {
+  background: rgba(36, 53, 47, 0.50) !important;
+  backdrop-filter: blur(2px);
+}
+
+body.bg-hero .swal2-container .swal2-popup,
+body.bg-hero.swal2-shown .swal2-container .swal2-popup {
+  position: relative !important;
+  margin: auto !important;
+  z-index: 2147483001 !important;
+  max-height: calc(100dvh - 1.5rem) !important;
+}
+
+body.bg-hero.swal2-shown .main-wrap,
+body.bg-hero.swal2-shown footer,
+body.bg-hero.swal2-height-auto .main-wrap,
+body.bg-hero.swal2-height-auto footer {
+  pointer-events: none !important;
+}
+
+body.bg-hero.swal2-shown .home-floating-flora,
+body.bg-hero.swal2-height-auto .home-floating-flora {
+  opacity: 0.08 !important;
+}
+
+@media (min-width: 769px) {
+  body.bg-hero .swal2-container,
+  body.bg-hero.swal2-shown .swal2-container,
+  body.bg-hero.swal2-height-auto .swal2-container {
+    position: fixed !important;
+    inset: 0 !important;
+    width: 100vw !important;
+    height: 100dvh !important;
+    z-index: 2147483000 !important;
+  }
+}
+
+@media (max-width: 768px) {
+  body.bg-hero .swal2-container,
+  body.bg-hero.swal2-shown .swal2-container,
+  body.bg-hero.swal2-height-auto .swal2-container {
+    padding: 0.7rem !important;
+  }
+}
