@@ -3816,3 +3816,228 @@ body.bg-hero .swal2-popup.swal-track-upgrade .swal2-html-container {
     animation: none !important;
   }
 }
+
+
+/* v62: Desktop home layout + floating floral motion
+   Scope: desktop-only visual polish for the public home page.
+   Mobile layout is intentionally preserved by hiding the new floating layer on small screens. */
+.home-floating-flora {
+  display: none;
+}
+
+@media (min-width: 769px) {
+  body.bg-hero {
+    overflow-x: hidden !important;
+  }
+
+  body.bg-hero .main-wrap {
+    padding: clamp(3rem, 6vh, 5rem) clamp(2rem, 5vw, 5rem) 2rem !important;
+    align-items: center !important;
+  }
+
+  body.bg-hero main > .max-w-4xl {
+    width: min(1280px, calc(100vw - clamp(4rem, 10vw, 10rem))) !important;
+    max-width: none !important;
+    margin-inline: auto !important;
+  }
+
+  body.bg-hero main .text-center.mb-8 {
+    width: 100% !important;
+    max-width: none !important;
+    margin-inline: auto !important;
+    margin-bottom: clamp(2.25rem, 4vh, 3.25rem) !important;
+  }
+
+  body.bg-hero main .flex.items-center.justify-center {
+    width: 100% !important;
+    justify-content: center !important;
+    gap: 1.35rem !important;
+    text-align: center !important;
+  }
+
+  body.bg-hero main .text-left {
+    text-align: left !important;
+  }
+
+  body.bg-hero main img[alt="RPRP Logo"] {
+    height: clamp(4.4rem, 5vw, 5.4rem) !important;
+  }
+
+  body.bg-hero main h1 {
+    font-size: clamp(2.45rem, 3vw, 3.25rem) !important;
+    line-height: 1.08 !important;
+    letter-spacing: -0.025em !important;
+    text-wrap: balance;
+  }
+
+  body.bg-hero main h1 + p {
+    margin-top: 0.25rem !important;
+    font-size: clamp(1.2rem, 1.45vw, 1.55rem) !important;
+    line-height: 1.25 !important;
+  }
+
+  body.bg-hero .grid.grid-cols-1,
+  body.bg-hero main .grid.grid-cols-1.md\:grid-cols-2 {
+    grid-template-columns: minmax(0, 1fr) !important;
+    width: min(1060px, 100%) !important;
+    max-width: min(1060px, 100%) !important;
+    margin-inline: auto !important;
+    gap: clamp(1.8rem, 4vh, 2.6rem) !important;
+  }
+
+  body.bg-hero .action-card {
+    min-height: clamp(170px, 20vh, 220px) !important;
+    height: auto !important;
+    max-width: 100% !important;
+    padding: clamp(2rem, 4vw, 3.2rem) !important;
+    align-items: center !important;
+    justify-content: center !important;
+    text-align: center !important;
+  }
+
+  body.bg-hero .action-card > div:first-child {
+    width: 100% !important;
+    margin: 0 !important;
+    color: #243B35 !important;
+    font-size: clamp(2.1rem, 2.7vw, 3rem) !important;
+    line-height: 1.18 !important;
+    letter-spacing: -0.02em !important;
+    text-align: center !important;
+    text-wrap: balance;
+  }
+
+  body.bg-hero .action-card > div:last-child {
+    display: none !important;
+  }
+
+  body.bg-hero .home-lower-botanical {
+    margin-top: clamp(2.2rem, 5vh, 3.6rem) !important;
+    margin-bottom: clamp(0.4rem, 2vh, 1rem) !important;
+  }
+
+  body.bg-hero footer {
+    position: relative;
+    z-index: 2;
+  }
+
+  body.bg-hero::before,
+  body.bg-hero::after,
+  body.bg-hero main > .max-w-4xl::before,
+  body.bg-hero .home-lower-botanical,
+  body.bg-hero .action-card::after,
+  body.bg-hero .home-card-secondary::before {
+    animation-duration: 18s !important;
+    animation-timing-function: ease-in-out !important;
+  }
+
+  .home-floating-flora {
+    display: block;
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 170px;
+    height: 110px;
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.22;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+    will-change: transform, opacity;
+    background-image: url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20240%20140'%3E%3Cg%20fill='none'%20stroke='%236FCF97'%20stroke-width='4.2'%20stroke-linecap='round'%20stroke-linejoin='round'%20opacity='.86'%3E%3Cpath%20d='M18%20112C58%2074%20108%2059%20162%2068c25%204%2046%2015%2064%2032'/%3E%3Cpath%20d='M74%2084C50%2064%2026%2059%206%2071c23%2024%2047%2028%2068%2013z'/%3E%3Cpath%20d='M119%2065C101%2037%20105%2016%20134%208c13%2026%208%2045-15%2057z'/%3E%3Cpath%20d='M167%2070c25-19%2050-15%2072%2010-27%2016-50%2013-72-10z'/%3E%3Cpath%20d='M140%2070c-24%2028-57%2039-99%2031%2027-30%2060-40%2099-31z'/%3E%3C/g%3E%3Cg%20fill='%23FFE082'%20opacity='.72'%3E%3Ccircle%20cx='132'%20cy='69'%20r='8'/%3E%3Cellipse%20cx='132'%20cy='43'%20rx='10'%20ry='22'/%3E%3Cellipse%20cx='132'%20cy='95'%20rx='10'%20ry='22'/%3E%3Cellipse%20cx='106'%20cy='69'%20rx='22'%20ry='10'/%3E%3Cellipse%20cx='158'%20cy='69'%20rx='22'%20ry='10'/%3E%3C/g%3E%3C/svg%3E");
+  }
+
+  .home-floating-flora-1 {
+    width: 210px;
+    height: 125px;
+    opacity: 0.18;
+    animation: homeFloraDriftA 42s linear infinite;
+  }
+
+  .home-floating-flora-2 {
+    width: 145px;
+    height: 92px;
+    opacity: 0.20;
+    animation: homeFloraDriftB 56s linear infinite;
+    animation-delay: -17s;
+  }
+
+  .home-floating-flora-3 {
+    width: 175px;
+    height: 108px;
+    opacity: 0.16;
+    animation: homeFloraDriftC 48s linear infinite;
+    animation-delay: -29s;
+  }
+
+  .home-floating-flora-4 {
+    width: 120px;
+    height: 78px;
+    opacity: 0.18;
+    animation: homeFloraDriftD 63s linear infinite;
+    animation-delay: -9s;
+  }
+
+  .home-floating-flora-5 {
+    width: 155px;
+    height: 96px;
+    opacity: 0.14;
+    animation: homeFloraDriftE 71s linear infinite;
+    animation-delay: -36s;
+  }
+}
+
+@keyframes homeFloraDriftA {
+  0% { transform: translate3d(-16vw, 18vh, 0) rotate(-9deg) scale(0.92); opacity: 0; }
+  10% { opacity: 0.18; }
+  32% { transform: translate3d(28vw, 11vh, 0) rotate(4deg) scale(1.02); }
+  64% { transform: translate3d(66vw, 22vh, 0) rotate(-3deg) scale(0.96); }
+  90% { opacity: 0.16; }
+  100% { transform: translate3d(116vw, 14vh, 0) rotate(8deg) scale(1.04); opacity: 0; }
+}
+
+@keyframes homeFloraDriftB {
+  0% { transform: translate3d(110vw, 38vh, 0) rotate(12deg) scale(0.82); opacity: 0; }
+  12% { opacity: 0.20; }
+  38% { transform: translate3d(72vw, 44vh, 0) rotate(-8deg) scale(0.94); }
+  68% { transform: translate3d(31vw, 35vh, 0) rotate(5deg) scale(0.88); }
+  90% { opacity: 0.15; }
+  100% { transform: translate3d(-18vw, 43vh, 0) rotate(-14deg) scale(0.98); opacity: 0; }
+}
+
+@keyframes homeFloraDriftC {
+  0% { transform: translate3d(-18vw, 64vh, 0) rotate(6deg) scale(0.78); opacity: 0; }
+  15% { opacity: 0.16; }
+  41% { transform: translate3d(24vw, 58vh, 0) rotate(-10deg) scale(0.96); }
+  72% { transform: translate3d(78vw, 68vh, 0) rotate(9deg) scale(0.86); }
+  100% { transform: translate3d(115vw, 60vh, 0) rotate(-4deg) scale(1.03); opacity: 0; }
+}
+
+@keyframes homeFloraDriftD {
+  0% { transform: translate3d(96vw, 16vh, 0) rotate(-18deg) scale(0.72); opacity: 0; }
+  18% { opacity: 0.18; }
+  46% { transform: translate3d(58vw, 24vh, 0) rotate(11deg) scale(0.9); }
+  73% { transform: translate3d(18vw, 18vh, 0) rotate(-7deg) scale(0.82); }
+  100% { transform: translate3d(-16vw, 26vh, 0) rotate(15deg) scale(0.95); opacity: 0; }
+}
+
+@keyframes homeFloraDriftE {
+  0% { transform: translate3d(-14vw, 78vh, 0) rotate(-5deg) scale(0.72); opacity: 0; }
+  16% { opacity: 0.14; }
+  44% { transform: translate3d(36vw, 83vh, 0) rotate(7deg) scale(0.88); }
+  76% { transform: translate3d(78vw, 76vh, 0) rotate(-12deg) scale(0.8); }
+  100% { transform: translate3d(116vw, 84vh, 0) rotate(5deg) scale(0.92); opacity: 0; }
+}
+
+@media (max-width: 768px) {
+  .home-floating-flora {
+    display: none !important;
+    animation: none !important;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .home-floating-flora {
+    animation: none !important;
+  }
+}
