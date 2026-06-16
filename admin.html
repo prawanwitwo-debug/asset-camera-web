@@ -1255,6 +1255,134 @@
                 width: 1637px;
             }
         }
+
+
+        /* v67: Combined asset age chart (scoped, avoids global SVG side effects) */
+        .age-category-combined {
+            background: #ffffff;
+            border: 1px solid #cfe4d9;
+            border-radius: 22px;
+            box-shadow: 0 18px 45px rgba(61, 139, 104, .10);
+            overflow: hidden;
+        }
+        .age-category-combined .age-chart-head {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 18px;
+            margin-bottom: 22px;
+        }
+        .age-category-combined .age-title-row {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+        .age-category-combined .age-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 16px;
+            display: grid;
+            place-items: center;
+            color: #0c6f55;
+            background: #e5f6ed;
+            border: 1px solid #c7ead8;
+            flex: 0 0 auto;
+        }
+        .age-category-combined .age-icon svg {
+            width: 24px;
+            height: 24px;
+            min-width: 0;
+            display: block;
+        }
+        .age-category-combined .age-title {
+            font-size: 22px;
+            line-height: 1.25;
+            margin: 0;
+            font-weight: 900;
+            letter-spacing: -.02em;
+            color: #243B35;
+        }
+        .age-category-combined .age-subtitle {
+            margin: .3rem 0 0;
+            color: #58736a;
+            font-size: 14px;
+            font-weight: 600;
+        }
+        .age-category-combined .age-legend {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: flex-end;
+            font-size: 13px;
+            font-weight: 800;
+            color: #28433b;
+        }
+        .age-category-combined .age-legend span {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: #fff;
+            border: 1px solid #cfe4d9;
+            padding: 8px 10px;
+            border-radius: 999px;
+        }
+        .age-category-combined .age-dot {
+            width: 11px;
+            height: 11px;
+            border-radius: 999px;
+            display: inline-block;
+        }
+        .age-category-combined .age-dot.green { background: #29c56a; }
+        .age-category-combined .age-dot.yellow { background: #f8a10a; }
+        .age-category-combined .age-dot.red { background: #f34242; }
+        .age-category-combined .age-chart-card {
+            background: linear-gradient(180deg, #f2fbf5, #eaf6ef);
+            border: 1px solid #bfe4d0;
+            border-radius: 20px;
+            padding: 18px 18px 14px;
+            overflow: auto;
+        }
+        .age-category-combined .age-chart-title {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            margin-bottom: 8px;
+            color: #274139;
+            font-weight: 900;
+            font-size: 15px;
+        }
+        .age-category-combined .age-chart-note {
+            font-size: 12px;
+            color: #6a837a;
+            font-weight: 700;
+        }
+        .age-category-combined .age-chart-svg {
+            display: block;
+            width: 100%;
+            min-width: 980px;
+            height: auto;
+        }
+        .age-category-combined .age-axis { stroke: rgba(36, 59, 53, .15); stroke-width: 1; }
+        .age-category-combined .age-tick-text { fill: #2c493f; font-size: 12px; font-weight: 800; }
+        .age-category-combined .age-cat-text { fill: #243B35; font-size: 13px; font-weight: 900; }
+        .age-category-combined .age-total-text { fill: #60776f; font-size: 11px; font-weight: 800; }
+        .age-category-combined .age-bubble { fill: #7b8b8d; }
+        .age-category-combined .age-bubble-text { fill: #fff; font-size: 11px; font-weight: 900; }
+        .age-category-combined .age-footer-note {
+            margin-top: 14px;
+            color: #58736a;
+            font-size: 12px;
+            font-weight: 700;
+        }
+        @media (max-width: 900px) {
+            .age-category-combined { border-radius: 18px; }
+            .age-category-combined .age-chart-head { display: block; }
+            .age-category-combined .age-legend { justify-content: flex-start; margin-top: 14px; }
+            .age-category-combined .age-title { font-size: 19px; }
+            .age-category-combined .age-subtitle { font-size: 13px; }
+        }
+
     </style>
 
     <!-- GitHub Pages API bridge -->
@@ -1458,88 +1586,37 @@
                 </div>
             </div>
 
-            <!-- Age by Category -->
-            <div class="dashboard-hover-card bg-white rounded-2xl shadow-lg p-6 mb-8">
-                <div class="flex items-start gap-3 mb-6">
-                    <div class="h-10 w-10 rounded-xl bg-gradient-to-br from-blue-600 to-indigo-700 text-white flex items-center justify-center shadow-md shadow-indigo-300">
-                        <i class="fas fa-chart-bar"></i>
+            <!-- Age by Category: v67 combined chart -->
+            <div class="dashboard-hover-card age-category-combined p-6 mb-8">
+                <div class="age-chart-head">
+                    <div class="age-title-row">
+                        <div class="age-icon" aria-hidden="true">
+                            <svg viewBox="0 0 24 24" fill="none">
+                                <path d="M4 19V5m0 14h16M8 16V9m4 7V6m4 10v-4" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
+                            </svg>
+                        </div>
+                        <div>
+                            <h2 class="age-title">อายุของครุภัณฑ์ (รายประเภท)</h2>
+                            <p class="age-subtitle">แสดงข้อมูล: คอมพิวเตอร์, กล้องวงจรปิด, โสตทัศนูปกรณ์, อุปกรณ์เครือข่าย แยกช่วงอายุ 0–2 ปี, 3–5 ปี และ 6+ ปี</p>
+                        </div>
                     </div>
-                    <div>
-                        <div class="inline-flex items-center gap-2 rounded-full bg-indigo-100 text-indigo-900 border border-indigo-300 px-3 py-1 text-sm font-bold shadow-sm">
-                            <span class="inline-block h-2 w-2 rounded-full bg-indigo-600"></span>
-                            อายุของครุภัณฑ์ (รายประเภท)
-                        </div>
-                        <div class="text-sm text-slate-500">แสดงจำนวนครุภัณฑ์แต่ละช่วงอายุ: 0-2 ปี (ใหม่), 3-5 ปี, 6+ ปี (เก่า)</div>
-                    </div>
-                </div>
-                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                    <div class="dashboard-hover-card rounded-2xl p-5 text-white" style="background: linear-gradient(135deg, #4f7cff, #5d6bff);">
-                        <div class="flex items-center gap-3 mb-2">
-                            <div class="h-10 w-10 rounded-full bg-white/20 flex items-center justify-center"><i class="fas fa-desktop"></i></div>
-                            <div>
-                                <div class="font-semibold">คอมพิวเตอร์</div>
-                                <div class="text-xs text-white/80">จำนวนทั้งหมด <span id="count-computer">0</span> รายการ</div>
-                            </div>
-                        </div>
-                        <div class="grid grid-cols-4 gap-2 text-[11px] mb-3">
-                            <div class="bg-blue-100/95 rounded-lg px-2 py-1 text-center text-blue-950 font-semibold shadow-sm ring-1 ring-blue-50/80">ทั้งหมด <span id="count-computer-total">0</span></div>
-                            <div class="bg-emerald-200/95 rounded-lg px-2 py-1 text-center text-emerald-950 font-semibold shadow-sm ring-1 ring-emerald-100">0-2 ปี(ใหม่) <span id="count-computer-new">0</span></div>
-                            <div class="bg-amber-200/95 rounded-lg px-2 py-1 text-center text-amber-950 font-semibold shadow-sm ring-1 ring-amber-100">3-5 ปี <span id="count-computer-mid">0</span></div>
-                            <div class="bg-rose-200/95 rounded-lg px-2 py-1 text-center text-rose-950 font-semibold shadow-sm ring-1 ring-rose-100">6+ ปี (เก่า) <span id="count-computer-old">0</span></div>
-                        </div>
-                        <div class="h-44"><canvas id="chart-computer"></canvas></div>
-                    </div>
-                    <div class="dashboard-hover-card rounded-2xl p-5 text-white" style="background: linear-gradient(135deg, #0ea5e9, #2563eb);">
-                        <div class="flex items-center gap-3 mb-2">
-                            <div class="h-10 w-10 rounded-full bg-white/20 flex items-center justify-center"><i class="fas fa-camera"></i></div>
-                            <div>
-                                <div class="font-semibold">กล้องวงจรปิด</div>
-                                <div class="text-xs text-white/80">จำนวนทั้งหมด <span id="count-cctv">0</span> รายการ</div>
-                            </div>
-                        </div>
-                        <div class="grid grid-cols-4 gap-2 text-[11px] mb-3">
-                            <div class="bg-sky-100/95 rounded-lg px-2 py-1 text-center text-sky-950 font-semibold shadow-sm ring-1 ring-sky-50/80">ทั้งหมด <span id="count-cctv-total">0</span></div>
-                            <div class="bg-emerald-200/95 rounded-lg px-2 py-1 text-center text-emerald-950 font-semibold shadow-sm ring-1 ring-emerald-100">0-2 ปี(ใหม่) <span id="count-cctv-new">0</span></div>
-                            <div class="bg-amber-200/95 rounded-lg px-2 py-1 text-center text-amber-950 font-semibold shadow-sm ring-1 ring-amber-100">3-5 ปี <span id="count-cctv-mid">0</span></div>
-                            <div class="bg-rose-200/95 rounded-lg px-2 py-1 text-center text-rose-950 font-semibold shadow-sm ring-1 ring-rose-100">6+ ปี (เก่า) <span id="count-cctv-old">0</span></div>
-                        </div>
-                        <div class="h-44"><canvas id="chart-cctv"></canvas></div>
-                    </div>
-                    <div class="dashboard-hover-card rounded-2xl p-5 text-white" style="background: linear-gradient(135deg, #f97316, #ef4444);">
-                        <div class="flex items-center gap-3 mb-2">
-                            <div class="h-10 w-10 rounded-full bg-white/20 flex items-center justify-center"><i class="fas fa-photo-video"></i></div>
-                            <div>
-                                <div class="font-semibold">โสตทัศนูปกรณ์</div>
-                                <div class="text-xs text-white/80">จำนวนทั้งหมด <span id="count-av">0</span> รายการ</div>
-                            </div>
-                        </div>
-                        <div class="grid grid-cols-4 gap-2 text-[11px] mb-3">
-                            <div class="bg-orange-100/95 rounded-lg px-2 py-1 text-center text-orange-950 font-semibold shadow-sm ring-1 ring-orange-50/80">ทั้งหมด <span id="count-av-total">0</span></div>
-                            <div class="bg-emerald-200/95 rounded-lg px-2 py-1 text-center text-emerald-950 font-semibold shadow-sm ring-1 ring-emerald-100">0-2 ปี(ใหม่) <span id="count-av-new">0</span></div>
-                            <div class="bg-amber-200/95 rounded-lg px-2 py-1 text-center text-amber-950 font-semibold shadow-sm ring-1 ring-amber-100">3-5 ปี <span id="count-av-mid">0</span></div>
-                            <div class="bg-rose-200/95 rounded-lg px-2 py-1 text-center text-rose-950 font-semibold shadow-sm ring-1 ring-rose-100">6+ ปี (เก่า) <span id="count-av-old">0</span></div>
-                        </div>
-                        <div class="h-44"><canvas id="chart-av"></canvas></div>
-                    </div>
-                    <div class="dashboard-hover-card rounded-2xl p-5 text-white" style="background: linear-gradient(135deg, #14b8a6, #0f766e);">
-                        <div class="flex items-center gap-3 mb-2">
-                            <div class="h-10 w-10 rounded-full bg-white/20 flex items-center justify-center"><i class="fas fa-network-wired"></i></div>
-                            <div>
-                                <div class="font-semibold">อุปกรณ์เครือข่าย</div>
-                                <div class="text-xs text-white/80">จำนวนทั้งหมด <span id="count-network">0</span> รายการ</div>
-                            </div>
-                        </div>
-                        <div class="grid grid-cols-4 gap-2 text-[11px] mb-3">
-                            <div class="bg-emerald-100/95 rounded-lg px-2 py-1 text-center text-emerald-950 font-semibold shadow-sm ring-1 ring-emerald-50/80">ทั้งหมด <span id="count-network-total">0</span></div>
-                            <div class="bg-emerald-200/95 rounded-lg px-2 py-1 text-center text-emerald-950 font-semibold shadow-sm ring-1 ring-emerald-100">0-2 ปี(ใหม่) <span id="count-network-new">0</span></div>
-                            <div class="bg-amber-200/95 rounded-lg px-2 py-1 text-center text-amber-950 font-semibold shadow-sm ring-1 ring-amber-100">3-5 ปี <span id="count-network-mid">0</span></div>
-                            <div class="bg-rose-200/95 rounded-lg px-2 py-1 text-center text-rose-950 font-semibold shadow-sm ring-1 ring-rose-100">6+ ปี (เก่า) <span id="count-network-old">0</span></div>
-                        </div>
-                        <div class="h-44"><canvas id="chart-network"></canvas></div>
+                    <div class="age-legend" aria-label="คำอธิบายสี">
+                        <span><i class="age-dot green"></i>0–2 ปี (ใหม่)</span>
+                        <span><i class="age-dot yellow"></i>3–5 ปี</span>
+                        <span><i class="age-dot red"></i>6+ ปี (เก่า)</span>
                     </div>
                 </div>
-                <div class="mt-4 text-xs text-slate-500">
-                    สีกราฟ: เขียว (0-2 ปี), ส้ม (3-5 ปี), แดง (6+ ปี)
+
+                <div class="age-chart-card">
+                    <div class="age-chart-title">
+                        <span>กราฟรวมรายประเภท</span>
+                        <span id="ageCategoryCombinedNote" class="age-chart-note">รวม 4 ประเภทในกราฟเดียว</span>
+                    </div>
+                    <div id="ageCategoryCombinedChart" aria-live="polite"></div>
+                </div>
+
+                <div class="age-footer-note">
+                    หมายเหตุ: กราฟนี้เชื่อมข้อมูลจริงจากระบบ และคำนวณช่วงอายุจากวันที่ได้รับครุภัณฑ์
                 </div>
             </div>
 
@@ -5680,6 +5757,9 @@
         }
 
         function updateAgeCategoryCharts() {
+            const chartWrap = document.getElementById('ageCategoryCombinedChart');
+            if (!chartWrap) return;
+
             const safeSupplies = Array.isArray(supplies) ? supplies : [];
             const categories = [
                 { key: '\u0E04\u0E2D\u0E21\u0E1E\u0E34\u0E27\u0E40\u0E15\u0E2D\u0E23\u0E4C', id: 'computer', label: '\u0E04\u0E2D\u0E21\u0E1E\u0E34\u0E27\u0E40\u0E15\u0E2D\u0E23\u0E4C' },
@@ -5688,107 +5768,100 @@
                 { key: '\u0E2D\u0E38\u0E1B\u0E01\u0E23\u0E13\u0E4C\u0E40\u0E04\u0E23\u0E37\u0E2D\u0E02\u0E48\u0E32\u0E22', id: 'network', label: '\u0E2D\u0E38\u0E1B\u0E01\u0E23\u0E13\u0E4C\u0E40\u0E04\u0E23\u0E37\u0E2D\u0E02\u0E48\u0E32\u0E22' }
             ];
 
-            const buckets = {
-                '0-2 ปี (ใหม่)': { min: 0, max: 2, color: '#22c55e', key: 'new' },
-                '3-5 ปี': { min: 3, max: 5, color: '#f59e0b', key: 'mid' },
-                '6+ ปี (เก่า)': { min: 6, max: 99, color: '#ef4444', key: 'old' }
+            const bucketDefs = [
+                { key: 'new', label: '0–2 ปี (ใหม่)', min: 0, max: 2.9999, color: '#29c56a', faint: '#a9efd0' },
+                { key: 'mid', label: '3–5 ปี', min: 3, max: 5.9999, color: '#f8a10a', faint: '#ffe58a' },
+                { key: 'old', label: '6+ ปี (เก่า)', min: 6, max: Infinity, color: '#f34242', faint: '#ffc9ce' }
+            ];
+
+            const rows = categories.map(function (category) {
+                const items = safeSupplies.filter(function (s) { return detectCategory(s) === category.key; });
+                const buckets = { new: 0, mid: 0, old: 0 };
+                items.forEach(function (item) {
+                    const age = calcAgeYears(item.receivedDate);
+                    const bucket = bucketDefs.find(function (b) { return age >= b.min && age <= b.max; }) || bucketDefs[0];
+                    buckets[bucket.key] += 1;
+                });
+                return {
+                    id: category.id,
+                    label: category.label,
+                    total: items.length,
+                    buckets: buckets
+                };
+            });
+
+            const maxCount = Math.max(1, ...rows.flatMap(function (row) {
+                return bucketDefs.map(function (bucket) { return Number(row.buckets[bucket.key] || 0); });
+            }));
+            const niceStep = maxCount <= 20 ? 5 : maxCount <= 80 ? 20 : 40;
+            const axisMax = Math.max(niceStep, Math.ceil(maxCount / niceStep) * niceStep);
+            const ticks = [0, axisMax * 0.25, axisMax * 0.5, axisMax * 0.75, axisMax].map(function (n) { return Math.round(n); });
+
+            const view = { w: 1120, h: 520, plotX: 72, plotY: 84, plotW: 992, plotH: 320, baseY: 404 };
+            const groupCenters = [202, 462, 722, 982];
+            const barW = 38;
+            const gap = 15;
+
+            const yForValue = function (value) {
+                return view.baseY - ((Number(value || 0) / axisMax) * view.plotH);
+            };
+            const escapeSvg = function (value) {
+                return String(value == null ? '' : value)
+                    .replace(/&/g, '&amp;')
+                    .replace(/</g, '&lt;')
+                    .replace(/>/g, '&gt;')
+                    .replace(/"/g, '&quot;');
             };
 
-            categories.forEach(c => {
-                const items = safeSupplies.filter(s => detectCategory(s) === c.key);
-                const countsByBucket = {};
-                const counts = Object.keys(buckets).map(label => {
-                    const { min, max, key } = buckets[label];
-                    const count = items.filter(it => {
-                        const age = calcAgeYears(it.receivedDate);
-                        return age >= min && age <= max;
-                    }).length;
-                    countsByBucket[key] = count;
-                    return count;
-                });
+            const grid = ticks.slice().reverse().map(function (tick) {
+                const y = yForValue(tick);
+                return `<line class="age-axis" x1="${view.plotX}" x2="${view.plotX + view.plotW}" y1="${y.toFixed(1)}" y2="${y.toFixed(1)}"/>`;
+            }).join('');
 
-                const totalEl = document.getElementById(`count-${c.id}`);
-                const totalMini = document.getElementById(`count-${c.id}-total`);
-                const newMini = document.getElementById(`count-${c.id}-new`);
-                const midMini = document.getElementById(`count-${c.id}-mid`);
-                const oldMini = document.getElementById(`count-${c.id}-old`);
-                if (totalEl) totalEl.textContent = items.length;
-                if (totalMini) totalMini.textContent = items.length;
-                if (newMini) newMini.textContent = countsByBucket.new || 0;
-                if (midMini) midMini.textContent = countsByBucket.mid || 0;
-                if (oldMini) oldMini.textContent = countsByBucket.old || 0;
+            const tickText = ticks.map(function (tick) {
+                const y = yForValue(tick) + 4;
+                const x = tick >= 100 ? 28 : tick >= 10 ? 36 : 44;
+                return `<text class="age-tick-text" x="${x}" y="${y.toFixed(1)}">${tick}</text>`;
+            }).join('');
 
-                const canvas = document.getElementById(`chart-${c.id}`);
-                if (!canvas) return;
+            const bars = rows.map(function (row, rowIndex) {
+                const center = groupCenters[rowIndex];
+                const startX = center - ((bucketDefs.length * barW + (bucketDefs.length - 1) * gap) / 2);
+                const barParts = bucketDefs.map(function (bucket, bucketIndex) {
+                    const value = Number(row.buckets[bucket.key] || 0);
+                    const x = startX + bucketIndex * (barW + gap);
+                    const rawH = value > 0 ? Math.max(8, view.baseY - yForValue(value)) : 4;
+                    const y = view.baseY - rawH;
+                    const rx = value > 0 ? Math.min(12, Math.max(4, rawH / 2)) : 2;
+                    const opacity = value > 0 ? 1 : .45;
+                    const fill = value > 0 ? bucket.color : bucket.faint;
+                    const bubble = value > 0
+                        ? `<circle class="age-bubble" cx="${(x + barW / 2).toFixed(1)}" cy="${(y - 14).toFixed(1)}" r="${value >= 100 ? 17 : 15}"/><text class="age-bubble-text" x="${(x + barW / 2).toFixed(1)}" y="${(y - 10).toFixed(1)}" text-anchor="middle">${value}</text>`
+                        : '';
+                    return `<rect x="${x.toFixed(1)}" y="${y.toFixed(1)}" width="${barW}" height="${rawH.toFixed(1)}" rx="${rx}" fill="${fill}" opacity="${opacity}"/>${bubble}`;
+                }).join('');
 
-                if (ageCharts[c.id]) ageCharts[c.id].destroy();
-                ageCharts[c.id] = new Chart(canvas.getContext('2d'), {
-                    type: 'bar',
-                    plugins: [ChartDataLabels],
-                    data: {
-                        labels: Object.keys(buckets),
-                        datasets: [{
-                            label: c.label,
-                            data: counts,
-                            backgroundColor: Object.keys(buckets).map(k => buckets[k].color),
-                            borderRadius: 8,
-                            borderSkipped: false,
-                            maxBarThickness: 36
-                        }]
-                    },
-                    options: {
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        layout: {
-                            padding: {
-                                top: 18,
-                                right: 8,
-                                left: 8,
-                                bottom: 0
-                            }
-                        },
-                        plugins: {
-                            legend: { display: false },
-                            datalabels: {
-                                color: '#243B35',
-                                backgroundColor: 'rgba(15,23,42,0.40)',
-                                borderRadius: 999,
-                                padding: { top: 4, right: 8, bottom: 4, left: 8 },
-                                anchor: 'end',
-                                align: 'top',
-                                offset: 6,
-                                clamp: false,
-                                clip: false,
-                                display: (context) => Number((context.dataset && context.dataset.data && context.dataset.data[context.dataIndex]) || 0) > 0,
-                                font: { weight: 'bold', size: 11 },
-                                formatter: (value) => value > 0 ? value : ''
-                            }
-                        },
-                        scales: {
-                            y: {
-                                beginAtZero: true,
-                                grace: '12%',
-                                grid: { color: 'rgba(255,255,255,0.16)' },
-                                border: { color: 'rgba(255,255,255,0.22)' },
-                                ticks: {
-                                    color: '#243B35',
-                                    font: { size: 11, weight: '600' },
-                                    padding: 4
-                                }
-                            },
-                            x: {
-                                grid: { display: false },
-                                border: { display: false },
-                                ticks: {
-                                    color: '#243B35',
-                                    font: { size: 11, weight: '600' },
-                                    padding: 8
-                                }
-                            }
-                        }
-                    }
-                });
-            });
+                return `${barParts}<text class="age-cat-text" x="${center}" y="442" text-anchor="middle">${escapeSvg(row.label)}</text><text class="age-total-text" x="${center}" y="464" text-anchor="middle">ทั้งหมด ${row.total.toLocaleString('th-TH')}</text>`;
+            }).join('');
+
+            const legendY = 492;
+            const innerLegend = bucketDefs.map(function (bucket, index) {
+                const x = [303, 503, 653][index];
+                return `<rect x="${x}" y="${legendY}" width="14" height="14" rx="4" fill="${bucket.color}"/><text class="age-tick-text" x="${x + 23}" y="${legendY + 12}">${escapeSvg(bucket.label)}</text>`;
+            }).join('');
+
+            chartWrap.innerHTML = `
+                <svg class="age-chart-svg" viewBox="0 0 1120 520" role="img" aria-label="กราฟอายุครุภัณฑ์รายประเภท">
+                    <rect x="72" y="44" width="992" height="360" rx="16" fill="rgba(255,255,255,.22)" />
+                    ${grid}
+                    ${tickText}
+                    ${bars}
+                    ${innerLegend}
+                </svg>
+            `;
+
+            const note = document.getElementById('ageCategoryCombinedNote');
+            if (note) note.textContent = `รวม ${rows.length} ประเภทในกราฟเดียว`;
         }
 
         function getDashboardLocationGroupLabel(locationValue) {
