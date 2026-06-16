@@ -1647,8 +1647,12 @@ function hideMiniLoading() {
         showSecurityLoading();
         google.script.run.withSuccessHandler(res => {
             if (res && res.success) {
+              const loginRole = String(res.role || (res.user && res.user.role) || 'viewer').toLowerCase();
+              const loginToken = String(res.token || (res.session && res.session.token) || '');
               localStorage.setItem('admin_auth', '1');
               localStorage.setItem('admin_user', username || 'admin');
+              localStorage.setItem('admin_role', loginRole);
+              if (loginToken) localStorage.setItem('admin_token', loginToken);
             if (remember) {
               localStorage.setItem('admin_login_remember', '1');
               localStorage.setItem('admin_login_user', username || '');

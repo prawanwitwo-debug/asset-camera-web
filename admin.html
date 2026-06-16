@@ -752,6 +752,48 @@
             border-radius: 10px;
         }
 
+
+        .sidebar-role-card {
+            border: 1px solid #dbeee5;
+            background: linear-gradient(135deg, #f4fff8 0%, #ffffff 58%, #fffdf0 100%);
+            border-radius: 18px;
+            padding: 14px;
+            box-shadow: 0 10px 24px rgba(15, 118, 110, 0.08);
+        }
+
+        .sidebar-role-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            padding: 7px 10px;
+            border-radius: 999px;
+            font-size: 12px;
+            font-weight: 800;
+            letter-spacing: 0.02em;
+        }
+
+        .sidebar-role-badge.role-admin {
+            background: #ecfdf5;
+            color: #047857;
+            border: 1px solid #a7f3d0;
+        }
+
+        .sidebar-role-badge.role-manager {
+            background: #eff6ff;
+            color: #1d4ed8;
+            border: 1px solid #bfdbfe;
+        }
+
+        .sidebar-role-badge.role-viewer {
+            background: #f8fafc;
+            color: #475569;
+            border: 1px solid #e2e8f0;
+        }
+
+        .role-hidden {
+            display: none !important;
+        }
+
         .main-content {
             flex: 1;
             padding: 24px;
@@ -1276,9 +1318,15 @@
                 </button>
             </div>
             <div class="mt-auto pt-4">
-                <button onclick="goHome()" class="w-full bg-slate-100 hover:bg-slate-200 text-slate-700 px-4 py-2 rounded-lg text-sm font-medium">
-                    กลับหน้าแรก
-                </button>
+                <div id="sidebarRoleCard" class="sidebar-role-card">
+                    <div class="text-[11px] uppercase tracking-widest text-slate-400 mb-2">สิทธิ์การเข้าถึง</div>
+                    <div id="sidebarRoleBadge" class="sidebar-role-badge role-admin">
+                        <i class="fas fa-shield-halved"></i>
+                        <span id="sidebarRoleLabel">Admin</span>
+                    </div>
+                    <div class="mt-3 text-xs text-slate-500">ผู้ใช้งาน</div>
+                    <div id="sidebarRoleUser" class="text-sm font-semibold text-slate-800 truncate">admin</div>
+                </div>
             </div>
         </aside>
 
@@ -2170,8 +2218,78 @@
       <button onclick="setupSheetsAndSeedSamplesFromSettings()" class="bg-blue-50 text-blue-700 px-5 py-2 rounded-lg hover:bg-blue-100 border border-blue-100">สร้างชีท + ใส่ข้อมูลตัวอย่าง</button>
     </div>
 
+
+    <div class="mt-8 border-t border-slate-100 pt-6" id="roleAccessSettingPanel">
+      <div class="flex flex-col md:flex-row md:items-start md:justify-between gap-3 mb-4">
+        <div>
+          <h3 class="text-xl font-bold text-slate-800">จัดการสิทธิ์ผู้ใช้งานภายใน</h3>
+          <p class="text-sm text-slate-500 mt-1">กำหนดสิทธิ์ Admin / Manager / Viewer สำหรับการเข้าใช้งานหลังบ้าน</p>
+        </div>
+        <button onclick="loadUserAccessSettings()" class="bg-emerald-50 text-emerald-700 px-4 py-2 rounded-lg hover:bg-emerald-100 border border-emerald-100 text-sm font-semibold">
+          <i class="fas fa-rotate mr-2"></i>โหลดรายชื่อ
+        </button>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_minmax(360px,460px)] gap-5">
+        <div class="rounded-2xl border border-slate-200 overflow-hidden bg-white">
+          <div class="overflow-x-auto">
+            <table class="w-full text-sm">
+              <thead class="bg-slate-50 text-slate-600">
+                <tr>
+                  <th class="px-4 py-3 text-left">Username</th>
+                  <th class="px-4 py-3 text-left">Role</th>
+                  <th class="px-4 py-3 text-left">สถานะ</th>
+                  <th class="px-4 py-3 text-left whitespace-nowrap">จัดการ</th>
+                </tr>
+              </thead>
+              <tbody id="userAccessBody">
+                <tr><td class="px-4 py-6 text-slate-400 text-center" colspan="4">กดโหลดรายชื่อผู้ใช้งาน</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="rounded-2xl border border-emerald-100 bg-emerald-50/30 p-4">
+          <h4 id="userAccessFormTitle" class="font-bold text-slate-800 mb-3">เพิ่ม / แก้ไขผู้ใช้งาน</h4>
+          <div class="space-y-3">
+            <div>
+              <label class="block text-sm font-medium text-slate-700 mb-1">Username</label>
+              <input id="userAccessUsername" type="text" class="w-full px-4 py-2 border border-slate-200 rounded-lg bg-white" placeholder="เช่น manager" />
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-slate-700 mb-1">Password</label>
+              <input id="userAccessPassword" type="password" class="w-full px-4 py-2 border border-slate-200 rounded-lg bg-white" placeholder="เว้นว่างถ้าไม่ต้องการเปลี่ยนรหัสผ่าน" />
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+              <div>
+                <label class="block text-sm font-medium text-slate-700 mb-1">Role</label>
+                <select id="userAccessRole" class="w-full px-4 py-2 border border-slate-200 rounded-lg bg-white">
+                  <option value="admin">Admin — ทำได้ทุกอย่าง</option>
+                  <option value="manager">Manager — ยกเว้นลบ/ตั้งค่า</option>
+                  <option value="viewer">Viewer — แดชบรอดเท่านั้น</option>
+                </select>
+              </div>
+              <label class="flex items-end gap-2 text-sm font-medium text-slate-700 pb-2">
+                <input id="userAccessActive" type="checkbox" class="w-4 h-4 accent-emerald-600" checked />
+                เปิดใช้งาน
+              </label>
+            </div>
+            <div class="rounded-xl border border-slate-200 bg-white p-3 text-xs text-slate-500 leading-relaxed">
+              <div><b>Admin:</b> ทำได้ทุกอย่าง</div>
+              <div><b>Manager:</b> เข้าได้ทั้งหมด ยกเว้นลบข้อมูลและเมนูการตั้งค่า</div>
+              <div><b>Viewer:</b> เห็นเฉพาะแดชบรอด</div>
+            </div>
+            <div class="flex flex-wrap gap-2 pt-1">
+              <button onclick="saveUserAccessFromSettings()" class="bg-emerald-600 text-white px-5 py-2 rounded-lg hover:bg-emerald-700 font-semibold">บันทึกสิทธิ์</button>
+              <button onclick="resetUserAccessForm()" class="bg-white text-slate-700 border border-slate-200 px-5 py-2 rounded-lg hover:bg-slate-50">ล้างฟอร์ม</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <div class="mt-6 text-xs text-gray-500">
-      หมายเหตุ: เปลี่ยนรหัสสเปรดชีตจะมีผลกับข้อมูลทั้งหมดในระบบ
+      หมายเหตุ: เปลี่ยนรหัสสเปรดชีตจะมีผลกับข้อมูลทั้งหมดในระบบ และการจัดการสิทธิ์ทำได้เฉพาะ Admin
     </div>
   </div>
 </div>
@@ -2379,7 +2497,10 @@
         let html5QrCode = null;
         let currentScanMode = '';
         let currentTabName = 'home';
-        const tabOrder = ['home', 'manage', 'check', 'report', 'change', 'setting'];
+        const BASE_TAB_ORDER = ['home', 'manage', 'check', 'report', 'change', 'setting'];
+        let tabOrder = BASE_TAB_ORDER.slice();
+        let currentUserRole = normalizeUserRole(localStorage.getItem('admin_role') || 'admin');
+        let userAccessRows = [];
         let selectedSupplyCodes = new Set();
         let manageCurrentPage = 1;
         let managePageSize = 10;
@@ -2989,24 +3110,28 @@
 
         // Initialize
         document.addEventListener('DOMContentLoaded', function () {
-            if (!localStorage.getItem('admin_auth')) {
+            if (!localStorage.getItem('admin_auth') || !localStorage.getItem('admin_token')) {
                 Swal.fire({
                     icon: 'warning',
                     title: 'กรุณาเข้าสู่ระบบ',
-                    text: 'ต้องเข้าสู่ระบบจากหน้าผู้ใช้งานก่อน',
+                    text: 'ต้องเข้าสู่ระบบจากหน้าผู้ใช้งานก่อน หรือ Session หมดอายุ',
                     confirmButtonText: 'กลับหน้าผู้ใช้งาน'
                 }).then(() => {
+                    localStorage.removeItem('admin_auth');
+                    localStorage.removeItem('admin_token');
                     redirectToPage('user');
                 });
                 return;
             }
             initLoaderLottie();
+            applyRoleAccess();
             loadAssetStatusOptions();
             loadData();
             setupEventListeners();
             // Ensure first tab is active on mobile too
             updateActiveTab('home');
             currentTabName = 'home';
+            applyRoleAccess();
             updateTabShortcutButtons();
         });
 
@@ -3279,6 +3404,101 @@
             return URL.createObjectURL(new Blob([bytes], { type: mimeType || 'application/zip' }));
         }
 
+        const ROLE_META = {
+            admin: {
+                label: 'Admin',
+                thai: 'ผู้ดูแลระบบ',
+                icon: 'fa-shield-halved',
+                badgeClass: 'role-admin',
+                allowedTabs: BASE_TAB_ORDER.slice()
+            },
+            manager: {
+                label: 'Manager',
+                thai: 'ผู้จัดการข้อมูล',
+                icon: 'fa-user-gear',
+                badgeClass: 'role-manager',
+                allowedTabs: ['home', 'manage', 'check', 'report', 'change']
+            },
+            viewer: {
+                label: 'Viewer',
+                thai: 'ผู้ดูอย่างเดียว',
+                icon: 'fa-eye',
+                badgeClass: 'role-viewer',
+                allowedTabs: ['home']
+            }
+        };
+
+        function normalizeUserRole(role) {
+            const value = String(role || '').trim().toLowerCase();
+            if (value === 'admin' || value === 'manager' || value === 'viewer') return value;
+            if (value === 'user' || value === 'view' || value === 'read' || value === 'readonly') return 'viewer';
+            return 'viewer';
+        }
+
+        function getCurrentRole() {
+            currentUserRole = normalizeUserRole(localStorage.getItem('admin_role') || currentUserRole || 'viewer');
+            return currentUserRole;
+        }
+
+        function getRoleMeta(role) {
+            return ROLE_META[normalizeUserRole(role)] || ROLE_META.viewer;
+        }
+
+        function getAllowedTabsForRole(role) {
+            return getRoleMeta(role).allowedTabs.slice();
+        }
+
+        function canAccessTab(tabName) {
+            return getAllowedTabsForRole(getCurrentRole()).indexOf(tabName) !== -1;
+        }
+
+        function canDeleteData() {
+            return getCurrentRole() === 'admin';
+        }
+
+        function canAccessSettings() {
+            return getCurrentRole() === 'admin';
+        }
+
+        function updateSidebarRoleCard() {
+            const role = getCurrentRole();
+            const meta = getRoleMeta(role);
+            const badge = document.getElementById('sidebarRoleBadge');
+            const label = document.getElementById('sidebarRoleLabel');
+            const user = document.getElementById('sidebarRoleUser');
+            if (badge) {
+                badge.className = `sidebar-role-badge ${meta.badgeClass}`;
+                badge.innerHTML = `<i class="fas ${meta.icon}"></i><span id="sidebarRoleLabel">${meta.label}</span>`;
+            }
+            if (label) label.textContent = meta.label;
+            if (user) user.textContent = localStorage.getItem('admin_user') || 'user';
+        }
+
+        function applyRoleAccess() {
+            const role = getCurrentRole();
+            tabOrder = getAllowedTabsForRole(role);
+            document.body.setAttribute('data-user-role', role);
+            document.querySelectorAll('.tab-btn[data-tab]').forEach(function (btn) {
+                const tab = btn.getAttribute('data-tab');
+                const allowed = tabOrder.indexOf(tab) !== -1;
+                btn.classList.toggle('role-hidden', !allowed);
+                btn.disabled = !allowed;
+                btn.setAttribute('aria-hidden', allowed ? 'false' : 'true');
+            });
+            updateSidebarRoleCard();
+            if (!canAccessTab(currentTabName)) currentTabName = 'home';
+            updateTabShortcutButtons();
+        }
+
+        function denyRoleAccess(message) {
+            Swal.fire({
+                icon: 'warning',
+                title: 'ไม่มีสิทธิ์เข้าถึง',
+                text: message || 'บัญชีนี้ไม่มีสิทธิ์ใช้งานส่วนนี้',
+                confirmButtonColor: '#10b981'
+            });
+        }
+
         function initLoaderLottie() {
             const container = document.getElementById('loaderLottie');
             if (!container) return;
@@ -3426,6 +3646,11 @@
         }
 
         function showTab(tabName) {
+            applyRoleAccess();
+            if (!canAccessTab(tabName)) {
+                denyRoleAccess(tabName === 'setting' ? 'Manager และ Viewer ไม่สามารถเข้าหน้าการตั้งค่าได้' : 'Viewer สามารถเข้าดูได้เฉพาะแดชบรอด');
+                tabName = 'home';
+            }
             // Hide all tabs
             document.querySelectorAll('.tab-content').forEach(tab => tab.classList.add('hidden'));
 
@@ -3673,13 +3898,146 @@
         }
 
         function loadSettingsTab() {
+            if (!canAccessSettings()) {
+                denyRoleAccess('เฉพาะ Admin เท่านั้นที่เข้าหน้าการตั้งค่าได้');
+                showTab('home');
+                return;
+            }
             google.script.run.withSuccessHandler(function (cfg) {
                 document.getElementById('settingFolderId').value = cfg.folderId || '';
                 document.getElementById('settingSpreadsheetId').value = cfg.spreadsheetId || '';
             }).getConfig();
+            loadUserAccessSettings();
+        }
+
+        function renderUserRoleBadge(role) {
+            const normalized = normalizeUserRole(role);
+            const meta = getRoleMeta(normalized);
+            const cls = normalized === 'admin' ? 'bg-emerald-50 text-emerald-700 border-emerald-100' : (normalized === 'manager' ? 'bg-blue-50 text-blue-700 border-blue-100' : 'bg-slate-50 text-slate-600 border-slate-200');
+            return `<span class="inline-flex items-center gap-2 rounded-full border px-3 py-1 text-xs font-bold ${cls}"><i class="fas ${meta.icon}"></i>${meta.label}</span>`;
+        }
+
+        function loadUserAccessSettings() {
+            if (!canAccessSettings()) return;
+            const tbody = document.getElementById('userAccessBody');
+            if (tbody) tbody.innerHTML = '<tr><td class="px-4 py-6 text-slate-400 text-center" colspan="4">กำลังโหลด...</td></tr>';
+            google.script.run
+                .withSuccessHandler(function (rows) {
+                    userAccessRows = Array.isArray(rows) ? rows : [];
+                    renderUserAccessTable();
+                })
+                .withFailureHandler(function (error) {
+                    if (tbody) tbody.innerHTML = `<tr><td class="px-4 py-6 text-rose-500 text-center" colspan="4">โหลดรายชื่อไม่สำเร็จ: ${(error && error.message) || error}</td></tr>`;
+                })
+                .getUsersForSettings();
+        }
+
+        function renderUserAccessTable() {
+            const tbody = document.getElementById('userAccessBody');
+            if (!tbody) return;
+            if (!userAccessRows.length) {
+                tbody.innerHTML = '<tr><td class="px-4 py-6 text-slate-400 text-center" colspan="4">ยังไม่มีผู้ใช้งาน</td></tr>';
+                return;
+            }
+            tbody.innerHTML = userAccessRows.map(function (user) {
+                const username = String(user.username || '').replace(/'/g, '&#39;').replace(/"/g, '&quot;');
+                const active = user.active !== false;
+                return `
+                    <tr class="border-t border-slate-100 hover:bg-slate-50">
+                        <td class="px-4 py-3 font-semibold text-slate-800">${username}</td>
+                        <td class="px-4 py-3">${renderUserRoleBadge(user.role)}</td>
+                        <td class="px-4 py-3">
+                            <span class="inline-flex rounded-full px-3 py-1 text-xs font-semibold ${active ? 'bg-emerald-50 text-emerald-700' : 'bg-rose-50 text-rose-700'}">${active ? 'เปิดใช้งาน' : 'ปิดใช้งาน'}</span>
+                        </td>
+                        <td class="px-4 py-3 whitespace-nowrap">
+                            <button onclick="editUserAccessFromSettings('${username}')" class="rounded-lg bg-amber-50 text-amber-700 border border-amber-100 px-3 py-1.5 text-xs font-semibold hover:bg-amber-100">แก้ไข</button>
+                            <button onclick="deleteUserAccessFromSettings('${username}')" class="rounded-lg bg-rose-50 text-rose-700 border border-rose-100 px-3 py-1.5 text-xs font-semibold hover:bg-rose-100 ml-1">ลบ</button>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        function resetUserAccessForm() {
+            const title = document.getElementById('userAccessFormTitle');
+            if (title) title.textContent = 'เพิ่ม / แก้ไขผู้ใช้งาน';
+            ['userAccessUsername', 'userAccessPassword'].forEach(function (id) {
+                const el = document.getElementById(id);
+                if (el) el.value = '';
+            });
+            const roleEl = document.getElementById('userAccessRole');
+            if (roleEl) roleEl.value = 'manager';
+            const activeEl = document.getElementById('userAccessActive');
+            if (activeEl) activeEl.checked = true;
+        }
+
+        function editUserAccessFromSettings(username) {
+            const row = userAccessRows.find(function (item) { return String(item.username || '') === String(username || ''); });
+            if (!row) return;
+            const title = document.getElementById('userAccessFormTitle');
+            const userEl = document.getElementById('userAccessUsername');
+            const passEl = document.getElementById('userAccessPassword');
+            const roleEl = document.getElementById('userAccessRole');
+            const activeEl = document.getElementById('userAccessActive');
+            if (title) title.textContent = 'แก้ไขผู้ใช้งาน: ' + row.username;
+            if (userEl) userEl.value = row.username || '';
+            if (passEl) passEl.value = '';
+            if (roleEl) roleEl.value = normalizeUserRole(row.role);
+            if (activeEl) activeEl.checked = row.active !== false;
+        }
+
+        function saveUserAccessFromSettings() {
+            if (!canAccessSettings()) return denyRoleAccess('เฉพาะ Admin เท่านั้นที่จัดการสิทธิ์ได้');
+            const payload = {
+                username: (document.getElementById('userAccessUsername')?.value || '').trim(),
+                password: document.getElementById('userAccessPassword')?.value || '',
+                role: document.getElementById('userAccessRole')?.value || 'viewer',
+                active: !!document.getElementById('userAccessActive')?.checked,
+                actor: getCurrentActor()
+            };
+            if (!payload.username) {
+                Swal.fire({ icon: 'warning', title: 'กรุณาระบุ Username', confirmButtonColor: '#10b981' });
+                return;
+            }
+            google.script.run
+                .withSuccessHandler(function (res) {
+                    if (!res || !res.success) {
+                        Swal.fire({ icon: 'error', title: 'บันทึกสิทธิ์ไม่สำเร็จ', text: (res && res.message) || '', confirmButtonColor: '#EF5350' });
+                        return;
+                    }
+                    Swal.fire({ icon: 'success', title: 'บันทึกสิทธิ์เรียบร้อย', confirmButtonColor: '#10b981' });
+                    resetUserAccessForm();
+                    loadUserAccessSettings();
+                })
+                .saveUserAccess(payload);
+        }
+
+        function deleteUserAccessFromSettings(username) {
+            if (!canAccessSettings()) return denyRoleAccess('เฉพาะ Admin เท่านั้นที่ลบผู้ใช้งานได้');
+            Swal.fire({
+                icon: 'warning',
+                title: 'ยืนยันการลบผู้ใช้งาน?',
+                text: 'ผู้ใช้งานนี้จะไม่สามารถเข้าสู่ระบบได้',
+                showCancelButton: true,
+                confirmButtonText: 'ลบ',
+                cancelButtonText: 'ยกเลิก',
+                confirmButtonColor: '#ef4444'
+            }).then(function (result) {
+                if (!result.isConfirmed) return;
+                google.script.run.withSuccessHandler(function (res) {
+                    if (!res || !res.success) {
+                        Swal.fire({ icon: 'error', title: 'ลบไม่สำเร็จ', text: (res && res.message) || '', confirmButtonColor: '#EF5350' });
+                        return;
+                    }
+                    Swal.fire({ icon: 'success', title: 'ลบผู้ใช้งานแล้ว', confirmButtonColor: '#10b981' });
+                    resetUserAccessForm();
+                    loadUserAccessSettings();
+                }).deleteUserAccess(username, getCurrentActor());
+            });
         }
 
         function saveSettingsTab() {
+            if (!canAccessSettings()) return denyRoleAccess('เฉพาะ Admin เท่านั้นที่บันทึกการตั้งค่าได้');
             const folderId = document.getElementById('settingFolderId').value.trim();
             const spreadsheetId = document.getElementById('settingSpreadsheetId').value.trim();
 
@@ -3896,7 +4254,7 @@
                     refreshAssetInputSuggestions();
                     hideLoading();
                     updateDashboard();
-                    loadSuppliesTable();
+                    if (canAccessTab('manage')) loadSuppliesTable();
                 })
                 .withFailureHandler(function (error) {
                     hideLoading();
@@ -4808,9 +5166,9 @@
                                     <button onclick="editSupply('${safeId}')" class="action-pill action-pill-edit" title="แก้ไขข้อมูล">
                                         <i class="fas fa-pen"></i>
                                     </button>
-                                    <button onclick="deleteSupply('${safeId}')" class="action-pill action-pill-delete" title="ลบรายการ">
+                                    ${canDeleteData() ? `<button onclick="deleteSupply('${safeId}')" class="action-pill action-pill-delete" title="ลบรายการ">
                                         <i class="fas fa-trash"></i>
-                                    </button>
+                                    </button>` : ''}
                                 </div>
                             </td>
                         </tr>
@@ -4865,10 +5223,10 @@
                                     <i class="fas fa-pen text-base"></i>
                                     <span>แก้ไข</span>
                                 </button>
-                                <button onclick="deleteSupply('${safeId}')" class="h-14 rounded-xl bg-rose-50 text-rose-700 border border-rose-100 text-xs font-semibold inline-flex flex-col items-center justify-center gap-1">
+                                ${canDeleteData() ? `<button onclick="deleteSupply('${safeId}')" class="h-14 rounded-xl bg-rose-50 text-rose-700 border border-rose-100 text-xs font-semibold inline-flex flex-col items-center justify-center gap-1">
                                     <i class="fas fa-trash text-base"></i>
                                     <span>ลบ</span>
-                                </button>
+                                </button>` : ''}
                             </div>
                         </div>
                     `;
@@ -6088,6 +6446,10 @@
         }
 
         function deleteSupply(id) {
+            if (!canDeleteData()) {
+                denyRoleAccess('Manager และ Viewer ไม่มีสิทธิ์ลบข้อมูล');
+                return;
+            }
             Swal.fire({
                 title: 'ยืนยันการลบ?',
                 text: 'คุณต้องการลบครุภัณฑ์นี้ใช่หรือไม่?',

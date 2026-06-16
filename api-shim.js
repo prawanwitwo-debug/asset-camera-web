@@ -16,6 +16,18 @@
     return base + 'index.html';
   }
 
+  function getStoredAuth() {
+    try {
+      return {
+        token: window.localStorage ? (localStorage.getItem('admin_token') || '') : '',
+        username: window.localStorage ? (localStorage.getItem('admin_user') || '') : '',
+        role: window.localStorage ? (localStorage.getItem('admin_role') || '') : ''
+      };
+    } catch (error) {
+      return { token: '', username: '', role: '' };
+    }
+  }
+
   async function callApi(functionName, args) {
     const name = String(functionName || '').trim();
     const params = Array.isArray(args) ? args : [];
@@ -33,7 +45,7 @@
       method: 'POST',
       // ใช้ text/plain เพื่อลดโอกาสเกิด CORS preflight กับ Apps Script Web App
       headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-      body: JSON.stringify({ functionName: name, args: params })
+      body: JSON.stringify({ functionName: name, args: params, auth: getStoredAuth() })
     });
 
     const text = await response.text();
