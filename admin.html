@@ -14,7 +14,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     <script src="https://unpkg.com/@dotlottie/player-component@2.7.12/dist/dotlottie-player.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="./org-theme.css?v=25">
+    <link rel="stylesheet" href="./org-theme.css?v=72">
     <style>
         * {
             font-family: 'Kanit', sans-serif;
@@ -752,6 +752,48 @@
             border-radius: 10px;
         }
 
+
+        .sidebar-role-card {
+            border: 1px solid #dbeee5;
+            background: linear-gradient(135deg, #f4fff8 0%, #ffffff 58%, #fffdf0 100%);
+            border-radius: 18px;
+            padding: 14px;
+            box-shadow: 0 10px 24px rgba(15, 118, 110, 0.08);
+        }
+
+        .sidebar-role-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            padding: 7px 10px;
+            border-radius: 999px;
+            font-size: 12px;
+            font-weight: 800;
+            letter-spacing: 0.02em;
+        }
+
+        .sidebar-role-badge.role-admin {
+            background: #ecfdf5;
+            color: #047857;
+            border: 1px solid #a7f3d0;
+        }
+
+        .sidebar-role-badge.role-manager {
+            background: #eff6ff;
+            color: #1d4ed8;
+            border: 1px solid #bfdbfe;
+        }
+
+        .sidebar-role-badge.role-viewer {
+            background: #f8fafc;
+            color: #475569;
+            border: 1px solid #e2e8f0;
+        }
+
+        .role-hidden {
+            display: none !important;
+        }
+
         .main-content {
             flex: 1;
             padding: 24px;
@@ -1163,6 +1205,560 @@
                 width: 1637px;
             }
         }
+
+
+        /* v72: sidebar session actions restored */
+        .sidebar-role-actions {
+            display: grid;
+            gap: 8px;
+            margin-top: 12px;
+        }
+
+        .sidebar-logout-btn {
+            width: 100%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            border: 1px solid #fecdd3;
+            background: #fff1f2;
+            color: #be123c;
+            border-radius: 12px;
+            padding: 9px 12px;
+            font-size: 13px;
+            font-weight: 800;
+            transition: transform 0.18s ease, background 0.18s ease, border-color 0.18s ease;
+        }
+
+        .sidebar-logout-btn:hover {
+            background: #ffe4e6;
+            border-color: #fda4af;
+            transform: translateY(-1px);
+        }
+
+        .sidebar-home-btn {
+            width: 100%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            border: 1px solid #dbeee5;
+            background: #ffffff;
+            color: #047857;
+            border-radius: 12px;
+            padding: 8px 12px;
+            font-size: 12px;
+            font-weight: 800;
+            transition: transform 0.18s ease, background 0.18s ease, border-color 0.18s ease;
+        }
+
+        .sidebar-home-btn:hover {
+            background: #ecfdf5;
+            border-color: #a7f3d0;
+            transform: translateY(-1px);
+        }
+
+
+        /* v72: Dashboard age donut + responsive paired cards */
+        .dashboard-status-grid-v72 {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 1.25rem;
+            margin-bottom: 2rem;
+        }
+
+        @media (min-width: 768px) {
+            .dashboard-status-grid-v72 {
+                grid-template-columns: repeat(4, minmax(0, 1fr));
+            }
+        }
+
+        @media (min-width: 1536px) {
+            .dashboard-status-grid-v72 {
+                grid-template-columns: repeat(7, minmax(0, 1fr));
+            }
+        }
+
+        .dashboard-main-grid-v72 {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+            gap: 18px;
+            align-items: stretch;
+            margin-bottom: 2rem;
+        }
+
+        .dashboard-main-grid-v72 > .dashboard-hover-card {
+            min-width: 0;
+            margin-bottom: 0 !important;
+        }
+
+        .dashboard-v72-card {
+            background: #ffffff;
+            border: 1px solid #cfe4d9;
+            border-radius: 22px;
+            box-shadow: 0 18px 45px rgba(61, 139, 104, .10);
+            overflow: hidden;
+            height: 100%;
+        }
+
+        .dashboard-v72-head {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 14px;
+            margin-bottom: 16px;
+        }
+
+        .dashboard-v72-title-row {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            min-width: 0;
+        }
+
+        .dashboard-v72-icon {
+            width: 42px;
+            height: 42px;
+            border-radius: 15px;
+            display: grid;
+            place-items: center;
+            color: #ffffff;
+            background: linear-gradient(135deg, #0f8a70, #0f766e);
+            border: 1px solid rgba(15, 138, 112, .25);
+            box-shadow: 0 10px 24px rgba(15, 138, 112, .16);
+            flex: 0 0 auto;
+        }
+
+        .dashboard-v72-title-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            border-radius: 999px;
+            background: #ecfdf5;
+            color: #065f46;
+            border: 1px solid #a7f3d0;
+            padding: 7px 11px;
+            font-size: 13px;
+            font-weight: 900;
+            line-height: 1.15;
+            box-shadow: 0 3px 10px rgba(15, 23, 42, 0.04);
+        }
+
+        .dashboard-v72-title-badge::before {
+            content: '';
+            width: 9px;
+            height: 9px;
+            border-radius: 999px;
+            background: #17c98a;
+            box-shadow: 0 0 0 4px rgba(23, 201, 138, .12);
+        }
+
+        .dashboard-v72-title {
+            font-size: 19px;
+            line-height: 1.25;
+            margin: 0;
+            font-weight: 900;
+            letter-spacing: -.02em;
+            color: #243B35;
+        }
+
+        .dashboard-v72-subtitle {
+            margin: .28rem 0 0;
+            color: #58736a;
+            font-size: 12px;
+            line-height: 1.45;
+            font-weight: 700;
+        }
+
+        .dashboard-v72-pill {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            flex: 0 0 auto;
+            padding: 7px 12px;
+            border-radius: 999px;
+            border: 1px solid #cfe4d9;
+            background: #f8fffb;
+            color: #0d705b;
+            font-size: 12px;
+            font-weight: 900;
+            white-space: nowrap;
+        }
+
+        .dashboard-v72-inner {
+            border-radius: 18px;
+            border: 1px solid #dbe8e0;
+            background: #f8fafc;
+            padding: 14px;
+            overflow: hidden;
+        }
+
+        .dashboard-v72-inner-head {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-bottom: 14px;
+        }
+
+        @media (min-width: 768px) {
+            .dashboard-v72-inner-head {
+                flex-direction: row;
+                align-items: flex-start;
+                justify-content: space-between;
+            }
+        }
+
+        .dashboard-v72-mini-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            border-radius: 999px;
+            background: #ecfdf5;
+            color: #065f46;
+            border: 1px solid #a7f3d0;
+            padding: 7px 11px;
+            font-size: 12px;
+            font-weight: 900;
+            width: fit-content;
+        }
+
+        .dashboard-v72-mini-badge i {
+            font-size: 11px;
+        }
+
+        .dashboard-v72-mini-desc {
+            color: #64748b;
+            font-size: 11px;
+            margin-top: 6px;
+            line-height: 1.45;
+            font-weight: 700;
+        }
+
+        .dashboard-v72-content-grid {
+            display: grid;
+            grid-template-columns: minmax(0, 260px) minmax(0, 1fr);
+            gap: 14px;
+            align-items: center;
+        }
+
+        .dashboard-v72-donut-box,
+        .dashboard-v72-list-box {
+            border-radius: 16px;
+            border: 1px solid #e2e8f0;
+            background: #ffffff;
+            padding: 12px;
+            min-width: 0;
+        }
+
+        .dashboard-v72-donut-wrap {
+            height: 260px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .dashboard-v72-list-head {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            margin-bottom: 10px;
+        }
+
+        .dashboard-v72-list-title {
+            color: #1f2937;
+            font-size: 13px;
+            font-weight: 900;
+        }
+
+        .dashboard-v72-list-note {
+            color: #64748b;
+            font-size: 11px;
+            font-weight: 700;
+            white-space: nowrap;
+        }
+
+        .dashboard-v72-legend {
+            display: grid;
+            gap: 8px;
+            max-height: 310px;
+            overflow-y: auto;
+            padding-right: 2px;
+        }
+
+        .dashboard-v72-legend-row {
+            display: flex;
+            align-items: center;
+            gap: 11px;
+            border-radius: 14px;
+            border: 1px solid #e2e8f0;
+            background: #f8fafc;
+            padding: 10px 11px;
+            min-width: 0;
+        }
+
+        .dashboard-v72-legend-dot {
+            width: 13px;
+            height: 13px;
+            border-radius: 999px;
+            flex: 0 0 auto;
+        }
+
+        .dashboard-v72-legend-main {
+            min-width: 0;
+            flex: 1;
+        }
+
+        .dashboard-v72-legend-label {
+            color: #1f2937;
+            font-size: 13px;
+            font-weight: 900;
+            line-height: 1.25;
+            word-break: break-word;
+        }
+
+        .dashboard-v72-legend-meta {
+            color: #64748b;
+            font-size: 11px;
+            line-height: 1.4;
+            margin-top: 2px;
+            font-weight: 700;
+        }
+
+        .dashboard-v72-legend-value {
+            flex: 0 0 auto;
+            text-align: right;
+        }
+
+        .dashboard-v72-legend-total {
+            color: #0f172a;
+            font-size: 14px;
+            line-height: 1.2;
+            font-weight: 900;
+        }
+
+        .dashboard-v72-legend-status {
+            color: #94a3b8;
+            font-size: 11px;
+            line-height: 1.2;
+            margin-top: 2px;
+            font-weight: 800;
+        }
+
+        .dashboard-v72-legend-status.risk {
+            color: #e11d48;
+        }
+
+        .dashboard-v72-footer-note {
+            margin-top: 12px;
+            color: #58736a;
+            font-size: 11px;
+            line-height: 1.45;
+            font-weight: 800;
+        }
+
+        @media (max-width: 1280px) {
+            .dashboard-main-grid-v72 {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 767px) {
+            .dashboard-hover-card:hover {
+                transform: none;
+                box-shadow: inherit;
+            }
+            .dashboard-status-grid-v72 {
+                gap: 12px !important;
+                margin-bottom: 1rem;
+            }
+            .dashboard-status-grid-v72 > .dashboard-hover-card {
+                padding: 14px !important;
+                border-radius: 16px !important;
+            }
+            .dashboard-status-grid-v72 > .dashboard-hover-card h3 {
+                font-size: 1.45rem !important;
+            }
+            .dashboard-status-grid-v72 > .dashboard-hover-card i {
+                font-size: 2rem !important;
+            }
+            .dashboard-main-grid-v72 {
+                grid-template-columns: 1fr;
+                gap: 14px;
+                margin-bottom: 1rem;
+            }
+            .dashboard-v72-card {
+                border-radius: 18px;
+                padding: 16px !important;
+            }
+            .dashboard-v72-head {
+                display: block;
+                margin-bottom: 12px;
+            }
+            .dashboard-v72-pill {
+                margin-top: 12px;
+            }
+            .dashboard-v72-title {
+                font-size: 18px;
+            }
+            .dashboard-v72-content-grid {
+                grid-template-columns: 1fr;
+                gap: 12px;
+            }
+            .dashboard-v72-donut-wrap {
+                height: 240px;
+            }
+            .dashboard-v72-legend {
+                max-height: none;
+            }
+        }
+
+        @media (max-width: 420px) {
+            .main-content {
+                padding: 12px;
+            }
+            .dashboard-v72-card {
+                padding: 14px !important;
+            }
+            .dashboard-v72-inner {
+                padding: 10px;
+            }
+            .dashboard-v72-donut-wrap {
+                height: 220px;
+            }
+            .dashboard-v72-legend-row {
+                padding: 9px 10px;
+            }
+        }
+
+
+        /* v73: Restore Dashboard Age Heatmap Matrix */
+        .dashboard-v73-age-heatmap .age-matrix-card {
+            background: linear-gradient(180deg, #f2fbf5, #eaf6ef);
+            border: 1px solid #bfe4d0;
+            border-radius: 18px;
+            padding: 14px;
+            overflow-x: hidden;
+            overflow-y: hidden;
+        }
+
+        .dashboard-v73-age-heatmap .age-matrix-title {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            margin-bottom: 10px;
+            color: #274139;
+            font-weight: 900;
+            font-size: 13px;
+        }
+
+        .dashboard-v73-age-heatmap .age-matrix-note {
+            font-size: 11px;
+            color: #6a837a;
+            font-weight: 800;
+            white-space: nowrap;
+        }
+
+        .dashboard-v73-age-heatmap .age-matrix {
+            display: grid;
+            width: 100%;
+            min-width: 0;
+            overflow: hidden;
+            border: 1px solid #cfe4d9;
+            border-radius: 16px;
+            background: #ffffff;
+        }
+
+        .dashboard-v73-age-heatmap .age-matrix-row {
+            display: grid;
+            grid-template-columns: minmax(160px, 1.35fr) repeat(3, minmax(90px, 1fr));
+            min-width: 0;
+        }
+
+        .dashboard-v73-age-heatmap .age-matrix-cell {
+            min-height: 56px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 10px 12px;
+            border-bottom: 1px solid #dbece3;
+            color: #14352f;
+            font-weight: 900;
+            line-height: 1.2;
+        }
+
+        .dashboard-v73-age-heatmap .age-matrix-row:last-child .age-matrix-cell {
+            border-bottom: 0;
+        }
+
+        .dashboard-v73-age-heatmap .age-matrix-head {
+            min-height: 42px;
+            background: #eaf6ef;
+            color: #006b55;
+            font-size: 12px;
+        }
+
+        .dashboard-v73-age-heatmap .age-matrix-label {
+            justify-content: flex-start;
+            background: rgba(255,255,255,.72);
+            text-align: left;
+            font-size: 13px;
+            word-break: break-word;
+        }
+
+        .dashboard-v73-age-heatmap .age-matrix-value {
+            font-size: 20px;
+            letter-spacing: -.02em;
+        }
+
+        .dashboard-v73-age-heatmap .age-matrix-value.zero {
+            color: #14352f;
+            background: rgba(238, 248, 241, .72);
+        }
+
+        .dashboard-v73-age-heatmap .age-heat-new-1 { background: #dff8ec; }
+        .dashboard-v73-age-heatmap .age-heat-new-2 { background: #c8f4dd; }
+        .dashboard-v73-age-heatmap .age-heat-new-3 { background: #a9efd0; }
+        .dashboard-v73-age-heatmap .age-heat-mid-1 { background: #fff5cf; }
+        .dashboard-v73-age-heatmap .age-heat-mid-2 { background: #ffeaa0; }
+        .dashboard-v73-age-heatmap .age-heat-mid-3 { background: #ffda75; }
+        .dashboard-v73-age-heatmap .age-heat-old-1 { background: #fde2e5; }
+        .dashboard-v73-age-heatmap .age-heat-old-2 { background: #ffb7c1; }
+        .dashboard-v73-age-heatmap .age-heat-old-3 { background: #ff8295; color: #ffffff; text-shadow: 0 1px 0 rgba(36,59,53,.18); }
+
+        .dashboard-v73-age-heatmap .age-matrix-reco {
+            margin-top: 12px;
+            border: 1px solid #cfe4d9;
+            border-radius: 14px;
+            background: rgba(255,255,255,.62);
+            color: #42645b;
+            font-size: 12px;
+            font-weight: 800;
+            line-height: 1.45;
+            padding: 9px 11px;
+        }
+
+        @media (max-width: 767px) {
+            .dashboard-v73-age-heatmap .age-matrix-card { padding: 10px; }
+            .dashboard-v73-age-heatmap .age-matrix-title { display: block; }
+            .dashboard-v73-age-heatmap .age-matrix-note { display: block; margin-top: 4px; white-space: normal; }
+            .dashboard-v73-age-heatmap .age-matrix-row { grid-template-columns: minmax(86px, 1.45fr) repeat(3, minmax(42px, .72fr)); }
+            .dashboard-v73-age-heatmap .age-matrix-cell { min-height: 46px; padding: 8px 6px; overflow: hidden; }
+            .dashboard-v73-age-heatmap .age-matrix-head { font-size: 11px; min-height: 40px; }
+            .dashboard-v73-age-heatmap .age-matrix-value { font-size: 16px; }
+            .dashboard-v73-age-heatmap .age-matrix-label { font-size: 11px; line-height: 1.25; overflow-wrap: anywhere; }
+        }
+
+        @media (max-width: 420px) {
+            .dashboard-v73-age-heatmap .age-matrix-card { padding: 8px; }
+            .dashboard-v73-age-heatmap .age-matrix-row { grid-template-columns: minmax(78px, 1.35fr) repeat(3, minmax(38px, .7fr)); }
+            .dashboard-v73-age-heatmap .age-matrix-cell { min-height: 44px; padding: 7px 4px; }
+            .dashboard-v73-age-heatmap .age-matrix-head { font-size: 10px; }
+            .dashboard-v73-age-heatmap .age-matrix-value { font-size: 15px; }
+            .dashboard-v73-age-heatmap .age-matrix-label { font-size: 10.5px; }
+        }
+
     </style>
 
     <!-- GitHub Pages API bridge -->
@@ -1170,7 +1766,7 @@
     <script src="api-shim.js"></script>
 </head>
 
-<body class="bg-gray-50 text-slate-800">
+<body class="admin-page bg-gray-50 text-slate-800">
     <!-- Loading Overlay -->
     <div id="loadingOverlay" class="fixed inset-0 bg-slate-900/35 backdrop-blur-[2px] flex items-center justify-center z-50 hidden">
         <div class="flex flex-col items-center gap-2 pointer-events-none">
@@ -1276,9 +1872,25 @@
                 </button>
             </div>
             <div class="mt-auto pt-4">
-                <button onclick="goHome()" class="w-full bg-slate-100 hover:bg-slate-200 text-slate-700 px-4 py-2 rounded-lg text-sm font-medium">
-                    กลับหน้าแรก
-                </button>
+                <div id="sidebarRoleCard" class="sidebar-role-card">
+                    <div class="text-[11px] uppercase tracking-widest text-slate-400 mb-2">สิทธิ์การเข้าถึง</div>
+                    <div id="sidebarRoleBadge" class="sidebar-role-badge role-admin">
+                        <i class="fas fa-shield-halved"></i>
+                        <span id="sidebarRoleLabel">Admin</span>
+                    </div>
+                    <div class="mt-3 text-xs text-slate-500">ผู้ใช้งาน</div>
+                    <div id="sidebarRoleUser" class="text-sm font-semibold text-slate-800 truncate">admin</div>
+                    <div class="sidebar-role-actions">
+                        <button type="button" class="sidebar-logout-btn" onclick="logoutAdminSession()">
+                            <i class="fas fa-right-from-bracket"></i>
+                            <span>ออกจากระบบ</span>
+                        </button>
+                        <button type="button" class="sidebar-home-btn" onclick="goHome()">
+                            <i class="fas fa-house"></i>
+                            <span>กลับหน้าแรก</span>
+                        </button>
+                    </div>
+                </div>
             </div>
         </aside>
 
@@ -1287,7 +1899,7 @@
         <!-- Home Tab -->
                 <div id="homeTab" class="tab-content">
             <!-- Asset Status Cards (Match Top Style) -->
-            <div class="grid grid-cols-2 md:grid-cols-5 gap-6 mb-8">
+            <div class="dashboard-status-grid-v72">
                 <div class="dashboard-hover-card card-gradient-1 card-decoration rounded-lg shadow-lg p-6 text-slate-900 cursor-pointer"
                     onclick="goManageByStatusFilter('')" title="เปิดหน้าจัดการครุภัณฑ์ (ทั้งหมด)">
                     <div class="relative z-10">
@@ -1297,6 +1909,30 @@
                                 <h3 class="text-3xl font-bold mt-2" id="totalAssets">0</h3>
                             </div>
                             <i class="fas fa-boxes text-5xl text-slate-500/40"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="dashboard-hover-card card-gradient-6 card-decoration rounded-lg shadow-lg p-6 text-slate-900 cursor-pointer"
+                    onclick="goManageByOrgFilter('HRDI')" title="เปิดหน้าจัดการครุภัณฑ์ของ สวพส.">
+                    <div class="relative z-10">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-sm text-slate-700">สวพส.</p>
+                                <h3 class="text-3xl font-bold mt-2" id="hrdiOrgAssets">0</h3>
+                            </div>
+                            <i class="fas fa-building-columns text-5xl text-slate-500/40"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="dashboard-hover-card card-gradient-7 card-decoration rounded-lg shadow-lg p-6 text-slate-900 cursor-pointer"
+                    onclick="goManageByOrgFilter('RPRP')" title="เปิดหน้าจัดการครุภัณฑ์ของ สวพส.(อร)">
+                    <div class="relative z-10">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-sm text-slate-700">สวพส.(อร)</p>
+                                <h3 class="text-3xl font-bold mt-2" id="rprpOrgAssets">0</h3>
+                            </div>
+                            <i class="fas fa-seedling text-5xl text-slate-500/40"></i>
                         </div>
                     </div>
                 </div>
@@ -1350,130 +1986,80 @@
                 </div>
             </div>
 
-            <!-- Age by Category -->
-            <div class="dashboard-hover-card bg-white rounded-2xl shadow-lg p-6 mb-8">
-                <div class="flex items-start gap-3 mb-6">
-                    <div class="h-10 w-10 rounded-xl bg-gradient-to-br from-blue-600 to-indigo-700 text-white flex items-center justify-center shadow-md shadow-indigo-300">
-                        <i class="fas fa-chart-bar"></i>
-                    </div>
-                    <div>
-                        <div class="inline-flex items-center gap-2 rounded-full bg-indigo-100 text-indigo-900 border border-indigo-300 px-3 py-1 text-sm font-bold shadow-sm">
-                            <span class="inline-block h-2 w-2 rounded-full bg-indigo-600"></span>
-                            อายุของครุภัณฑ์ (รายประเภท)
-                        </div>
-                        <div class="text-sm text-slate-500">แสดงจำนวนครุภัณฑ์แต่ละช่วงอายุ: 0-2 ปี (ใหม่), 3-5 ปี, 6+ ปี (เก่า)</div>
-                    </div>
-                </div>
-                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                    <div class="dashboard-hover-card rounded-2xl p-5 text-white" style="background: linear-gradient(135deg, #4f7cff, #5d6bff);">
-                        <div class="flex items-center gap-3 mb-2">
-                            <div class="h-10 w-10 rounded-full bg-white/20 flex items-center justify-center"><i class="fas fa-desktop"></i></div>
+            <!-- Dashboard Main Grid: v72 donut + list cards -->
+            <div class="dashboard-main-grid-v72">
+                <!-- Age by Category: v73 restored Heatmap Matrix -->
+                <div class="dashboard-hover-card dashboard-v72-card dashboard-v73-age-heatmap p-5">
+                    <div class="dashboard-v72-head">
+                        <div class="dashboard-v72-title-row">
+                            <div class="dashboard-v72-icon" aria-hidden="true">
+                                <i class="fas fa-table-cells-large"></i>
+                            </div>
                             <div>
-                                <div class="font-semibold">คอมพิวเตอร์</div>
-                                <div class="text-xs text-white/80">จำนวนทั้งหมด <span id="count-computer">0</span> รายการ</div>
+                                <h2 class="dashboard-v72-title">อายุของครุภัณฑ์ (รายประเภท)</h2>
+                                <p class="dashboard-v72-subtitle">Heatmap Matrix เห็นประเภทที่มีครุภัณฑ์เก่าเยอะได้ทันที</p>
                             </div>
                         </div>
-                        <div class="grid grid-cols-4 gap-2 text-[11px] mb-3">
-                            <div class="bg-blue-100/95 rounded-lg px-2 py-1 text-center text-blue-950 font-semibold shadow-sm ring-1 ring-blue-50/80">ทั้งหมด <span id="count-computer-total">0</span></div>
-                            <div class="bg-emerald-200/95 rounded-lg px-2 py-1 text-center text-emerald-950 font-semibold shadow-sm ring-1 ring-emerald-100">0-2 ปี(ใหม่) <span id="count-computer-new">0</span></div>
-                            <div class="bg-amber-200/95 rounded-lg px-2 py-1 text-center text-amber-950 font-semibold shadow-sm ring-1 ring-amber-100">3-5 ปี <span id="count-computer-mid">0</span></div>
-                            <div class="bg-rose-200/95 rounded-lg px-2 py-1 text-center text-rose-950 font-semibold shadow-sm ring-1 ring-rose-100">6+ ปี (เก่า) <span id="count-computer-old">0</span></div>
-                        </div>
-                        <div class="h-44"><canvas id="chart-computer"></canvas></div>
+                        <span id="ageCategorySummaryCount" class="dashboard-v72-pill">Compact</span>
                     </div>
-                    <div class="dashboard-hover-card rounded-2xl p-5 text-white" style="background: linear-gradient(135deg, #0ea5e9, #2563eb);">
-                        <div class="flex items-center gap-3 mb-2">
-                            <div class="h-10 w-10 rounded-full bg-white/20 flex items-center justify-center"><i class="fas fa-camera"></i></div>
-                            <div>
-                                <div class="font-semibold">กล้องวงจรปิด</div>
-                                <div class="text-xs text-white/80">จำนวนทั้งหมด <span id="count-cctv">0</span> รายการ</div>
-                            </div>
-                        </div>
-                        <div class="grid grid-cols-4 gap-2 text-[11px] mb-3">
-                            <div class="bg-sky-100/95 rounded-lg px-2 py-1 text-center text-sky-950 font-semibold shadow-sm ring-1 ring-sky-50/80">ทั้งหมด <span id="count-cctv-total">0</span></div>
-                            <div class="bg-emerald-200/95 rounded-lg px-2 py-1 text-center text-emerald-950 font-semibold shadow-sm ring-1 ring-emerald-100">0-2 ปี(ใหม่) <span id="count-cctv-new">0</span></div>
-                            <div class="bg-amber-200/95 rounded-lg px-2 py-1 text-center text-amber-950 font-semibold shadow-sm ring-1 ring-amber-100">3-5 ปี <span id="count-cctv-mid">0</span></div>
-                            <div class="bg-rose-200/95 rounded-lg px-2 py-1 text-center text-rose-950 font-semibold shadow-sm ring-1 ring-rose-100">6+ ปี (เก่า) <span id="count-cctv-old">0</span></div>
-                        </div>
-                        <div class="h-44"><canvas id="chart-cctv"></canvas></div>
-                    </div>
-                    <div class="dashboard-hover-card rounded-2xl p-5 text-white" style="background: linear-gradient(135deg, #f97316, #ef4444);">
-                        <div class="flex items-center gap-3 mb-2">
-                            <div class="h-10 w-10 rounded-full bg-white/20 flex items-center justify-center"><i class="fas fa-photo-video"></i></div>
-                            <div>
-                                <div class="font-semibold">โสตทัศนูปกรณ์</div>
-                                <div class="text-xs text-white/80">จำนวนทั้งหมด <span id="count-av">0</span> รายการ</div>
-                            </div>
-                        </div>
-                        <div class="grid grid-cols-4 gap-2 text-[11px] mb-3">
-                            <div class="bg-orange-100/95 rounded-lg px-2 py-1 text-center text-orange-950 font-semibold shadow-sm ring-1 ring-orange-50/80">ทั้งหมด <span id="count-av-total">0</span></div>
-                            <div class="bg-emerald-200/95 rounded-lg px-2 py-1 text-center text-emerald-950 font-semibold shadow-sm ring-1 ring-emerald-100">0-2 ปี(ใหม่) <span id="count-av-new">0</span></div>
-                            <div class="bg-amber-200/95 rounded-lg px-2 py-1 text-center text-amber-950 font-semibold shadow-sm ring-1 ring-amber-100">3-5 ปี <span id="count-av-mid">0</span></div>
-                            <div class="bg-rose-200/95 rounded-lg px-2 py-1 text-center text-rose-950 font-semibold shadow-sm ring-1 ring-rose-100">6+ ปี (เก่า) <span id="count-av-old">0</span></div>
-                        </div>
-                        <div class="h-44"><canvas id="chart-av"></canvas></div>
-                    </div>
-                    <div class="dashboard-hover-card rounded-2xl p-5 text-white" style="background: linear-gradient(135deg, #14b8a6, #0f766e);">
-                        <div class="flex items-center gap-3 mb-2">
-                            <div class="h-10 w-10 rounded-full bg-white/20 flex items-center justify-center"><i class="fas fa-network-wired"></i></div>
-                            <div>
-                                <div class="font-semibold">อุปกรณ์เครือข่าย</div>
-                                <div class="text-xs text-white/80">จำนวนทั้งหมด <span id="count-network">0</span> รายการ</div>
-                            </div>
-                        </div>
-                        <div class="grid grid-cols-4 gap-2 text-[11px] mb-3">
-                            <div class="bg-emerald-100/95 rounded-lg px-2 py-1 text-center text-emerald-950 font-semibold shadow-sm ring-1 ring-emerald-50/80">ทั้งหมด <span id="count-network-total">0</span></div>
-                            <div class="bg-emerald-200/95 rounded-lg px-2 py-1 text-center text-emerald-950 font-semibold shadow-sm ring-1 ring-emerald-100">0-2 ปี(ใหม่) <span id="count-network-new">0</span></div>
-                            <div class="bg-amber-200/95 rounded-lg px-2 py-1 text-center text-amber-950 font-semibold shadow-sm ring-1 ring-amber-100">3-5 ปี <span id="count-network-mid">0</span></div>
-                            <div class="bg-rose-200/95 rounded-lg px-2 py-1 text-center text-rose-950 font-semibold shadow-sm ring-1 ring-rose-100">6+ ปี (เก่า) <span id="count-network-old">0</span></div>
-                        </div>
-                        <div class="h-44"><canvas id="chart-network"></canvas></div>
-                    </div>
-                </div>
-                <div class="mt-4 text-xs text-slate-500">
-                    สีกราฟ: เขียว (0-2 ปี), ส้ม (3-5 ปี), แดง (6+ ปี)
-                </div>
-            </div>
 
-            <!-- Location / Department Summary -->
-            <div class="dashboard-hover-card bg-white rounded-2xl shadow-lg p-6 mb-8">
-                <div class="flex items-start gap-3 mb-5">
-                    <div class="h-10 w-10 rounded-xl bg-gradient-to-br from-emerald-600 to-teal-700 text-white flex items-center justify-center shadow-md shadow-emerald-300">
-                        <i class="fas fa-building"></i>
-                    </div>
-                    <div>
-                        <div class="inline-flex items-center gap-2 rounded-full bg-emerald-100 text-emerald-900 border border-emerald-300 px-3 py-1 text-sm font-bold shadow-sm">
-                            <span class="inline-block h-2 w-2 rounded-full bg-emerald-600"></span>
-                            สรุปตามหน่วยงาน/สถานที่
+                    <div class="age-matrix-card">
+                        <div class="age-matrix-title">
+                            <span>Heatmap Matrix</span>
+                            <span id="ageCategoryCombinedNote" class="age-matrix-note">แบ่งตามช่วงอายุ 0–2, 3–5, 6+</span>
                         </div>
-                        <div class="text-sm text-slate-500">จำนวนครุภัณฑ์ทั้งหมด และจำนวนที่ชำรุด/ส่งซ่อมในแต่ละจุด</div>
+                        <div id="ageCategoryCombinedChart" aria-live="polite"></div>
+                    </div>
+
+                    <div class="dashboard-v72-footer-note">
+                        หมายเหตุ: สีแดงเข้มคือกลุ่ม 6+ ปีที่ควรติดตามก่อน คำนวณจากวันที่ได้รับครุภัณฑ์
                     </div>
                 </div>
 
-                <div class="dashboard-hover-card rounded-2xl border border-slate-100 bg-slate-50 p-4 md:p-5">
-                    <div class="flex flex-col gap-3 md:flex-row md:items-start md:justify-between mb-4">
-                        <div>
-                            <div class="inline-flex items-center gap-2 rounded-full bg-emerald-100 text-emerald-900 border border-emerald-300 px-3 py-1 text-sm font-semibold shadow-sm">
-                                <i class="fas fa-chart-pie text-xs"></i>
-                                โดนัทสรุปภาพรวมตามสถานที่/หน่วยงาน
+                <!-- Location / Department Summary -->
+                <div class="dashboard-hover-card dashboard-v72-card p-5">
+                    <div class="dashboard-v72-head">
+                        <div class="dashboard-v72-title-row">
+                            <div class="dashboard-v72-icon" aria-hidden="true">
+                                <i class="fas fa-building"></i>
                             </div>
-                            <div class="text-xs text-slate-500 mt-2">สรุปจากชื่อสถานที่แบบกลุ่มหลัก เพื่อดูสัดส่วนครุภัณฑ์แต่ละจุดในภาพรวม</div>
+                            <div>
+                                <h2 class="dashboard-v72-title">สรุปตามหน่วยงาน / สถานที่</h2>
+                                <p class="dashboard-v72-subtitle">จำนวนครุภัณฑ์ทั้งหมด และจำนวนที่ชำรุด/ส่งซ่อมในแต่ละจุด</p>
+                            </div>
                         </div>
-                        <span id="locationGroupSummaryCount" class="text-xs font-medium text-emerald-700 bg-emerald-100 border border-emerald-200 rounded-full px-2.5 py-1 self-start">0 จุด</span>
+                        <span id="locationGroupSummaryCount" class="dashboard-v72-pill">0 จุด</span>
                     </div>
-                    <div class="grid grid-cols-1 lg:grid-cols-[minmax(0,360px)_minmax(0,1fr)] gap-4 items-center">
-                        <div class="rounded-2xl border border-slate-100 bg-white p-4">
-                            <div class="h-[280px] md:h-[320px]">
-                                <canvas id="dashboardLocationDonut"></canvas>
+
+                    <div class="dashboard-v72-inner">
+                        <div class="dashboard-v72-inner-head">
+                            <div>
+                                <div class="dashboard-v72-mini-badge">
+                                    <i class="fas fa-chart-pie"></i>
+                                    โดนัทสรุปภาพรวมตามสถานที่/หน่วยงาน
+                                </div>
+                                <div class="dashboard-v72-mini-desc">สรุปจากชื่อสถานที่แบบกลุ่มหลัก เพื่อดูสัดส่วนครุภัณฑ์แต่ละจุดในภาพรวม</div>
+                            </div>
+                            <span id="locationPointSummaryCount" class="dashboard-v72-pill">0 จุด</span>
+                        </div>
+                        <div class="dashboard-v72-content-grid">
+                            <div class="dashboard-v72-donut-box">
+                                <div class="dashboard-v72-donut-wrap">
+                                    <canvas id="dashboardLocationDonut"></canvas>
+                                </div>
+                            </div>
+                            <div class="dashboard-v72-list-box">
+                                <div class="dashboard-v72-list-head">
+                                    <div class="dashboard-v72-list-title">อันดับสถานที่/หน่วยงาน</div>
+                                    <div class="dashboard-v72-list-note">Top 8 + อื่นๆ</div>
+                                </div>
+                                <div id="dashboardLocationLegend" class="dashboard-v72-legend"></div>
                             </div>
                         </div>
-                        <div class="rounded-2xl border border-slate-100 bg-white p-3 md:p-4">
-                            <div class="flex items-center justify-between gap-3 mb-3">
-                                <div class="text-sm font-bold text-slate-800">อันดับสถานที่/หน่วยงาน</div>
-                                <div class="text-xs text-slate-500">Top 8 + อื่นๆ</div>
-                            </div>
-                            <div id="dashboardLocationLegend" class="space-y-2"></div>
-                        </div>
+                    </div>
+
+                    <div class="dashboard-v72-footer-note">
+                        หมายเหตุ: สรุปตามสถานที่ใช้ข้อมูลจริงจาก Dashboard
                     </div>
                 </div>
             </div>
@@ -1503,7 +2089,7 @@
                         <thead class="bg-rose-100 text-rose-900 sticky top-0">
                             <tr>
                                 <th class="text-left px-4 py-2 whitespace-nowrap">ประเภท</th>
-                                <th class="text-left px-4 py-2 whitespace-nowrap">หมายเลข สวพส.(อร)</th>
+                                <th class="text-left px-4 py-2 whitespace-nowrap">หน่วยงาน / หมายเลขครุภัณฑ์</th>
                                 <th class="text-left px-4 py-2">ชื่อครุภัณฑ์</th>
                                 <th class="text-left px-4 py-2">ผู้รับผิดชอบ</th>
                                 <th class="text-left px-4 py-2">ที่ตั้ง</th>
@@ -1568,8 +2154,9 @@
                     <i class="fas fa-check-square mr-2"></i>เลือกทั้งหมด
                 </button>
                 <button onclick="printSelectedSupplyQRCodes()"
-                    class="h-12 whitespace-nowrap btn-theme btn-theme-check-soft px-4 justify-center">
-                    <i class="fas fa-print mr-2"></i>พิมพ์ QR หลายรายการ
+                    class="h-12 whitespace-nowrap btn-theme btn-theme-check-soft px-4 justify-center"
+                    title="ออกแบบสติกเกอร์ QR จากรายการที่เลือก">
+                    <i class="fas fa-qrcode mr-2"></i>ออกแบบสติกเกอร์หลายรายการ
                 </button>
             </div>
             <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-5 gap-3">
@@ -1641,7 +2228,7 @@
                 <thead class="bg-slate-100 text-slate-600 text-sm">
                     <tr>
                         <th class="px-4 py-3 text-left">เลือก</th>
-                        <th class="px-4 py-3 text-left">หมายเลข สวพส.(อร)</th>
+                        <th class="px-4 py-3 text-left">หน่วยงาน / หมายเลขครุภัณฑ์</th>
                         <th class="px-4 py-3 text-left">ชื่อครุภัณฑ์</th>
                         <th class="px-4 py-3 text-left">ผู้รับผิดชอบ</th>
                         <th class="px-4 py-3 text-left">ที่ตั้ง</th>
@@ -1764,7 +2351,7 @@
                             <table class="min-w-full text-sm">
                                 <thead class="bg-slate-50 sticky top-0">
                                     <tr>
-                                        <th class="text-left px-4 py-3 whitespace-nowrap">หมายเลข สวพส.(อร)</th>
+                                        <th class="text-left px-4 py-3 whitespace-nowrap">หน่วยงาน / หมายเลขครุภัณฑ์</th>
                                         <th class="text-left px-4 py-3">ชื่อครุภัณฑ์</th>
                                         <th class="text-left px-4 py-3 whitespace-nowrap">ประเภทปัญหา</th>
                                         <th class="text-left px-4 py-3">รายละเอียด</th>
@@ -1955,7 +2542,7 @@
         <table class="w-full text-sm">
           <thead class="bg-slate-100 text-slate-600 sticky top-0">
             <tr>
-              <th class="px-4 py-3 text-left">หมายเลข สวพส.(อร)</th>
+              <th class="px-4 py-3 text-left">หน่วยงาน / หมายเลขครุภัณฑ์</th>
               <th class="px-4 py-3 text-left">ประเภท</th>
               <th class="px-4 py-3 text-left">ชื่อครุภัณฑ์</th>
               <th class="px-4 py-3 text-left">ราคา</th>
@@ -2030,7 +2617,7 @@
           <tr>
             <th class="px-4 py-2 text-left">วันที่</th>
             <th class="px-4 py-2 text-left">เหตุการณ์</th>
-            <th class="px-4 py-2 text-left">หมายเลข สวพส.(อร)</th>
+            <th class="px-4 py-2 text-left">หน่วยงาน / หมายเลขครุภัณฑ์</th>
             <th class="px-4 py-2 text-left">ชื่อครุภัณฑ์</th>
             <th class="px-4 py-2 text-left">จากสถานที่</th>
             <th class="px-4 py-2 text-left">ถึงสถานที่</th>
@@ -2084,7 +2671,7 @@
       <div class="grid grid-cols-1 sm:grid-cols-[minmax(0,1fr)_auto] gap-2">
         <div class="relative">
           <span class="pointer-events-none absolute inset-y-0 left-3 flex items-center text-slate-400"><i class="fas fa-search"></i></span>
-          <input id="changeRequestSearch" type="text" oninput="setChangeRequestSearch(this.value)" class="w-full rounded-xl border border-slate-200 bg-white pl-10 pr-4 py-2.5 text-sm text-slate-700 shadow-sm focus:border-emerald-300 focus:outline-none focus:ring-2 focus:ring-emerald-100" placeholder="หมายเลขครุภัณฑ์,ผู้รับผิดชอบเดิม,ผู้รับผิดชอบใหม่">
+          <input id="changeRequestSearch" type="text" oninput="setChangeRequestSearch(this.value)" class="w-full rounded-xl border border-slate-200 bg-white pl-10 pr-4 py-2.5 text-sm text-slate-700 shadow-sm focus:border-emerald-300 focus:outline-none focus:ring-2 focus:ring-emerald-100" placeholder="หมายเลขครุภัณฑ์,ผู้รับผิดชอบปัจจุบัน,ผู้รับผิดชอบใหม่,สถานที่">
         </div>
         <button type="button" onclick="clearChangeRequestSearch()" class="inline-flex items-center justify-center gap-2 rounded-xl border border-slate-300 bg-white px-4 py-2.5 text-sm font-semibold text-slate-700 shadow-sm transition hover:bg-slate-50 whitespace-nowrap"><i class="fas fa-xmark"></i><span>ล้างการค้นหา</span></button>
       </div>
@@ -2103,9 +2690,9 @@
         <thead class="bg-gray-200">
           <tr>
             <th class="px-4 py-2 text-left">วันที่ส่งคำขอ</th>
-            <th class="px-4 py-2 text-left">หมายเลข สวพส.(อร)</th>
-            <th class="px-4 py-2 text-left">เดิม</th>
-            <th class="px-4 py-2 text-left">ใหม่</th>
+            <th class="px-4 py-2 text-left">หน่วยงาน / หมายเลขครุภัณฑ์</th>
+            <th class="px-4 py-2 text-left">ปัจจุบัน</th>
+            <th class="px-4 py-2 text-left">ขอเปลี่ยนเป็น</th>
             <th class="px-4 py-2 text-left">เหตุผล</th>
             <th class="px-4 py-2 text-left">ผู้ติดต่อ</th>
             <th class="px-4 py-2 text-left">สถานะ</th>
@@ -2142,8 +2729,78 @@
       <button onclick="setupSheetsAndSeedSamplesFromSettings()" class="bg-blue-50 text-blue-700 px-5 py-2 rounded-lg hover:bg-blue-100 border border-blue-100">สร้างชีท + ใส่ข้อมูลตัวอย่าง</button>
     </div>
 
+
+    <div class="mt-8 border-t border-slate-100 pt-6" id="roleAccessSettingPanel">
+      <div class="flex flex-col md:flex-row md:items-start md:justify-between gap-3 mb-4">
+        <div>
+          <h3 class="text-xl font-bold text-slate-800">จัดการสิทธิ์ผู้ใช้งานภายใน</h3>
+          <p class="text-sm text-slate-500 mt-1">กำหนดสิทธิ์ Admin / Manager / Viewer สำหรับการเข้าใช้งานหลังบ้าน</p>
+        </div>
+        <button onclick="loadUserAccessSettings()" class="bg-emerald-50 text-emerald-700 px-4 py-2 rounded-lg hover:bg-emerald-100 border border-emerald-100 text-sm font-semibold">
+          <i class="fas fa-rotate mr-2"></i>โหลดรายชื่อ
+        </button>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_minmax(360px,460px)] gap-5">
+        <div class="rounded-2xl border border-slate-200 overflow-hidden bg-white">
+          <div class="overflow-x-auto">
+            <table class="w-full text-sm">
+              <thead class="bg-slate-50 text-slate-600">
+                <tr>
+                  <th class="px-4 py-3 text-left">Username</th>
+                  <th class="px-4 py-3 text-left">Role</th>
+                  <th class="px-4 py-3 text-left">สถานะ</th>
+                  <th class="px-4 py-3 text-left whitespace-nowrap">จัดการ</th>
+                </tr>
+              </thead>
+              <tbody id="userAccessBody">
+                <tr><td class="px-4 py-6 text-slate-400 text-center" colspan="4">กดโหลดรายชื่อผู้ใช้งาน</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="rounded-2xl border border-emerald-100 bg-emerald-50/30 p-4">
+          <h4 id="userAccessFormTitle" class="font-bold text-slate-800 mb-3">เพิ่ม / แก้ไขผู้ใช้งาน</h4>
+          <div class="space-y-3">
+            <div>
+              <label class="block text-sm font-medium text-slate-700 mb-1">Username</label>
+              <input id="userAccessUsername" type="text" class="w-full px-4 py-2 border border-slate-200 rounded-lg bg-white" placeholder="เช่น manager" />
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-slate-700 mb-1">Password</label>
+              <input id="userAccessPassword" type="password" class="w-full px-4 py-2 border border-slate-200 rounded-lg bg-white" placeholder="เว้นว่างถ้าไม่ต้องการเปลี่ยนรหัสผ่าน" />
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+              <div>
+                <label class="block text-sm font-medium text-slate-700 mb-1">Role</label>
+                <select id="userAccessRole" class="w-full px-4 py-2 border border-slate-200 rounded-lg bg-white">
+                  <option value="admin">Admin — ทำได้ทุกอย่าง</option>
+                  <option value="manager">Manager — ยกเว้นลบ/ตั้งค่า</option>
+                  <option value="viewer">Viewer — แดชบรอดเท่านั้น</option>
+                </select>
+              </div>
+              <label class="flex items-end gap-2 text-sm font-medium text-slate-700 pb-2">
+                <input id="userAccessActive" type="checkbox" class="w-4 h-4 accent-emerald-600" checked />
+                เปิดใช้งาน
+              </label>
+            </div>
+            <div class="rounded-xl border border-slate-200 bg-white p-3 text-xs text-slate-500 leading-relaxed">
+              <div><b>Admin:</b> ทำได้ทุกอย่าง</div>
+              <div><b>Manager:</b> เข้าได้ทั้งหมด ยกเว้นลบข้อมูลและเมนูการตั้งค่า</div>
+              <div><b>Viewer:</b> เห็นเฉพาะแดชบรอด</div>
+            </div>
+            <div class="flex flex-wrap gap-2 pt-1">
+              <button onclick="saveUserAccessFromSettings()" class="bg-emerald-600 text-white px-5 py-2 rounded-lg hover:bg-emerald-700 font-semibold">บันทึกสิทธิ์</button>
+              <button onclick="resetUserAccessForm()" class="bg-white text-slate-700 border border-slate-200 px-5 py-2 rounded-lg hover:bg-slate-50">ล้างฟอร์ม</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <div class="mt-6 text-xs text-gray-500">
-      หมายเหตุ: เปลี่ยนรหัสสเปรดชีตจะมีผลกับข้อมูลทั้งหมดในระบบ
+      หมายเหตุ: เปลี่ยนรหัสสเปรดชีตจะมีผลกับข้อมูลทั้งหมดในระบบ และการจัดการสิทธิ์ทำได้เฉพาะ Admin
     </div>
   </div>
 </div>
@@ -2162,15 +2819,23 @@
                 <input type="hidden" id="supplyId">
                 <input type="hidden" id="codeUrl">
 
-                <div class="mb-5 rounded-2xl border border-emerald-100 bg-emerald-50/50 p-4">
+                <div class="mb-5 rounded-2xl border border-emerald-100 bg-emerald-50/50 p-4 asset-identity-section">
                     <div class="text-sm font-semibold text-emerald-700 mb-3">กำหนดรหัสครุภัณฑ์</div>
-                    <div class="mb-4">
-                        <label class="block text-gray-700 mb-2">หมายเลข สวพส.(อร) <span class="text-red-500">*</span></label>
-                        <div>
-                            <input type="text" id="assetNumber" required class="w-full px-4 py-2 border rounded-lg">
+                    <div class="grid grid-cols-1 md:grid-cols-[260px_minmax(0,1fr)] gap-4 items-start">
+                        <div class="mb-4">
+                            <label for="assetOrgCode" class="block text-gray-700 mb-2">หน่วยงานเจ้าของเลขครุภัณฑ์ <span class="text-red-500">*</span></label>
+                            <select id="assetOrgCode" required class="w-full px-4 py-2 border rounded-lg bg-white">
+                                <option value="RPRP">สวพส.(อร) - อุทยานหลวงราชพฤกษ์</option>
+                                <option value="HRDI">สวพส. - สถาบันวิจัยและพัฒนาพื้นที่สูง (องค์การมหาชน)</option>
+                            </select>
+                            <p id="assetOrgHelpText" class="text-xs text-slate-500 mt-1">ใช้แยกเลขครุภัณฑ์ของแต่ละหน่วยงาน เพื่อป้องกันเลขซ้ำข้ามหน่วยงาน</p>
                         </div>
-                        <p class="text-xs text-slate-500 mt-1">รูปแบบรองรับ เช่น 63-1-19-09/18, 64-R1-6-05/05, 68-R1-8-48/01.1, 63-1-7-11/03(1/3)</p>
-                        <p id="assetNumberValidationMsg" class="text-xs mt-1 hidden"></p>
+                        <div class="mb-4">
+                            <label id="assetNumberLabel" for="assetNumber" class="block text-gray-700 mb-2">หมายเลข สวพส.(อร) <span class="text-red-500">*</span></label>
+                            <input type="text" id="assetNumber" required class="w-full px-4 py-2 border rounded-lg">
+                            <p class="text-xs text-slate-500 mt-1">รูปแบบรองรับ เช่น 63-1-19-09/18, 64-R1-6-05/05, 68-R1-8-48/01.1, 63-1-7-11/03(1/3)</p>
+                            <p id="assetNumberValidationMsg" class="text-xs mt-1 hidden"></p>
+                        </div>
                     </div>
                 </div>
 
@@ -2340,10 +3005,15 @@
         let csvPreviewRows = [];
         let csvPreviewValidation = [];
         let chart = null;
+        let ageCategoryDonutChart = null;
+        let locationDonutChart = null;
         let html5QrCode = null;
         let currentScanMode = '';
         let currentTabName = 'home';
-        const tabOrder = ['home', 'manage', 'check', 'report', 'change', 'setting'];
+        const BASE_TAB_ORDER = ['home', 'manage', 'check', 'report', 'change', 'setting'];
+        let tabOrder = BASE_TAB_ORDER.slice();
+        let currentUserRole = normalizeUserRole(localStorage.getItem('admin_role') || 'admin');
+        let userAccessRows = [];
         let selectedSupplyCodes = new Set();
         let manageCurrentPage = 1;
         let managePageSize = 10;
@@ -2354,6 +3024,108 @@
             assetLocation: { activeIndex: -1 }
         };
         let assetNumberValidationState = { checking: false, valid: true, message: '' };
+        const ASSET_ORGANIZATIONS_CLIENT = [
+            {
+                orgId: 'ORG_RPRP',
+                orgCode: 'RPRP',
+                orgShortName: 'สวพส.(อร)',
+                orgFullName: 'อุทยานหลวงราชพฤกษ์',
+                assetNumberLabel: 'หมายเลข สวพส.(อร)'
+            },
+            {
+                orgId: 'ORG_HRDI',
+                orgCode: 'HRDI',
+                orgShortName: 'สวพส.',
+                orgFullName: 'สถาบันวิจัยและพัฒนาพื้นที่สูง (องค์การมหาชน)',
+                assetNumberLabel: 'หมายเลข สวพส.'
+            }
+        ];
+        const DEFAULT_ASSET_ORG_CODE_CLIENT = 'RPRP';
+
+        function getAssetOrgClient(orgCode) {
+            const code = String(orgCode || '').trim().toUpperCase();
+            return ASSET_ORGANIZATIONS_CLIENT.find(function (org) {
+                return org.orgCode === code || org.orgId === code;
+            }) || ASSET_ORGANIZATIONS_CLIENT[0];
+        }
+
+        function getSelectedAssetOrgCode() {
+            const el = document.getElementById('assetOrgCode');
+            return String((el && el.value) || DEFAULT_ASSET_ORG_CODE_CLIENT).trim().toUpperCase();
+        }
+
+        function populateAssetOrgSelect(selectedCode) {
+            const el = document.getElementById('assetOrgCode');
+            if (!el) return;
+            const current = String(selectedCode || el.value || DEFAULT_ASSET_ORG_CODE_CLIENT).trim().toUpperCase();
+            el.innerHTML = ASSET_ORGANIZATIONS_CLIENT.map(function (org) {
+                const selected = org.orgCode === current ? ' selected' : '';
+                return '<option value="' + org.orgCode + '"' + selected + '>' + org.orgShortName + ' - ' + org.orgFullName + '</option>';
+            }).join('');
+            if (!ASSET_ORGANIZATIONS_CLIENT.some(function (org) { return org.orgCode === current; })) {
+                el.value = DEFAULT_ASSET_ORG_CODE_CLIENT;
+            }
+            updateAssetNumberLabel();
+        }
+
+        function updateAssetNumberLabel() {
+            const org = getAssetOrgClient(getSelectedAssetOrgCode());
+            const label = document.getElementById('assetNumberLabel');
+            if (label) label.innerHTML = (org.assetNumberLabel || 'หมายเลขครุภัณฑ์') + ' <span class="text-red-500">*</span>';
+            const help = document.getElementById('assetOrgHelpText');
+            if (help) help.textContent = 'เลือก ' + org.orgShortName + ' เพื่อสร้างรหัสอ้างอิงแบบ ' + org.orgCode + ':หมายเลขครุภัณฑ์';
+        }
+
+        function handleAssetOrgChange() {
+            updateAssetNumberLabel();
+            validateAssetNumberLive(true);
+        }
+
+        function getAssetLookupKeyClient(supply) {
+            return String((supply && (supply.assetKey || supply.id || supply.assetNumber)) || '').trim();
+        }
+
+        function getAssetNumberDisplayClient(supply) {
+            if (!supply) return '-';
+            const existing = String(supply.assetNumberDisplay || '').trim();
+            if (existing) return existing;
+            const orgName = String(supply.assetOrgName || '').trim();
+            const number = String(supply.assetNumber || '').trim();
+            return orgName && number ? (orgName + ' / ' + number) : (number || orgName || '-');
+        }
+
+        function getAssetPublicBaseUrlClient() {
+            try {
+                return new URL('asset.html', window.location.href.split('#')[0].split('?')[0]).href;
+            } catch (error) {
+                return './asset.html';
+            }
+        }
+
+        function getAssetPublicUrlClient(supplyOrKey) {
+            let key = '';
+            if (typeof supplyOrKey === 'object' && supplyOrKey !== null) {
+                key = getAssetLookupKeyClient(supplyOrKey);
+            } else {
+                key = String(supplyOrKey || '').trim();
+            }
+            return getAssetPublicBaseUrlClient() + '?k=' + encodeURIComponent(key);
+        }
+
+        function extractAssetLookupFromQrClient(value) {
+            const raw = String(value || '').trim();
+            if (!raw) return '';
+            try {
+                const parsed = new URL(raw, window.location.href);
+                const key = parsed.searchParams.get('k') || parsed.searchParams.get('assetKey') || parsed.searchParams.get('code') || parsed.searchParams.get('q');
+                if (key) return decodeURIComponent(key).trim();
+            } catch (error) { }
+            const match = raw.match(/[?&](?:k|assetKey|code|q)=([^&#]+)/i);
+            if (match && match[1]) {
+                try { return decodeURIComponent(match[1]).trim(); } catch (error) { return match[1].trim(); }
+            }
+            return raw;
+        }
 
         function redirectToPage(page) {
             const target = String(page || 'user').toLowerCase();
@@ -2369,6 +3141,30 @@
 
         function goHome() {
             redirectToPage('user');
+        }
+
+        function clearAdminSession() {
+            localStorage.removeItem('admin_auth');
+            localStorage.removeItem('admin_token');
+            localStorage.removeItem('admin_user');
+            localStorage.removeItem('admin_role');
+        }
+
+        function logoutAdminSession() {
+            Swal.fire({
+                icon: 'question',
+                title: 'ออกจากระบบ?',
+                text: 'ระบบจะล้าง Session หลังบ้านในเครื่องนี้ และกลับไปหน้าแรก',
+                showCancelButton: true,
+                confirmButtonText: 'ออกจากระบบ',
+                cancelButtonText: 'ยกเลิก',
+                confirmButtonColor: '#e11d48',
+                cancelButtonColor: '#e2e8f0'
+            }).then(function (result) {
+                if (!result.isConfirmed) return;
+                clearAdminSession();
+                redirectToPage('user');
+            });
         }
 
         function exportSuppliesCsv() {
@@ -2851,24 +3647,28 @@
 
         // Initialize
         document.addEventListener('DOMContentLoaded', function () {
-            if (!localStorage.getItem('admin_auth')) {
+            if (!localStorage.getItem('admin_auth') || !localStorage.getItem('admin_token')) {
                 Swal.fire({
                     icon: 'warning',
                     title: 'กรุณาเข้าสู่ระบบ',
-                    text: 'ต้องเข้าสู่ระบบจากหน้าผู้ใช้งานก่อน',
+                    text: 'ต้องเข้าสู่ระบบจากหน้าผู้ใช้งานก่อน หรือ Session หมดอายุ',
                     confirmButtonText: 'กลับหน้าผู้ใช้งาน'
                 }).then(() => {
+                    localStorage.removeItem('admin_auth');
+                    localStorage.removeItem('admin_token');
                     redirectToPage('user');
                 });
                 return;
             }
             initLoaderLottie();
+            applyRoleAccess();
             loadAssetStatusOptions();
             loadData();
             setupEventListeners();
             // Ensure first tab is active on mobile too
             updateActiveTab('home');
             currentTabName = 'home';
+            applyRoleAccess();
             updateTabShortcutButtons();
         });
 
@@ -2892,6 +3692,7 @@
                 bind(id, 'change', function () { setActiveAuditPresetButton(''); });
                 if (id === 'auditActor') bind(id, 'input', function () { setActiveAuditPresetButton(''); });
             });
+            bind('assetOrgCode', 'change', handleAssetOrgChange);
             bind('assetNumber', 'input', function () {
                 validateAssetNumberLive(false);
             });
@@ -2988,7 +3789,9 @@
                 no_owner: 'ไม่มีผู้รับผิดชอบ',
                 no_location: 'ไม่มีสถานที่',
                 no_received_date: 'ไม่มีวันที่ได้รับ',
-                no_image: 'ไม่มีรูปภาพ'
+                no_image: 'ไม่มีรูปภาพ',
+                org_HRDI: 'หน่วยงาน สวพส.',
+                org_RPRP: 'หน่วยงาน สวพส.(อร)'
             };
             return labels[key] || '';
         }
@@ -3039,6 +3842,28 @@
         function goManageByDashboardPreset(presetKey) {
             showTab('manage');
             applyManageFilters({ search: '', category: '', status: '', preset: presetKey || '' });
+        }
+
+        function goManageByOrgFilter(orgCode) {
+            const code = String(orgCode || '').trim().toUpperCase();
+            if (!code) return;
+            showTab('manage');
+            applyManageFilters({ search: '', category: '', status: '', preset: 'org_' + code });
+        }
+
+        function getSupplyOrgCodeClient(supply) {
+            const direct = String((supply && supply.assetOrgCode) || '').trim().toUpperCase();
+            if (direct === 'HRDI' || direct === 'RPRP') return direct;
+            const key = String((supply && supply.assetKey) || '').trim().toUpperCase();
+            if (key.indexOf('HRDI:') === 0) return 'HRDI';
+            if (key.indexOf('RPRP:') === 0) return 'RPRP';
+            const orgName = String((supply && supply.assetOrgName) || '').trim();
+            if (orgName === 'สวพส.') return 'HRDI';
+            if (orgName === 'สวพส.(อร)') return 'RPRP';
+            const orgId = String((supply && supply.assetOrgId) || '').trim().toUpperCase();
+            if (orgId.indexOf('HRDI') !== -1) return 'HRDI';
+            if (orgId.indexOf('RPRP') !== -1) return 'RPRP';
+            return 'RPRP';
         }
 
         function getCurrentActor() {
@@ -3138,6 +3963,101 @@
             const bytes = new Uint8Array(binary.length);
             for (let i = 0; i < binary.length; i++) bytes[i] = binary.charCodeAt(i);
             return URL.createObjectURL(new Blob([bytes], { type: mimeType || 'application/zip' }));
+        }
+
+        const ROLE_META = {
+            admin: {
+                label: 'Admin',
+                thai: 'ผู้ดูแลระบบ',
+                icon: 'fa-shield-halved',
+                badgeClass: 'role-admin',
+                allowedTabs: BASE_TAB_ORDER.slice()
+            },
+            manager: {
+                label: 'Manager',
+                thai: 'ผู้จัดการข้อมูล',
+                icon: 'fa-user-gear',
+                badgeClass: 'role-manager',
+                allowedTabs: ['home', 'manage', 'check', 'report', 'change']
+            },
+            viewer: {
+                label: 'Viewer',
+                thai: 'ผู้ดูอย่างเดียว',
+                icon: 'fa-eye',
+                badgeClass: 'role-viewer',
+                allowedTabs: ['home']
+            }
+        };
+
+        function normalizeUserRole(role) {
+            const value = String(role || '').trim().toLowerCase();
+            if (value === 'admin' || value === 'manager' || value === 'viewer') return value;
+            if (value === 'user' || value === 'view' || value === 'read' || value === 'readonly') return 'viewer';
+            return 'viewer';
+        }
+
+        function getCurrentRole() {
+            currentUserRole = normalizeUserRole(localStorage.getItem('admin_role') || currentUserRole || 'viewer');
+            return currentUserRole;
+        }
+
+        function getRoleMeta(role) {
+            return ROLE_META[normalizeUserRole(role)] || ROLE_META.viewer;
+        }
+
+        function getAllowedTabsForRole(role) {
+            return getRoleMeta(role).allowedTabs.slice();
+        }
+
+        function canAccessTab(tabName) {
+            return getAllowedTabsForRole(getCurrentRole()).indexOf(tabName) !== -1;
+        }
+
+        function canDeleteData() {
+            return getCurrentRole() === 'admin';
+        }
+
+        function canAccessSettings() {
+            return getCurrentRole() === 'admin';
+        }
+
+        function updateSidebarRoleCard() {
+            const role = getCurrentRole();
+            const meta = getRoleMeta(role);
+            const badge = document.getElementById('sidebarRoleBadge');
+            const label = document.getElementById('sidebarRoleLabel');
+            const user = document.getElementById('sidebarRoleUser');
+            if (badge) {
+                badge.className = `sidebar-role-badge ${meta.badgeClass}`;
+                badge.innerHTML = `<i class="fas ${meta.icon}"></i><span id="sidebarRoleLabel">${meta.label}</span>`;
+            }
+            if (label) label.textContent = meta.label;
+            if (user) user.textContent = localStorage.getItem('admin_user') || 'user';
+        }
+
+        function applyRoleAccess() {
+            const role = getCurrentRole();
+            tabOrder = getAllowedTabsForRole(role);
+            document.body.setAttribute('data-user-role', role);
+            document.querySelectorAll('.tab-btn[data-tab]').forEach(function (btn) {
+                const tab = btn.getAttribute('data-tab');
+                const allowed = tabOrder.indexOf(tab) !== -1;
+                btn.classList.toggle('role-hidden', !allowed);
+                btn.disabled = !allowed;
+                btn.setAttribute('aria-hidden', allowed ? 'false' : 'true');
+            });
+            updateSidebarRoleCard();
+            if (!canAccessTab(currentTabName)) currentTabName = 'home';
+            updateTabShortcutButtons();
+        }
+
+        function denyRoleAccess(message) {
+            Swal.fire({
+                icon: 'warning',
+                title: 'ไม่มีสิทธิ์เข้าถึง',
+                text: message || 'บัญชีนี้ไม่มีสิทธิ์ใช้งานส่วนนี้',
+                confirmButtonColor: '#10b981'
+            });
         }
 
         function initLoaderLottie() {
@@ -3287,6 +4207,11 @@
         }
 
         function showTab(tabName) {
+            applyRoleAccess();
+            if (!canAccessTab(tabName)) {
+                denyRoleAccess(tabName === 'setting' ? 'Manager และ Viewer ไม่สามารถเข้าหน้าการตั้งค่าได้' : 'Viewer สามารถเข้าดูได้เฉพาะแดชบรอด');
+                tabName = 'home';
+            }
             // Hide all tabs
             document.querySelectorAll('.tab-content').forEach(tab => tab.classList.add('hidden'));
 
@@ -3534,13 +4459,146 @@
         }
 
         function loadSettingsTab() {
+            if (!canAccessSettings()) {
+                denyRoleAccess('เฉพาะ Admin เท่านั้นที่เข้าหน้าการตั้งค่าได้');
+                showTab('home');
+                return;
+            }
             google.script.run.withSuccessHandler(function (cfg) {
                 document.getElementById('settingFolderId').value = cfg.folderId || '';
                 document.getElementById('settingSpreadsheetId').value = cfg.spreadsheetId || '';
             }).getConfig();
+            loadUserAccessSettings();
+        }
+
+        function renderUserRoleBadge(role) {
+            const normalized = normalizeUserRole(role);
+            const meta = getRoleMeta(normalized);
+            const cls = normalized === 'admin' ? 'bg-emerald-50 text-emerald-700 border-emerald-100' : (normalized === 'manager' ? 'bg-blue-50 text-blue-700 border-blue-100' : 'bg-slate-50 text-slate-600 border-slate-200');
+            return `<span class="inline-flex items-center gap-2 rounded-full border px-3 py-1 text-xs font-bold ${cls}"><i class="fas ${meta.icon}"></i>${meta.label}</span>`;
+        }
+
+        function loadUserAccessSettings() {
+            if (!canAccessSettings()) return;
+            const tbody = document.getElementById('userAccessBody');
+            if (tbody) tbody.innerHTML = '<tr><td class="px-4 py-6 text-slate-400 text-center" colspan="4">กำลังโหลด...</td></tr>';
+            google.script.run
+                .withSuccessHandler(function (rows) {
+                    userAccessRows = Array.isArray(rows) ? rows : [];
+                    renderUserAccessTable();
+                })
+                .withFailureHandler(function (error) {
+                    if (tbody) tbody.innerHTML = `<tr><td class="px-4 py-6 text-rose-500 text-center" colspan="4">โหลดรายชื่อไม่สำเร็จ: ${(error && error.message) || error}</td></tr>`;
+                })
+                .getUsersForSettings();
+        }
+
+        function renderUserAccessTable() {
+            const tbody = document.getElementById('userAccessBody');
+            if (!tbody) return;
+            if (!userAccessRows.length) {
+                tbody.innerHTML = '<tr><td class="px-4 py-6 text-slate-400 text-center" colspan="4">ยังไม่มีผู้ใช้งาน</td></tr>';
+                return;
+            }
+            tbody.innerHTML = userAccessRows.map(function (user) {
+                const username = String(user.username || '').replace(/'/g, '&#39;').replace(/"/g, '&quot;');
+                const active = user.active !== false;
+                return `
+                    <tr class="border-t border-slate-100 hover:bg-slate-50">
+                        <td class="px-4 py-3 font-semibold text-slate-800">${username}</td>
+                        <td class="px-4 py-3">${renderUserRoleBadge(user.role)}</td>
+                        <td class="px-4 py-3">
+                            <span class="inline-flex rounded-full px-3 py-1 text-xs font-semibold ${active ? 'bg-emerald-50 text-emerald-700' : 'bg-rose-50 text-rose-700'}">${active ? 'เปิดใช้งาน' : 'ปิดใช้งาน'}</span>
+                        </td>
+                        <td class="px-4 py-3 whitespace-nowrap">
+                            <button onclick="editUserAccessFromSettings('${username}')" class="rounded-lg bg-amber-50 text-amber-700 border border-amber-100 px-3 py-1.5 text-xs font-semibold hover:bg-amber-100">แก้ไข</button>
+                            <button onclick="deleteUserAccessFromSettings('${username}')" class="rounded-lg bg-rose-50 text-rose-700 border border-rose-100 px-3 py-1.5 text-xs font-semibold hover:bg-rose-100 ml-1">ลบ</button>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        function resetUserAccessForm() {
+            const title = document.getElementById('userAccessFormTitle');
+            if (title) title.textContent = 'เพิ่ม / แก้ไขผู้ใช้งาน';
+            ['userAccessUsername', 'userAccessPassword'].forEach(function (id) {
+                const el = document.getElementById(id);
+                if (el) el.value = '';
+            });
+            const roleEl = document.getElementById('userAccessRole');
+            if (roleEl) roleEl.value = 'manager';
+            const activeEl = document.getElementById('userAccessActive');
+            if (activeEl) activeEl.checked = true;
+        }
+
+        function editUserAccessFromSettings(username) {
+            const row = userAccessRows.find(function (item) { return String(item.username || '') === String(username || ''); });
+            if (!row) return;
+            const title = document.getElementById('userAccessFormTitle');
+            const userEl = document.getElementById('userAccessUsername');
+            const passEl = document.getElementById('userAccessPassword');
+            const roleEl = document.getElementById('userAccessRole');
+            const activeEl = document.getElementById('userAccessActive');
+            if (title) title.textContent = 'แก้ไขผู้ใช้งาน: ' + row.username;
+            if (userEl) userEl.value = row.username || '';
+            if (passEl) passEl.value = '';
+            if (roleEl) roleEl.value = normalizeUserRole(row.role);
+            if (activeEl) activeEl.checked = row.active !== false;
+        }
+
+        function saveUserAccessFromSettings() {
+            if (!canAccessSettings()) return denyRoleAccess('เฉพาะ Admin เท่านั้นที่จัดการสิทธิ์ได้');
+            const payload = {
+                username: (document.getElementById('userAccessUsername')?.value || '').trim(),
+                password: document.getElementById('userAccessPassword')?.value || '',
+                role: document.getElementById('userAccessRole')?.value || 'viewer',
+                active: !!document.getElementById('userAccessActive')?.checked,
+                actor: getCurrentActor()
+            };
+            if (!payload.username) {
+                Swal.fire({ icon: 'warning', title: 'กรุณาระบุ Username', confirmButtonColor: '#10b981' });
+                return;
+            }
+            google.script.run
+                .withSuccessHandler(function (res) {
+                    if (!res || !res.success) {
+                        Swal.fire({ icon: 'error', title: 'บันทึกสิทธิ์ไม่สำเร็จ', text: (res && res.message) || '', confirmButtonColor: '#EF5350' });
+                        return;
+                    }
+                    Swal.fire({ icon: 'success', title: 'บันทึกสิทธิ์เรียบร้อย', confirmButtonColor: '#10b981' });
+                    resetUserAccessForm();
+                    loadUserAccessSettings();
+                })
+                .saveUserAccess(payload);
+        }
+
+        function deleteUserAccessFromSettings(username) {
+            if (!canAccessSettings()) return denyRoleAccess('เฉพาะ Admin เท่านั้นที่ลบผู้ใช้งานได้');
+            Swal.fire({
+                icon: 'warning',
+                title: 'ยืนยันการลบผู้ใช้งาน?',
+                text: 'ผู้ใช้งานนี้จะไม่สามารถเข้าสู่ระบบได้',
+                showCancelButton: true,
+                confirmButtonText: 'ลบ',
+                cancelButtonText: 'ยกเลิก',
+                confirmButtonColor: '#ef4444'
+            }).then(function (result) {
+                if (!result.isConfirmed) return;
+                google.script.run.withSuccessHandler(function (res) {
+                    if (!res || !res.success) {
+                        Swal.fire({ icon: 'error', title: 'ลบไม่สำเร็จ', text: (res && res.message) || '', confirmButtonColor: '#EF5350' });
+                        return;
+                    }
+                    Swal.fire({ icon: 'success', title: 'ลบผู้ใช้งานแล้ว', confirmButtonColor: '#10b981' });
+                    resetUserAccessForm();
+                    loadUserAccessSettings();
+                }).deleteUserAccess(username, getCurrentActor());
+            });
         }
 
         function saveSettingsTab() {
+            if (!canAccessSettings()) return denyRoleAccess('เฉพาะ Admin เท่านั้นที่บันทึกการตั้งค่าได้');
             const folderId = document.getElementById('settingFolderId').value.trim();
             const spreadsheetId = document.getElementById('settingSpreadsheetId').value.trim();
 
@@ -3757,7 +4815,7 @@
                     refreshAssetInputSuggestions();
                     hideLoading();
                     updateDashboard();
-                    loadSuppliesTable();
+                    if (canAccessTab('manage')) loadSuppliesTable();
                 })
                 .withFailureHandler(function (error) {
                     hideLoading();
@@ -4027,9 +5085,13 @@
             let noLocationCount = 0;
             let noReceivedDateCount = 0;
             let noImageCount = 0;
+            const orgCounts = { HRDI: 0, RPRP: 0 };
             safeSupplies.forEach(s => {
                 const key = normalizeAssetStatusClient(s.status);
                 counts[key] = (counts[key] || 0) + 1;
+                const orgCode = getSupplyOrgCodeClient(s);
+                if (orgCode === 'HRDI') orgCounts.HRDI += 1;
+                else if (orgCode === 'RPRP') orgCounts.RPRP += 1;
                 if (calcAgeYears(s.receivedDate) >= 6) overAgeCount += 1;
                 if (!String(s.owner || '').trim()) noOwnerCount += 1;
                 if (!String(s.location || '').trim()) noLocationCount += 1;
@@ -4037,6 +5099,8 @@
                 if (!String(s.imageUrl || '').trim()) noImageCount += 1;
             });
             const totalEl = document.getElementById('totalAssets');
+            const hrdiOrgEl = document.getElementById('hrdiOrgAssets');
+            const rprpOrgEl = document.getElementById('rprpOrgAssets');
             const normalEl = document.getElementById('normalAssets');
             const damagedEl = document.getElementById('damagedAssets');
             const repairEl = document.getElementById('repairAssets');
@@ -4047,6 +5111,8 @@
             const noDateEl = document.getElementById('noDateAssets');
             const noImageEl = document.getElementById('noImageAssets');
             if (totalEl) totalEl.textContent = totalAssets;
+            if (hrdiOrgEl) hrdiOrgEl.textContent = orgCounts.HRDI;
+            if (rprpOrgEl) rprpOrgEl.textContent = orgCounts.RPRP;
             if (normalEl) normalEl.textContent = counts['ปกติ'];
             if (damagedEl) damagedEl.textContent = counts['ชำรุด'];
             if (repairEl) repairEl.textContent = counts['ส่งซ่อม'];
@@ -4059,7 +5125,6 @@
         }
 
         let ageCharts = {};
-        let locationSummaryDonutChart = null;
 
         function renderStatusBadge(status) {
             const s = normalizeAssetStatusClient(status);
@@ -4104,6 +5169,37 @@
                 <div class="flex flex-wrap items-center gap-2">
                     <button type="button" onclick="approveChangeRequest('${requestId}')" class="btn-theme btn-theme-manage-soft px-3 py-2 text-xs font-semibold whitespace-nowrap">อนุมัติ</button>
                     <button type="button" onclick="rejectChangeRequest('${requestId}')" class="btn-theme btn-theme-danger-soft px-3 py-2 text-xs font-semibold whitespace-nowrap">ปฏิเสธ</button>
+                </div>
+            `;
+        }
+
+        function getChangeRequestCurrentOwner(item) {
+            return String((item && (item.currentOwner || item.fromOwner)) || '').trim() || '-';
+        }
+
+        function getChangeRequestCurrentLocation(item) {
+            return String((item && (item.currentLocation || item.fromLocation)) || '').trim() || '-';
+        }
+
+        function getChangeRequestNewLocation(item) {
+            return String((item && (item.newLocation || item.toLocation)) || '').trim();
+        }
+
+        function renderChangeRequestCurrentBlock(item) {
+            return `
+                <div class="space-y-1">
+                    <div class="font-semibold text-slate-800">${getChangeRequestCurrentOwner(item)}</div>
+                    <div class="text-xs text-slate-500"><i class="fas fa-location-dot mr-1"></i>${getChangeRequestCurrentLocation(item)}</div>
+                </div>
+            `;
+        }
+
+        function renderChangeRequestTargetBlock(item) {
+            const nextLocation = getChangeRequestNewLocation(item);
+            return `
+                <div class="space-y-1">
+                    <div class="font-semibold text-emerald-700">${item.toOwner || '-'}</div>
+                    <div class="text-xs ${nextLocation ? 'text-emerald-700' : 'text-slate-400'}"><i class="fas fa-location-dot mr-1"></i>${nextLocation || 'ไม่เปลี่ยนสถานที่'}</div>
                 </div>
             `;
         }
@@ -4153,8 +5249,16 @@
                 if (!searchTerm) return true;
                 const haystack = [
                     item.assetNumber,
+                    item.assetKey,
                     item.fromOwner,
-                    item.toOwner
+                    item.currentOwner,
+                    item.toOwner,
+                    item.currentLocation,
+                    item.fromLocation,
+                    item.newLocation,
+                    item.toLocation,
+                    item.reason,
+                    item.contact
                 ].map((value) => String(value || '').toLowerCase()).join(' ');
                 return haystack.includes(searchTerm);
             });
@@ -4178,8 +5282,8 @@
                         <tr class="border-b align-top">
                             <td class="px-4 py-2 whitespace-nowrap">${formatThaiDateTime(r.createdAt)}</td>
                             <td class="px-4 py-2 font-semibold">${r.assetNumber || '-'}</td>
-                            <td class="px-4 py-2">${r.fromOwner || '-'}</td>
-                            <td class="px-4 py-2">${r.toOwner || '-'}</td>
+                            <td class="px-4 py-2">${renderChangeRequestCurrentBlock(r)}</td>
+                            <td class="px-4 py-2">${renderChangeRequestTargetBlock(r)}</td>
                             <td class="px-4 py-2">${r.reason || '-'}</td>
                             <td class="px-4 py-2">${r.contact || '-'}</td>
                             <td class="px-4 py-2 whitespace-nowrap">${statusBadge}</td>
@@ -4193,13 +5297,15 @@
                             <div class="mobile-info-card-header">
                                 <div class="mobile-info-card-title">
                                     <div class="mobile-info-card-code">${r.assetNumber || '-'}</div>
-                                    <div class="mobile-info-card-name">${r.fromOwner || '-'} -> ${r.toOwner || '-'}</div>
+                                    <div class="mobile-info-card-name">${getChangeRequestCurrentOwner(r)} -> ${r.toOwner || '-'}</div>
                                 </div>
                                 ${statusBadge}
                             </div>
                             <div class="mobile-info-card-grid">
                                 <div class="mobile-info-card-field"><div class="mobile-info-card-label">วันที่ส่งคำขอ</div><div class="mobile-info-card-value">${formatThaiDateTime(r.createdAt)}</div></div>
                                 <div class="mobile-info-card-field"><div class="mobile-info-card-label">ผู้ติดต่อ</div><div class="mobile-info-card-value">${r.contact || '-'}</div></div>
+                                <div class="mobile-info-card-field"><div class="mobile-info-card-label">สถานที่ปัจจุบัน</div><div class="mobile-info-card-value">${getChangeRequestCurrentLocation(r)}</div></div>
+                                <div class="mobile-info-card-field"><div class="mobile-info-card-label">สถานที่ใหม่</div><div class="mobile-info-card-value">${getChangeRequestNewLocation(r) || 'ไม่เปลี่ยนสถานที่'}</div></div>
                                 <div class="mobile-info-card-field sm:col-span-2"><div class="mobile-info-card-label">เหตุผล</div><div class="mobile-info-card-value">${r.reason || '-'}</div></div>
                             </div>
                             <div class="mobile-info-card-actions">${actionButtons}</div>
@@ -4234,8 +5340,8 @@
                         <tr class="border-b align-top">
                             <td class="px-4 py-2 whitespace-nowrap">${formatThaiDateTime(r.createdAt)}</td>
                             <td class="px-4 py-2 font-semibold">${r.assetNumber || '-'}</td>
-                            <td class="px-4 py-2">${r.fromOwner || '-'}</td>
-                            <td class="px-4 py-2">${r.toOwner || '-'}</td>
+                            <td class="px-4 py-2">${renderChangeRequestCurrentBlock(r)}</td>
+                            <td class="px-4 py-2">${renderChangeRequestTargetBlock(r)}</td>
                             <td class="px-4 py-2">${r.reason || '-'}</td>
                             <td class="px-4 py-2">${r.contact || '-'}</td>
                             <td class="px-4 py-2 whitespace-nowrap">${statusBadge}</td>
@@ -4249,13 +5355,15 @@
                             <div class="mobile-info-card-header">
                                 <div class="mobile-info-card-title">
                                     <div class="mobile-info-card-code">${r.assetNumber || '-'}</div>
-                                    <div class="mobile-info-card-name">${r.fromOwner || '-'} -> ${r.toOwner || '-'}</div>
+                                    <div class="mobile-info-card-name">${getChangeRequestCurrentOwner(r)} -> ${r.toOwner || '-'}</div>
                                 </div>
                                 ${statusBadge}
                             </div>
                             <div class="mobile-info-card-grid">
                                 <div class="mobile-info-card-field"><div class="mobile-info-card-label">วันที่ส่งคำขอ</div><div class="mobile-info-card-value">${formatThaiDateTime(r.createdAt)}</div></div>
                                 <div class="mobile-info-card-field"><div class="mobile-info-card-label">ผู้ติดต่อ</div><div class="mobile-info-card-value">${r.contact || '-'}</div></div>
+                                <div class="mobile-info-card-field"><div class="mobile-info-card-label">สถานที่ปัจจุบัน</div><div class="mobile-info-card-value">${getChangeRequestCurrentLocation(r)}</div></div>
+                                <div class="mobile-info-card-field"><div class="mobile-info-card-label">สถานที่ใหม่</div><div class="mobile-info-card-value">${getChangeRequestNewLocation(r) || 'ไม่เปลี่ยนสถานที่'}</div></div>
                                 <div class="mobile-info-card-field sm:col-span-2"><div class="mobile-info-card-label">เหตุผล</div><div class="mobile-info-card-value">${r.reason || '-'}</div></div>
                             </div>
                             <div class="mobile-info-card-actions">${actionButtons}</div>
@@ -4527,10 +5635,16 @@
                     if (presetFilter === 'no_location' && !!String(s.location || '').trim()) return false;
                     if (presetFilter === 'no_received_date' && !!String(s.receivedDate || '').trim()) return false;
                     if (presetFilter === 'no_image' && !!String(s.imageUrl || '').trim()) return false;
+                    if (presetFilter === 'org_HRDI' && getSupplyOrgCodeClient(s) !== 'HRDI') return false;
+                    if (presetFilter === 'org_RPRP' && getSupplyOrgCodeClient(s) !== 'RPRP') return false;
                 }
                 if (!q) return true;
                 const haystack = [
                     s.assetNumber || '',
+                    s.assetKey || '',
+                    s.assetOrgName || '',
+                    s.assetOrgCode || '',
+                    getAssetNumberDisplayClient(s),
                     s.assetName || '',
                     s.owner || '',
                     s.location || '',
@@ -4546,7 +5660,7 @@
             const pageInfo = document.getElementById('managePageInfo');
             const prevBtn = document.getElementById('managePrevPage');
             const nextBtn = document.getElementById('manageNextPage');
-            const selected = filteredRows.filter(r => selectedSupplyCodes.has(String(r.assetNumber || '').trim())).length;
+            const selected = filteredRows.filter(r => selectedSupplyCodes.has(getAssetLookupKeyClient(r))).length;
             if (countText) countText.textContent = `เลือก ${selected} รายการ`;
             if (summary) summary.textContent = `แสดง ${pageRows.length} จาก ${filteredRows.length} รายการ (ทั้งหมด ${(Array.isArray(supplies) ? supplies.length : 0)})`;
             if (pageInfo) pageInfo.textContent = `หน้า ${manageCurrentPage} / ${Math.max(1, totalPages || 1)}`;
@@ -4571,17 +5685,19 @@
             const rows = filteredRows.slice(start, end);
 
             rows.forEach((supply) => {
-                const code = String(supply.assetNumber || '').trim();
+                const code = getAssetLookupKeyClient(supply);
+                const assetNumberDisplay = getAssetNumberDisplayClient(supply);
                 const isSelected = code && selectedSupplyCodes.has(code);
                 const categoryLabel = getCanonicalCategoryLabel(supply);
                 const categoryClass = getCanonicalCategoryClass(categoryLabel);
                 const escapedCode = code.replace(/'/g, "\\'");
                 const safeId = String(supply.id || '').replace(/'/g, "\\'");
-                const safeCode = String(supply.assetNumber || '').replace(/'/g, "\\'");
+                const safeCode = String(code || '').replace(/'/g, "\\'");
                 const safeNameTitle = String(supply.assetName || '-').replace(/"/g, '&quot;');
                 const safeOwnerTitle = String(supply.owner || '-').replace(/"/g, '&quot;');
                 const safeLocationTitle = String(supply.location || '-').replace(/"/g, '&quot;');
                 const safeCategoryTitle = String(categoryLabel || '-').replace(/"/g, '&quot;');
+                const safeAssetNumberDisplayTitle = String(assetNumberDisplay || '-').replace(/"/g, '&quot;');
 
                 if (tbody) {
                     const row = `
@@ -4595,7 +5711,7 @@
                                 />
                             </td>
                             <td class="px-4 py-3 whitespace-nowrap">
-                                <span class="inline-flex items-center px-3 py-1 rounded-lg bg-slate-100 text-slate-700 font-semibold">${supply.assetNumber || '-'}</span>
+                                <span class="inline-flex items-center px-3 py-1 rounded-lg bg-slate-100 text-slate-700 font-semibold manage-cell-wrap" title="${safeAssetNumberDisplayTitle}">${assetNumberDisplay}</span>
                             </td>
                             <td class="px-4 py-3">
                                 <div class="font-semibold text-slate-800 manage-cell-wrap" title="${safeNameTitle}">${supply.assetName || '-'}</div>
@@ -4615,15 +5731,15 @@
                                     <button onclick="showSupplyDetailsById('${safeId}')" class="action-pill action-pill-view" title="ดูรายละเอียด/ประวัติ">
                                         <i class="fas fa-book-open"></i>
                                     </button>
-                                    <button onclick="printSingleSupplyQRCode('${safeCode}')" class="action-pill action-pill-print" title="พิมพ์ QR รายการเดียว">
+                                    <button onclick="printSingleSupplyQRCode('${safeCode}')" class="action-pill action-pill-print" title="ออกแบบ/พิมพ์สติกเกอร์ QR">
                                         <i class="fas fa-print"></i>
                                     </button>
                                     <button onclick="editSupply('${safeId}')" class="action-pill action-pill-edit" title="แก้ไขข้อมูล">
                                         <i class="fas fa-pen"></i>
                                     </button>
-                                    <button onclick="deleteSupply('${safeId}')" class="action-pill action-pill-delete" title="ลบรายการ">
+                                    ${canDeleteData() ? `<button onclick="deleteSupply('${safeId}')" class="action-pill action-pill-delete" title="ลบรายการ">
                                         <i class="fas fa-trash"></i>
-                                    </button>
+                                    </button>` : ''}
                                 </div>
                             </td>
                         </tr>
@@ -4650,7 +5766,7 @@
                         <div class="space-y-3">
                             <div>
                                 <div class="flex flex-wrap items-center gap-2 mb-2">
-                                    <span class="inline-flex items-center px-3 py-1 rounded-lg bg-slate-100 text-slate-700 text-xs font-semibold">${supply.assetNumber || '-'}</span>
+                                    <span class="inline-flex items-center px-3 py-1 rounded-lg bg-slate-100 text-slate-700 text-xs font-semibold" title="${safeAssetNumberDisplayTitle}">${assetNumberDisplay}</span>
                                     <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold ${categoryClass}">${categoryLabel}</span>
                                 </div>
                                 <div class="text-base font-bold text-slate-900 break-words">${supply.assetName || '-'}</div>
@@ -4672,16 +5788,16 @@
                                 </button>
                                 <button onclick="printSingleSupplyQRCode('${safeCode}')" class="h-14 rounded-xl bg-emerald-50 text-emerald-700 border border-emerald-100 text-xs font-semibold inline-flex flex-col items-center justify-center gap-1">
                                     <i class="fas fa-print text-base"></i>
-                                    <span>พิมพ์ QR</span>
+                                    <span>สติกเกอร์ QR</span>
                                 </button>
                                 <button onclick="editSupply('${safeId}')" class="h-14 rounded-xl bg-amber-50 text-amber-700 border border-amber-100 text-xs font-semibold inline-flex flex-col items-center justify-center gap-1">
                                     <i class="fas fa-pen text-base"></i>
                                     <span>แก้ไข</span>
                                 </button>
-                                <button onclick="deleteSupply('${safeId}')" class="h-14 rounded-xl bg-rose-50 text-rose-700 border border-rose-100 text-xs font-semibold inline-flex flex-col items-center justify-center gap-1">
+                                ${canDeleteData() ? `<button onclick="deleteSupply('${safeId}')" class="h-14 rounded-xl bg-rose-50 text-rose-700 border border-rose-100 text-xs font-semibold inline-flex flex-col items-center justify-center gap-1">
                                     <i class="fas fa-trash text-base"></i>
                                     <span>ลบ</span>
-                                </button>
+                                </button>` : ''}
                             </div>
                         </div>
                     `;
@@ -4697,7 +5813,13 @@
         }
 
         function showSupplyDetailsById(id) {
-            const supply = supplies.find(function (s) { return String(s.id || '') === String(id || ''); });
+            const lookup = String(id || '').trim();
+            const supply = supplies.find(function (s) {
+                return String(s.id || '') === lookup
+                    || String(s.assetKey || '') === lookup
+                    || String(s.assetNumber || '') === lookup
+                    || getAssetLookupKeyClient(s) === lookup;
+            });
             if (!supply) {
                 Swal.fire({ icon: 'warning', title: 'ไม่พบข้อมูลครุภัณฑ์' });
                 return;
@@ -4722,7 +5844,7 @@
 
         function toggleSelectAllSupplies(buttonEl) {
             const allCodes = getFilteredSupplies()
-                .map(function (s) { return String(s.assetNumber || '').trim(); })
+                .map(function (s) { return getAssetLookupKeyClient(s); })
                 .filter(function (v) { return !!v; });
             const isAllSelected = allCodes.length > 0 && allCodes.every(function (c) { return selectedSupplyCodes.has(c); });
 
@@ -4769,139 +5891,74 @@
             });
         }
 
-        async function printSelectedSupplyQRCodes() {
-            const selected = supplies.filter(function (s) {
-                return selectedSupplyCodes.has(String(s.assetNumber || '').trim());
-            });
+        function getStickerDesignerUrlClient() {
+            const base = window.location.href.split('#')[0].split('?')[0].replace(/[^/]*$/, '');
+            return base + 'sticker.html';
+        }
 
-            if (!selected.length) {
-                Swal.fire({ icon: 'warning', title: 'ยังไม่ได้เลือกรายการ', text: 'กรุณาเลือกครุภัณฑ์ที่ต้องการพิมพ์ QR ก่อน' });
+        function openStickerDesignerForKeys(keys, options) {
+            const uniqueKeys = Array.from(new Set((Array.isArray(keys) ? keys : [])
+                .map(function (key) { return extractAssetLookupFromQrClient(key); })
+                .filter(function (key) { return !!key; })));
+
+            if (!uniqueKeys.length) {
+                Swal.fire({ icon: 'warning', title: 'ไม่พบรายการสำหรับทำสติกเกอร์' });
                 return;
             }
 
-            Swal.fire({
-                title: 'กำลังเตรียม QR...',
-                text: 'โปรดรอสักครู่',
-                allowOutsideClick: false,
-                didOpen: function () { Swal.showLoading(); }
-            });
+            const payload = {
+                version: 1,
+                keys: uniqueKeys,
+                template: (options && options.template) || 'standard',
+                paperMode: uniqueKeys.length > 1 ? 'a4' : 'single',
+                createdAt: new Date().toISOString()
+            };
 
             try {
-                const qrData = await Promise.all(selected.map(function (item) {
-                    return createQrDataUrl(item.assetNumber || '');
-                }));
-                const cards = selected.map(function (item, idx) {
-                    return `
-                        <div class="qr-card">
-                            <img src="${qrData[idx]}" alt="QR ${item.assetNumber || ''}" />
-                            <div class="qr-code">${item.assetNumber || '-'}</div>
-                            <div class="qr-name">${item.assetName || '-'}</div>
-                            <div class="qr-meta">${getCanonicalCategoryLabel(item)} | ${item.owner || '-'}</div>
-                        </div>
-                    `;
-                }).join('');
-
-                const win = window.open('', '_blank', 'width=1024,height=768');
-                if (!win) {
-                    Swal.close();
-                    Swal.fire({ icon: 'error', title: 'เปิดหน้าต่างพิมพ์ไม่สำเร็จ', text: 'กรุณาอนุญาต Popup ในเบราว์เซอร์' });
-                    return;
-                }
-
-                win.document.write(`
-                    <html>
-                        <head>
-                            <title>พิมพ์ QR ครุภัณฑ์</title>
-                            <style>
-                                body { font-family: Tahoma, sans-serif; padding: 18px; color: #0f172a; }
-                                .wrap { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
-                                .qr-card { border: 1px solid #cbd5e1; border-radius: 10px; padding: 10px; text-align: center; break-inside: avoid; }
-                                .qr-card img { width: 180px; height: 180px; object-fit: contain; display: block; margin: 0 auto 8px; }
-                                .qr-code { font-weight: 700; font-size: 14px; margin-bottom: 4px; }
-                                .qr-name { font-size: 12px; margin-bottom: 2px; }
-                                .qr-meta { font-size: 11px; color: #475569; }
-                                @media print { body { margin: 0; padding: 12px; } .wrap { gap: 8px; } }
-                            </style>
-                        </head>
-                        <body>
-                            <h3>QR Code ครุภัณฑ์ (${selected.length} รายการ)</h3>
-                            <div class="wrap">${cards}</div>
-                        </body>
-                    </html>
-                `);
-                win.document.close();
-                win.focus();
-                win.print();
-                Swal.close();
+                sessionStorage.setItem('assetStickerPrintPayload', JSON.stringify(payload));
             } catch (error) {
-                Swal.close();
-                Swal.fire({ icon: 'error', title: 'พิมพ์ QR ไม่สำเร็จ', text: error && error.message ? error.message : String(error) });
+                console.warn('Cannot write sticker payload to sessionStorage:', error);
+            }
+
+            const url = getStickerDesignerUrlClient() + '?src=session&v=50';
+            const win = window.open(url, '_blank', 'width=1180,height=820');
+            if (!win) {
+                const fallbackUrl = getStickerDesignerUrlClient() + '?keys=' + encodeURIComponent(uniqueKeys.join(',')) + '&template=' + encodeURIComponent(payload.template) + '&paper=' + encodeURIComponent(payload.paperMode) + '&v=50';
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'เบราว์เซอร์บล็อก Popup',
+                    html: '<div class="text-left text-sm">กรุณาอนุญาต Popup หรือกดปุ่มด้านล่างเพื่อเปิดหน้าออกแบบสติกเกอร์</div>',
+                    showCancelButton: true,
+                    confirmButtonText: 'เปิดหน้าออกแบบ',
+                    cancelButtonText: 'ปิด'
+                }).then(function (result) {
+                    if (result.isConfirmed) window.location.href = fallbackUrl;
+                });
             }
         }
 
+        async function printSelectedSupplyQRCodes() {
+            const selected = supplies.filter(function (s) {
+                return selectedSupplyCodes.has(getAssetLookupKeyClient(s));
+            });
+
+            if (!selected.length) {
+                Swal.fire({ icon: 'warning', title: 'ยังไม่ได้เลือกรายการ', text: 'กรุณาเลือกครุภัณฑ์ที่ต้องการทำสติกเกอร์ก่อน' });
+                return;
+            }
+
+            openStickerDesignerForKeys(selected.map(function (item) {
+                return getAssetLookupKeyClient(item);
+            }), { template: 'standard' });
+        }
+
         async function printSingleSupplyQRCode(assetNumber) {
-            const code = String(assetNumber || '').trim();
+            const code = extractAssetLookupFromQrClient(assetNumber);
             if (!code) {
                 Swal.fire({ icon: 'warning', title: 'ไม่พบหมายเลขครุภัณฑ์' });
                 return;
             }
-
-            const item = supplies.find(function (s) { return String(s.assetNumber || '').trim() === code; }) || {};
-            const escapeHtml = function (value) {
-                return String(value === null || value === undefined ? '' : value)
-                    .replace(/&/g, '&amp;')
-                    .replace(/</g, '&lt;')
-                    .replace(/>/g, '&gt;')
-                    .replace(/"/g, '&quot;')
-                    .replace(/'/g, '&#39;');
-            };
-            Swal.fire({
-                title: 'กำลังเตรียม QR...',
-                text: 'โปรดรอสักครู่',
-                allowOutsideClick: false,
-                didOpen: function () { Swal.showLoading(); }
-            });
-
-            try {
-                const qrData = await createQrDataUrl(code);
-                const win = window.open('', '_blank', 'width=760,height=720');
-                if (!win) {
-                    Swal.close();
-                    Swal.fire({ icon: 'error', title: 'เปิดหน้าต่างพิมพ์ไม่สำเร็จ', text: 'กรุณาอนุญาต Popup ในเบราว์เซอร์' });
-                    return;
-                }
-
-                win.document.write([
-                    '<html>',
-                        '<head>',
-                            '<title>พิมพ์ QR ครุภัณฑ์</title>',
-                            '<style>',
-                                'body { font-family: Tahoma, sans-serif; margin: 0; padding: 24px; text-align: center; color: #0f172a; }',
-                                '.card { border: 1px solid #cbd5e1; border-radius: 12px; max-width: 360px; margin: 0 auto; padding: 16px; }',
-                                'img { width: 240px; height: 240px; object-fit: contain; }',
-                                '.code { font-weight: 700; font-size: 18px; margin-top: 10px; }',
-                                '.name { font-size: 14px; margin-top: 4px; }',
-                                '.meta { font-size: 12px; color: #475569; margin-top: 2px; }',
-                            '</style>',
-                        '</head>',
-                        '<body>',
-                            '<div class="card">',
-                                '<img src="' + escapeHtml(qrData) + '" alt="QR ' + escapeHtml(code) + '" />',
-                                '<div class="code">' + escapeHtml(code) + '</div>',
-                                '<div class="name">' + escapeHtml(item.assetName || '-') + '</div>',
-                                '<div class="meta">' + escapeHtml(getCanonicalCategoryLabel(item)) + ' | ' + escapeHtml(item.owner || '-') + '</div>',
-                            '</div>',
-                        '</body>',
-                    '</html>'
-                ].join(''));
-                win.document.close();
-                win.focus();
-                win.print();
-                Swal.close();
-            } catch (error) {
-                Swal.close();
-                Swal.fire({ icon: 'error', title: 'พิมพ์ QR ไม่สำเร็จ', text: error && error.message ? error.message : String(error) });
-            }
+            openStickerDesignerForKeys([code], { template: 'standard' });
         }
 
         const CANONICAL_ASSET_CATEGORIES = ['\u0E04\u0E2D\u0E21\u0E1E\u0E34\u0E27\u0E40\u0E15\u0E2D\u0E23\u0E4C', '\u0E01\u0E25\u0E49\u0E2D\u0E07\u0E27\u0E07\u0E08\u0E23\u0E1B\u0E34\u0E14', '\u0E42\u0E2A\u0E15\u0E17\u0E31\u0E28\u0E19\u0E39\u0E1B\u0E01\u0E23\u0E13\u0E4C', '\u0E2D\u0E38\u0E1B\u0E01\u0E23\u0E13\u0E4C\u0E40\u0E04\u0E23\u0E37\u0E2D\u0E02\u0E48\u0E32\u0E22'];
@@ -5109,116 +6166,78 @@
             return `${years} ปี ${months} เดือน`;
         }
 
-        function updateAgeCategoryCharts() {
+        function getAgeCategoryRows() {
             const safeSupplies = Array.isArray(supplies) ? supplies : [];
             const categories = [
-                { key: '\u0E04\u0E2D\u0E21\u0E1E\u0E34\u0E27\u0E40\u0E15\u0E2D\u0E23\u0E4C', id: 'computer', label: '\u0E04\u0E2D\u0E21\u0E1E\u0E34\u0E27\u0E40\u0E15\u0E2D\u0E23\u0E4C' },
-                { key: '\u0E01\u0E25\u0E49\u0E2D\u0E07\u0E27\u0E07\u0E08\u0E23\u0E1B\u0E34\u0E14', id: 'cctv', label: '\u0E01\u0E25\u0E49\u0E2D\u0E07\u0E27\u0E07\u0E08\u0E23\u0E1B\u0E34\u0E14' },
-                { key: '\u0E42\u0E2A\u0E15\u0E17\u0E31\u0E28\u0E19\u0E39\u0E1B\u0E01\u0E23\u0E13\u0E4C', id: 'av', label: '\u0E42\u0E2A\u0E15\u0E17\u0E31\u0E28\u0E19\u0E39\u0E1B\u0E01\u0E23\u0E13\u0E4C' },
-                { key: '\u0E2D\u0E38\u0E1B\u0E01\u0E23\u0E13\u0E4C\u0E40\u0E04\u0E23\u0E37\u0E2D\u0E02\u0E48\u0E32\u0E22', id: 'network', label: '\u0E2D\u0E38\u0E1B\u0E01\u0E23\u0E13\u0E4C\u0E40\u0E04\u0E23\u0E37\u0E2D\u0E02\u0E48\u0E32\u0E22' }
+                { key: 'คอมพิวเตอร์', id: 'computer', label: 'คอมพิวเตอร์', color: '#6FCF97' },
+                { key: 'กล้องวงจรปิด', id: 'cctv', label: 'กล้องวงจรปิด', color: '#7DD3FC' },
+                { key: 'โสตทัศนูปกรณ์', id: 'av', label: 'โสตทัศนูปกรณ์', color: '#FFE082' },
+                { key: 'อุปกรณ์เครือข่าย', id: 'network', label: 'อุปกรณ์เครือข่าย', color: '#F8BBD0' }
             ];
 
-            const buckets = {
-                '0-2 ปี (ใหม่)': { min: 0, max: 2, color: '#22c55e', key: 'new' },
-                '3-5 ปี': { min: 3, max: 5, color: '#f59e0b', key: 'mid' },
-                '6+ ปี (เก่า)': { min: 6, max: 99, color: '#ef4444', key: 'old' }
-            };
-
-            categories.forEach(c => {
-                const items = safeSupplies.filter(s => detectCategory(s) === c.key);
-                const countsByBucket = {};
-                const counts = Object.keys(buckets).map(label => {
-                    const { min, max, key } = buckets[label];
-                    const count = items.filter(it => {
-                        const age = calcAgeYears(it.receivedDate);
-                        return age >= min && age <= max;
-                    }).length;
-                    countsByBucket[key] = count;
-                    return count;
+            return categories.map(function (c) {
+                const items = safeSupplies.filter(function (s) { return detectCategory(s) === c.key; });
+                const item = { key: c.key, id: c.id, label: c.label, color: c.color, total: items.length, newCount: 0, midCount: 0, oldCount: 0 };
+                items.forEach(function (asset) {
+                    const age = calcAgeYears(asset.receivedDate);
+                    if (age >= 6) item.oldCount += 1;
+                    else if (age >= 3) item.midCount += 1;
+                    else item.newCount += 1;
                 });
-
-                const totalEl = document.getElementById(`count-${c.id}`);
-                const totalMini = document.getElementById(`count-${c.id}-total`);
-                const newMini = document.getElementById(`count-${c.id}-new`);
-                const midMini = document.getElementById(`count-${c.id}-mid`);
-                const oldMini = document.getElementById(`count-${c.id}-old`);
-                if (totalEl) totalEl.textContent = items.length;
-                if (totalMini) totalMini.textContent = items.length;
-                if (newMini) newMini.textContent = countsByBucket.new || 0;
-                if (midMini) midMini.textContent = countsByBucket.mid || 0;
-                if (oldMini) oldMini.textContent = countsByBucket.old || 0;
-
-                const canvas = document.getElementById(`chart-${c.id}`);
-                if (!canvas) return;
-
-                if (ageCharts[c.id]) ageCharts[c.id].destroy();
-                ageCharts[c.id] = new Chart(canvas.getContext('2d'), {
-                    type: 'bar',
-                    plugins: [ChartDataLabels],
-                    data: {
-                        labels: Object.keys(buckets),
-                        datasets: [{
-                            label: c.label,
-                            data: counts,
-                            backgroundColor: Object.keys(buckets).map(k => buckets[k].color),
-                            borderRadius: 8,
-                            borderSkipped: false,
-                            maxBarThickness: 36
-                        }]
-                    },
-                    options: {
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        layout: {
-                            padding: {
-                                top: 18,
-                                right: 8,
-                                left: 8,
-                                bottom: 0
-                            }
-                        },
-                        plugins: {
-                            legend: { display: false },
-                            datalabels: {
-                                color: '#243B35',
-                                backgroundColor: 'rgba(15,23,42,0.40)',
-                                borderRadius: 999,
-                                padding: { top: 4, right: 8, bottom: 4, left: 8 },
-                                anchor: 'end',
-                                align: 'top',
-                                offset: 6,
-                                clamp: false,
-                                clip: false,
-                                display: (context) => Number((context.dataset && context.dataset.data && context.dataset.data[context.dataIndex]) || 0) > 0,
-                                font: { weight: 'bold', size: 11 },
-                                formatter: (value) => value > 0 ? value : ''
-                            }
-                        },
-                        scales: {
-                            y: {
-                                beginAtZero: true,
-                                grace: '12%',
-                                grid: { color: 'rgba(255,255,255,0.16)' },
-                                border: { color: 'rgba(255,255,255,0.22)' },
-                                ticks: {
-                                    color: '#243B35',
-                                    font: { size: 11, weight: '600' },
-                                    padding: 4
-                                }
-                            },
-                            x: {
-                                grid: { display: false },
-                                border: { display: false },
-                                ticks: {
-                                    color: '#243B35',
-                                    font: { size: 11, weight: '600' },
-                                    padding: 8
-                                }
-                            }
-                        }
-                    }
-                });
+                return item;
             });
+        }
+
+        function getAgeHeatClass(bucketKey, value, maxValue) {
+            const count = Number(value || 0);
+            const max = Math.max(1, Number(maxValue || 0));
+            if (count <= 0) return 'zero';
+            const level = count >= max * 0.66 ? 3 : (count >= max * 0.33 ? 2 : 1);
+            if (bucketKey === 'new') return 'age-heat-new-' + level;
+            if (bucketKey === 'mid') return 'age-heat-mid-' + level;
+            return 'age-heat-old-' + level;
+        }
+
+        function updateAgeCategoryCharts() {
+            const rows = getAgeCategoryRows();
+            const target = document.getElementById('ageCategoryCombinedChart');
+            const countEl = document.getElementById('ageCategorySummaryCount');
+            const noteEl = document.getElementById('ageCategoryCombinedNote');
+
+            if (ageCategoryDonutChart) {
+                try { ageCategoryDonutChart.destroy(); } catch (error) { }
+                ageCategoryDonutChart = null;
+            }
+
+            if (countEl) countEl.textContent = 'Compact';
+            if (noteEl) noteEl.textContent = 'รวม ' + rows.length + ' ประเภทใน Heatmap เดียว';
+            if (!target) return;
+
+            const maxNew = Math.max(1, ...rows.map(function (row) { return row.newCount; }));
+            const maxMid = Math.max(1, ...rows.map(function (row) { return row.midCount; }));
+            const maxOld = Math.max(1, ...rows.map(function (row) { return row.oldCount; }));
+
+            target.innerHTML = [
+                '<div class="age-matrix" role="table" aria-label="อายุของครุภัณฑ์รายประเภท">',
+                    '<div class="age-matrix-row" role="row">',
+                        '<div class="age-matrix-cell age-matrix-head" role="columnheader">ประเภท</div>',
+                        '<div class="age-matrix-cell age-matrix-head" role="columnheader">0–2</div>',
+                        '<div class="age-matrix-cell age-matrix-head" role="columnheader">3–5</div>',
+                        '<div class="age-matrix-cell age-matrix-head" role="columnheader">6+</div>',
+                    '</div>',
+                    rows.map(function (row) {
+                        return [
+                            '<div class="age-matrix-row" role="row">',
+                                '<div class="age-matrix-cell age-matrix-label" role="rowheader">' + row.label + '</div>',
+                                '<div class="age-matrix-cell age-matrix-value ' + getAgeHeatClass('new', row.newCount, maxNew) + '" role="cell">' + row.newCount + '</div>',
+                                '<div class="age-matrix-cell age-matrix-value ' + getAgeHeatClass('mid', row.midCount, maxMid) + '" role="cell">' + row.midCount + '</div>',
+                                '<div class="age-matrix-cell age-matrix-value ' + getAgeHeatClass('old', row.oldCount, maxOld) + '" role="cell">' + row.oldCount + '</div>',
+                            '</div>'
+                        ].join('');
+                    }).join(''),
+                '</div>',
+                '<div class="age-matrix-reco">เหมาะเมื่อพื้นที่จำกัดมาก และต้องการเห็น “ประเภทที่เก่าเยอะ” ทันที</div>'
+            ].join('');
         }
 
         function getDashboardLocationGroupLabel(locationValue) {
@@ -5241,110 +6260,132 @@
 
         function renderLocationDepartmentSummary() {
             const groupCountEl = document.getElementById('locationGroupSummaryCount');
-            const legendWrap = document.getElementById('dashboardLocationLegend');
+            const pointCountEl = document.getElementById('locationPointSummaryCount');
+            const legendEl = document.getElementById('dashboardLocationLegend');
             const donutCanvas = document.getElementById('dashboardLocationDonut');
-            if (!legendWrap || !donutCanvas) return;
+            const groupBody = document.getElementById('dashboardLocationGroupBody');
+            const pointBody = document.getElementById('dashboardLocationPointBody');
 
             const safeSupplies = Array.isArray(supplies) ? supplies : [];
             const groupMap = new Map();
+            const pointMap = new Map();
 
             safeSupplies.forEach(function (s) {
-                const status = String(s.status || '').trim();
+                const status = normalizeAssetStatusClient(s.status);
                 const location = String(s.location || '').trim() || 'ไม่ระบุสถานที่';
                 const group = getDashboardLocationGroupLabel(location);
+
                 if (!groupMap.has(group)) groupMap.set(group, { label: group, total: 0, damaged: 0, repair: 0 });
-                const item = groupMap.get(group);
-                item.total += 1;
-                if (status === 'ชำรุด') item.damaged += 1;
-                if (status === 'ส่งซ่อม') item.repair += 1;
+                if (!pointMap.has(location)) pointMap.set(location, { label: location, total: 0, damaged: 0, repair: 0 });
+
+                [groupMap.get(group), pointMap.get(location)].forEach(function (item) {
+                    item.total += 1;
+                    if (status === 'ชำรุด') item.damaged += 1;
+                    if (status === 'ส่งซ่อม') item.repair += 1;
+                });
             });
 
-            const groupRows = Array.from(groupMap.values()).sort(function (a, b) {
-                if (b.total !== a.total) return b.total - a.total;
-                const aRisk = a.damaged + a.repair;
-                const bRisk = b.damaged + b.repair;
-                if (bRisk !== aRisk) return bRisk - aRisk;
-                return a.label.localeCompare(b.label, 'th');
-            });
+            const sortRows = function (arr) {
+                return arr.sort(function (a, b) {
+                    const aRisk = a.damaged + a.repair;
+                    const bRisk = b.damaged + b.repair;
+                    if (bRisk !== aRisk) return bRisk - aRisk;
+                    if (b.total !== a.total) return b.total - a.total;
+                    return a.label.localeCompare(b.label, 'th');
+                });
+            };
 
-            if (groupCountEl) groupCountEl.textContent = `${groupRows.length} จุด`;
+            const groupRows = sortRows(Array.from(groupMap.values()));
+            const pointRows = sortRows(Array.from(pointMap.values()));
+            if (groupCountEl) groupCountEl.textContent = groupRows.length + ' จุด';
+            if (pointCountEl) pointCountEl.textContent = pointRows.length + ' จุด';
 
-            legendWrap.innerHTML = '';
-            if (!groupRows.length) {
-                legendWrap.innerHTML = '<div class="rounded-xl border border-slate-100 bg-slate-50 px-4 py-3 text-sm text-slate-500">ยังไม่มีข้อมูลหน่วยงาน/สถานที่</div>';
-                if (locationSummaryDonutChart) {
-                    locationSummaryDonutChart.destroy();
-                    locationSummaryDonutChart = null;
-                }
-                return;
-            }
-
+            const palette = ['#6FCF97', '#A8E6B1', '#4ECDC4', '#7DD3FC', '#B8E6D2', '#FFE082', '#F2C94C', '#FFCC80', '#F8BBD0'];
             const topRows = groupRows.slice(0, 8);
             const otherRows = groupRows.slice(8);
-            const otherTotal = otherRows.reduce((sum, item) => sum + item.total, 0);
-            const otherDamaged = otherRows.reduce((sum, item) => sum + item.damaged, 0);
-            const otherRepair = otherRows.reduce((sum, item) => sum + item.repair, 0);
-            const chartRows = topRows.slice();
-            if (otherTotal > 0) {
-                chartRows.push({ label: 'อื่นๆ', total: otherTotal, damaged: otherDamaged, repair: otherRepair });
-            }
+            const otherTotal = otherRows.reduce(function (sum, r) { return sum + r.total; }, 0);
+            const otherDamaged = otherRows.reduce(function (sum, r) { return sum + r.damaged; }, 0);
+            const otherRepair = otherRows.reduce(function (sum, r) { return sum + r.repair; }, 0);
+            const displayRows = topRows.concat(otherTotal > 0 ? [{ label: 'อื่นๆ', total: otherTotal, damaged: otherDamaged, repair: otherRepair }] : []);
 
-            const chartColors = ['#6FCF97', '#A8E6B1', '#4ECDC4', '#7DD3FC', '#B8E6D2', '#FFE082', '#F2C94C', '#FFCC80', '#F8BBD0'];
-            const labels = chartRows.map(function (row) { return row.label; });
-            const values = chartRows.map(function (row) { return row.total; });
-
-            chartRows.forEach(function (row, idx) {
-                const risk = row.damaged + row.repair;
-                const item = document.createElement('div');
-                item.className = 'flex items-center gap-3 rounded-xl border border-slate-100 bg-slate-50 px-3 py-2';
-                item.innerHTML = `
-                    <span class="h-3.5 w-3.5 shrink-0 rounded-full" style="background:${chartColors[idx % chartColors.length]}"></span>
-                    <div class="min-w-0 flex-1">
-                        <div class="text-sm font-semibold text-slate-800 break-words">${row.label}</div>
-                        <div class="text-xs text-slate-500">ทั้งหมด ${row.total} • ชำรุด ${row.damaged} • ส่งซ่อม ${row.repair}</div>
-                    </div>
-                    <div class="shrink-0 text-right">
-                        <div class="text-sm font-bold text-slate-900">${row.total}</div>
-                        <div class="text-[11px] ${risk > 0 ? 'text-rose-600' : 'text-slate-400'}">${risk > 0 ? 'ติดตาม ' + risk : 'ปกติ'}</div>
-                    </div>
-                `;
-                legendWrap.appendChild(item);
-            });
-
-            if (locationSummaryDonutChart) locationSummaryDonutChart.destroy();
-            locationSummaryDonutChart = new Chart(donutCanvas.getContext('2d'), {
-                type: 'doughnut',
-                data: {
-                    labels: labels,
-                    datasets: [{
-                        data: values,
-                        backgroundColor: chartColors.slice(0, values.length),
-                        borderColor: '#FFFFFF',
-                        borderWidth: 3,
-                        hoverOffset: 8
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    cutout: '64%',
-                    plugins: {
-                        legend: { display: false },
-                        tooltip: {
-                            backgroundColor: 'rgba(36,53,47,0.95)',
-                            titleColor: '#FFFFFF',
-                            bodyColor: '#FFFFFF',
-                            padding: 12,
-                            callbacks: {
-                                label: function(context) {
-                                    const row = chartRows[context.dataIndex];
-                                    return `${row.label}: ${row.total} รายการ (ชำรุด ${row.damaged}, ส่งซ่อม ${row.repair})`;
+            if (donutCanvas && typeof Chart !== 'undefined') {
+                if (locationDonutChart) locationDonutChart.destroy();
+                locationDonutChart = new Chart(donutCanvas.getContext('2d'), {
+                    type: 'doughnut',
+                    data: {
+                        labels: displayRows.map(function (r) { return r.label; }),
+                        datasets: [{
+                            data: displayRows.map(function (r) { return r.total; }),
+                            backgroundColor: displayRows.map(function (_, i) { return palette[i % palette.length]; }),
+                            borderColor: '#ffffff',
+                            borderWidth: 3,
+                            hoverOffset: 8
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        cutout: '62%',
+                        layout: { padding: 6 },
+                        plugins: {
+                            legend: { display: false },
+                            tooltip: {
+                                callbacks: {
+                                    label: function (context) {
+                                        const row = displayRows[context.dataIndex] || {};
+                                        return row.label + ': ทั้งหมด ' + (row.total || 0) + ' | ชำรุด ' + (row.damaged || 0) + ' | ส่งซ่อม ' + (row.repair || 0);
+                                    }
                                 }
-                            }
+                            },
+                            datalabels: { display: false }
                         }
                     }
+                });
+            }
+
+            if (legendEl) {
+                legendEl.innerHTML = displayRows.map(function (r, index) {
+                    const risk = (r.damaged || 0) + (r.repair || 0);
+                    const statusText = risk > 0 ? ('ติดตาม ' + risk) : 'ปกติ';
+                    const statusClass = risk > 0 ? 'risk' : '';
+                    return `
+                        <div class="dashboard-v72-legend-row">
+                            <span class="dashboard-v72-legend-dot" style="background:${palette[index % palette.length]}"></span>
+                            <div class="dashboard-v72-legend-main">
+                                <div class="dashboard-v72-legend-label">${r.label}</div>
+                                <div class="dashboard-v72-legend-meta">ทั้งหมด ${r.total} • ชำรุด ${r.damaged || 0} • ส่งซ่อม ${r.repair || 0}</div>
+                            </div>
+                            <div class="dashboard-v72-legend-value">
+                                <div class="dashboard-v72-legend-total">${r.total}</div>
+                                <div class="dashboard-v72-legend-status ${statusClass}">${statusText}</div>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+            }
+
+            const renderRows = function (tbody, rows, emptyLabel) {
+                if (!tbody) return;
+                tbody.innerHTML = '';
+                if (!rows.length) {
+                    tbody.innerHTML = `<tr><td class="px-4 py-3 text-slate-500" colspan="4">${emptyLabel}</td></tr>`;
+                    return;
                 }
-            });
+                rows.slice(0, 20).forEach(function (r) {
+                    const tr = document.createElement('tr');
+                    tr.className = 'hover:bg-slate-50';
+                    tr.innerHTML = `
+                        <td class="px-4 py-2 text-slate-700"><div class="font-medium break-words">${r.label}</div></td>
+                        <td class="px-3 py-2 text-right font-semibold text-slate-800">${r.total}</td>
+                        <td class="px-3 py-2 text-right ${r.damaged > 0 ? 'text-amber-600 font-semibold' : 'text-slate-500'}">${r.damaged}</td>
+                        <td class="px-3 py-2 text-right ${r.repair > 0 ? 'text-rose-600 font-semibold' : 'text-slate-500'}">${r.repair}</td>
+                    `;
+                    tbody.appendChild(tr);
+                });
+            };
+
+            renderRows(groupBody, groupRows, 'ยังไม่มีข้อมูลหน่วยงาน/สถานที่');
+            renderRows(pointBody, pointRows, 'ยังไม่มีข้อมูลจุดติดตั้ง');
         }
 
         function renderOldestAssets() {
@@ -5464,6 +6505,7 @@
             document.getElementById('modalTitle').textContent = 'เพิ่มครุภัณฑ์ใหม่';
             document.getElementById('supplyForm').reset();
             document.getElementById('supplyId').value = '';
+            populateAssetOrgSelect(DEFAULT_ASSET_ORG_CODE_CLIENT);
             renderAssetStatusOptions('ปกติ');
             pendingAssetImageUpload = null;
             clearAssetImagePreview();
@@ -5498,7 +6540,7 @@
 
         function validateAssetNumberFormatClient(assetNumber) {
             const code = String(assetNumber || '').trim().toUpperCase();
-            if (!code) return { valid: false, message: 'กรุณากรอกหมายเลข สวพส.(อร)' };
+            if (!code) return { valid: false, message: 'กรุณากรอกหมายเลขครุภัณฑ์' };
             if (code.length < 3 || code.length > 50) return { valid: false, message: 'หมายเลขต้องยาว 3-50 ตัวอักษร' };
             const pattern = /^\d{2}-[A-Z0-9]+-\d{1,2}-\d{2}\/\d{1,3}(?:\.\d+)?(?:-\d{1,3}(?:\.\d+)?)?(?:\((?:\d+|\d+\/\d+)\))?$/;
             if (!pattern.test(code)) return { valid: false, message: 'รูปแบบไม่ถูกต้อง (ตัวอย่าง: 63-1-19-09/18 หรือ 68-R1-8-48/01.1)' };
@@ -5522,6 +6564,7 @@
             }
 
             const currentId = String((document.getElementById('supplyId') || {}).value || '').trim();
+            const assetOrgCode = getSelectedAssetOrgCode();
             assetNumberValidationState = { checking: true, valid: true, message: 'กำลังตรวจสอบหมายเลขซ้ำ...' };
             renderAssetNumberValidation();
             google.script.run
@@ -5538,7 +6581,7 @@
                     assetNumberValidationState = { checking: false, valid: false, message: 'ตรวจสอบหมายเลขไม่สำเร็จ กรุณาลองอีกครั้ง' };
                     renderAssetNumberValidation();
                 })
-                .checkAssetNumberExists(assetNumber, currentId);
+                .checkAssetNumberExists(assetNumber, currentId, assetOrgCode);
         }
 
         function clearAssetImagePreview() {
@@ -5831,7 +6874,7 @@
                     }
                 });
 
-                generateQRCodeAndSubmit(assetNumber);
+                generateQRCodeAndSubmit(getSelectedAssetOrgCode() + ':' + assetNumber);
             } else {
                 submitSupplyData();
             }
@@ -5911,6 +6954,7 @@
 
             const supplyData = {
                 id: document.getElementById('supplyId').value,
+                assetOrgCode: getSelectedAssetOrgCode(),
                 assetNumber: document.getElementById('assetNumber').value,
                 category: normalizeCategoryInputValue(document.getElementById('assetCategory').value),
                 assetName: document.getElementById('assetName').value,
@@ -5966,6 +7010,7 @@
             if (supply) {
                 document.getElementById('modalTitle').textContent = 'แก้ไขครุภัณฑ์';
                 document.getElementById('supplyId').value = supply.id;
+                populateAssetOrgSelect(supply.assetOrgCode || DEFAULT_ASSET_ORG_CODE_CLIENT);
                 document.getElementById('assetNumber').value = supply.assetNumber || '';
                 document.getElementById('assetCategory').value = getCanonicalCategoryLabel(supply);
                 document.getElementById('assetName').value = supply.assetName || '';
@@ -5994,6 +7039,10 @@
         }
 
         function deleteSupply(id) {
+            if (!canDeleteData()) {
+                denyRoleAccess('Manager และ Viewer ไม่มีสิทธิ์ลบข้อมูล');
+                return;
+            }
             Swal.fire({
                 title: 'ยืนยันการลบ?',
                 text: 'คุณต้องการลบครุภัณฑ์นี้ใช่หรือไม่?',
@@ -6089,13 +7138,21 @@
         }
 
         function searchSupplyByCode(code, mode) {
-            const normalizedSearchCode = normalizeCode(code);
-            let supply = supplies.find(s => s.assetNumber && normalizeCode(s.assetNumber) === normalizedSearchCode);
+            const lookupCode = extractAssetLookupFromQrClient(code);
+            const normalizedSearchCode = normalizeCode(lookupCode);
+            let supply = supplies.find(function (s) {
+                return normalizeCode(s.assetKey) === normalizedSearchCode ||
+                    normalizeCode(s.id) === normalizedSearchCode ||
+                    normalizeCode(s.assetNumber) === normalizedSearchCode;
+            });
             if (!supply) {
-                supply = supplies.find(s => s.assetNumber && (
-                    normalizeCode(s.assetNumber).includes(normalizedSearchCode) ||
-                    normalizedSearchCode.includes(normalizeCode(s.assetNumber))
-                ));
+                supply = supplies.find(function (s) {
+                    const values = [s.assetKey, s.id, s.assetNumber, s.assetNumberDisplay];
+                    return values.some(function (v) {
+                        const normalizedValue = normalizeCode(v);
+                        return normalizedValue && (normalizedValue.includes(normalizedSearchCode) || normalizedSearchCode.includes(normalizedValue));
+                    });
+                });
             }
             if (!supply) {
                 supply = supplies.find(s => s.location && normalizeCode(s.location).includes(normalizedSearchCode));
@@ -6105,7 +7162,7 @@
                 Swal.fire({
                     icon: 'warning',
                     title: 'ไม่พบครุภัณฑ์',
-                    html: `ไม่พบครุภัณฑ์ที่มีรหัส: <strong>${code}</strong><br><br>กรุณาตรวจสอบว่าได้เพิ่มครุภัณฑ์นี้แล้วหรือยัง`,
+                    html: `ไม่พบครุภัณฑ์ที่มีรหัส: <strong>${lookupCode || code}</strong><br><br>กรุณาตรวจสอบว่าได้เพิ่มครุภัณฑ์นี้แล้วหรือยัง`,
                     confirmButtonColor: '#FFCA28'
                 });
                 return;
@@ -6153,6 +7210,9 @@
             const statusClass = statusText === 'ปกติ'
                 ? 'status-normal'
                 : (statusText === 'ชำรุด' || statusText === 'จำหน่าย/สูญหาย' ? 'status-danger' : 'status-warning');
+            const assetNumberDisplay = getAssetNumberDisplayClient(supply);
+            const assetLookupKey = getAssetLookupKeyClient(supply) || supply.assetNumber || '';
+            const safeAssetLookupKey = String(assetLookupKey || '').replace(/'/g, "\\'");
             const safeAssetNumber = String(supply.assetNumber || '').replace(/'/g, "\\'");
             const safeImageUrl = String(supply.imageUrl || '').replace(/'/g, "\\'");
             const html = `
@@ -6170,7 +7230,7 @@
                                 <span class="status-pill ${statusClass}">${statusText}</span>
                             </div>
                             <div class="asset-code-line">
-                                <i class="fas fa-barcode mr-1"></i>${supply.assetNumber || '-'}
+                                <i class="fas fa-barcode mr-1"></i>${assetNumberDisplay}
                             </div>
 
                             <div class="asset-detail-card mb-4">
@@ -6223,7 +7283,7 @@
                                 <div class="asset-section-title text-slate-600 mb-3">QR Code ครุภัณฑ์</div>
                                 <img id="assetQrInPopup" class="asset-qr-img" alt="QR Code">
                                 <p class="text-xs text-slate-400 mt-3">สแกนเพื่อดูข้อมูลครุภัณฑ์</p>
-                                <button onclick="printSingleSupplyQRCode('${safeAssetNumber}')" class="mt-4 btn-theme btn-theme-check-solid px-4 py-2 rounded-full">
+                                <button onclick="printSingleSupplyQRCode('${safeAssetLookupKey}')" class="mt-4 btn-theme btn-theme-check-solid px-4 py-2 rounded-full">
                                     <i class="fas fa-print mr-1"></i>พิมพ์ QR Code
                                 </button>
                             </div>
@@ -6241,7 +7301,7 @@
                 didOpen: function () {
                     const qrEl = document.getElementById('assetQrInPopup');
                     if (qrEl) {
-                        createQrDataUrl(supply.assetNumber || '').then(function (dataUrl) {
+                        createQrDataUrl(getAssetPublicUrlClient(supply)).then(function (dataUrl) {
                             qrEl.src = dataUrl;
                         }).catch(function () {
                             qrEl.style.display = 'none';
