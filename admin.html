@@ -1449,6 +1449,106 @@
         .age-category-combined .age-total-text { fill: #60776f; font-size: 10px; font-weight: 800; }
         .age-category-combined .age-bubble { fill: #7b8b8d; }
         .age-category-combined .age-bubble-text { fill: #fff; font-size: 10px; font-weight: 900; }
+
+        /* v70: Age Heatmap Matrix */
+        .age-category-combined .age-compact-badge {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            flex: 0 0 auto;
+            padding: 7px 12px;
+            border-radius: 999px;
+            border: 1px solid #cfe4d9;
+            background: #f8fffb;
+            color: #0d705b;
+            font-size: 12px;
+            font-weight: 900;
+            white-space: nowrap;
+        }
+
+        .age-category-combined .age-matrix-card {
+            overflow-x: auto;
+            overflow-y: hidden;
+            padding: 12px;
+        }
+
+        .age-category-combined .age-matrix {
+            display: grid;
+            min-width: 520px;
+            overflow: hidden;
+            border: 1px solid #cfe4d9;
+            border-radius: 16px;
+            background: #ffffff;
+        }
+
+        .age-category-combined .age-matrix-row {
+            display: grid;
+            grid-template-columns: minmax(148px, 1.35fr) repeat(3, minmax(84px, 1fr));
+            min-width: 0;
+        }
+
+        .age-category-combined .age-matrix-cell {
+            min-height: 52px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 10px 12px;
+            border-bottom: 1px solid #dbece3;
+            color: #14352f;
+            font-weight: 900;
+            line-height: 1.2;
+        }
+
+        .age-category-combined .age-matrix-row:last-child .age-matrix-cell {
+            border-bottom: 0;
+        }
+
+        .age-category-combined .age-matrix-head {
+            min-height: 42px;
+            background: #eaf6ef;
+            color: #006b55;
+            font-size: 12px;
+        }
+
+        .age-category-combined .age-matrix-label {
+            justify-content: flex-start;
+            background: rgba(255,255,255,.72);
+            text-align: left;
+            font-size: 13px;
+        }
+
+        .age-category-combined .age-matrix-value {
+            font-size: 20px;
+            letter-spacing: -.02em;
+        }
+
+        .age-category-combined .age-matrix-value.zero {
+            color: #14352f;
+            background: rgba(238, 248, 241, .72);
+        }
+
+        .age-category-combined .age-heat-new-1 { background: #dff8ec; }
+        .age-category-combined .age-heat-new-2 { background: #c8f4dd; }
+        .age-category-combined .age-heat-new-3 { background: #a9efd0; }
+        .age-category-combined .age-heat-mid-1 { background: #fff5cf; }
+        .age-category-combined .age-heat-mid-2 { background: #ffeaa0; }
+        .age-category-combined .age-heat-mid-3 { background: #ffda75; }
+        .age-category-combined .age-heat-old-1 { background: #fde2e5; }
+        .age-category-combined .age-heat-old-2 { background: #ffb7c1; }
+        .age-category-combined .age-heat-old-3 { background: #ff8295; color: #ffffff; text-shadow: 0 1px 0 rgba(36,59,53,.18); }
+
+        .age-category-combined .age-matrix-reco {
+            margin-top: 12px;
+            border: 1px solid #cfe4d9;
+            border-radius: 14px;
+            background: rgba(255,255,255,.62);
+            color: #42645b;
+            font-size: 12px;
+            font-weight: 800;
+            line-height: 1.45;
+            padding: 9px 11px;
+        }
+
         .age-category-combined .age-footer-note,
         .location-summary-combined .summary-footer-note {
             margin-top: 12px;
@@ -1602,6 +1702,9 @@
                 justify-content: flex-start;
                 margin-top: 12px;
             }
+            .age-category-combined .age-compact-badge {
+                margin-top: 12px;
+            }
             .age-category-combined .age-title,
             .location-summary-combined .summary-title {
                 font-size: 18px;
@@ -1624,6 +1727,22 @@
             }
             .age-category-combined .age-chart-svg {
                 min-width: 620px;
+            }
+            .age-category-combined .age-matrix {
+                min-width: 430px;
+            }
+            .age-category-combined .age-matrix-row {
+                grid-template-columns: minmax(128px, 1.25fr) repeat(3, minmax(66px, .9fr));
+            }
+            .age-category-combined .age-matrix-cell {
+                min-height: 48px;
+                padding: 9px 10px;
+            }
+            .age-category-combined .age-matrix-value {
+                font-size: 18px;
+            }
+            .age-category-combined .age-matrix-label {
+                font-size: 12px;
             }
             .location-summary-combined .summary-inner-grid {
                 grid-template-columns: 1fr;
@@ -1655,6 +1774,15 @@
             .age-category-combined .age-legend span {
                 padding: 6px 8px;
                 font-size: 11px;
+            }
+            .age-category-combined .age-matrix {
+                min-width: 390px;
+            }
+            .age-category-combined .age-matrix-row {
+                grid-template-columns: minmax(116px, 1.15fr) repeat(3, minmax(58px, .85fr));
+            }
+            .age-category-combined .age-matrix-cell {
+                padding: 8px;
             }
         }
 
@@ -1887,7 +2015,7 @@
 
             <!-- Dashboard Main Grid: v68 compact 2-card layout -->
             <div class="dashboard-main-grid-v68">
-                <!-- Age by Category: v68 compact combined chart -->
+                <!-- Age by Category: v70 heatmap matrix -->
                 <div class="dashboard-hover-card age-category-combined p-5">
                     <div class="age-chart-head">
                         <div class="age-title-row">
@@ -1898,26 +2026,22 @@
                             </div>
                             <div>
                                 <h2 class="age-title">อายุของครุภัณฑ์ (รายประเภท)</h2>
-                                <p class="age-subtitle">กราฟรวม 4 ประเภท แยกช่วงอายุ 0–2 ปี, 3–5 ปี และ 6+ ปี</p>
+                                <p class="age-subtitle">Heatmap Matrix เห็นประเภทที่มีครุภัณฑ์เก่าเยอะได้ทันที</p>
                             </div>
                         </div>
-                        <div class="age-legend" aria-label="คำอธิบายสี">
-                            <span><i class="age-dot green"></i>0–2 ปี</span>
-                            <span><i class="age-dot yellow"></i>3–5 ปี</span>
-                            <span><i class="age-dot red"></i>6+ ปี</span>
-                        </div>
+                        <span class="age-compact-badge">Compact</span>
                     </div>
 
-                    <div class="age-chart-card">
+                    <div class="age-chart-card age-matrix-card">
                         <div class="age-chart-title">
-                            <span>กราฟรวมรายประเภท</span>
-                            <span id="ageCategoryCombinedNote" class="age-chart-note">รวม 4 ประเภทในกราฟเดียว</span>
+                            <span>Heatmap Matrix</span>
+                            <span id="ageCategoryCombinedNote" class="age-chart-note">แบ่งตามช่วงอายุ 0–2, 3–5, 6+</span>
                         </div>
                         <div id="ageCategoryCombinedChart" aria-live="polite"></div>
                     </div>
 
                     <div class="age-footer-note">
-                        หมายเหตุ: คำนวณช่วงอายุจากวันที่ได้รับครุภัณฑ์
+                        หมายเหตุ: สีแดงเข้มคือกลุ่ม 6+ ปีที่ควรติดตามก่อน คำนวณจากวันที่ได้รับครุภัณฑ์
                     </div>
                 </div>
 
@@ -6104,17 +6228,26 @@
 
             const safeSupplies = Array.isArray(supplies) ? supplies : [];
             const categories = [
-                { key: '\u0E04\u0E2D\u0E21\u0E1E\u0E34\u0E27\u0E40\u0E15\u0E2D\u0E23\u0E4C', id: 'computer', label: '\u0E04\u0E2D\u0E21\u0E1E\u0E34\u0E27\u0E40\u0E15\u0E2D\u0E23\u0E4C' },
-                { key: '\u0E01\u0E25\u0E49\u0E2D\u0E07\u0E27\u0E07\u0E08\u0E23\u0E1B\u0E34\u0E14', id: 'cctv', label: '\u0E01\u0E25\u0E49\u0E2D\u0E07\u0E27\u0E07\u0E08\u0E23\u0E1B\u0E34\u0E14' },
-                { key: '\u0E42\u0E2A\u0E15\u0E17\u0E31\u0E28\u0E19\u0E39\u0E1B\u0E01\u0E23\u0E13\u0E4C', id: 'av', label: '\u0E42\u0E2A\u0E15\u0E17\u0E31\u0E28\u0E19\u0E39\u0E1B\u0E01\u0E23\u0E13\u0E4C' },
-                { key: '\u0E2D\u0E38\u0E1B\u0E01\u0E23\u0E13\u0E4C\u0E40\u0E04\u0E23\u0E37\u0E2D\u0E02\u0E48\u0E32\u0E22', id: 'network', label: '\u0E2D\u0E38\u0E1B\u0E01\u0E23\u0E13\u0E4C\u0E40\u0E04\u0E23\u0E37\u0E2D\u0E02\u0E48\u0E32\u0E22' }
+                { key: 'คอมพิวเตอร์', id: 'computer', label: 'คอมพิวเตอร์' },
+                { key: 'กล้องวงจรปิด', id: 'cctv', label: 'กล้องวงจรปิด' },
+                { key: 'โสตทัศนูปกรณ์', id: 'av', label: 'โสตทัศนูปกรณ์' },
+                { key: 'อุปกรณ์เครือข่าย', id: 'network', label: 'อุปกรณ์เครือข่าย' }
             ];
 
             const bucketDefs = [
-                { key: 'new', label: '0–2 ปี (ใหม่)', min: 0, max: 2.9999, color: '#29c56a', faint: '#a9efd0' },
-                { key: 'mid', label: '3–5 ปี', min: 3, max: 5.9999, color: '#f8a10a', faint: '#ffe58a' },
-                { key: 'old', label: '6+ ปี (เก่า)', min: 6, max: Infinity, color: '#f34242', faint: '#ffc9ce' }
+                { key: 'new', shortLabel: '0–2', label: '0–2 ปี (ใหม่)', min: 0, max: 2.9999, heatPrefix: 'new' },
+                { key: 'mid', shortLabel: '3–5', label: '3–5 ปี', min: 3, max: 5.9999, heatPrefix: 'mid' },
+                { key: 'old', shortLabel: '6+', label: '6+ ปี (เก่า)', min: 6, max: Infinity, heatPrefix: 'old' }
             ];
+
+            const escapeMatrixText = function (value) {
+                return String(value == null ? '' : value)
+                    .replace(/&/g, '&amp;')
+                    .replace(/</g, '&lt;')
+                    .replace(/>/g, '&gt;')
+                    .replace(/"/g, '&quot;')
+                    .replace(/'/g, '&#39;');
+            };
 
             const rows = categories.map(function (category) {
                 const items = safeSupplies.filter(function (s) { return detectCategory(s) === category.key; });
@@ -6135,75 +6268,44 @@
             const maxCount = Math.max(1, ...rows.flatMap(function (row) {
                 return bucketDefs.map(function (bucket) { return Number(row.buckets[bucket.key] || 0); });
             }));
-            const niceStep = maxCount <= 20 ? 5 : maxCount <= 80 ? 20 : 40;
-            const axisMax = Math.max(niceStep, Math.ceil(maxCount / niceStep) * niceStep);
-            const ticks = [0, axisMax * 0.25, axisMax * 0.5, axisMax * 0.75, axisMax].map(function (n) { return Math.round(n); });
 
-            const view = { w: 1120, h: 520, plotX: 72, plotY: 84, plotW: 992, plotH: 320, baseY: 404 };
-            const groupCenters = [202, 462, 722, 982];
-            const barW = 38;
-            const gap = 15;
-
-            const yForValue = function (value) {
-                return view.baseY - ((Number(value || 0) / axisMax) * view.plotH);
-            };
-            const escapeSvg = function (value) {
-                return String(value == null ? '' : value)
-                    .replace(/&/g, '&amp;')
-                    .replace(/</g, '&lt;')
-                    .replace(/>/g, '&gt;')
-                    .replace(/"/g, '&quot;');
+            const getHeatClass = function (bucket, value) {
+                const count = Number(value || 0);
+                if (count <= 0) return 'zero';
+                const ratio = count / maxCount;
+                const level = ratio >= 0.65 ? 3 : ratio >= 0.18 ? 2 : 1;
+                return `age-heat-${bucket.heatPrefix}-${level}`;
             };
 
-            const grid = ticks.slice().reverse().map(function (tick) {
-                const y = yForValue(tick);
-                return `<line class="age-axis" x1="${view.plotX}" x2="${view.plotX + view.plotW}" y1="${y.toFixed(1)}" y2="${y.toFixed(1)}"/>`;
-            }).join('');
+            const headerCells = ['ประเภท'].concat(bucketDefs.map(function (bucket) { return bucket.shortLabel; }))
+                .map(function (label) { return `<div class="age-matrix-cell age-matrix-head">${escapeMatrixText(label)}</div>`; })
+                .join('');
 
-            const tickText = ticks.map(function (tick) {
-                const y = yForValue(tick) + 4;
-                const x = tick >= 100 ? 28 : tick >= 10 ? 36 : 44;
-                return `<text class="age-tick-text" x="${x}" y="${y.toFixed(1)}">${tick}</text>`;
-            }).join('');
-
-            const bars = rows.map(function (row, rowIndex) {
-                const center = groupCenters[rowIndex];
-                const startX = center - ((bucketDefs.length * barW + (bucketDefs.length - 1) * gap) / 2);
-                const barParts = bucketDefs.map(function (bucket, bucketIndex) {
+            const bodyRows = rows.map(function (row) {
+                const valueCells = bucketDefs.map(function (bucket) {
                     const value = Number(row.buckets[bucket.key] || 0);
-                    const x = startX + bucketIndex * (barW + gap);
-                    const rawH = value > 0 ? Math.max(8, view.baseY - yForValue(value)) : 4;
-                    const y = view.baseY - rawH;
-                    const rx = value > 0 ? Math.min(12, Math.max(4, rawH / 2)) : 2;
-                    const opacity = value > 0 ? 1 : .45;
-                    const fill = value > 0 ? bucket.color : bucket.faint;
-                    const bubble = value > 0
-                        ? `<circle class="age-bubble" cx="${(x + barW / 2).toFixed(1)}" cy="${(y - 14).toFixed(1)}" r="${value >= 100 ? 17 : 15}"/><text class="age-bubble-text" x="${(x + barW / 2).toFixed(1)}" y="${(y - 10).toFixed(1)}" text-anchor="middle">${value}</text>`
-                        : '';
-                    return `<rect x="${x.toFixed(1)}" y="${y.toFixed(1)}" width="${barW}" height="${rawH.toFixed(1)}" rx="${rx}" fill="${fill}" opacity="${opacity}"/>${bubble}`;
+                    const heatClass = getHeatClass(bucket, value);
+                    return `<div class="age-matrix-cell age-matrix-value ${heatClass}" title="${escapeMatrixText(row.label)} / ${escapeMatrixText(bucket.label)}: ${value.toLocaleString('th-TH')} รายการ">${value.toLocaleString('th-TH')}</div>`;
                 }).join('');
 
-                return `${barParts}<text class="age-cat-text" x="${center}" y="442" text-anchor="middle">${escapeSvg(row.label)}</text><text class="age-total-text" x="${center}" y="464" text-anchor="middle">ทั้งหมด ${row.total.toLocaleString('th-TH')}</text>`;
-            }).join('');
-
-            const legendY = 492;
-            const innerLegend = bucketDefs.map(function (bucket, index) {
-                const x = [303, 503, 653][index];
-                return `<rect x="${x}" y="${legendY}" width="14" height="14" rx="4" fill="${bucket.color}"/><text class="age-tick-text" x="${x + 23}" y="${legendY + 12}">${escapeSvg(bucket.label)}</text>`;
+                return `
+                    <div class="age-matrix-row" data-category="${escapeMatrixText(row.id)}">
+                        <div class="age-matrix-cell age-matrix-label" title="ทั้งหมด ${row.total.toLocaleString('th-TH')} รายการ">${escapeMatrixText(row.label)}</div>
+                        ${valueCells}
+                    </div>
+                `;
             }).join('');
 
             chartWrap.innerHTML = `
-                <svg class="age-chart-svg" viewBox="0 0 1120 520" role="img" aria-label="กราฟอายุครุภัณฑ์รายประเภท">
-                    <rect x="72" y="44" width="992" height="360" rx="16" fill="rgba(255,255,255,.22)" />
-                    ${grid}
-                    ${tickText}
-                    ${bars}
-                    ${innerLegend}
-                </svg>
+                <div class="age-matrix" role="table" aria-label="Heatmap Matrix อายุครุภัณฑ์รายประเภท">
+                    <div class="age-matrix-row" role="row">${headerCells}</div>
+                    ${bodyRows}
+                </div>
+                <div class="age-matrix-reco">เหมาะเมื่อพื้นที่จำกัด และต้องการเห็น “ประเภทที่เก่าเยอะ” ทันที</div>
             `;
 
             const note = document.getElementById('ageCategoryCombinedNote');
-            if (note) note.textContent = `รวม ${rows.length} ประเภทในกราฟเดียว`;
+            if (note) note.textContent = `Compact • รวม ${rows.length} ประเภท`;
         }
 
         function getDashboardLocationGroupLabel(locationValue) {
