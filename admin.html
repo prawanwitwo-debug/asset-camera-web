@@ -1632,32 +1632,9 @@
         }
 
 
-        /* v73: Restore Dashboard Age Heatmap Matrix */
-        .dashboard-v73-age-heatmap .age-matrix-card {
-            background: linear-gradient(180deg, #f2fbf5, #eaf6ef);
-            border: 1px solid #bfe4d0;
-            border-radius: 18px;
-            padding: 14px;
-            overflow-x: hidden;
-            overflow-y: hidden;
-        }
-
-        .dashboard-v73-age-heatmap .age-matrix-title {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 10px;
-            margin-bottom: 10px;
-            color: #274139;
-            font-weight: 900;
-            font-size: 13px;
-        }
-
-        .dashboard-v73-age-heatmap .age-matrix-note {
-            font-size: 11px;
-            color: #6a837a;
-            font-weight: 800;
-            white-space: nowrap;
+        /* v74: Clean Dashboard Age Heatmap Matrix */
+        .dashboard-v73-age-heatmap #ageCategoryCombinedChart {
+            margin-top: 14px;
         }
 
         .dashboard-v73-age-heatmap .age-matrix {
@@ -1727,22 +1704,8 @@
         .dashboard-v73-age-heatmap .age-heat-old-2 { background: #ffb7c1; }
         .dashboard-v73-age-heatmap .age-heat-old-3 { background: #ff8295; color: #ffffff; text-shadow: 0 1px 0 rgba(36,59,53,.18); }
 
-        .dashboard-v73-age-heatmap .age-matrix-reco {
-            margin-top: 12px;
-            border: 1px solid #cfe4d9;
-            border-radius: 14px;
-            background: rgba(255,255,255,.62);
-            color: #42645b;
-            font-size: 12px;
-            font-weight: 800;
-            line-height: 1.45;
-            padding: 9px 11px;
-        }
-
         @media (max-width: 767px) {
-            .dashboard-v73-age-heatmap .age-matrix-card { padding: 10px; }
-            .dashboard-v73-age-heatmap .age-matrix-title { display: block; }
-            .dashboard-v73-age-heatmap .age-matrix-note { display: block; margin-top: 4px; white-space: normal; }
+            .dashboard-v73-age-heatmap #ageCategoryCombinedChart { margin-top: 12px; }
             .dashboard-v73-age-heatmap .age-matrix-row { grid-template-columns: minmax(86px, 1.45fr) repeat(3, minmax(42px, .72fr)); }
             .dashboard-v73-age-heatmap .age-matrix-cell { min-height: 46px; padding: 8px 6px; overflow: hidden; }
             .dashboard-v73-age-heatmap .age-matrix-head { font-size: 11px; min-height: 40px; }
@@ -1751,7 +1714,6 @@
         }
 
         @media (max-width: 420px) {
-            .dashboard-v73-age-heatmap .age-matrix-card { padding: 8px; }
             .dashboard-v73-age-heatmap .age-matrix-row { grid-template-columns: minmax(78px, 1.35fr) repeat(3, minmax(38px, .7fr)); }
             .dashboard-v73-age-heatmap .age-matrix-cell { min-height: 44px; padding: 7px 4px; }
             .dashboard-v73-age-heatmap .age-matrix-head { font-size: 10px; }
@@ -1988,7 +1950,7 @@
 
             <!-- Dashboard Main Grid: v72 donut + list cards -->
             <div class="dashboard-main-grid-v72">
-                <!-- Age by Category: v73 restored Heatmap Matrix -->
+                <!-- Age by Category: v74 clean Heatmap Matrix -->
                 <div class="dashboard-hover-card dashboard-v72-card dashboard-v73-age-heatmap p-5">
                     <div class="dashboard-v72-head">
                         <div class="dashboard-v72-title-row">
@@ -2000,20 +1962,9 @@
                                 <p class="dashboard-v72-subtitle">Heatmap Matrix เห็นประเภทที่มีครุภัณฑ์เก่าเยอะได้ทันที</p>
                             </div>
                         </div>
-                        <span id="ageCategorySummaryCount" class="dashboard-v72-pill">Compact</span>
                     </div>
 
-                    <div class="age-matrix-card">
-                        <div class="age-matrix-title">
-                            <span>Heatmap Matrix</span>
-                            <span id="ageCategoryCombinedNote" class="age-matrix-note">แบ่งตามช่วงอายุ 0–2, 3–5, 6+</span>
-                        </div>
-                        <div id="ageCategoryCombinedChart" aria-live="polite"></div>
-                    </div>
-
-                    <div class="dashboard-v72-footer-note">
-                        หมายเหตุ: สีแดงเข้มคือกลุ่ม 6+ ปีที่ควรติดตามก่อน คำนวณจากวันที่ได้รับครุภัณฑ์
-                    </div>
+                    <div id="ageCategoryCombinedChart" aria-live="polite"></div>
                 </div>
 
                 <!-- Location / Department Summary -->
@@ -6201,16 +6152,11 @@
         function updateAgeCategoryCharts() {
             const rows = getAgeCategoryRows();
             const target = document.getElementById('ageCategoryCombinedChart');
-            const countEl = document.getElementById('ageCategorySummaryCount');
-            const noteEl = document.getElementById('ageCategoryCombinedNote');
-
             if (ageCategoryDonutChart) {
                 try { ageCategoryDonutChart.destroy(); } catch (error) { }
                 ageCategoryDonutChart = null;
             }
 
-            if (countEl) countEl.textContent = 'Compact';
-            if (noteEl) noteEl.textContent = 'รวม ' + rows.length + ' ประเภทใน Heatmap เดียว';
             if (!target) return;
 
             const maxNew = Math.max(1, ...rows.map(function (row) { return row.newCount; }));
@@ -6235,8 +6181,7 @@
                             '</div>'
                         ].join('');
                     }).join(''),
-                '</div>',
-                '<div class="age-matrix-reco">เหมาะเมื่อพื้นที่จำกัดมาก และต้องการเห็น “ประเภทที่เก่าเยอะ” ทันที</div>'
+                '</div>'
             ].join('');
         }
 
