@@ -1385,54 +1385,11 @@
             white-space: nowrap;
         }
 
-        .dashboard-v72-inner {
-            border-radius: 18px;
-            border: 1px solid #dbe8e0;
-            background: #f8fafc;
-            padding: 14px;
-            overflow: hidden;
-        }
 
-        .dashboard-v72-inner-head {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-            margin-bottom: 14px;
-        }
 
-        @media (min-width: 768px) {
-            .dashboard-v72-inner-head {
-                flex-direction: row;
-                align-items: flex-start;
-                justify-content: space-between;
-            }
-        }
 
-        .dashboard-v72-mini-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            border-radius: 999px;
-            background: #ecfdf5;
-            color: #065f46;
-            border: 1px solid #a7f3d0;
-            padding: 7px 11px;
-            font-size: 12px;
-            font-weight: 900;
-            width: fit-content;
-        }
 
-        .dashboard-v72-mini-badge i {
-            font-size: 11px;
-        }
 
-        .dashboard-v72-mini-desc {
-            color: #64748b;
-            font-size: 11px;
-            margin-top: 6px;
-            line-height: 1.45;
-            font-weight: 700;
-        }
 
         .dashboard-v72-content-grid {
             display: grid;
@@ -1471,12 +1428,6 @@
             font-weight: 900;
         }
 
-        .dashboard-v72-list-note {
-            color: #64748b;
-            font-size: 11px;
-            font-weight: 700;
-            white-space: nowrap;
-        }
 
         .dashboard-v72-legend {
             display: grid;
@@ -1517,13 +1468,6 @@
             word-break: break-word;
         }
 
-        .dashboard-v72-legend-meta {
-            color: #64748b;
-            font-size: 11px;
-            line-height: 1.4;
-            margin-top: 2px;
-            font-weight: 700;
-        }
 
         .dashboard-v72-legend-value {
             flex: 0 0 auto;
@@ -1537,25 +1481,61 @@
             font-weight: 900;
         }
 
-        .dashboard-v72-legend-status {
-            color: #94a3b8;
-            font-size: 11px;
-            line-height: 1.2;
-            margin-top: 2px;
-            font-weight: 800;
+
+
+        /* v75: Clean location summary card */
+        .dashboard-location-clean-v75 .dashboard-v72-content-grid {
+            margin-top: 4px;
         }
 
-        .dashboard-v72-legend-status.risk {
-            color: #e11d48;
+        .dashboard-location-clean-v75 .dashboard-v72-list-head {
+            margin-bottom: 12px;
         }
 
-        .dashboard-v72-footer-note {
-            margin-top: 12px;
-            color: #58736a;
-            font-size: 11px;
-            line-height: 1.45;
-            font-weight: 800;
+        .dashboard-location-clean-v75 .dashboard-v72-list-title {
+            font-size: 14px;
+            color: #1f2937;
         }
+
+        .dashboard-location-clean-v75 .dashboard-v72-legend {
+            gap: 6px;
+            max-height: 310px;
+            padding-right: 4px;
+        }
+
+        .dashboard-location-clean-v75 .dashboard-v72-legend-row {
+            border: 0;
+            background: transparent;
+            border-radius: 12px;
+            padding: 8px 4px;
+            gap: 12px;
+        }
+
+        .dashboard-location-clean-v75 .dashboard-v72-legend-row:hover {
+            background: #f8fafc;
+        }
+
+        .dashboard-location-clean-v75 .dashboard-v72-legend-dot {
+            width: 10px;
+            height: 10px;
+            box-shadow: 0 0 0 4px rgba(15, 118, 110, .06);
+        }
+
+        .dashboard-location-clean-v75 .dashboard-v72-legend-label {
+            color: #2f4a42;
+            font-size: 13px;
+            line-height: 1.35;
+        }
+
+        .dashboard-location-clean-v75 .dashboard-v72-legend-value {
+            min-width: 42px;
+        }
+
+        .dashboard-location-clean-v75 .dashboard-v72-legend-total {
+            font-size: 13px;
+            color: #0f172a;
+        }
+
 
         @media (max-width: 1280px) {
             .dashboard-main-grid-v72 {
@@ -1619,9 +1599,6 @@
             }
             .dashboard-v72-card {
                 padding: 14px !important;
-            }
-            .dashboard-v72-inner {
-                padding: 10px;
             }
             .dashboard-v72-donut-wrap {
                 height: 220px;
@@ -1967,8 +1944,8 @@
                     <div id="ageCategoryCombinedChart" aria-live="polite"></div>
                 </div>
 
-                <!-- Location / Department Summary -->
-                <div class="dashboard-hover-card dashboard-v72-card p-5">
+                <!-- Location / Department Summary: v75 clean donut + simple list -->
+                <div class="dashboard-hover-card dashboard-v72-card dashboard-location-clean-v75 p-5">
                     <div class="dashboard-v72-head">
                         <div class="dashboard-v72-title-row">
                             <div class="dashboard-v72-icon" aria-hidden="true">
@@ -1982,35 +1959,18 @@
                         <span id="locationGroupSummaryCount" class="dashboard-v72-pill">0 จุด</span>
                     </div>
 
-                    <div class="dashboard-v72-inner">
-                        <div class="dashboard-v72-inner-head">
-                            <div>
-                                <div class="dashboard-v72-mini-badge">
-                                    <i class="fas fa-chart-pie"></i>
-                                    โดนัทสรุปภาพรวมตามสถานที่/หน่วยงาน
-                                </div>
-                                <div class="dashboard-v72-mini-desc">สรุปจากชื่อสถานที่แบบกลุ่มหลัก เพื่อดูสัดส่วนครุภัณฑ์แต่ละจุดในภาพรวม</div>
-                            </div>
-                            <span id="locationPointSummaryCount" class="dashboard-v72-pill">0 จุด</span>
-                        </div>
-                        <div class="dashboard-v72-content-grid">
-                            <div class="dashboard-v72-donut-box">
-                                <div class="dashboard-v72-donut-wrap">
-                                    <canvas id="dashboardLocationDonut"></canvas>
-                                </div>
-                            </div>
-                            <div class="dashboard-v72-list-box">
-                                <div class="dashboard-v72-list-head">
-                                    <div class="dashboard-v72-list-title">อันดับสถานที่/หน่วยงาน</div>
-                                    <div class="dashboard-v72-list-note">Top 8 + อื่นๆ</div>
-                                </div>
-                                <div id="dashboardLocationLegend" class="dashboard-v72-legend"></div>
+                    <div class="dashboard-v72-content-grid">
+                        <div class="dashboard-v72-donut-box">
+                            <div class="dashboard-v72-donut-wrap">
+                                <canvas id="dashboardLocationDonut"></canvas>
                             </div>
                         </div>
-                    </div>
-
-                    <div class="dashboard-v72-footer-note">
-                        หมายเหตุ: สรุปตามสถานที่ใช้ข้อมูลจริงจาก Dashboard
+                        <div class="dashboard-v72-list-box">
+                            <div class="dashboard-v72-list-head">
+                                <div class="dashboard-v72-list-title">อันดับสถานที่/หน่วยงาน</div>
+                            </div>
+                            <div id="dashboardLocationLegend" class="dashboard-v72-legend"></div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -6205,7 +6165,6 @@
 
         function renderLocationDepartmentSummary() {
             const groupCountEl = document.getElementById('locationGroupSummaryCount');
-            const pointCountEl = document.getElementById('locationPointSummaryCount');
             const legendEl = document.getElementById('dashboardLocationLegend');
             const donutCanvas = document.getElementById('dashboardLocationDonut');
             const groupBody = document.getElementById('dashboardLocationGroupBody');
@@ -6243,7 +6202,6 @@
             const groupRows = sortRows(Array.from(groupMap.values()));
             const pointRows = sortRows(Array.from(pointMap.values()));
             if (groupCountEl) groupCountEl.textContent = groupRows.length + ' จุด';
-            if (pointCountEl) pointCountEl.textContent = pointRows.length + ' จุด';
 
             const palette = ['#6FCF97', '#A8E6B1', '#4ECDC4', '#7DD3FC', '#B8E6D2', '#FFE082', '#F2C94C', '#FFCC80', '#F8BBD0'];
             const topRows = groupRows.slice(0, 8);
@@ -6290,19 +6248,14 @@
 
             if (legendEl) {
                 legendEl.innerHTML = displayRows.map(function (r, index) {
-                    const risk = (r.damaged || 0) + (r.repair || 0);
-                    const statusText = risk > 0 ? ('ติดตาม ' + risk) : 'ปกติ';
-                    const statusClass = risk > 0 ? 'risk' : '';
                     return `
                         <div class="dashboard-v72-legend-row">
                             <span class="dashboard-v72-legend-dot" style="background:${palette[index % palette.length]}"></span>
                             <div class="dashboard-v72-legend-main">
                                 <div class="dashboard-v72-legend-label">${r.label}</div>
-                                <div class="dashboard-v72-legend-meta">ทั้งหมด ${r.total} • ชำรุด ${r.damaged || 0} • ส่งซ่อม ${r.repair || 0}</div>
                             </div>
                             <div class="dashboard-v72-legend-value">
                                 <div class="dashboard-v72-legend-total">${r.total}</div>
-                                <div class="dashboard-v72-legend-status ${statusClass}">${statusText}</div>
                             </div>
                         </div>
                     `;
