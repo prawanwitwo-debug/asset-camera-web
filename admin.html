@@ -2417,6 +2417,47 @@
             }
         }
 
+
+        /* v85: Compact desktop header + top dashboard card height balance */
+        @media (min-width: 768px) {
+            .desktop-header.max-w-7xl {
+                min-height: 56px;
+            }
+        }
+
+        @media (min-width: 1281px) {
+            .dashboard-main-grid-v84 > .dashboard-status-summary-panel-v84,
+            .dashboard-main-grid-v84 > .dashboard-v73-age-heatmap {
+                height: 100%;
+            }
+
+            .dashboard-v73-age-heatmap #ageCategoryCombinedChart {
+                margin-top: 10px;
+            }
+
+            .dashboard-v73-age-heatmap .age-matrix {
+                height: 244px !important;
+                max-height: 244px !important;
+                grid-template-rows: 42px repeat(4, minmax(0, 1fr)) !important;
+            }
+
+            .dashboard-status-summary-panel-v84 .dashboard-status-grid-v72 {
+                grid-auto-rows: minmax(76px, 1fr);
+            }
+        }
+
+        @media (max-width: 767px) {
+            .dashboard-v73-age-heatmap .age-matrix {
+                grid-template-rows: 40px repeat(4, minmax(0, 1fr)) !important;
+            }
+        }
+
+        @media (max-width: 420px) {
+            .dashboard-v73-age-heatmap .age-matrix {
+                grid-template-rows: 38px repeat(4, minmax(0, 1fr)) !important;
+            }
+        }
+
     </style>
 
     <!-- GitHub Pages API bridge -->
@@ -2470,27 +2511,15 @@
 
     <!-- Header (Desktop) -->
     <header class="hidden md:block bg-white border-b border-slate-200">
-        <div class="max-w-7xl desktop-header mx-auto px-6 py-4 flex items-center justify-between">
+        <div class="max-w-7xl desktop-header mx-auto px-6 py-2 flex items-center justify-between">
             <div class="flex items-center gap-3 -ml-4">
-                <button onclick="toggleSidebar()"
-                    class="inline-flex items-center gap-2 bg-emerald-50 hover:bg-emerald-100 text-emerald-700 px-4 py-2 rounded-lg border border-emerald-200">
+                <button onclick="toggleSidebar()" title="เปิด/ปิดเมนู"
+                    class="inline-flex h-10 w-10 items-center justify-center bg-emerald-50 hover:bg-emerald-100 text-emerald-700 rounded-lg border border-emerald-200">
                     <i class="fas fa-bars"></i>
-                    <span>เมนู</span>
                 </button>
-                <div class="inline-flex items-center gap-2">
-                    <button id="prevTabBtn" onclick="goPrevTab()" title="เมนูก่อนหน้า"
-                        class="h-10 w-10 rounded-lg border border-slate-200 text-slate-700 hover:bg-slate-100 disabled:opacity-40 disabled:cursor-not-allowed">
-                        <i class="fas fa-chevron-left"></i>
-                    </button>
-                    <button id="nextTabBtn" onclick="goNextTab()" title="เมนูถัดไป"
-                        class="h-10 w-10 rounded-lg border border-slate-200 text-slate-700 hover:bg-slate-100 disabled:opacity-40 disabled:cursor-not-allowed">
-                        <i class="fas fa-chevron-right"></i>
-                    </button>
-                </div>
             </div>
-            <div class="text-right">
-                <div class="text-sm text-slate-500">Royal Park Rajapruek</div>
-                <div class="text-lg font-semibold text-slate-800">RPRP HRDI</div>
+            <div class="text-right min-w-0">
+                <div class="text-sm font-semibold text-slate-800 whitespace-nowrap">Royal Park Rajapruek&nbsp;&nbsp;RPRP HRDI</div>
             </div>
         </div>
     </header>
@@ -6892,10 +6921,6 @@
             const maxNew = Math.max(1, ...rows.map(function (row) { return row.newCount; }));
             const maxMid = Math.max(1, ...rows.map(function (row) { return row.midCount; }));
             const maxOld = Math.max(1, ...rows.map(function (row) { return row.oldCount; }));
-            const totalNew = rows.reduce(function (sum, row) { return sum + Number(row.newCount || 0); }, 0);
-            const totalMid = rows.reduce(function (sum, row) { return sum + Number(row.midCount || 0); }, 0);
-            const totalOld = rows.reduce(function (sum, row) { return sum + Number(row.oldCount || 0); }, 0);
-
             target.innerHTML = [
                 '<div class="age-matrix" role="table" aria-label="อายุของครุภัณฑ์รายประเภท">',
                     '<div class="age-matrix-row" role="row">',
@@ -6914,12 +6939,6 @@
                             '</div>'
                         ].join('');
                     }).join(''),
-                    '<div class="age-matrix-row age-matrix-total" role="row">',
-                        '<div class="age-matrix-cell age-matrix-total-label" role="rowheader">รวมตามช่วงอายุ</div>',
-                        '<div class="age-matrix-cell age-matrix-total-value" role="cell">' + totalNew + '</div>',
-                        '<div class="age-matrix-cell age-matrix-total-value" role="cell">' + totalMid + '</div>',
-                        '<div class="age-matrix-cell age-matrix-total-value" role="cell">' + totalOld + '</div>',
-                    '</div>',
                 '</div>'
             ].join('');
         }
