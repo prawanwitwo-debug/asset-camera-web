@@ -2459,7 +2459,7 @@
         }
 
 
-        /* v86: Dashboard asymmetric 2-row layout — row1 60/40, row2 40/60 */
+        /* v87: Restore dashboard card order; keep row1 60/40 and row2 40/60 */
         @media (min-width: 1281px) {
             .dashboard-main-grid-v84 {
                 grid-template-columns: repeat(10, minmax(0, 1fr)) !important;
@@ -2471,12 +2471,12 @@
                 grid-row: 1;
             }
 
-            .dashboard-main-grid-v84 > .dashboard-location-clean-v75 {
+            .dashboard-main-grid-v84 > .dashboard-v73-age-heatmap {
                 grid-column: 7 / span 4;
                 grid-row: 1;
             }
 
-            .dashboard-main-grid-v84 > .dashboard-v73-age-heatmap {
+            .dashboard-main-grid-v84 > .dashboard-location-clean-v75 {
                 grid-column: 1 / span 4;
                 grid-row: 2;
             }
@@ -2740,6 +2740,24 @@
             </div>
 
                 
+                <!-- Age by Category: v74 clean Heatmap Matrix -->
+                <div class="dashboard-hover-card dashboard-v72-card dashboard-v73-age-heatmap p-5">
+                    <div class="dashboard-v72-head">
+                        <div class="dashboard-v72-title-row">
+                            <div class="dashboard-v72-icon" aria-hidden="true">
+                                <i class="fas fa-table-cells-large"></i>
+                            </div>
+                            <div>
+                                <h2 class="dashboard-v72-title">อายุของครุภัณฑ์ (รายประเภท)</h2>
+                                <p class="dashboard-v72-subtitle">Heatmap Matrix เห็นประเภทที่มีครุภัณฑ์เก่าเยอะได้ทันที</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="ageCategoryCombinedChart" aria-live="polite"></div>
+                </div>
+
+
                 <!-- Location / Department Summary: v75 clean donut + simple list -->
                 <div class="dashboard-hover-card dashboard-v72-card dashboard-location-clean-v75 p-5">
                     <div class="dashboard-v72-head">
@@ -2768,23 +2786,6 @@
                 </div>
 
             
-                <!-- Age by Category: v74 clean Heatmap Matrix -->
-                <div class="dashboard-hover-card dashboard-v72-card dashboard-v73-age-heatmap p-5">
-                    <div class="dashboard-v72-head">
-                        <div class="dashboard-v72-title-row">
-                            <div class="dashboard-v72-icon" aria-hidden="true">
-                                <i class="fas fa-table-cells-large"></i>
-                            </div>
-                            <div>
-                                <h2 class="dashboard-v72-title">อายุของครุภัณฑ์ (รายประเภท)</h2>
-                                <p class="dashboard-v72-subtitle">Heatmap Matrix เห็นประเภทที่มีครุภัณฑ์เก่าเยอะได้ทันที</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div id="ageCategoryCombinedChart" aria-live="polite"></div>
-                </div>
-
                 <!-- Oldest Assets Table: v80 compact paired card -->
             <div class="dashboard-hover-card dashboard-v72-card oldest-assets-card-v80 p-5">
                 <div class="dashboard-v72-head oldest-assets-head-v80">
