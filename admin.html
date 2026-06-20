@@ -115,6 +115,22 @@
             color: #0f172a;
         }
 
+
+        .card-gradient-6 {
+            background: linear-gradient(135deg, #e3fbff 0%, #c6f2f7 100%);
+            color: #0f172a;
+        }
+
+        .card-gradient-7 {
+            background: linear-gradient(135deg, #ecfdf5 0%, #bbf7d0 100%);
+            color: #0f172a;
+        }
+
+        .card-gradient-8 {
+            background: linear-gradient(135deg, #f5f3ff 0%, #ddd6fe 100%);
+            color: #0f172a;
+        }
+
         .card-decoration {
             position: relative;
             overflow: hidden;
@@ -1275,7 +1291,7 @@
 
         @media (min-width: 1536px) {
             .dashboard-status-grid-v72 {
-                grid-template-columns: repeat(7, minmax(0, 1fr));
+                grid-template-columns: repeat(8, minmax(0, 1fr));
             }
         }
 
@@ -1943,6 +1959,64 @@
             .dashboard-v73-age-heatmap .age-matrix-total-value { font-size: 13.5px; }
         }
 
+
+
+        /* v81: Dashboard request card + heatmap header typography */
+        .dashboard-status-grid-v72 .dashboard-request-card-v81 p {
+            max-width: 8.5rem;
+            line-height: 1.25;
+        }
+
+        .dashboard-v73-age-heatmap .age-matrix-head {
+            font-size: 16px;
+            font-weight: 950;
+            letter-spacing: .015em;
+        }
+
+        .dashboard-v73-age-heatmap .age-matrix-total-label {
+            font-size: 16px;
+            font-weight: 950;
+            letter-spacing: .01em;
+        }
+
+        .dashboard-v73-age-heatmap .age-matrix-label {
+            font-size: 15.5px;
+            font-weight: 950;
+        }
+
+        .dashboard-v73-age-heatmap .age-matrix-value,
+        .dashboard-v73-age-heatmap .age-matrix-total-value {
+            font-size: 16px;
+            font-weight: 900;
+        }
+
+        @media (max-width: 767px) {
+            .dashboard-v73-age-heatmap .age-matrix-head {
+                font-size: 13px;
+            }
+            .dashboard-v73-age-heatmap .age-matrix-total-label,
+            .dashboard-v73-age-heatmap .age-matrix-label {
+                font-size: 12.75px;
+            }
+            .dashboard-v73-age-heatmap .age-matrix-value,
+            .dashboard-v73-age-heatmap .age-matrix-total-value {
+                font-size: 13.5px;
+            }
+        }
+
+        @media (max-width: 420px) {
+            .dashboard-v73-age-heatmap .age-matrix-head {
+                font-size: 12px;
+            }
+            .dashboard-v73-age-heatmap .age-matrix-total-label,
+            .dashboard-v73-age-heatmap .age-matrix-label {
+                font-size: 11.75px;
+            }
+            .dashboard-v73-age-heatmap .age-matrix-value,
+            .dashboard-v73-age-heatmap .age-matrix-total-value {
+                font-size: 13px;
+            }
+        }
     </style>
 
     <!-- GitHub Pages API bridge -->
@@ -2165,6 +2239,19 @@
                                 <h3 class="text-3xl font-bold mt-2" id="disposedAssets">0</h3>
                             </div>
                             <i class="fas fa-trash-alt text-5xl text-slate-500/40"></i>
+                        </div>
+                    </div>
+                </div>
+            
+                <div class="dashboard-hover-card card-gradient-8 card-decoration dashboard-request-card-v81 rounded-lg shadow-lg p-6 text-slate-900 cursor-pointer"
+                    onclick="goChangeRequestsFromDashboard()" title="เปิดคำขอเปลี่ยนผู้รับผิดชอบ">
+                    <div class="relative z-10">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-sm text-slate-700">คำขอเปลี่ยนผู้รับผิดชอบ</p>
+                                <h3 class="text-3xl font-bold mt-2" id="ownerChangeRequests">0</h3>
+                            </div>
+                            <i class="fas fa-user-pen text-5xl text-slate-500/40"></i>
                         </div>
                     </div>
                 </div>
@@ -4000,6 +4087,11 @@
             applyManageFilters({ search: '', category: '', status: '', preset: 'org_' + code });
         }
 
+
+        function goChangeRequestsFromDashboard() {
+            showTab('change');
+        }
+
         function getSupplyOrgCodeClient(supply) {
             const direct = String((supply && supply.assetOrgCode) || '').trim().toUpperCase();
             if (direct === 'HRDI' || direct === 'RPRP') return direct;
@@ -4603,6 +4695,7 @@
         function loadChangeRequests() {
             google.script.run.withSuccessHandler(function (items) {
                 changeRequestRows = Array.isArray(items) ? items : [];
+                updateDashboardChangeRequestCount(changeRequestRows);
                 renderChangeRequests();
             }).getChangeRequests();
         }
@@ -4996,6 +5089,7 @@
             updateAgeCategoryCharts();
             renderLocationDepartmentSummary();
             renderOldestAssets();
+            loadDashboardChangeRequestCount();
         }
 
         function formatDateInputValue(dateObj) {
@@ -5351,6 +5445,29 @@
                     <div class="text-xs ${nextLocation ? 'text-emerald-700' : 'text-slate-400'}"><i class="fas fa-location-dot mr-1"></i>${nextLocation || 'ไม่เปลี่ยนสถานที่'}</div>
                 </div>
             `;
+        }
+
+        function updateDashboardChangeRequestCount(rows) {
+            const cardEl = document.getElementById('ownerChangeRequests');
+            if (!cardEl) return;
+            const safeRows = Array.isArray(rows) ? rows : [];
+            cardEl.textContent = safeRows.length.toLocaleString('th-TH');
+        }
+
+        function loadDashboardChangeRequestCount() {
+            const cardEl = document.getElementById('ownerChangeRequests');
+            if (!cardEl) return;
+            google.script.run
+                .withSuccessHandler(function (items) {
+                    const rows = Array.isArray(items) ? items : [];
+                    changeRequestRows = rows;
+                    updateDashboardChangeRequestCount(rows);
+                    updateChangeRequestPendingBadge();
+                })
+                .withFailureHandler(function () {
+                    if (cardEl.textContent === '0') cardEl.textContent = '-';
+                })
+                .getChangeRequests();
         }
 
         function updateChangeRequestPendingBadge() {
