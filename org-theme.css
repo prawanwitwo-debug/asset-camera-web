@@ -4266,3 +4266,60 @@ body.bg-hero.swal2-height-auto .home-floating-flora {
     padding: 0.7rem !important;
   }
 }
+
+
+/* v88: system-wide RPRP soft photo background
+   - home keeps floral SVG motion
+   - desktop/mobile background images are separated
+   - keep image subtle with white/mint overlay */
+body.bg-hero,
+body.admin-page,
+body.asset-public-page,
+body.repair-page {
+  background-color: #EEF8F1 !important;
+  background-image:
+    linear-gradient(180deg, rgba(252,255,253,0.88), rgba(240,249,244,0.90)),
+    url("./rprp-bg-desktop-soft.webp") !important;
+  background-size: cover !important;
+  background-position: center center !important;
+  background-repeat: no-repeat !important;
+}
+
+@media (min-width: 769px) {
+  body.bg-hero,
+  body.admin-page,
+  body.asset-public-page,
+  body.repair-page {
+    background-attachment: fixed !important;
+  }
+
+  body.bg-hero::before {
+    left: -92px !important;
+    top: 30px !important;
+    opacity: 0.26 !important;
+  }
+
+  body.bg-hero::after {
+    right: -120px !important;
+    bottom: -110px !important;
+    opacity: 0.24 !important;
+  }
+
+  body.bg-hero .home-lower-botanical {
+    opacity: 0.20 !important;
+    transform: translateY(18px) scale(0.92) !important;
+  }
+}
+
+@media (max-width: 768px) {
+  body.bg-hero,
+  body.admin-page,
+  body.asset-public-page,
+  body.repair-page {
+    background-image:
+      linear-gradient(180deg, rgba(252,255,253,0.90), rgba(238,248,241,0.94)),
+      url("./rprp-bg-mobile-soft.webp") !important;
+    background-attachment: scroll !important;
+    background-position: center top !important;
+  }
+}
