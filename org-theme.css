@@ -4582,3 +4582,18 @@ body.repair-page {
   from { transform: translate3d(0, 0, 0) rotate(1deg) scale(0.96); }
   to { transform: translate3d(-22px, -18px, 0) rotate(-3deg) scale(1.02); }
 }
+
+
+/* v92: Logged-in admin uses solid white background
+   Keep RPRP photo background only for public/home pages. */
+body.admin-page {
+  background-color: #ffffff !important;
+  background-image: none !important;
+  background-attachment: scroll !important;
+  background-repeat: no-repeat !important;
+}
+
+body.admin-page::before,
+body.admin-page::after {
+  background-image: none !important;
+}
