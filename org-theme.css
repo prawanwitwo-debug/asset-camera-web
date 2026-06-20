@@ -4464,3 +4464,121 @@ body.repair-page {
     animation: none !important;
   }
 }
+
+
+/* v91: Force real desktop flora motion
+   The previous v90 rules could still be cancelled by prefers-reduced-motion rules.
+   This final block is intentionally placed last and re-enables visible motion on desktop. */
+@media (min-width: 769px) {
+  body.bg-hero .home-floating-flora {
+    display: block !important;
+    position: fixed !important;
+    pointer-events: none !important;
+    z-index: 1 !important;
+    right: auto !important;
+    bottom: auto !important;
+    opacity: 0.26 !important;
+    transform-origin: center center !important;
+    will-change: transform, opacity !important;
+    animation-play-state: running !important;
+  }
+
+  body.bg-hero .home-floating-flora-1 {
+    left: 3.5vw !important;
+    top: 10vh !important;
+    width: clamp(210px, 15vw, 310px) !important;
+    height: clamp(135px, 9vw, 190px) !important;
+    animation: rprpFloraMoveV91A 5.8s ease-in-out infinite alternate !important;
+  }
+
+  body.bg-hero .home-floating-flora-2 {
+    left: 45vw !important;
+    top: 4vh !important;
+    width: clamp(135px, 9vw, 190px) !important;
+    height: clamp(85px, 6vw, 125px) !important;
+    opacity: 0.22 !important;
+    animation: rprpFloraMoveV91B 6.6s ease-in-out infinite alternate !important;
+  }
+
+  body.bg-hero .home-floating-flora-3 {
+    left: 70vw !important;
+    top: 29vh !important;
+    width: clamp(130px, 8.5vw, 180px) !important;
+    height: clamp(82px, 5.5vw, 116px) !important;
+    opacity: 0.20 !important;
+    animation: rprpFloraMoveV91C 7.2s ease-in-out infinite alternate !important;
+  }
+
+  body.bg-hero .home-floating-flora-4 {
+    left: 18vw !important;
+    top: 66vh !important;
+    width: clamp(120px, 8vw, 170px) !important;
+    height: clamp(78px, 5vw, 110px) !important;
+    opacity: 0.20 !important;
+    animation: rprpFloraMoveV91D 6.2s ease-in-out infinite alternate !important;
+  }
+
+  body.bg-hero .home-floating-flora-5 {
+    left: 47vw !important;
+    top: 70vh !important;
+    width: clamp(150px, 10vw, 210px) !important;
+    height: clamp(95px, 6.5vw, 135px) !important;
+    opacity: 0.18 !important;
+    animation: rprpFloraMoveV91E 7.8s ease-in-out infinite alternate !important;
+  }
+
+  body.bg-hero::before {
+    animation: rprpCornerFloraV91A 7.4s ease-in-out infinite alternate !important;
+  }
+
+  body.bg-hero::after,
+  body.bg-hero .home-lower-botanical {
+    animation: rprpCornerFloraV91B 8.2s ease-in-out infinite alternate !important;
+  }
+}
+
+@media (min-width: 769px) and (prefers-reduced-motion: reduce) {
+  body.bg-hero .home-floating-flora-1 { animation: rprpFloraMoveV91A 5.8s ease-in-out infinite alternate !important; }
+  body.bg-hero .home-floating-flora-2 { animation: rprpFloraMoveV91B 6.6s ease-in-out infinite alternate !important; }
+  body.bg-hero .home-floating-flora-3 { animation: rprpFloraMoveV91C 7.2s ease-in-out infinite alternate !important; }
+  body.bg-hero .home-floating-flora-4 { animation: rprpFloraMoveV91D 6.2s ease-in-out infinite alternate !important; }
+  body.bg-hero .home-floating-flora-5 { animation: rprpFloraMoveV91E 7.8s ease-in-out infinite alternate !important; }
+  body.bg-hero::before { animation: rprpCornerFloraV91A 7.4s ease-in-out infinite alternate !important; }
+  body.bg-hero::after,
+  body.bg-hero .home-lower-botanical { animation: rprpCornerFloraV91B 8.2s ease-in-out infinite alternate !important; }
+}
+
+@keyframes rprpFloraMoveV91A {
+  from { transform: translate3d(-10px, -8px, 0) rotate(-8deg) scale(0.98); }
+  to { transform: translate3d(70px, 36px, 0) rotate(8deg) scale(1.04); }
+}
+
+@keyframes rprpFloraMoveV91B {
+  from { transform: translate3d(0, 0, 0) rotate(6deg) scale(0.92); }
+  to { transform: translate3d(-56px, 42px, 0) rotate(-9deg) scale(1.03); }
+}
+
+@keyframes rprpFloraMoveV91C {
+  from { transform: translate3d(0, 0, 0) rotate(-5deg) scale(0.9); }
+  to { transform: translate3d(-72px, -34px, 0) rotate(7deg) scale(1); }
+}
+
+@keyframes rprpFloraMoveV91D {
+  from { transform: translate3d(0, 0, 0) rotate(4deg) scale(0.88); }
+  to { transform: translate3d(58px, -42px, 0) rotate(-7deg) scale(1); }
+}
+
+@keyframes rprpFloraMoveV91E {
+  from { transform: translate3d(0, 0, 0) rotate(-4deg) scale(0.9); }
+  to { transform: translate3d(-44px, -50px, 0) rotate(8deg) scale(1.02); }
+}
+
+@keyframes rprpCornerFloraV91A {
+  from { transform: translate3d(0, 0, 0) rotate(-2deg) scale(1); }
+  to { transform: translate3d(28px, 18px, 0) rotate(3deg) scale(1.02); }
+}
+
+@keyframes rprpCornerFloraV91B {
+  from { transform: translate3d(0, 0, 0) rotate(1deg) scale(0.96); }
+  to { transform: translate3d(-22px, -18px, 0) rotate(-3deg) scale(1.02); }
+}
