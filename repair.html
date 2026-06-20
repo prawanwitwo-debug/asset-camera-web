@@ -22,7 +22,7 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     <script src="https://unpkg.com/qr-scanner@1.4.2/qr-scanner.umd.min.js"></script>
-    <link rel="stylesheet" href="./org-theme.css?v=88">
+    <link rel="stylesheet" href="./org-theme.css?v=89">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700&display=swap');
 
@@ -499,6 +499,37 @@
     <!-- GitHub Pages API bridge -->
     <script src="config.js"></script>
     <script src="api-shim.js"></script>
+
+  <style id="rprp-bg-force-v89">
+    /* v89: force background after page-level inline CSS */
+    body.bg-hero,
+    body.admin-page,
+    body.asset-public-page,
+    body.repair-page {
+      background-color: #EEF8F1 !important;
+      background-image:
+        linear-gradient(180deg, rgba(255,255,255,0.42), rgba(238,248,241,0.58)),
+        url("./rprp-bg-desktop-soft-clear.webp") !important;
+      background-size: cover !important;
+      background-position: center center !important;
+      background-repeat: no-repeat !important;
+      background-attachment: fixed !important;
+    }
+
+    @media (max-width: 768px) {
+      body.bg-hero,
+      body.admin-page,
+      body.asset-public-page,
+      body.repair-page {
+        background-image:
+          linear-gradient(180deg, rgba(255,255,255,0.54), rgba(238,248,241,0.72)),
+          url("./rprp-bg-mobile-soft.webp") !important;
+        background-position: center top !important;
+        background-attachment: scroll !important;
+      }
+    }
+  </style>
+
 </head>
 
 <body class="repair-page">
