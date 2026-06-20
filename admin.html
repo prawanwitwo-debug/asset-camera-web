@@ -1768,6 +1768,85 @@
             .dashboard-v73-age-heatmap .age-matrix-total-value { font-size: 15px; }
         }
 
+
+        /* v79: Equal visual height for age heatmap, location donut, and location legend */
+        .dashboard-v72-card {
+            --dashboard-visual-panel-height: 325px;
+        }
+
+        .dashboard-v73-age-heatmap .age-matrix,
+        .dashboard-location-clean-v75 .dashboard-v72-donut-wrap,
+        .dashboard-location-clean-v75 .dashboard-v72-legend {
+            height: var(--dashboard-visual-panel-height);
+            max-height: var(--dashboard-visual-panel-height);
+        }
+
+        .dashboard-v73-age-heatmap .age-matrix {
+            grid-template-rows: 45px repeat(4, minmax(0, 1fr)) 56px;
+        }
+
+        .dashboard-v73-age-heatmap .age-matrix-cell,
+        .dashboard-v73-age-heatmap .age-matrix-head,
+        .dashboard-v73-age-heatmap .age-matrix-total .age-matrix-cell {
+            min-height: 0;
+            height: 100%;
+        }
+
+        .dashboard-location-clean-v75 .dashboard-v72-donut-box,
+        .dashboard-location-clean-v75 .dashboard-location-list-box-v77 {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .dashboard-location-clean-v75 .dashboard-v72-donut-wrap {
+            width: 100%;
+            max-width: var(--dashboard-visual-panel-height);
+            margin: 0 auto;
+        }
+
+        .dashboard-location-clean-v75 .dashboard-v72-donut-wrap canvas {
+            width: 100% !important;
+            height: 100% !important;
+            max-width: var(--dashboard-visual-panel-height) !important;
+            max-height: var(--dashboard-visual-panel-height) !important;
+        }
+
+        .dashboard-location-clean-v75 .dashboard-v72-legend {
+            align-content: start;
+            overflow-y: auto;
+            overflow-x: hidden;
+            padding-right: 4px;
+        }
+
+        .dashboard-v73-age-heatmap .age-matrix-row:hover .age-matrix-cell,
+        .dashboard-location-clean-v75 .dashboard-v72-legend-row:hover {
+            filter: brightness(1.02);
+        }
+
+        @media (max-width: 767px) {
+            .dashboard-v72-card {
+                --dashboard-visual-panel-height: 300px;
+            }
+            .dashboard-v73-age-heatmap .age-matrix {
+                grid-template-rows: 40px repeat(4, minmax(0, 1fr)) 44px;
+            }
+            .dashboard-location-clean-v75 .dashboard-v72-donut-wrap,
+            .dashboard-location-clean-v75 .dashboard-v72-legend {
+                height: var(--dashboard-visual-panel-height) !important;
+                max-height: var(--dashboard-visual-panel-height) !important;
+            }
+        }
+
+        @media (max-width: 420px) {
+            .dashboard-v72-card {
+                --dashboard-visual-panel-height: 275px;
+            }
+            .dashboard-v73-age-heatmap .age-matrix {
+                grid-template-rows: 38px repeat(4, minmax(0, 1fr)) 42px;
+            }
+        }
+
     </style>
 
     <!-- GitHub Pages API bridge -->
