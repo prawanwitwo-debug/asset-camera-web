@@ -14,7 +14,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     <script src="https://unpkg.com/@dotlottie/player-component@2.7.12/dist/dotlottie-player.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="./org-theme.css?v=92">
+    <link rel="stylesheet" href="./org-theme.css?v=93">
     <style>
         * {
             font-family: 'Kanit', sans-serif;
@@ -3474,19 +3474,31 @@
     <div class="space-y-4">
       <div>
         <label class="block text-sm font-medium text-gray-700">รหัสโฟลเดอร์ (เก็บรูป QR/บาร์โค้ด)</label>
-        <input id="settingFolderId" type="text" class="mt-1 w-full px-4 py-2 border border-slate-200 rounded-lg" placeholder="เช่น 1PXKZE..." />
+        <div class="mt-1 rounded-xl border border-slate-200 bg-slate-50/80 px-4 py-3">
+          <div class="flex flex-col gap-1 md:flex-row md:items-center md:justify-between">
+            <span class="text-xs font-semibold uppercase tracking-wide text-slate-500">ค่าปัจจุบัน</span>
+            <code id="settingFolderIdPreview" class="rounded-lg bg-white px-3 py-1 text-sm font-bold text-slate-700 border border-slate-100">กำลังโหลด...</code>
+          </div>
+          <input id="settingFolderId" type="password" autocomplete="off" class="mt-3 w-full px-4 py-2 border border-slate-200 rounded-lg bg-white" placeholder="กรอกเฉพาะเมื่อต้องการเปลี่ยน Folder ID" />
+          <p class="mt-2 text-xs text-slate-500">ระบบแสดงเฉพาะ 4 ตัวหน้าและ 4 ตัวท้าย เพื่อลดความเสี่ยงจากการเปิดหน้าจอหรือแชร์ภาพหน้าจอ</p>
+        </div>
       </div>
       <div>
-        <label class="block text-sm font-medium text-gray-700">รหัสสเปรดชีต (ถ้าเว้นว่าง จะใช้ไฟล์ปัจจุบัน)</label>
-        <input id="settingSpreadsheetId" type="text" class="mt-1 w-full px-4 py-2 border border-slate-200 rounded-lg" placeholder="เช่น 1AbC..." />
+        <label class="block text-sm font-medium text-gray-700">รหัสสเปรดชีต</label>
+        <div class="mt-1 rounded-xl border border-slate-200 bg-slate-50/80 px-4 py-3">
+          <div class="flex flex-col gap-1 md:flex-row md:items-center md:justify-between">
+            <span class="text-xs font-semibold uppercase tracking-wide text-slate-500">ค่าปัจจุบัน</span>
+            <code id="settingSpreadsheetIdPreview" class="rounded-lg bg-white px-3 py-1 text-sm font-bold text-slate-700 border border-slate-100">กำลังโหลด...</code>
+          </div>
+          <input id="settingSpreadsheetId" type="password" autocomplete="off" class="mt-3 w-full px-4 py-2 border border-slate-200 rounded-lg bg-white" placeholder="กรอกเฉพาะเมื่อต้องการเปลี่ยน Spreadsheet ID" />
+          <p class="mt-2 text-xs text-slate-500">ถ้าไม่กรอก ระบบจะคงค่าปัจจุบันไว้ ไม่แสดงรหัสเต็มบนหน้าจอ</p>
+        </div>
       </div>
     </div>
 
     <div class="mt-6 flex gap-3 flex-wrap">
       <button onclick="saveSettingsTab()" class="bg-emerald-50 text-emerald-700 px-5 py-2 rounded-lg hover:bg-emerald-100 border border-emerald-100">บันทึก</button>
       <button onclick="loadSettingsTab()" class="bg-slate-100 text-slate-700 px-5 py-2 rounded-lg hover:bg-slate-200">รีเฟรชค่า</button>
-      <button onclick="normalizeSuppliesStatusFromSettings()" class="bg-amber-50 text-amber-700 px-5 py-2 rounded-lg hover:bg-amber-100 border border-amber-100">Normalize สถานะเดิม</button>
-      <button onclick="setupSheetsAndSeedSamplesFromSettings()" class="bg-blue-50 text-blue-700 px-5 py-2 rounded-lg hover:bg-blue-100 border border-blue-100">สร้างชีท + ใส่ข้อมูลตัวอย่าง</button>
     </div>
 
 
@@ -5224,16 +5236,56 @@
             }).getChangeRequests();
         }
 
+        function maskConfigPreviewClient(value) {
+            const raw = String(value || '').trim();
+            if (!raw) return 'ยังไม่ได้ตั้งค่า';
+            if (raw.length <= 8) return raw.slice(0, 2) + '****' + raw.slice(-2);
+            return raw.slice(0, 4) + '**********' + raw.slice(-4);
+        }
+
+        function setSettingsPreview(folderPreview, spreadsheetPreview) {
+            const folderPreviewEl = document.getElementById('settingFolderIdPreview');
+            const spreadsheetPreviewEl = document.getElementById('settingSpreadsheetIdPreview');
+            const folderInput = document.getElementById('settingFolderId');
+            const spreadsheetInput = document.getElementById('settingSpreadsheetId');
+            if (folderPreviewEl) folderPreviewEl.textContent = folderPreview || 'ยังไม่ได้ตั้งค่า';
+            if (spreadsheetPreviewEl) spreadsheetPreviewEl.textContent = spreadsheetPreview || 'ใช้ไฟล์ปัจจุบัน';
+            if (folderInput) folderInput.value = '';
+            if (spreadsheetInput) spreadsheetInput.value = '';
+        }
+
+        function getActiveAdminCountFromSettings() {
+            return userAccessRows.filter(function (item) {
+                return normalizeUserRole(item.role) === 'admin' && item.active !== false;
+            }).length;
+        }
+
+        function isLastActiveAdminUser(username) {
+            const target = String(username || '').trim();
+            if (!target) return false;
+            const row = userAccessRows.find(function (item) { return String(item.username || '').trim() === target; });
+            if (!row) return false;
+            return normalizeUserRole(row.role) === 'admin' && row.active !== false && getActiveAdminCountFromSettings() <= 1;
+        }
+
         function loadSettingsTab() {
             if (!canAccessSettings()) {
                 denyRoleAccess('เฉพาะ Admin เท่านั้นที่เข้าหน้าการตั้งค่าได้');
                 showTab('home');
                 return;
             }
-            google.script.run.withSuccessHandler(function (cfg) {
-                document.getElementById('settingFolderId').value = cfg.folderId || '';
-                document.getElementById('settingSpreadsheetId').value = cfg.spreadsheetId || '';
-            }).getConfig();
+            google.script.run
+                .withSuccessHandler(function (cfg) {
+                    cfg = cfg || {};
+                    setSettingsPreview(
+                        cfg.folderIdMasked || maskConfigPreviewClient(cfg.folderId || ''),
+                        cfg.spreadsheetIdMasked || maskConfigPreviewClient(cfg.spreadsheetId || '')
+                    );
+                })
+                .withFailureHandler(function () {
+                    setSettingsPreview('โหลดค่าไม่สำเร็จ', 'โหลดค่าไม่สำเร็จ');
+                })
+                .getConfigForSettings();
             loadUserAccessSettings();
         }
 
@@ -5266,9 +5318,14 @@
                 tbody.innerHTML = '<tr><td class="px-4 py-6 text-slate-400 text-center" colspan="4">ยังไม่มีผู้ใช้งาน</td></tr>';
                 return;
             }
+            const activeAdminCount = getActiveAdminCountFromSettings();
             tbody.innerHTML = userAccessRows.map(function (user) {
                 const username = String(user.username || '').replace(/'/g, '&#39;').replace(/"/g, '&quot;');
                 const active = user.active !== false;
+                const isLastAdmin = normalizeUserRole(user.role) === 'admin' && active && activeAdminCount <= 1;
+                const deleteBtn = isLastAdmin
+                    ? '<button type="button" disabled title="ต้องเหลือ Admin ที่เปิดใช้งานอย่างน้อย 1 คน" class="rounded-lg bg-slate-50 text-slate-400 border border-slate-100 px-3 py-1.5 text-xs font-semibold ml-1 cursor-not-allowed">ลบ</button>'
+                    : `<button onclick="deleteUserAccessFromSettings('${username}')" class="rounded-lg bg-rose-50 text-rose-700 border border-rose-100 px-3 py-1.5 text-xs font-semibold hover:bg-rose-100 ml-1">ลบ</button>`;
                 return `
                     <tr class="border-t border-slate-100 hover:bg-slate-50">
                         <td class="px-4 py-3 font-semibold text-slate-800">${username}</td>
@@ -5278,7 +5335,7 @@
                         </td>
                         <td class="px-4 py-3 whitespace-nowrap">
                             <button onclick="editUserAccessFromSettings('${username}')" class="rounded-lg bg-amber-50 text-amber-700 border border-amber-100 px-3 py-1.5 text-xs font-semibold hover:bg-amber-100">แก้ไข</button>
-                            <button onclick="deleteUserAccessFromSettings('${username}')" class="rounded-lg bg-rose-50 text-rose-700 border border-rose-100 px-3 py-1.5 text-xs font-semibold hover:bg-rose-100 ml-1">ลบ</button>
+                            ${deleteBtn}
                         </td>
                     </tr>
                 `;
@@ -5326,6 +5383,10 @@
                 Swal.fire({ icon: 'warning', title: 'กรุณาระบุ Username', confirmButtonColor: '#10b981' });
                 return;
             }
+            if (isLastActiveAdminUser(payload.username) && (normalizeUserRole(payload.role) !== 'admin' || payload.active === false)) {
+                Swal.fire({ icon: 'warning', title: 'ต้องเหลือ Admin อย่างน้อย 1 คน', text: 'ไม่สามารถลดสิทธิ์หรือปิดใช้งาน Admin คนสุดท้ายได้', confirmButtonColor: '#10b981' });
+                return;
+            }
             google.script.run
                 .withSuccessHandler(function (res) {
                     if (!res || !res.success) {
@@ -5341,6 +5402,10 @@
 
         function deleteUserAccessFromSettings(username) {
             if (!canAccessSettings()) return denyRoleAccess('เฉพาะ Admin เท่านั้นที่ลบผู้ใช้งานได้');
+            if (isLastActiveAdminUser(username)) {
+                Swal.fire({ icon: 'warning', title: 'ลบไม่ได้', text: 'ระบบต้องเหลือ Admin ที่เปิดใช้งานอย่างน้อย 1 คน', confirmButtonColor: '#10b981' });
+                return;
+            }
             Swal.fire({
                 icon: 'warning',
                 title: 'ยืนยันการลบผู้ใช้งาน?',
@@ -5367,10 +5432,14 @@
             if (!canAccessSettings()) return denyRoleAccess('เฉพาะ Admin เท่านั้นที่บันทึกการตั้งค่าได้');
             const folderId = document.getElementById('settingFolderId').value.trim();
             const spreadsheetId = document.getElementById('settingSpreadsheetId').value.trim();
+            if (!folderId && !spreadsheetId) {
+                Swal.fire({ icon: 'info', title: 'ไม่มีค่าที่ต้องเปลี่ยน', text: 'กรอก Folder ID หรือ Spreadsheet ID ใหม่ก่อนบันทึก', confirmButtonColor: '#10b981' });
+                return;
+            }
 
             Swal.fire({
                 title: 'ยืนยันการบันทึก?',
-                text: 'ต้องการบันทึกการตั้งค่าใหม่หรือไม่',
+                text: 'ระบบจะบันทึกเฉพาะช่องที่กรอกค่าใหม่ ช่องว่างจะคงค่าเดิมไว้',
                 icon: 'question',
                 showCancelButton: true,
                 confirmButtonText: 'ยืนยัน',
@@ -5395,32 +5464,44 @@
                     }
                 });
 
-                google.script.run.withSuccessHandler(function (folderCheck) {
-                    if (!folderCheck.success) {
-                        Swal.close();
-                        Swal.fire({ icon: 'error', title: 'รหัสโฟลเดอร์ไม่ถูกต้อง', text: folderCheck.message });
+                const finishSettingsSave = function () {
+                    Swal.close();
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'บันทึกเรียบร้อย',
+                        confirmButtonColor: '#10b981',
+                        customClass: { popup: 'swal-square' }
+                    });
+                    loadSettingsTab();
+                };
+
+                const saveSpreadsheetIfNeeded = function () {
+                    if (!spreadsheetId) {
+                        finishSettingsSave();
                         return;
                     }
-
                     google.script.run.withSuccessHandler(function (sheetCheck) {
                         if (!sheetCheck.success) {
                             Swal.close();
                             Swal.fire({ icon: 'error', title: 'รหัสสเปรดชีตไม่ถูกต้อง', text: sheetCheck.message });
                             return;
                         }
-
-                        google.script.run.withSuccessHandler(function () {
-                            google.script.run.withSuccessHandler(function () {
-                                Swal.close();
-                                Swal.fire({
-                                    icon: 'success',
-                                    title: 'บันทึกเรียบร้อย',
-                                    confirmButtonColor: '#10b981',
-                                    customClass: { popup: 'swal-square' }
-                                });
-                            }).setSpreadsheetId(spreadsheetId);
-                        }).setFolderId(folderId);
+                        google.script.run.withSuccessHandler(finishSettingsSave).setSpreadsheetId(spreadsheetId);
                     }).validateSpreadsheetId(spreadsheetId);
+                };
+
+                if (!folderId) {
+                    saveSpreadsheetIfNeeded();
+                    return;
+                }
+
+                google.script.run.withSuccessHandler(function (folderCheck) {
+                    if (!folderCheck.success) {
+                        Swal.close();
+                        Swal.fire({ icon: 'error', title: 'รหัสโฟลเดอร์ไม่ถูกต้อง', text: folderCheck.message });
+                        return;
+                    }
+                    google.script.run.withSuccessHandler(saveSpreadsheetIfNeeded).setFolderId(folderId);
                 }).validateFolderId(folderId);
             });
         }
