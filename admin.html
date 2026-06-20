@@ -1715,6 +1715,27 @@
             background: rgba(238, 248, 241, .72);
         }
 
+        .dashboard-v73-age-heatmap .age-matrix-total .age-matrix-cell {
+            min-height: 54px;
+            border-top: 2px solid #bfe4d0;
+            border-bottom: 0;
+            background: linear-gradient(180deg, #f8fffb, #eef8f1);
+        }
+
+        .dashboard-v73-age-heatmap .age-matrix-total-label {
+            justify-content: flex-start;
+            color: #006b55;
+            font-size: 13px;
+            font-weight: 950;
+        }
+
+        .dashboard-v73-age-heatmap .age-matrix-total-value {
+            color: #0f3d34;
+            font-size: 20px;
+            font-weight: 950;
+            letter-spacing: -.02em;
+        }
+
         .dashboard-v73-age-heatmap .age-heat-new-1 { background: #dff8ec; }
         .dashboard-v73-age-heatmap .age-heat-new-2 { background: #c8f4dd; }
         .dashboard-v73-age-heatmap .age-heat-new-3 { background: #a9efd0; }
@@ -1732,6 +1753,9 @@
             .dashboard-v73-age-heatmap .age-matrix-head { font-size: 11px; min-height: 40px; }
             .dashboard-v73-age-heatmap .age-matrix-value { font-size: 16px; }
             .dashboard-v73-age-heatmap .age-matrix-label { font-size: 11px; line-height: 1.25; overflow-wrap: anywhere; }
+            .dashboard-v73-age-heatmap .age-matrix-total .age-matrix-cell { min-height: 44px; }
+            .dashboard-v73-age-heatmap .age-matrix-total-label { font-size: 11px; }
+            .dashboard-v73-age-heatmap .age-matrix-total-value { font-size: 16px; }
         }
 
         @media (max-width: 420px) {
@@ -1740,6 +1764,8 @@
             .dashboard-v73-age-heatmap .age-matrix-head { font-size: 10px; }
             .dashboard-v73-age-heatmap .age-matrix-value { font-size: 15px; }
             .dashboard-v73-age-heatmap .age-matrix-label { font-size: 10.5px; }
+            .dashboard-v73-age-heatmap .age-matrix-total-label { font-size: 10.5px; }
+            .dashboard-v73-age-heatmap .age-matrix-total-value { font-size: 15px; }
         }
 
     </style>
@@ -6163,6 +6189,9 @@
             const maxNew = Math.max(1, ...rows.map(function (row) { return row.newCount; }));
             const maxMid = Math.max(1, ...rows.map(function (row) { return row.midCount; }));
             const maxOld = Math.max(1, ...rows.map(function (row) { return row.oldCount; }));
+            const totalNew = rows.reduce(function (sum, row) { return sum + Number(row.newCount || 0); }, 0);
+            const totalMid = rows.reduce(function (sum, row) { return sum + Number(row.midCount || 0); }, 0);
+            const totalOld = rows.reduce(function (sum, row) { return sum + Number(row.oldCount || 0); }, 0);
 
             target.innerHTML = [
                 '<div class="age-matrix" role="table" aria-label="อายุของครุภัณฑ์รายประเภท">',
@@ -6182,6 +6211,12 @@
                             '</div>'
                         ].join('');
                     }).join(''),
+                    '<div class="age-matrix-row age-matrix-total" role="row">',
+                        '<div class="age-matrix-cell age-matrix-total-label" role="rowheader">รวมตามช่วงอายุ</div>',
+                        '<div class="age-matrix-cell age-matrix-total-value" role="cell">' + totalNew + '</div>',
+                        '<div class="age-matrix-cell age-matrix-total-value" role="cell">' + totalMid + '</div>',
+                        '<div class="age-matrix-cell age-matrix-total-value" role="cell">' + totalOld + '</div>',
+                    '</div>',
                 '</div>'
             ].join('');
         }
