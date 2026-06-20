@@ -1847,6 +1847,102 @@
             }
         }
 
+
+        /* v80: Oldest assets compact paired card + heatmap typography balance */
+        .oldest-assets-card-v80 {
+            border-color: #fecdd3;
+            background: linear-gradient(180deg, #fff7f8 0%, #ffffff 100%);
+        }
+
+        .oldest-assets-icon-v80 {
+            color: #be123c;
+            background: #ffe4e6;
+            border-color: #fecdd3;
+        }
+
+        .oldest-assets-card-v80 .dashboard-v72-head {
+            margin-bottom: 14px;
+        }
+
+        .oldest-assets-table-wrap-v80,
+        .oldest-assets-mobile-v80 {
+            height: var(--dashboard-visual-panel-height);
+            max-height: var(--dashboard-visual-panel-height);
+            border: 1px solid #fecdd3;
+            border-radius: 16px;
+            background: #ffffff;
+        }
+
+        .oldest-assets-mobile-v80 {
+            padding: 12px;
+        }
+
+        .oldest-assets-table-v80 thead {
+            background: #ffe4e6;
+            color: #9f1239;
+        }
+
+        .oldest-assets-table-v80 thead th {
+            font-size: 12px;
+            font-weight: 900;
+        }
+
+        .oldest-assets-table-v80 tbody td {
+            border-bottom: 1px solid #ffe4e6;
+            vertical-align: middle;
+        }
+
+        .oldest-assets-table-v80 tbody tr:hover td {
+            background: #fff7f8;
+        }
+
+        .dashboard-v73-age-heatmap .age-matrix-head {
+            font-size: 14px;
+            font-weight: 950;
+            letter-spacing: .01em;
+        }
+
+        .dashboard-v73-age-heatmap .age-matrix-label {
+            font-size: 15px;
+            font-weight: 950;
+        }
+
+        .dashboard-v73-age-heatmap .age-matrix-value,
+        .dashboard-v73-age-heatmap .age-matrix-total-value {
+            font-size: 17px;
+            font-weight: 900;
+        }
+
+        .dashboard-v73-age-heatmap .age-matrix-total-label {
+            font-size: 15px;
+            font-weight: 950;
+        }
+
+        @media (max-width: 767px) {
+            .oldest-assets-card-v80 {
+                border-radius: 18px;
+                padding: 16px !important;
+            }
+            .oldest-assets-table-wrap-v80,
+            .oldest-assets-mobile-v80 {
+                height: var(--dashboard-visual-panel-height) !important;
+                max-height: var(--dashboard-visual-panel-height) !important;
+            }
+            .dashboard-v73-age-heatmap .age-matrix-head { font-size: 12px; }
+            .dashboard-v73-age-heatmap .age-matrix-label,
+            .dashboard-v73-age-heatmap .age-matrix-total-label { font-size: 12.5px; }
+            .dashboard-v73-age-heatmap .age-matrix-value,
+            .dashboard-v73-age-heatmap .age-matrix-total-value { font-size: 14px; }
+        }
+
+        @media (max-width: 420px) {
+            .dashboard-v73-age-heatmap .age-matrix-head { font-size: 11.5px; }
+            .dashboard-v73-age-heatmap .age-matrix-label,
+            .dashboard-v73-age-heatmap .age-matrix-total-label { font-size: 11.5px; }
+            .dashboard-v73-age-heatmap .age-matrix-value,
+            .dashboard-v73-age-heatmap .age-matrix-total-value { font-size: 13.5px; }
+        }
+
     </style>
 
     <!-- GitHub Pages API bridge -->
@@ -2119,45 +2215,41 @@
                         </div>
                     </div>
                 </div>
-            </div>
 
-            <!-- Oldest Assets Table -->
-            <div class="dashboard-hover-card bg-rose-50 rounded-2xl shadow-lg p-4 md:p-6 border border-rose-100">
-                <div class="flex flex-col gap-3 md:flex-row md:items-center md:justify-between mb-4">
-                    <h2 class="inline-flex w-fit items-center gap-2 rounded-full bg-rose-200 text-rose-900 border border-rose-300 px-4 py-2 text-base md:text-lg font-bold shadow-sm leading-snug">
-                        <i class="fas fa-triangle-exclamation"></i>
-                        รายการครุภัณฑ์ที่เก่าที่สุด (ควรพิจารณาเปลี่ยน)
-                    </h2>
-                    <span class="text-xs md:text-sm text-slate-500 md:text-right">แสดงเฉพาะอายุ 6 ปีขึ้นไป<br class="md:hidden">เลื่อนดูเพิ่มเติมได้</span>
+            <!-- Oldest Assets Table: v80 compact paired card -->
+            <div class="dashboard-hover-card dashboard-v72-card oldest-assets-card-v80 p-5">
+                <div class="dashboard-v72-head oldest-assets-head-v80">
+                    <div class="dashboard-v72-title-row">
+                        <div class="dashboard-v72-icon oldest-assets-icon-v80" aria-hidden="true">
+                            <i class="fas fa-triangle-exclamation"></i>
+                        </div>
+                        <div>
+                            <h2 class="dashboard-v72-title">รายการครุภัณฑ์ที่เก่าที่สุด</h2>
+                            <p class="dashboard-v72-subtitle">ควรพิจารณาเปลี่ยน แสดงเฉพาะอายุ 6 ปีขึ้นไป</p>
+                        </div>
+                    </div>
                 </div>
-                <div id="oldestAssetsMobile" class="md:hidden space-y-3 max-h-[70vh] overflow-y-auto"></div>
-                <div class="hidden md:block max-h-[430px] overflow-x-auto overflow-y-auto">
-                    <table class="w-full min-w-[1260px] table-fixed text-sm">
+                <div id="oldestAssetsMobile" class="md:hidden oldest-assets-mobile-v80 space-y-3 overflow-y-auto"></div>
+                <div class="hidden md:block oldest-assets-table-wrap-v80 overflow-x-auto overflow-y-auto">
+                    <table class="w-full min-w-[720px] table-fixed text-sm oldest-assets-table-v80">
                         <colgroup>
-                            <col class="w-[140px]">
-                            <col class="w-[170px]">
+                            <col class="w-[180px]">
                             <col>
-                            <col class="w-[210px]">
-                            <col class="w-[220px]">
-                            <col class="w-[140px]">
-                            <col class="w-[150px]">
+                            <col class="w-[120px]">
                             <col class="w-[130px]">
                         </colgroup>
-                        <thead class="bg-rose-100 text-rose-900 sticky top-0">
+                        <thead class="sticky top-0">
                             <tr>
-                                <th class="text-left px-4 py-2 whitespace-nowrap">ประเภท</th>
                                 <th class="text-left px-4 py-2 whitespace-nowrap">หน่วยงาน / หมายเลขครุภัณฑ์</th>
                                 <th class="text-left px-4 py-2">ชื่อครุภัณฑ์</th>
-                                <th class="text-left px-4 py-2">ผู้รับผิดชอบ</th>
-                                <th class="text-left px-4 py-2">ที่ตั้ง</th>
                                 <th class="text-left px-4 py-2 whitespace-nowrap">สถานะ</th>
-                                <th class="text-left px-4 py-2 whitespace-nowrap">วันที่ได้รับ</th>
                                 <th class="text-left px-4 py-2 whitespace-nowrap">อายุการใช้งาน</th>
                             </tr>
                         </thead>
-                        <tbody id="oldestAssetsBody" class="divide-y"></tbody>
+                        <tbody id="oldestAssetsBody" class="divide-y divide-rose-100"></tbody>
                     </table>
                 </div>
+            </div>
             </div>
         </div>
 
@@ -6450,6 +6542,7 @@
                 .map(s => ({
                     category: detectCategory(s) || '-',
                     assetNumber: s.assetNumber || '-',
+                    assetNumberDisplay: getAssetNumberDisplayClient(s),
                     assetName: s.assetName || s.name || '-',
                     owner: s.owner || '-',
                     location: s.location || '-',
@@ -6465,7 +6558,7 @@
             if (tbody) tbody.innerHTML = '';
             if (mobileWrap) mobileWrap.innerHTML = '';
             if (items.length === 0) {
-                if (tbody) tbody.innerHTML = '<tr><td class="px-4 py-3 text-gray-500" colspan="8">ยังไม่มีรายการที่อายุ 6 ปีขึ้นไป</td></tr>';
+                if (tbody) tbody.innerHTML = '<tr><td class="px-4 py-3 text-gray-500" colspan="4">ยังไม่มีรายการที่อายุ 6 ปีขึ้นไป</td></tr>';
                 if (mobileWrap) mobileWrap.innerHTML = '<div class="rounded-2xl border border-rose-100 bg-white/80 px-4 py-3 text-sm text-slate-500">ยังไม่มีรายการที่อายุ 6 ปีขึ้นไป</div>';
                 return;
             }
@@ -6477,16 +6570,10 @@
                 if (tbody) {
                     const row = document.createElement('tr');
                     row.innerHTML = `
-                        <td class="px-4 py-2 whitespace-nowrap">
-                            <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold ${catClass}">${s.category}</span>
-                        </td>
-                        <td class="px-4 py-2 font-semibold whitespace-nowrap">${s.assetNumber}</td>
-                        <td class="px-4 py-2 font-semibold">${s.assetName}</td>
-                        <td class="px-4 py-2">${s.owner}</td>
-                        <td class="px-4 py-2 text-slate-700">${s.location}</td>
-                        <td class="px-4 py-2 whitespace-nowrap">${renderStatusBadge(s.status)}</td>
-                        <td class="px-4 py-2 whitespace-nowrap">${formatThaiDate(s.receivedDate)}</td>
-                        <td class="px-4 py-2 whitespace-nowrap">
+                        <td class="px-4 py-3 font-semibold whitespace-nowrap text-slate-800">${s.assetNumberDisplay || s.assetNumber}</td>
+                        <td class="px-4 py-3 font-semibold text-slate-800 break-words">${s.assetName}</td>
+                        <td class="px-4 py-3 whitespace-nowrap">${renderStatusBadge(s.status)}</td>
+                        <td class="px-4 py-3 whitespace-nowrap">
                             <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold ${ageClass}">${ageLabel}</span>
                         </td>
                     `;
@@ -6504,23 +6591,9 @@
                                     <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold ${ageClass}">${ageLabel}</span>
                                 </div>
                                 <div class="text-sm font-bold text-slate-900 break-words">${s.assetName}</div>
-                                <div class="text-xs text-slate-500 mt-1 break-all">${s.assetNumber}</div>
+                                <div class="text-xs text-slate-500 mt-1 break-all">${s.assetNumberDisplay || s.assetNumber}</div>
                             </div>
                             <div class="shrink-0">${renderStatusBadge(s.status)}</div>
-                        </div>
-                        <div class="grid grid-cols-1 gap-2 text-sm">
-                            <div>
-                                <div class="text-[11px] font-semibold uppercase tracking-wide text-slate-400">ผู้รับผิดชอบ</div>
-                                <div class="text-slate-700 break-words">${s.owner}</div>
-                            </div>
-                            <div>
-                                <div class="text-[11px] font-semibold uppercase tracking-wide text-slate-400">ที่ตั้ง</div>
-                                <div class="text-slate-700 break-words">${s.location}</div>
-                            </div>
-                            <div>
-                                <div class="text-[11px] font-semibold uppercase tracking-wide text-slate-400">วันที่ได้รับ</div>
-                                <div class="text-slate-700">${formatThaiDate(s.receivedDate)}</div>
-                            </div>
                         </div>
                     `;
                     mobileWrap.appendChild(card);
