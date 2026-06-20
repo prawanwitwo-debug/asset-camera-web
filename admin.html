@@ -1433,20 +1433,6 @@
             max-height: 325px !important;
         }
 
-        .dashboard-v72-list-head {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 12px;
-            margin-bottom: 10px;
-        }
-
-        .dashboard-v72-list-title {
-            color: #1f2937;
-            font-size: 13px;
-            font-weight: 900;
-        }
-
 
         .dashboard-v72-legend {
             display: grid;
@@ -1507,15 +1493,6 @@
             margin-top: 4px;
         }
 
-        .dashboard-location-clean-v75 .dashboard-v72-list-head {
-            margin-bottom: 12px;
-        }
-
-        .dashboard-location-clean-v75 .dashboard-v72-list-title {
-            font-size: 14px;
-            color: #1f2937;
-        }
-
         .dashboard-location-clean-v75 .dashboard-v72-legend {
             gap: 6px;
             max-height: 310px;
@@ -1553,6 +1530,12 @@
         .dashboard-location-clean-v75 .dashboard-v72-legend-total {
             font-size: 13px;
             color: #0f172a;
+        }
+
+        /* v77: Mobile location list fit — remove list title and stack legend below donut */
+        .dashboard-location-clean-v75 .dashboard-location-list-box-v77 {
+            min-width: 0;
+            width: 100%;
         }
 
 
@@ -1604,6 +1587,22 @@
                 grid-template-columns: 1fr;
                 gap: 12px;
             }
+            .dashboard-location-clean-v75 .dashboard-v72-content-grid {
+                grid-template-columns: minmax(0, 1fr) !important;
+                gap: 14px;
+                align-items: stretch;
+            }
+            .dashboard-location-clean-v75 .dashboard-v72-donut-box,
+            .dashboard-location-clean-v75 .dashboard-location-list-box-v77 {
+                width: 100%;
+                max-width: 100%;
+                min-width: 0;
+            }
+            .dashboard-location-clean-v75 .dashboard-v72-legend {
+                max-height: 280px;
+                overflow-y: auto;
+                overflow-x: hidden;
+            }
             .dashboard-v72-donut-wrap {
                 height: 240px;
             }
@@ -1640,6 +1639,16 @@
             }
             .dashboard-v72-legend-row {
                 padding: 9px 10px;
+            }
+            .dashboard-location-clean-v75 .dashboard-v72-content-grid {
+                grid-template-columns: minmax(0, 1fr) !important;
+            }
+            .dashboard-location-clean-v75 .dashboard-v72-legend-row {
+                padding: 8px 2px;
+                gap: 10px;
+            }
+            .dashboard-location-clean-v75 .dashboard-v72-legend-label {
+                font-size: 12.5px;
             }
         }
 
@@ -2000,10 +2009,7 @@
                                 <canvas id="dashboardLocationDonut"></canvas>
                             </div>
                         </div>
-                        <div class="dashboard-v72-list-box">
-                            <div class="dashboard-v72-list-head">
-                                <div class="dashboard-v72-list-title">อันดับสถานที่/หน่วยงาน</div>
-                            </div>
+                        <div class="dashboard-v72-list-box dashboard-location-list-box-v77">
                             <div id="dashboardLocationLegend" class="dashboard-v72-legend"></div>
                         </div>
                     </div>
