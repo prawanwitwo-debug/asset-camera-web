@@ -2301,6 +2301,122 @@
             }
         }
 
+
+
+        /* v84: Dashboard main cards 2x2 layout — summary, age, location, oldest */
+        .dashboard-main-grid-v84 {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+            gap: 18px;
+            align-items: stretch;
+            margin-bottom: 2rem;
+        }
+
+        .dashboard-main-grid-v84 > .dashboard-status-summary-panel-v84,
+        .dashboard-main-grid-v84 > .dashboard-v72-card {
+            min-width: 0;
+            margin-bottom: 0 !important;
+            height: 100%;
+        }
+
+        .dashboard-status-summary-panel-v84 {
+            display: flex;
+            flex-direction: column;
+            border: 1px solid #cfe4d9;
+            background: #ffffff;
+        }
+
+        .dashboard-status-summary-panel-v84 .dashboard-status-summary-head-v82 {
+            flex: 0 0 auto;
+        }
+
+        .dashboard-status-summary-panel-v84 .dashboard-status-grid-v72 {
+            flex: 1 1 auto;
+            grid-auto-rows: minmax(0, 1fr);
+            align-content: stretch;
+        }
+
+        .dashboard-status-summary-panel-v84 .dashboard-status-grid-v72 > .dashboard-hover-card {
+            min-width: 0;
+            min-height: 0 !important;
+            display: flex;
+            align-items: stretch;
+        }
+
+        .dashboard-status-summary-panel-v84 .dashboard-status-grid-v72 > .dashboard-hover-card .relative.z-10 {
+            width: 100%;
+        }
+
+        @media (min-width: 1281px) {
+            .dashboard-main-grid-v84 {
+                grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+            }
+
+            .dashboard-status-summary-panel-v84 .dashboard-status-grid-v72 {
+                grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+                gap: 12px !important;
+            }
+
+            .dashboard-status-summary-panel-v84 .dashboard-status-grid-v72 > .dashboard-hover-card {
+                padding: 12px 13px !important;
+                border-radius: 17px !important;
+            }
+
+            .dashboard-status-summary-panel-v84 .dashboard-status-grid-v72 > .dashboard-hover-card p {
+                font-size: 11.5px !important;
+                max-width: 7.6rem;
+            }
+
+            .dashboard-status-summary-panel-v84 .dashboard-status-grid-v72 > .dashboard-hover-card h3 {
+                font-size: 1.65rem !important;
+            }
+
+            .dashboard-status-summary-panel-v84 .dashboard-status-grid-v72 > .dashboard-hover-card i {
+                font-size: 1.9rem !important;
+            }
+        }
+
+        @media (min-width: 1536px) {
+            .dashboard-status-summary-panel-v84 .dashboard-status-grid-v72 > .dashboard-hover-card {
+                padding: 14px 15px !important;
+            }
+
+            .dashboard-status-summary-panel-v84 .dashboard-status-grid-v72 > .dashboard-hover-card p {
+                font-size: 12px !important;
+                max-width: 8.4rem;
+            }
+
+            .dashboard-status-summary-panel-v84 .dashboard-status-grid-v72 > .dashboard-hover-card h3 {
+                font-size: 1.8rem !important;
+            }
+
+            .dashboard-status-summary-panel-v84 .dashboard-status-grid-v72 > .dashboard-hover-card i {
+                font-size: 2.15rem !important;
+            }
+        }
+
+        @media (max-width: 1280px) {
+            .dashboard-main-grid-v84 {
+                grid-template-columns: 1fr !important;
+            }
+        }
+
+        @media (max-width: 767px) {
+            .dashboard-main-grid-v84 {
+                grid-template-columns: 1fr !important;
+                gap: 14px;
+                margin-bottom: 1rem;
+            }
+
+            .dashboard-status-summary-panel-v84 {
+                height: auto;
+            }
+
+            .dashboard-status-summary-panel-v84 .dashboard-status-grid-v72 {
+                grid-auto-rows: auto;
+            }
+        }
+
     </style>
 
     <!-- GitHub Pages API bridge -->
@@ -2440,8 +2556,10 @@
         <main class="main-content">
         <!-- Home Tab -->
                 <div id="homeTab" class="tab-content">
+            <!-- Dashboard Main Grid: v84 two-column 2x2 layout -->
+            <div class="dashboard-main-grid-v72 dashboard-main-grid-v84">
             <!-- Asset Status Cards (Match Top Style) -->
-            <div class="dashboard-status-summary-v82">
+            <div class="dashboard-status-summary-v82 dashboard-status-summary-panel-v84">
                 <div class="dashboard-status-summary-head-v82">
                     <div class="dashboard-status-summary-title-v82">
                         <div class="dashboard-status-summary-icon-v82" aria-hidden="true">
@@ -2556,8 +2674,6 @@
             </div>
             </div>
 
-            <!-- Dashboard Main Grid: v72 donut + list cards -->
-            <div class="dashboard-main-grid-v72">
                 <!-- Age by Category: v74 clean Heatmap Matrix -->
                 <div class="dashboard-hover-card dashboard-v72-card dashboard-v73-age-heatmap p-5">
                     <div class="dashboard-v72-head">
