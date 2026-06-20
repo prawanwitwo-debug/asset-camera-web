@@ -2162,6 +2162,145 @@
                 font-size: 13px;
             }
         }
+
+
+        /* v83: Dashboard status summary fit + 4 cards per desktop row */
+        .dashboard-status-summary-v82 {
+            border-radius: 22px;
+            padding: 20px !important;
+            margin-bottom: 18px;
+            box-shadow: 0 18px 45px rgba(61, 139, 104, .10);
+        }
+
+        .dashboard-status-summary-v82 .dashboard-status-summary-head-v82 {
+            margin-bottom: 14px;
+        }
+
+        .dashboard-status-summary-v82 .dashboard-status-summary-title-v82 h2 {
+            font-size: 19px;
+        }
+
+        .dashboard-status-summary-v82 .dashboard-status-summary-title-v82 p {
+            font-size: 12px;
+        }
+
+        .dashboard-status-summary-v82 .dashboard-status-grid-v72 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(146px, 1fr));
+            gap: 14px;
+            margin-bottom: 0 !important;
+        }
+
+        .dashboard-status-summary-v82 .dashboard-status-grid-v72 > .dashboard-hover-card {
+            min-height: 96px;
+            padding: 14px 16px !important;
+            border-left-width: 5px;
+            border-radius: 18px !important;
+        }
+
+        .dashboard-status-summary-v82 .dashboard-status-grid-v72 > .dashboard-hover-card .relative.z-10,
+        .dashboard-status-summary-v82 .dashboard-status-grid-v72 > .dashboard-hover-card .relative.z-10 > .flex {
+            height: 100%;
+        }
+
+        .dashboard-status-summary-v82 .dashboard-status-grid-v72 > .dashboard-hover-card p {
+            font-size: 12px !important;
+            line-height: 1.25;
+            font-weight: 850;
+            color: #334155;
+            max-width: 8.8rem;
+        }
+
+        .dashboard-status-summary-v82 .dashboard-status-grid-v72 > .dashboard-hover-card h3 {
+            font-size: 1.85rem !important;
+            line-height: 1;
+            margin-top: .45rem !important;
+            font-weight: 950;
+        }
+
+        .dashboard-status-summary-v82 .dashboard-status-grid-v72 > .dashboard-hover-card i {
+            font-size: 2.25rem !important;
+            opacity: .55;
+        }
+
+        @media (min-width: 1024px) {
+            .dashboard-status-summary-v82 .dashboard-status-grid-v72 {
+                grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+            }
+        }
+
+        @media (min-width: 1536px) {
+            .dashboard-status-summary-v82 .dashboard-status-grid-v72 {
+                grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+            }
+        }
+
+        @media (max-width: 767px) {
+            .dashboard-status-summary-v82 {
+                padding: 14px !important;
+                border-radius: 18px;
+                margin-bottom: 14px;
+            }
+
+            .dashboard-status-summary-v82 .dashboard-status-summary-head-v82 {
+                display: block;
+                margin-bottom: 12px;
+            }
+
+            .dashboard-status-summary-v82 .dashboard-status-summary-icon-v82 {
+                width: 38px;
+                height: 38px;
+                border-radius: 13px;
+            }
+
+            .dashboard-status-summary-v82 .dashboard-status-summary-title-v82 h2 {
+                font-size: 17px;
+                line-height: 1.25;
+            }
+
+            .dashboard-status-summary-v82 .dashboard-status-summary-title-v82 p {
+                font-size: 11.5px;
+                line-height: 1.4;
+            }
+
+            .dashboard-status-summary-v82 .dashboard-status-summary-pill-v82 {
+                margin-top: 10px;
+                padding: 6px 10px;
+                font-size: 11px;
+            }
+
+            .dashboard-status-summary-v82 .dashboard-status-grid-v72 {
+                grid-template-columns: repeat(auto-fit, minmax(132px, 1fr)) !important;
+                gap: 10px !important;
+            }
+
+            .dashboard-status-summary-v82 .dashboard-status-grid-v72 > .dashboard-hover-card {
+                min-height: 88px !important;
+                padding: 12px !important;
+                border-left-width: 4px;
+            }
+
+            .dashboard-status-summary-v82 .dashboard-status-grid-v72 > .dashboard-hover-card p {
+                font-size: 11px !important;
+                max-width: 7.2rem;
+            }
+
+            .dashboard-status-summary-v82 .dashboard-status-grid-v72 > .dashboard-hover-card h3 {
+                font-size: 1.5rem !important;
+                margin-top: .35rem !important;
+            }
+
+            .dashboard-status-summary-v82 .dashboard-status-grid-v72 > .dashboard-hover-card i {
+                font-size: 1.8rem !important;
+            }
+        }
+
+        @media (max-width: 380px) {
+            .dashboard-status-summary-v82 .dashboard-status-grid-v72 {
+                grid-template-columns: 1fr !important;
+            }
+        }
+
     </style>
 
     <!-- GitHub Pages API bridge -->
