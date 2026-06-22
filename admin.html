@@ -14,7 +14,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     <script src="https://unpkg.com/@dotlottie/player-component@2.7.12/dist/dotlottie-player.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="./org-theme.css?v=93">
+    <link rel="stylesheet" href="./org-theme.css?v=94">
     <style>
         * {
             font-family: 'Kanit', sans-serif;
@@ -2875,29 +2875,74 @@
 <!-- Manage Tab -->
                 <div id="manageTab" class="tab-content hidden">
     <div class="bg-white rounded-2xl shadow-lg p-4 md:p-6 mb-6 border border-slate-100 theme-panel-accent theme-panel-manage">
-        <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-5">
-            <div>
-                <h2 class="theme-tab-title theme-tab-title-manage"><i class="fas fa-box"></i>จัดการครุภัณฑ์</h2>
-                <p class="text-sm mt-2 theme-subtitle-manage">ทะเบียนคุมทรัพย์สินและประวัติการใช้งาน</p>
+        <div class="flex flex-col gap-4 mb-5">
+            <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+                <div>
+                    <h2 class="theme-tab-title theme-tab-title-manage"><i class="fas fa-box"></i>จัดการครุภัณฑ์</h2>
+                    <p class="text-sm mt-2 theme-subtitle-manage">ทะเบียนคุมทรัพย์สินและประวัติการใช้งาน</p>
+                </div>
+                <button onclick="openAddModal()"
+                    class="w-full md:w-auto btn-theme btn-theme-manage-solid px-6 py-3 justify-center">
+                    <i class="fas fa-plus-circle mr-2"></i>เพิ่มครุภัณฑ์ใหม่
+                </button>
             </div>
-            <button onclick="openAddModal()"
-                class="w-full md:w-auto btn-theme btn-theme-manage-solid px-6 py-3 justify-center">
-                <i class="fas fa-plus-circle mr-2"></i>เพิ่มครุภัณฑ์ใหม่
-            </button>
+
+            <div class="grid grid-cols-2 lg:grid-cols-5 gap-2">
+                <button type="button" onclick="goManageByDashboardPreset('over_age')" class="text-left rounded-xl border border-rose-200 bg-rose-50 px-3 py-2.5 shadow-sm hover:shadow-md transition-shadow">
+                    <div class="flex items-center justify-between gap-2">
+                        <div class="min-w-0">
+                            <div class="text-xs font-bold text-rose-900 truncate">เกินอายุใช้งาน</div>
+                            <div class="text-[11px] text-rose-700">6 ปีขึ้นไป</div>
+                        </div>
+                        <i class="fas fa-hourglass-end text-rose-300 text-base"></i>
+                    </div>
+                    <div id="overAgeAssets" class="text-xl font-black text-rose-700 mt-1">0</div>
+                </button>
+                <button type="button" onclick="goManageByDashboardPreset('no_owner')" class="text-left rounded-xl border border-amber-200 bg-amber-50 px-3 py-2.5 shadow-sm hover:shadow-md transition-shadow">
+                    <div class="flex items-center justify-between gap-2">
+                        <div class="text-xs font-bold text-amber-900 truncate">ไม่มีผู้รับผิดชอบ</div>
+                        <i class="fas fa-user-slash text-amber-300 text-base"></i>
+                    </div>
+                    <div id="noOwnerAssets" class="text-xl font-black text-amber-700 mt-1">0</div>
+                </button>
+                <button type="button" onclick="goManageByDashboardPreset('no_location')" class="text-left rounded-xl border border-cyan-200 bg-cyan-50 px-3 py-2.5 shadow-sm hover:shadow-md transition-shadow">
+                    <div class="flex items-center justify-between gap-2">
+                        <div class="text-xs font-bold text-cyan-900 truncate">ไม่มีสถานที่</div>
+                        <i class="fas fa-location-dot text-cyan-300 text-base"></i>
+                    </div>
+                    <div id="noLocationAssets" class="text-xl font-black text-cyan-700 mt-1">0</div>
+                </button>
+                <button type="button" onclick="goManageByDashboardPreset('no_received_date')" class="text-left rounded-xl border border-violet-200 bg-violet-50 px-3 py-2.5 shadow-sm hover:shadow-md transition-shadow">
+                    <div class="flex items-center justify-between gap-2">
+                        <div class="text-xs font-bold text-violet-900 truncate">ไม่มีวันที่ได้รับ</div>
+                        <i class="fas fa-calendar-xmark text-violet-300 text-base"></i>
+                    </div>
+                    <div id="noDateAssets" class="text-xl font-black text-violet-700 mt-1">0</div>
+                </button>
+                <button type="button" onclick="goManageByDashboardPreset('no_image')" class="text-left rounded-xl border border-slate-200 bg-slate-50 px-3 py-2.5 shadow-sm hover:shadow-md transition-shadow">
+                    <div class="flex items-center justify-between gap-2">
+                        <div class="text-xs font-bold text-slate-900 truncate">ไม่มีรูปภาพ</div>
+                        <i class="fas fa-image text-slate-300 text-base"></i>
+                    </div>
+                    <div id="noImageAssets" class="text-xl font-black text-slate-700 mt-1">0</div>
+                </button>
+            </div>
         </div>
 
-        <div class="rounded-2xl border border-slate-200 bg-slate-50 p-4 md:p-5 space-y-4">
-            <div class="relative w-full">
-                <i class="fas fa-search absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"></i>
-                <input id="manageSearch" type="text" placeholder="ค้นหา รหัส, ชื่อครุภัณฑ์, ผู้รับผิดชอบ, หรือที่ตั้ง..."
-                    class="w-full h-12 pl-11 pr-4 rounded-2xl border border-slate-200 bg-white text-slate-700 focus:outline-none focus:ring-2 focus:ring-emerald-200 focus:border-emerald-300">
-            </div>
-
-            <div class="grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_220px] gap-4 items-start">
-                <div class="min-w-0">
+        <div class="rounded-2xl border border-slate-200 bg-slate-50 p-3 md:p-4 space-y-3">
+            <div class="grid grid-cols-1 xl:grid-cols-[minmax(0,1.7fr)_220px_220px] gap-3 items-end">
+                <div class="relative w-full">
+                    <div class="text-[11px] font-semibold uppercase tracking-wide text-slate-400 mb-2">ค้นหา</div>
+                    <i class="fas fa-search absolute left-4 bottom-4 text-slate-400"></i>
+                    <input id="manageSearch" type="text" placeholder="ค้นหา รหัส, ชื่อครุภัณฑ์, ผู้รับผิดชอบ, หรือที่ตั้ง..."
+                        class="w-full h-12 pl-11 pr-4 rounded-2xl border border-slate-200 bg-white text-slate-700 focus:outline-none focus:ring-2 focus:ring-emerald-200 focus:border-emerald-300">
+                </div>
+                <div>
                     <div class="text-[11px] font-semibold uppercase tracking-wide text-slate-400 mb-2">สถานะ</div>
-                    <input type="hidden" id="manageStatusFilter" value="">
-                    <div id="manageStatusFilterGroup" class="grid grid-cols-2 md:grid-cols-3 xl:flex xl:flex-wrap rounded-2xl border border-slate-200 bg-white p-2 gap-2"></div>
+                    <select id="manageStatusFilter"
+                        class="w-full h-12 px-4 rounded-2xl border border-slate-200 bg-white text-slate-700 focus:outline-none focus:ring-2 focus:ring-emerald-200">
+                        <option value="">สถานะทั้งหมด</option>
+                    </select>
                 </div>
                 <div>
                     <div class="text-[11px] font-semibold uppercase tracking-wide text-slate-400 mb-2">ประเภท</div>
@@ -2908,8 +2953,8 @@
                 </div>
             </div>
 
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                <button onclick="toggleSelectAllSupplies(this)"
+            <div id="manageBulkActions" style="display:none" class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <button id="manageSelectAllBtn" onclick="toggleSelectAllSupplies(this)"
                     class="h-12 whitespace-nowrap btn-theme btn-theme-manage-soft px-4 justify-center">
                     <i class="fas fa-check-square mr-2"></i>เลือกทั้งหมด
                 </button>
@@ -2919,49 +2964,9 @@
                     <i class="fas fa-qrcode mr-2"></i>ออกแบบสติกเกอร์หลายรายการ
                 </button>
             </div>
-            <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-5 gap-3">
-                <button type="button" onclick="goManageByDashboardPreset('over_age')" class="text-left rounded-2xl border border-rose-200 bg-rose-50 px-4 py-4 shadow-sm hover:shadow-md transition-shadow">
-                    <div class="flex items-start justify-between gap-3">
-                        <div>
-                            <div class="text-sm font-bold text-rose-900">เกินอายุใช้งาน</div>
-                            <div class="text-xs text-rose-700 mt-1">อายุ 6 ปีขึ้นไป</div>
-                        </div>
-                        <i class="fas fa-hourglass-end text-rose-300 text-xl"></i>
-                    </div>
-                    <div id="overAgeAssets" class="text-2xl font-black text-rose-700 mt-3">0</div>
-                </button>
-                <button type="button" onclick="goManageByDashboardPreset('no_owner')" class="text-left rounded-2xl border border-amber-200 bg-amber-50 px-4 py-4 shadow-sm hover:shadow-md transition-shadow">
-                    <div class="flex items-start justify-between gap-3">
-                        <div class="text-sm font-bold text-amber-900">ไม่มีผู้รับผิดชอบ</div>
-                        <i class="fas fa-user-slash text-amber-300 text-xl"></i>
-                    </div>
-                    <div id="noOwnerAssets" class="text-2xl font-black text-amber-700 mt-3">0</div>
-                </button>
-                <button type="button" onclick="goManageByDashboardPreset('no_location')" class="text-left rounded-2xl border border-cyan-200 bg-cyan-50 px-4 py-4 shadow-sm hover:shadow-md transition-shadow">
-                    <div class="flex items-start justify-between gap-3">
-                        <div class="text-sm font-bold text-cyan-900">ไม่มีสถานที่</div>
-                        <i class="fas fa-location-dot text-cyan-300 text-xl"></i>
-                    </div>
-                    <div id="noLocationAssets" class="text-2xl font-black text-cyan-700 mt-3">0</div>
-                </button>
-                <button type="button" onclick="goManageByDashboardPreset('no_received_date')" class="text-left rounded-2xl border border-violet-200 bg-violet-50 px-4 py-4 shadow-sm hover:shadow-md transition-shadow">
-                    <div class="flex items-start justify-between gap-3">
-                        <div class="text-sm font-bold text-violet-900">ไม่มีวันที่ได้รับ</div>
-                        <i class="fas fa-calendar-xmark text-violet-300 text-xl"></i>
-                    </div>
-                    <div id="noDateAssets" class="text-2xl font-black text-violet-700 mt-3">0</div>
-                </button>
-                <button type="button" onclick="goManageByDashboardPreset('no_image')" class="text-left rounded-2xl border border-slate-200 bg-slate-50 px-4 py-4 shadow-sm hover:shadow-md transition-shadow">
-                    <div class="flex items-start justify-between gap-3">
-                        <div class="text-sm font-bold text-slate-900">ไม่มีรูปภาพ</div>
-                        <i class="fas fa-image text-slate-300 text-xl"></i>
-                    </div>
-                    <div id="noImageAssets" class="text-2xl font-black text-slate-700 mt-3">0</div>
-                </button>
-            </div>
 
             <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 text-sm text-slate-600">
-                <span id="selectedCountText" class="text-slate-500">เลือก 0 รายการ</span>
+                <span id="selectedCountText" style="display:none" class="text-slate-500">เลือก 0 รายการ</span>
                 <div id="managePresetFilterBadge" class="hidden items-center gap-2 rounded-full border border-indigo-200 bg-indigo-50 px-3 py-1 text-xs text-indigo-700 w-fit">
                     <i class="fas fa-filter"></i>
                     <span id="managePresetFilterText">ตัวกรองจากแดชบอร์ด</span>
@@ -4498,9 +4503,8 @@
         }
 
         function renderManageStatusFilterSegments() {
-            const inputEl = document.getElementById('manageStatusFilter');
-            const groupEl = document.getElementById('manageStatusFilterGroup');
-            if (!inputEl || !groupEl) return;
+            const selectEl = document.getElementById('manageStatusFilter');
+            if (!selectEl) return;
 
             const options = [
                 { value: '', label: 'สถานะทั้งหมด' },
@@ -4510,18 +4514,12 @@
                 { value: 'จำหน่าย/สูญหาย', label: 'จำหน่าย/สูญหาย' }
             ];
 
-            groupEl.innerHTML = options.map((opt) => {
+            const prev = String(selectEl.value || '');
+            selectEl.innerHTML = options.map((opt) => {
                 const valueAttr = String(opt.value).replace(/"/g, '&quot;');
-                return `<button type="button" class="manage-status-btn h-9 whitespace-nowrap rounded-lg px-3 text-sm font-medium transition-all border" data-value="${valueAttr}">${opt.label}</button>`;
+                return `<option value="${valueAttr}">${opt.label}</option>`;
             }).join('');
-
-            groupEl.querySelectorAll('.manage-status-btn').forEach((btn) => {
-                btn.addEventListener('click', function () {
-                    setManageStatusFilter(this.getAttribute('data-value') || '', true);
-                });
-            });
-
-            setManageStatusFilter(inputEl.value || '', false);
+            setManageStatusFilter(prev, false);
         }
 
         function getManageStatusTone(value) {
@@ -4534,23 +4532,16 @@
         }
 
         function setManageStatusFilter(value, triggerChange) {
-            const inputEl = document.getElementById('manageStatusFilter');
-            const groupEl = document.getElementById('manageStatusFilterGroup');
-            if (!inputEl || !groupEl) return;
+            const selectEl = document.getElementById('manageStatusFilter');
+            if (!selectEl) return;
 
             const normalized = value ? normalizeAssetStatusClient(value) : '';
-            const prev = String(inputEl.value || '');
-            inputEl.value = normalized;
+            const prev = String(selectEl.value || '');
+            selectEl.value = normalized;
+            if (selectEl.value !== normalized) selectEl.value = '';
 
-            groupEl.querySelectorAll('.manage-status-btn').forEach((btn) => {
-                const btnValue = String(btn.getAttribute('data-value') || '');
-                const isActive = btnValue === normalized;
-                const tone = getManageStatusTone(btnValue);
-                btn.className = `manage-status-btn h-10 w-full xl:w-auto whitespace-nowrap rounded-xl px-3 text-sm font-medium transition-all border ${isActive ? tone.active : tone.inactive}`;
-            });
-
-            if (triggerChange && prev !== normalized) {
-                inputEl.dispatchEvent(new Event('change', { bubbles: true }));
+            if (triggerChange && prev !== selectEl.value) {
+                selectEl.dispatchEvent(new Event('change', { bubbles: true }));
             }
         }
 
@@ -6531,8 +6522,23 @@
             const pageInfo = document.getElementById('managePageInfo');
             const prevBtn = document.getElementById('managePrevPage');
             const nextBtn = document.getElementById('manageNextPage');
-            const selected = filteredRows.filter(r => selectedSupplyCodes.has(getAssetLookupKeyClient(r))).length;
-            if (countText) countText.textContent = `เลือก ${selected} รายการ`;
+            const bulkActions = document.getElementById('manageBulkActions');
+            const selectAllBtn = document.getElementById('manageSelectAllBtn');
+            const selected = (Array.isArray(supplies) ? supplies : []).filter(r => selectedSupplyCodes.has(getAssetLookupKeyClient(r))).length;
+            const filteredCodes = filteredRows.map(r => getAssetLookupKeyClient(r)).filter(Boolean);
+            const isAllFilteredSelected = filteredCodes.length > 0 && filteredCodes.every(code => selectedSupplyCodes.has(code));
+
+            if (countText) {
+                countText.textContent = `เลือก ${selected} รายการ`;
+                countText.style.display = selected > 0 ? '' : 'none';
+            }
+            if (bulkActions) bulkActions.style.display = selected > 0 ? '' : 'none';
+            if (selectAllBtn) {
+                selectAllBtn.disabled = filteredCodes.length === 0;
+                selectAllBtn.innerHTML = isAllFilteredSelected
+                    ? '<i class="fas fa-check-square mr-2"></i>ยกเลิกเลือกทั้งหมด'
+                    : '<i class="fas fa-check-square mr-2"></i>เลือกทั้งหมด';
+            }
             if (summary) summary.textContent = `แสดง ${pageRows.length} จาก ${filteredRows.length} รายการ (ทั้งหมด ${(Array.isArray(supplies) ? supplies.length : 0)})`;
             if (pageInfo) pageInfo.textContent = `หน้า ${manageCurrentPage} / ${Math.max(1, totalPages || 1)}`;
             if (prevBtn) prevBtn.disabled = manageCurrentPage <= 1;
